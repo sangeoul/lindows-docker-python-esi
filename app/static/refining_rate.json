@@ -1,0 +1,14 @@
+{
+  "groups": [
+    {
+      "group_id": 462,
+      "group_name": "Veldspar",
+      "refining_rate": 0.8,
+    },
+    {
+      "group_id": 4755,
+      "group_name": "Kylixium",
+      "refining_rate": 0.8
+    }
+  ]
+}

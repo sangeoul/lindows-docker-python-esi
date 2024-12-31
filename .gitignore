@@ -1,0 +1,22 @@
+# Ignore all files with a .log extension
+*.log
+
+# Ignore a specific directory
+/build/
+
+# Ignore all .env files in the project
+*.env
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore environment folder for virtual environments
+venv/
+
+# Ignore database files
+*.sqlite3
+
+# Ignore sensitive configuration files
+config.yaml
+docker-compose.yml
