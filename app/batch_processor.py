@@ -4,12 +4,6 @@ import time
 import sys
 from esi_library import connect_to_db,SELFAPI_URL
 
-# Database configuration
-DB_HOST = "db"
-DB_NAME = "esi_market"
-DB_USER = "sangeoul"
-DB_PASS = "postgresPSWD"
-
 # API endpoint configuration
 
 SELFAPI_ENDPOINT = SELFAPI_URL+"iteminfo?type_id={type_id}"
