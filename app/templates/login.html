@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVE Online OAuth Login</title>
+</head>
+<body>
+    <h1>EVE Online Login</h1>
+    
+    <form action="/oauth_redirect" method="POST">
+        <label for="client_select">Select a Service:</label>
+        <select id="client_select" name="client_select" required>
+            <option value="basic">Basic</option>
+            <option value="market">Market</option>
+            <option value="implant_manager">Implant manager</option>
+            <!-- Options will be populated by the server -->
+        </select>
+
+        <button type="submit">Submit ESI</button>
+    </form>
+
+</body>
+</html>
