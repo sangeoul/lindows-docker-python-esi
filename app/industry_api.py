@@ -4,11 +4,6 @@ from iteminfo import get_type_info
 from jitaprice import get_prices
 app = Flask(__name__)
 
-# You can add other routes here if needed
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
 
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/api/iteminfo', 'iteminfo', get_type_info, methods=['GET'])
