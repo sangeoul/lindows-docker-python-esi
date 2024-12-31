@@ -5,10 +5,11 @@ import json
 from flask import redirect, session, request 
 import psycopg2
 from urllib.parse import quote
-from esi_library import get_character_from_access_token,connect_to_db,login,logip,ESI_TOKEN_ENDPOINT,ESI_AUTHORIZATION_ENDPOINT
+from esi_library import get_character_from_access_token,connect_to_db,update_user_info,login,logip,ESI_TOKEN_ENDPOINT,ESI_AUTHORIZATION_ENDPOINT
 
 #app = Flask(__name__)
 
+ESI_CALLBACK_URI = "http://localhost:8001/callback"
 
 #@app.route('/oauth_redirect', methods=['POST'])
 def oauth_redirect():
@@ -35,7 +36,7 @@ def oauth_redirect():
         client_id, client_secret, client_type,client_scope = client[0], client[1], client[2],client[3]  # Adjust according to your schema
 
         # Define the common parameters for the OAuth URL
-        redirect_uri = "http://localhost:8001/callback"  # Replace with your actual callback URL
+        redirect_uri = ESI_CALLBACK_URI  # Replace with your actual callback URL
 
         # Build the OAuth2 authorization URL
         oauth_url = f"{ESI_AUTHORIZATION_ENDPOINT}/?response_type=code&redirect_uri={quote(redirect_uri)}&client_id={quote(client_id)}&scope={quote(client_scope)}&state={client_type}"
@@ -76,7 +77,7 @@ def callback():
     data = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': "http://localhost:8001/callback",  # Same callback URI used during the OAuth flow
+        'redirect_uri': ESI_CALLBACK_URI,  # Same callback URI used during the OAuth flow
     }
 
     # Prepare the HTTP headers
@@ -108,7 +109,6 @@ def callback():
 
                         character_information=get_character_from_access_token(access_token)
                         character_id=character_information.get("CharacterID")
-                        character_name=character_information.get("CharacterName")
 
 
                         insert_query = """
@@ -125,11 +125,12 @@ def callback():
                             
                         except Exception as e:
                             return(f"Error saving tokens to the database: {e}")
+                        
+                        update_user_info(character_id)
                     cursor.close()
                     dbconn.commit()
 
                     login(character_id)
-                    logip(character_id)
 
             except Exception as e:
                 return(f"Error occured: {e}")

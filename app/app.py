@@ -7,7 +7,7 @@ app = Flask(__name__)
 # You can add other routes here if needed
 
 @app.route('/login')
-def login():
+def login_page():
     return render_template('login.html')
 
 # Use the imported routes from handle_sso.py

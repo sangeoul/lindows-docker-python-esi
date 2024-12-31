@@ -3,7 +3,7 @@ import os
 import psycopg2
 from datetime import datetime, timedelta
 import base64
-from flask import session
+from flask import request, session
 
 # Database Configuration (use your database credentials)
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -76,7 +76,7 @@ def refresh_access_token(character_id, service_type):
         "redirect_uri": "http://localhost:8001/callback"  # Adjust to your callback URL
     }
 
-    oauth_url = ESI_OAUTH_TOKEN_ENDPOINT
+    oauth_url = ESI_TOKEN_ENDPOINT
 
     # Sending the POST request to the OAuth server
     response = requests.post(oauth_url, headers=headers, data=data)
@@ -112,13 +112,30 @@ def is_logged_in():
     else:
         return False
     
-def login(_cid):
+def login(_cid,logging=True):
     session['login_character_id']=_cid
-    print(f"User {get_character}({}) logged in.")
+
+    update_user_info(_cid)
+    get_charactername_by_characterid(_cid)
+    print(f"User {get_charactername_by_characterid(_cid)}({_cid}) logged in.")
+
+    if logging:
+        logip(_cid)
     return 0
 
-def logip():
-    
+def logip(character_id):
+
+    login_ip = request.remote_addr
+
+    conn=connect_to_db()
+    cursor=conn.cursor()
+    query = """
+    INSERT INTO login_log (uidx,character_id,login_ip)
+    VALUES (%s,%s,%s)
+    """
+    cursor.execute(query,(None,character_id,login_ip))
+    conn.commit()
+    conn.close()
 
 
 def get_character_from_access_token(access_token):
@@ -213,29 +230,16 @@ def get_charactername_by_characterid(character_id):
     conn = connect_to_db()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT character_name FROM type_info WHERE type_id = %s", (type_id,))
+    cursor.execute("SELECT character_name FROM user_info WHERE character_id = %s", (character_id,))
     type_info = cursor.fetchone()
-
+    cursor.close()
+    conn.close()
     if type_info:
         # Return the type_id from the database
-        cursor.close()
-        conn.close()
         return type_info[0]
-
-    # If not found in the database, query the external API
-    endpoint = f"{SELFAPI_URL}?type_id={type_id}"
-    response = requests.get(endpoint)
-
-    if response.status_code == 200:
-        # Parse the API response and extract type_id
-        api_data = response.json()
-        if language == 'ko':
-            return api_data.get('name_ko')  # Return the Korean name
-        else:
-            return api_data.get('name_en')  # Return the English name as default.
     else:
         # Handle API errors
-        raise ValueError(f"Error fetching data from API: {response.status_code} - {response.text}")
+        raise ValueError(f"Cannot find user")
 
 def update_user_info(character_id,main_id=0):
     # API endpoint for character information
