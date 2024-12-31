@@ -9,7 +9,7 @@ from flask import session
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_NAME = os.getenv("DB_NAME", "esi_market")
 DB_USER = os.getenv("DB_USER", "sangeoul")
-DB_PASS = os.getenv("DB_PASS", "postgresPSWD")
+DB_PASS = os.getenv("DB_PASS", "Password")
 
 SELFAPI_URL="http://host.docker.internal:8009/api/"
 
