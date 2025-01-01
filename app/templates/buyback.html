@@ -100,14 +100,14 @@
                                 ${Object.entries(data.results)
                                     .sort((a, b) => b[1].input_price - a[1].input_price) // Sorting by Total Price DESC
                                     .map(([item, input]) => `
-                                        <tr>
+                                        <tr class="valid-${input.valid}">
                                             <td class="item-name">
                                                 <img src="${data.icons[item]}" alt="${item}" width="30">
                                                 ${item}
                                             </td>
-                                            <td>${input.input_amount.toLocaleString()}</td>
-                                            <td>${parseFloat(input.input_price.toFixed(2)).toLocaleString()}</td>
-                                            <td>${input.input_buyprice > 0 
+                                            <td class="amount">${input.input_amount.toLocaleString()}</td>
+                                            <td class="price">${parseFloat(input.input_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            <td class="buyback-rate">${input.input_buyprice > 0 
                                                 ? parseFloat((input.input_price * 100 / (input.input_buyprice * input.input_amount)).toFixed(2)).toLocaleString() + "%" 
                                                 : "No Jita buy"}</td>
                                         </tr>
@@ -147,9 +147,9 @@
                                                 <img src="${output.output_icon}" alt="${output.output_name}" width="30">
                                                 ${output.output_name}
                                             </td>
-                                            <td>${output.output_amount.toLocaleString()}</td>
-                                            <td>${parseFloat(output.output_price.toFixed(2)).toLocaleString()}</td>
-                                            <td>${parseFloat((output.output_price * 100 / (output.output_buyprice * output.output_amount)).toFixed(2)).toLocaleString()}%</td>
+                                            <td class="amount">${output.output_amount.toLocaleString()}</td>
+                                            <td class="price">${parseFloat(output.output_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            <td class="buyback-rate">${parseFloat((output.output_price * 100 / (output.output_buyprice * output.output_amount)).toFixed(2)).toLocaleString()}%</td>
                                         </tr>
                                     `).join('')}
                                 <tr>
@@ -169,7 +169,7 @@
                 resultSection.insertAdjacentHTML("beforeend", tab2Content);
     
                 // Show the Submit Button if there are valid input results
-                if (Object.entries(data.results).length > 0) {
+                if (data.valid) {
                     submitSection.style.display = 'block';
                 } else {
                     submitSection.style.display = 'none';

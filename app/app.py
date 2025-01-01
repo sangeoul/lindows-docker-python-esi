@@ -1,8 +1,10 @@
+import os
 from flask import Flask , render_template, redirect, request, url_for
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
 from buyback import buyback,buyback_submit,buyback_history
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # You can add other routes here if needed
 

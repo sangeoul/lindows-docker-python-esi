@@ -39,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in data.input_results %}
+                        {% for item in data.input_results | sort(attribute='total_price', reverse=True) %}
                         <tr>
                             <td>
                                 <img src="{{ item.icon_url }}" alt="icon" class="item-icon">
@@ -68,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in data.output_results %}
+                        {% for item in data.output_results | sort(attribute='total_price', reverse=True) %}
                         <tr>
                             <td>
                                 <!-- Display item icon with class -->

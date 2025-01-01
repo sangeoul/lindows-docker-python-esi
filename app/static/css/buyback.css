@@ -182,6 +182,9 @@ th {
 tr:hover {
     background-color: #f9f9f9;
 }
+tr.valid-false{
+    background-color: rgb(255, 161, 161);
+}
 
 /* Result List Styling */
 ul {
@@ -214,4 +217,8 @@ td.item-name {
     display: flex;
     align-items: center;
     padding-left: 10px;
+}
+td.amount, td.price, td.buyback-rate 
+{ 
+    text-align: right;
 }

@@ -11,9 +11,9 @@ DB_NAME = os.getenv("DB_NAME", "esi_market")
 DB_USER = os.getenv("DB_USER", "sangeoul")
 DB_PASS = os.getenv("DB_PASS", "Password")
 
-SELFAPI_URL="http://host.docker.internal:8009/api/"
+SELFAPI_URL="http://host.docker.internal:8009/api"
 
-ESI_TOKEN_ENDPOINT = "https://login.eveonline.com/v2/oauth/authorize"
+ESI_TOKEN_ENDPOINT = "https://login.eveonline.com/v2/oauth/token"
 ESI_AUTHORIZATION_ENDPOINT = "https://login.eveonline.com/v2/oauth/authorize"
 
 def connect_to_db():
@@ -289,7 +289,7 @@ def update_user_info(character_id,main_id=0):
     INSERT INTO user_info (character_id, character_name, main_id, main_name, corp_id, corp_ticker, alliance_id, alliance_ticker, birthday)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT (character_id) 
-    DO UPDATE SET character_name = EXCLUDED.character_name, main_id = EXCLUDED.main_id, main_name = EXCLUDED.main_name, corp_id = EXCLUDED.corp_id, corp_ticker = EXCLUDED.corp_ticker, alliance_id = EXCLUDED.alliance_id, alliance_ticker = EXCLUDED.alliance_ticker, birthday = EXCLUDED.birthday, last_login_ip = EXCLUDED.last_login_ip;
+    DO UPDATE SET character_name = EXCLUDED.character_name, main_id = EXCLUDED.main_id, main_name = EXCLUDED.main_name, corp_id = EXCLUDED.corp_id, corp_ticker = EXCLUDED.corp_ticker, alliance_id = EXCLUDED.alliance_id, alliance_ticker = EXCLUDED.alliance_ticker, birthday = EXCLUDED.birthday;
     """
     values = (character_id, character_name, main_id, main_name, corp_id, corp_ticker, alliance_id, alliance_ticker, birthday)
     

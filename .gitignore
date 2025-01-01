@@ -20,3 +20,8 @@ venv/
 # Ignore sensitive configuration files
 config.yaml
 docker-compose.yml
+
+
+#additional personal files
+app/static/parser.py
+app/static/input.txt

@@ -259,7 +259,7 @@ def process_material_list_input(data):
 
 # Function to send a request to the external API for each item
 def send_item_request(item_name):
-    url = f"{SELFAPI_URL}iteminfo?itemname={item_name}"
+    url = f"{SELFAPI_URL}/iteminfo?itemname={item_name}"
 
 
     print(f"Send \"{item_name}\" to server.",flush=True)
