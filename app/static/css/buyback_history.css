@@ -1,0 +1,113 @@
+/* Tab Links */
+.tab-links {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.tab-link {
+    padding: 10px 20px;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.tab-link.active {
+    background-color: #2d6a4f; /* Dark green for active tab */
+    color: white;
+    font-weight: bold;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none; /* Hide all tab content by default */
+}
+
+.tab-content.active {
+    display: block; /* Show the active tab content */
+}
+
+/* Optional: Style for Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.8em;  /* Make the font smaller for table */
+}
+
+th, td {
+    padding: 2px;
+    border: 1px solid #ddd;
+    vertical-align: middle; /* Vertically align text and icons */
+}
+
+th {
+    background-color: #f4f4f4;
+    font-size: 1.2em; /* Make header text a little larger */
+}
+
+td {
+    text-align: left; /* Default alignment for item names */
+}
+
+/* Right-align numeric columns */
+td.amount, td.total_price, td.price_rate {
+    text-align: right; /* Align numbers to the right */
+}
+
+/* Styling for Results Section */
+.result-section {
+    margin-top: 20px;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    max-width: 600px; /* Set max-width to 600px */
+    margin: 0 auto; /* Center the section */
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 600px; /* Set the max-width of the container */
+    margin: 0 auto;
+}
+
+button.btn {
+    padding: 10px 15px;
+    background-color: #008f30;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Style for icon */
+.item-icon {
+    width: 30px;   /* Set the width of the icon */
+    height: 30px;  /* Set the height of the icon */
+    margin-right: 1px;  /* Optional: space between icon and text */
+    vertical-align: middle;  /* Vertically align the icon */
+}
+
+/* Make the 'Input Items' and 'Output Items' headers smaller */
+h2 {
+    font-size: 1.0em;  /* Make headers smaller */
+    margin-bottom: 10px;
+}
