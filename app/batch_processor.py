@@ -6,7 +6,7 @@ from esi_library import connect_to_db,SELFAPI_URL
 
 # API endpoint configuration
 
-SELFAPI_ENDPOINT = SELFAPI_URL+"iteminfo?type_id={type_id}"
+SELFAPI_ENDPOINT = SELFAPI_URL+"/iteminfo?type_id={type_id}"
 
 # Batch processing size
 BATCH_SIZE = 50

@@ -1,13 +1,19 @@
 from collections import namedtuple
+import os
 import psycopg2
 import math
 import json
 from flask import Flask,jsonify, render_template,redirect, request
 from esi_library import connect_to_db, get_access_token
-from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid
+from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
 
 # Define the main structure for Buyback Items
-Buyback_Item = namedtuple("Buyback_Item", [
+
+"""
+Old code
+
+Buyback_Item_namedtuple = namedtuple("Buyback_Item", [
+    "valid",           # bool: Is this item available for buyback or not.
     "input_id",        # int: Type ID of the input item
     "input_name",      # str: Name of the input item
     "input_amount",    # int: Amount of the input item
@@ -18,7 +24,7 @@ Buyback_Item = namedtuple("Buyback_Item", [
 ])
 
 # Define the structure for output items
-Output_Item = namedtuple("Output_Item", [
+Output_Item_namedtuple = namedtuple("Output_Item", [
     "output_id",       # int: Type ID of the output item
     "output_name",     # str: Name of the output item
     "output_amount",   # float: Amount of the output item derived from industry_relation
@@ -28,13 +34,37 @@ Output_Item = namedtuple("Output_Item", [
     "output_price"     # float: Calculated price based on the conversion rate and quantity
 ])
 
+"""
+
+class Buyback_Item:
+    def __init__(self, valid, input_id, input_name, input_amount, input_icon, input_buyprice, input_sellprice, outputs):
+        self.valid = valid
+        self.input_id = input_id
+        self.input_name = input_name
+        self.input_amount = input_amount
+        self.input_icon = input_icon
+        self.input_buyprice = input_buyprice
+        self.input_sellprice = input_sellprice
+        self.outputs = outputs
+
+class Output_Item:
+    def __init__(self, output_id, output_name, output_amount, output_icon, output_buyprice, output_sellprice, output_price):
+        self.output_id = output_id
+        self.output_name = output_name
+        self.output_amount = output_amount
+        self.output_icon = output_icon
+        self.output_buyprice = output_buyprice
+        self.output_sellprice = output_sellprice
+        self.output_price = output_price
+
+
 # Assume buyback rate as 0.9 temporarily for all outputs
 
 MINIMUM_BUYBACK_RATE = 0.8
 DEFAULT_BUYBACK_RATE = 0.9
 MAX_BUYBACK_RATE = 0.97
 
-COMPARE_TOLERANCE=0.005
+COMPARE_TOLERANCE=0.01
 
 # Assume refining rate as 0.6 temporarily for all outputs
 
@@ -59,12 +89,27 @@ def get_stock_info(type_id):
     else:
         # Return default values if no data is found
         return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0
-    
 
-def create_buyback_item(input_name,input_amount, language):
+def create_buyback_item(input_name, input_amount, language):
     try:
         # Fetch type_id using the library function
-        input_id = get_typeid_by_itemname(input_name, language)
+        validitem = True
+        try:
+            input_id = get_typeid_by_itemname(input_name, language)
+            group_id = get_groupid_by_typeid(input_id)
+        except:
+            input_id = 0
+            group_id = 0
+            validitem = False
+
+        # Load the whitelist from the JSON file
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+        with open(whitelist_path, 'r') as file:
+            whitelist = json.load(file)
+        
+        # Check if the input_id or group_id is in the whitelist
+        validitem = any(group["id"] == group_id for group in whitelist["group_id"]) or any(item["id"] == input_id for item in whitelist["type_id"])
         
         # Query to get buy and sell prices using get_sell_buy function
         input_sellprice, input_buyprice = get_sell_buy(input_id)
@@ -74,6 +119,7 @@ def create_buyback_item(input_name,input_amount, language):
         
         # Create a Buyback_Item structure
         item = Buyback_Item(
+            valid=validitem,
             input_id=input_id,
             input_name=input_name,
             input_amount=input_amount,
@@ -117,7 +163,7 @@ def create_buyback_item(input_name,input_amount, language):
                 possible_conversions = input_amount // required_input_amount
 
                 # Calculate the resulting output amount by considering refining rate
-                total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(input_id)
+                total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id)
 
                 # Get output icon using type_id
                 output_icon = get_icon_by_typeid(output_id)
@@ -145,11 +191,17 @@ def create_buyback_item(input_name,input_amount, language):
 
         cursor.close()
         conn.close()
+
+        # Calculate the sum of all output prices
+        #if sum(output.output_price for output in item.outputs) == 0:
+        #    item.valid = False
+    
     except psycopg2.Error as e:
         print(f"Database error: {e}")
         return None
 
     return item
+
 
 
 def buyback():
@@ -160,28 +212,37 @@ def buyback():
         input_items = data.get("input_items")
         language = data.get("language")
         
-        # Parse the input items into a list of dictionaries with item names and amounts
+        # Parse the input items into a dictionary to aggregate item amounts
         lines = input_items.splitlines()
-        parsed_items = []
+        parsed_items = {}
         for line in lines:
             try:
                 parts = line.split("\t")  # Split by tab
-            
+                
                 if len(parts) < 2:
                     continue  # Skip invalid lines with fewer than 2 parts
-            
-                try:
-                    item_name = parts[0].strip()  # First part is the item name
-                    item_amount = int(parts[1].replace(",", "").strip())  # Second part is the amount, clean commas and whitespace
-                    parsed_items.append({'input_name': item_name, 'input_amount': item_amount})
-                except ValueError:
-                    continue  # Skip lines where the amount is invalid
+                
+                item_name = parts[0].strip()  # First part is the item name
+                parts[1] = parts[1].replace(",", "").strip()
+                if parts[1] == "":
+                    item_amount = 1
+                else:
+                    item_amount = int(parts[1])  # Second part is the amount, clean commas and convert to integer
+
+                if item_name in parsed_items:
+                    parsed_items[item_name] += item_amount  # Aggregate the amount if item already exists
+                else:
+                    parsed_items[item_name] = item_amount  # Add new item to dictionary
+
             except (IndexError, ValueError) as e:
                 print(f"Error parsing line: {line} - {e}")
                 continue
         
+        # Convert the parsed_items dictionary to a list of dictionaries
+        item_list = [{'input_name': name, 'input_amount': amount} for name, amount in parsed_items.items()]
+        
         # Call the calculate function with parsed items and language
-        results, icons, output_results = buyback_calculate(parsed_items, language)
+        results, icons, output_results = buyback_calculate(item_list, language)
         
         # Determine validity
         valid = all(result.get('valid', False) for result in results.values())
@@ -194,7 +255,6 @@ def buyback():
             'output_results': output_results
         })
 
-    
     return render_template("buyback.html", results=None)
 
 
@@ -213,7 +273,7 @@ def buyback_calculate(parsed_items, language='en'):
         input_amount = item_data['input_amount']
         
         # Create the buyback item using the helper function
-        item = create_buyback_item(input_name,input_amount, language)
+        item = create_buyback_item(input_name, input_amount, language)
         
         if item is None:
             # Mark the item as invalid in the results
@@ -223,28 +283,33 @@ def buyback_calculate(parsed_items, language='en'):
         # Calculate total price from all outputs
         input_price = sum(output.output_price for output in item.outputs)
         
-        # Populate the results dictionary
         results[input_name] = {
-            'valid': True,
+            'valid': item.valid,
             'input_id': item.input_id,
             'input_price': input_price,
             'input_amount': item.input_amount,
             'input_buyprice': item.input_buyprice,
         }
         icons[input_name] = item.input_icon
-
-        # Add output items to output_results
+        
+        # Add output items to output_results or update existing ones
         for output in item.outputs:
-            output_results.append({
-                'output_id': output.output_id,
-                'output_name': output.output_name,
-                'output_amount': output.output_amount,
-                'output_price': output.output_price,
-                'output_icon': output.output_icon,
-                'output_buyprice': output.output_buyprice,
-            })
+            existing_output = next((o for o in output_results if o['output_id'] == output.output_id), None)
+            if existing_output:
+                existing_output['output_amount'] += output.output_amount
+                existing_output['output_price'] += output.output_price
+            else:
+                output_results.append({
+                    'output_id': output.output_id,
+                    'output_name': output.output_name,
+                    'output_amount': output.output_amount,
+                    'output_price': output.output_price,
+                    'output_icon': output.output_icon,
+                    'output_buyprice': output.output_buyprice,
+                })
 
     return results, icons, output_results
+
 
 def buyback_submit():
     # Step 1: Extract the form data (input_items, output_items, and language)
@@ -369,6 +434,8 @@ def buyback_submit():
                     price_rate,
                     False  # Output item
                 ))
+
+            
             
             # Step 4.5: Commit the transaction and close the connection
             conn.commit()
@@ -387,7 +454,7 @@ def buyback_submit():
             <body>
                 <h1>Success: Buyback contract created successfully!</h1>
                 <p>Your buyback number is <h2>{new_contract_id}</h2></p>
-                <a href="/buyback">Go back to Buyback page</a>
+                <a href="/industry/buyback-history?contract_number={new_contract_id}">Go to Check Buyback</a>
             </body>
             </html>
             """
@@ -515,7 +582,10 @@ def compare_results(input_items, output_items, results, output_results, toleranc
     """
     # Function to check if the price difference is within the tolerance (0.5%)
     def is_within_tolerance(expected_price, calculated_price, tolerance):
-        return abs(expected_price - calculated_price) / expected_price <= tolerance
+        if expected_price>0:
+            return abs(expected_price - calculated_price) / expected_price <= tolerance
+        else:
+            return 0
 
     # Check input items
     for input in input_items:
@@ -559,28 +629,19 @@ def compare_results(input_items, output_items, results, output_results, toleranc
     return True
 
 
-def get_refining_rate_for_item(type_id):
-
-
-    #temporary
-    return 0.55
-
+def get_refining_rate_for_item(group_id):
 
     # Load refining rates from the JSON file
-    with open('refining_rates.json', 'r') as file:
-            refining_data = json.load(file)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    refining_rate_path = os.path.join(base_dir, 'static', 'refining_rates.json')
+    with open(refining_rate_path, 'r') as file:
+        refining_data = json.load(file)
 
     # Loop through the groups to find the group that contains the item
     for group in refining_data['groups']:
         # Check each item in the group's item list
-        for item in group['items']:
-            if item['type_id'] == type_id:
-                # If the group's refining rate is 0, use the item's refining rate
-                if group['refining_rate'] == 0:
-                    return item['refining_rate']
-                else:
-                    # If the group's refining rate is not 0, use the group's refining rate
-                    return group['refining_rate']
+        if group['id'] == group_id:
+            return group['refining_rate']
     
     # Return None if the item is not found
     return 0.55
