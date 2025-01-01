@@ -1,0 +1,121 @@
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgresUSER
+      POSTGRES_PASSWORD: postgresPSWD
+      POSTGRES_DB: esi_market
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - lindows-esi-network
+
+  # Site authorization SSO (+ HTML)
+  python-authorization:
+    build: .
+    container_name: python-authorization
+    ports:
+      - "8001:8000"   # port 8001
+    volumes:
+      - .:/app         # Mount the current directory to /app in the container
+    environment:
+      DB_HOST: db
+      DB_NAME: esi_market
+      DB_USER: postgresUSER
+      DB_PASS: postgresPSWD
+      SECRET_KEY: lindowsESIsecretsecretkey
+      FLASK_DEBUG: "true"  # Ensure it's a string (true as string)
+      FLASK_APP: app/app.py
+    command: ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+    networks:
+      - lindows-esi-network  # If you have additional networks 
+
+
+  # Python API for industry.
+  # Connect to
+  # - /app/iteminfo.py
+  # - /app/jitaprice.py
+  python-api-industry:
+    build: .
+    container_name: python-api-industry
+    depends_on:
+      - db
+    networks:
+      - lindows-esi-network
+    environment:
+      FLASK_DEBUG: "true"
+      DB_HOST: db
+      DB_NAME: esi_market
+      DB_USER: postgresUSER
+      DB_PASS: postgresPSWD
+    ports:
+      - "8009:8000"
+    volumes:
+      - ./app:/app
+    command: ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "industry_api:app"]
+
+  # Industry Parser
+  python-industry-tools:
+    build: .
+    container_name: python-industry-tools
+    depends_on:
+      - db
+    networks:
+      - lindows-esi-network
+    environment:
+      FLASK_DEBUG: "false"
+      DB_HOST: db
+      DB_NAME: esi_market
+      DB_USER: postgresUSER
+      DB_PASS: postgresPSWD
+    ports:
+      - "8010:8000"  # Exposing port 8010 for the new service
+    volumes:
+      - ./app:/app  # Assuming that the `industry_tools.py` is located in the `/app` directory
+    command: ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "industry_tools:app"]
+  
+  #temporary processor.
+  #python-batch-processor:
+    #build: .
+    #container_name: python-batch-processor
+    #depends_on:
+    #  - db
+    #networks:
+    #  - lindows-esi-network
+    #environment:
+    #  DB_HOST: db
+    #  DB_NAME: esi_market
+    #  DB_USER: postgresUSER
+    #  DB_PASS: postgresPSWD
+    #volumes:
+    #  - ./app:/app
+    #command: ["python", "/app/batch_processor.py"]
+  # Python market crawler
+
+#  python-crawler:
+#    build: .
+#    container_name: python-market-crawler
+#    depends_on:
+#      - db
+#    networks:
+#      - lindows-esi-network
+#    environment:
+#      DB_HOST: db
+#      DB_NAME: esi_market
+#      DB_USER: postgresUSER
+#      DB_PASS: postgresPSWD
+#      REGION_THE_FORGE: 10000002
+#    volumes:
+#      - ./app:/app
+#    #command: /bin/bash /app/appstart.sh
+
+networks:
+  lindows-esi-network:
+
+volumes:
+  postgres-data:
