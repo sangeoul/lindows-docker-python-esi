@@ -1,0 +1,224 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 20px; /* Increase the font size */
+    font-weight: bold; /* Make the font bold */
+    margin-bottom: 0px; /* Add some space below the title */
+}
+
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin: 5px 0; /* Reduced margin */
+}
+
+label[for="language"] {
+    display: inline-block;  /* Make the label inline with the select box */
+    margin-right: 14px;     /* Add some space between the label and the select box */
+    font-size: 12px;        /* Smaller font size for the label */
+}
+
+select#language {
+    display: inline-block;  /* Keep the select inline */
+    padding: 0px 0px;      /* Smaller padding for the select box */
+    font-size: 14px;        /* Smaller font size for the select options */
+    height: auto;           /* Adjust height to match the font size */
+    border-radius: 4px;     /* Rounded corners */
+    border: 1px solid #ccc; /* Standard border for select */
+}
+
+textarea {
+    width: 95%;
+    height: 120px; /* Reduced height */
+    padding: 8px; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px; /* Reduced font size */
+}
+
+select, button {
+    padding: 8px 12px; /* Reduced padding */
+    font-size: 14px; /* Reduced font size */
+    margin-top: 5px; /* Reduced margin */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button#calculateButton {
+    padding: 2px 5px;       /* Adjust the button padding */
+    font-size: 14px;         /* Reduce the font size */
+    height:28px;
+    background-color: #008f30; /* Blue background for the button */
+    color: white;            /* White text color */
+    border: 1px solid #00812b; /* Blue border */
+    border-radius: 6px;      /* Rounded corners */
+    cursor: pointer;        /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+button#calculateButton:hover {
+    background-color: #0056b3; /* Darker blue when hovered */
+}
+
+/* Result Section */
+.result-section {
+    margin-top: 15px;
+    border: 2px solid #888; /* Thicker gray border */
+    border-radius: 8px;
+    max-width: 600px; /* Same as form-container */
+    margin: 0 auto; /* Same as form-container */     
+    background-color: #fff;
+    padding: 10px; /* Reduced padding */
+}
+.submit-section {
+    max-width: 600px; /* Same as form-container */
+    margin: 0 auto; /* Same as form-container */     
+    background-color: #fff;
+    padding: 10px; /* Reduced padding */
+}
+/* Submit Button Styling */
+button#submitButton {
+    padding: 2px 5px;       /* Adjust the button padding */
+    font-size: 14px;         /* Reduce the font size */
+    height:28px;
+    background-color: #008f30; /* Initial green background */
+    color: white;        /* White text color */
+    border: 1px solid #00812b; /* Green border */
+    border-radius: 6px;  /* Rounded corners */
+    cursor: pointer;     /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Submit Button Hover Effect */
+button#submitButton:hover {
+    background-color: #0056b3; /* Darker blue background when hovered */
+    border-color: #00812b; /* Keep the green border to match the initial state */
+}
+
+/* Tabs */
+.tab-links {
+    display: flex;
+    gap: 0;
+    margin-bottom: 5px; /* Drastically reduce gap */
+    justify-content: flex-start;
+    border-bottom: 2px solid #888; /* Thicker gray border for bottom line */
+}
+
+.tab-link {
+    padding: 5px 15px; /* Reduced padding for compact tabs */
+    background-color: #888; /* Light gray for inactive tabs */
+    color: white;
+    border: 2px solid #888; /* Thicker gray border for tabs */
+    border-right: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0; /* Rounded top corners */
+}
+
+.tab-link:last-child {
+    border-right: 2px solid #888; /* Ensure last tab has right border */
+}
+
+.tab-link.active {
+    background-color: #2d6a4f; /* Dark green background for active tab */
+    font-weight: bold;
+    border-color: #2d6a4f; /* Matching dark green border */
+}
+
+.tab-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Reduced gap below tabs */
+}
+
+/* Tab Content */
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+    width: 100%;
+    border-radius: 0 0 8px 8px; /* Right angle on bottom */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 3px 8px; /* Reduced padding for denser table */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px; /* Reduced font size */
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+tr.valid-false{
+    background-color: rgb(255, 161, 161);
+}
+
+/* Result List Styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 3px 0; /* Reduced line height */
+    font-size: 13px; /* Reduced font size */
+    display: flex;
+    align-items: center;
+}
+
+ul li img {
+    margin-right: 10px;
+    width: 30px; /* Larger icons */
+    vertical-align: middle;
+}
+
+/* Heading Text */
+h2 {
+    font-size: 14px; /* Smaller font size */
+    font-weight: normal;
+    margin-bottom: 5px; /* Reduced margin */
+}
+
+/* Centering Item Names in Table */
+td.item-name {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+td.amount, td.price, td.buyback-rate 
+{ 
+    text-align: right;
+}
