@@ -11,7 +11,7 @@ from esi_library import connect_to_db
 import datetime
 
 REGION_THE_FORGE=10000002
-MARKET_BATCH_SIZE=2000
+MARKET_BATCH_SIZE=10000
 FETCHING_PAGE_BATCH=10
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
 
@@ -23,7 +23,7 @@ def print_with_timestamp(message):
 def fetch_market_data():
 
     all_orders=[]
-    page=370 #DEBUG
+    page=1 
 
     while True:
         if page%FETCHING_PAGE_BATCH == 0:
@@ -94,7 +94,6 @@ def process_and_store_data(orders):
     
     db_data=[]
     for type_id,prices in market_data.items():
-        print(f"!!DEBUGMSG : item:{type_id} , prcie :{prices} ",flush=True) 
         if prices['lowest_sell']:
             db_data.append((
                 prices['lowest_sell']['order_id'],
@@ -118,8 +117,7 @@ def process_and_store_data(orders):
             prices['highest_buy']['system_id'],
             prices['highest_buy']['location_id']
 
-        ))
-    print(f"!!DEBUG1 : db_data: {len(db_data)}",flush=True)            
+        ))            
     save_to_db(db_data)
 
 def save_to_db(data):
