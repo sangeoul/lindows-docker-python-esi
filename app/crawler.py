@@ -12,7 +12,7 @@ import datetime
 
 REGION_THE_FORGE=10000002
 MARKET_BATCH_SIZE=2000
-FETCHING_PAGE_BATCH=10
+FETCHING_PAGE_BATCH=1
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
 
 
@@ -23,7 +23,7 @@ def print_with_timestamp(message):
 def fetch_market_data():
 
     all_orders=[]
-    page=330
+    page=360
 
     while True:
         if page%FETCHING_PAGE_BATCH == 0:
@@ -55,7 +55,7 @@ def fetch_market_data():
         all_orders.extend(data)
         page+=1
 
-    print(f"Fetched {page-1} pages.(1 page = 1000 orders)")
+    print(f"Fetched {page-1} pages.(1 page = 1000 orders).Checked actural orders:{len(all_orders)}")
     return all_orders
 
 def fetch_with_retries(url, retries=6, delay=5,page=0):
@@ -140,19 +140,18 @@ def save_to_db(data):
                 for i in  range(0,len(data),MARKET_BATCH_SIZE):
                     batch=data[i:i+MARKET_BATCH_SIZE]
                     execute_values(cursor,query,batch)
-                    print(f"{i+MARKET_BATCH_SIZE} data updated to DB.")
+                    print(f"{i+MARKET_BATCH_SIZE} data updated to DB.",flush=True)
                     sys.stdout.flush()
             dbconn.commit()
-        print_with_timestamp(f"Inserted/updated {len(data)} rows in the database.")
+        print_with_timestamp(f"Inserted/updated {len(data)} rows in the database.",flush=True)
     except Exception as e:
-        print(f"Error occured: {e}")
+        print(f"Error occured: {e}",flush=True)
 
 if __name__ == "__main__":
     #print("Starting Market Updater")
     print_with_timestamp("Starting Market Updater")
     sys.stdout.flush()
     market_orders=fetch_market_data()
-    sys.stdout.flush()
     process_and_store_data(market_orders)
     print_with_timestamp("Update finished.")
 
