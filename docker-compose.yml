@@ -4,8 +4,8 @@ services:
     image: postgres:13
     container_name: postgres-db
     environment:
-      POSTGRES_USER: postgresUSER
-      POSTGRES_PASSWORD: postgresPSWD
+      POSTGRES_USER: sangeoul
+      POSTGRES_PASSWORD: postgresangeoulPSWD
       POSTGRES_DB: esi_market
     ports:
       - "5432:5432"
@@ -20,18 +20,18 @@ services:
     build: .
     container_name: python-authorization
     ports:
-      - "8001:8000"   # port 8001
+      - "8001:8001"   # port 8001
     volumes:
-      - .:/app         # Mount the current directory to /app in the container
+      - ./app:/app         # Mount the ./app directory to /app in the container
     environment:
       DB_HOST: db
       DB_NAME: esi_market
-      DB_USER: postgresUSER
-      DB_PASS: postgresPSWD
+      DB_USER: sangeoul
+      DB_PASS: postgresangeoulPSWD
       SECRET_KEY: lindowsESIsecretsecretkey
-      FLASK_DEBUG: "true"  # Ensure it's a string (true as string)
-      FLASK_APP: app/app.py
-    command: ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+      FLASK_DEBUG: "false"  # Ensure it's a string (true as string)
+      FLASK_APP: app.py
+    command: ["gunicorn", "--certfile=/app/static/SSL/fullchain1.pem", "--keyfile=/app/static/SSL/privkey1.pem", "-b", "0.0.0.0:8001", "app:app"]
     networks:
       - lindows-esi-network  # If you have additional networks 
 
@@ -48,16 +48,16 @@ services:
     networks:
       - lindows-esi-network
     environment:
-      FLASK_DEBUG: "true"
+      FLASK_DEBUG: "false"
       DB_HOST: db
       DB_NAME: esi_market
-      DB_USER: postgresUSER
-      DB_PASS: postgresPSWD
+      DB_USER: sangeoul
+      DB_PASS: postgresangeoulPSWD
     ports:
-      - "8009:8000"
+      - "8009:8009"
     volumes:
       - ./app:/app
-    command: ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "industry_api:app"]
+    command: ["gunicorn", "--workers=4","--certfile=/app/static/SSL/fullchain1.pem", "--keyfile=/app/static/SSL/privkey1.pem", "--bind", "0.0.0.0:8009", "industry_api:app"]
 
   # Industry Parser
   python-industry-tools:
@@ -71,13 +71,13 @@ services:
       FLASK_DEBUG: "false"
       DB_HOST: db
       DB_NAME: esi_market
-      DB_USER: postgresUSER
-      DB_PASS: postgresPSWD
+      DB_USER: sangeoul
+      DB_PASS: postgresangeoulPSWD
     ports:
-      - "8010:8000"  # Exposing port 8010 for the new service
+      - "8010:8010"  # Exposing port 8010 for the new service
     volumes:
       - ./app:/app  # Assuming that the `industry_tools.py` is located in the `/app` directory
-    command: ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "industry_tools:app"]
+    command: ["gunicorn", "--workers=4","--certfile=/app/static/SSL/fullchain1.pem", "--keyfile=/app/static/SSL/privkey1.pem", "--bind", "0.0.0.0:8010", "industry_tools:app"]
   
   #temporary processor.
   #python-batch-processor:
@@ -90,29 +90,34 @@ services:
     #environment:
     #  DB_HOST: db
     #  DB_NAME: esi_market
-    #  DB_USER: postgresUSER
-    #  DB_PASS: postgresPSWD
+    #  DB_USER: sangeoul
+    #  DB_PASS: postgresangeoulPSWD
     #volumes:
     #  - ./app:/app
     #command: ["python", "/app/batch_processor.py"]
   # Python market crawler
 
-#  python-crawler:
-#    build: .
-#    container_name: python-market-crawler
-#    depends_on:
-#      - db
-#    networks:
-#      - lindows-esi-network
-#    environment:
-#      DB_HOST: db
-#      DB_NAME: esi_market
-#      DB_USER: postgresUSER
-#      DB_PASS: postgresPSWD
-#      REGION_THE_FORGE: 10000002
-#    volumes:
-#      - ./app:/app
-#    #command: /bin/bash /app/appstart.sh
+  python-crawler:
+    build: .
+    container_name: python-market-crawler
+    depends_on:
+      - db
+    networks:
+      - lindows-esi-network
+    environment:
+      DB_HOST: db
+      DB_NAME: esi_market
+      DB_USER: sangeoul
+      DB_PASS: postgresangeoulPSWD
+      REGION_THE_FORGE: 10000002
+    volumes:
+      - ./app:/app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.8'
+          memory: 768M
+    #command: /bin/bash /app/appstart.sh
 
 networks:
   lindows-esi-network:
