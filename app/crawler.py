@@ -1,5 +1,3 @@
-# crawler.py
-
 import requests
 import psycopg2 
 from psycopg2.extras import execute_values
@@ -10,90 +8,92 @@ from esi_library import connect_to_db
 
 import datetime
 
-REGION_THE_FORGE=10000002
-MARKET_BATCH_SIZE=10000
-FETCHING_PAGE_BATCH=10
+REGION_THE_FORGE = 10000002
+MARKET_BATCH_SIZE = 10000
+FETCHING_PAGE_BATCH = 10
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
-
+PAGE_BATCH_SIZE = 100  # Number of pages to process in each batch
 
 def print_with_timestamp(message):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(f"[{timestamp}] {message}",flush=True)
+    print(f"[{timestamp}] {message}", flush=True)
 
 def fetch_market_data():
-
-    all_orders=[]
-    page=1 
+    all_orders = []
+    page = 1
 
     while True:
-        if page%FETCHING_PAGE_BATCH == 0:
-            print(f"Fetching page {page}...")
-            sys.stdout.flush()
-        response = fetch_with_retries(f"{API_URL}?datasource=tranquility&order_type=all&page={page}",5,3,page)
-        if response is None:
-            print(f"Failed to fetch data for page {page} after retries")
-            break
-        if response.status_code == 404:
-            print(f"Cannot find page. It may reached the last page({page}), stopping.",flush=True)
-            break    
-        if response.status_code !=200:
-            print(f"FAILED TO FETCH DATA : {response.status_code}")
-            break
-        try: 
-            data=response.json()
-        except ValueError:
-            print(f"Failed to parse JSON at page {page},")
-            break
-        if isinstance(data, list):
-            all_orders.extend(data)
+        batch_orders = []
+        for _ in range(PAGE_BATCH_SIZE):
+            if page % FETCHING_PAGE_BATCH == 0:
+                print(f"Fetching page {page}...", flush=True)
+            response = fetch_with_retries(f"{API_URL}?datasource=tranquility&order_type=all&page={page}", 5, 3, page)
+            if response is None:
+                print(f"Failed to fetch data for page {page} after retries", flush=True)
+                break
+            if response.status_code == 404:
+                print(f"Cannot find page. It may reached the last page({page}), stopping.", flush=True)
+                break    
+            if response.status_code != 200:
+                print(f"FAILED TO FETCH DATA : {response.status_code}", flush=True)
+                break
+            try: 
+                data = response.json()
+            except ValueError:
+                print(f"Failed to parse JSON at page {page},", flush=True)
+                break
+            if isinstance(data, list):
+                batch_orders.extend(data)
+            else:
+                print(f"Unexpected data format: {data}", flush=True)
+                break
+            page += 1
+
+        if batch_orders:
+            process_and_store_data(batch_orders)
+            all_orders.extend(batch_orders)
         else:
-            print(f"Unexpected data format: {data}")
             break
 
+        if response and response.status_code == 404:
+            break
 
-        
-        all_orders.extend(data)
-        page+=1
-
-    print(f"Fetched {page-1} pages.(1 page = 1000 orders).Checked actural orders:{len(all_orders)}",flush=True)
+    print(f"Fetched {page-1} pages. (1 page = 1000 orders). Checked actual orders: {len(all_orders)}", flush=True)
     return all_orders
 
-def fetch_with_retries(url, retries=6, delay=5,page=0):
+def fetch_with_retries(url, retries=6, delay=5, page=0):
     for attempt in range(retries):
         response = requests.get(url)
-        if response.status_code == 200 or response.status_code == 404 :
+        if response.status_code == 200 or response.status_code == 404:
             return response
-        print(f"({response.status_code} Error). Retrying page {page}...({attempt + 1}/{retries})",flush=True)
+        print(f"({response.status_code} Error). Retrying page {page}... ({attempt + 1}/{retries})", flush=True)
         time.sleep(delay)
     return None
 
-
 def process_and_store_data(orders):
-
-    
-    market_data={}
+    market_data = {}
 
     for order in orders:
-        type_id=order['type_id']
-        is_buy_order=order['is_buy_order']
-        price=order['price']
-        location_id=order['location_id']
+        type_id = order['type_id']
+        is_buy_order = order['is_buy_order']
+        price = order['price']
+        location_id = order['location_id']
 
         if type_id not in market_data:
-            market_data[type_id]={'lowest_sell':None,'highest_buy':None}
+            market_data[type_id] = {'lowest_sell': None, 'highest_buy': None}
         
         if location_id != 60003760:
             continue
 
         if is_buy_order:
             if not market_data[type_id]['highest_buy'] or price > market_data[type_id]['highest_buy']['price']:
-                market_data[type_id]['highest_buy']=order
+                market_data[type_id]['highest_buy'] = order
         else:
             if not market_data[type_id]['lowest_sell'] or price < market_data[type_id]['lowest_sell']['price']:
-                    market_data[type_id]['lowest_sell'] = order
+                market_data[type_id]['lowest_sell'] = order
     
-    db_data=[]
-    for type_id,prices in market_data.items():
+    db_data = []
+    for type_id, prices in market_data.items():
         if prices['lowest_sell']:
             db_data.append((
                 prices['lowest_sell']['order_id'],
@@ -104,20 +104,18 @@ def process_and_store_data(orders):
                 REGION_THE_FORGE,
                 prices['lowest_sell']['system_id'],
                 prices['lowest_sell']['location_id']
-
             ))
         if prices['highest_buy']:
             db_data.append((
-            prices['highest_buy']['order_id'],
-            type_id,
-            True,
-            prices['highest_buy']['price'],
-            prices['highest_buy']['volume_remain'],
-            REGION_THE_FORGE,
-            prices['highest_buy']['system_id'],
-            prices['highest_buy']['location_id']
-
-        ))            
+                prices['highest_buy']['order_id'],
+                type_id,
+                True,
+                prices['highest_buy']['price'],
+                prices['highest_buy']['volume_remain'],
+                REGION_THE_FORGE,
+                prices['highest_buy']['system_id'],
+                prices['highest_buy']['location_id']
+            ))            
     save_to_db(db_data)
 
 def save_to_db(data):
@@ -178,10 +176,7 @@ def save_to_db(data):
 
 
 if __name__ == "__main__":
-    #print("Starting Market Updater")
     print_with_timestamp("Starting Market Updater")
     sys.stdout.flush()
-    market_orders=fetch_market_data()
-    process_and_store_data(market_orders)
+    fetch_market_data()
     print_with_timestamp("Update finished.")
-
