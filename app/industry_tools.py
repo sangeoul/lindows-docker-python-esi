@@ -276,7 +276,7 @@ def input_item_to_DB():
         # Send requests for each item name
         for item_name in item_names:
             get_type_info(0,item_name)
-            print("Send Item : {item_name}",flush=True)
+            #print(f"Send Item : {item_name}",flush=True)
     # Inline HTML form definition
     form_html = '''
     <!DOCTYPE html>
