@@ -92,9 +92,9 @@ def process_and_store_data(orders):
             if not market_data[type_id]['lowest_sell'] or price < market_data[type_id]['lowest_sell']['price']:
                     market_data[type_id]['lowest_sell'] = order
     
-    print(f"!!DEBUG : market_data: {len(market_data)}",flush=True)
     db_data=[]
     for type_id,prices in market_data.items():
+        print(f"!!DEBUGMSG : item:{type_id} , prcie :{prices} ",flush=True) 
         if prices['lowest_sell']:
             db_data.append((
                 prices['lowest_sell']['order_id'],
@@ -119,7 +119,7 @@ def process_and_store_data(orders):
                 prices['highest_buy']['location_id']
 
             ))
-                
+    print(f"!!DEBUG1 : db_data: {len(db_data)}",flush=True)            
     save_to_db(db_data)
 
 def save_to_db(data):
