@@ -55,7 +55,7 @@ def fetch_market_data():
         all_orders.extend(data)
         page+=1
 
-    print(f"Fetched {page-1} pages.(1 page = 1000 orders).Checked actural orders:{len(all_orders)}")
+    print(f"Fetched {page-1} pages.(1 page = 1000 orders).Checked actural orders:{len(all_orders)}",flush=True)
     return all_orders
 
 def fetch_with_retries(url, retries=6, delay=5,page=0):
@@ -70,6 +70,7 @@ def fetch_with_retries(url, retries=6, delay=5,page=0):
 
 def process_and_store_data(orders):
 
+    print(f"!!DEBUG : orders: {len(orders)}",flush=True)
     market_data={}
 
     for order in orders:
