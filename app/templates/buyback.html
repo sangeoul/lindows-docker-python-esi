@@ -1,43 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buyback Calculator</title>
-    <!-- Link to external CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/buyback.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Buyback Calculator</h1>
-        
-        <!-- Input Form -->
-        <form id="inputForm" class="form-container">
-            <label for="language">Input language:</label>
-            <select id="language" name="language">
-                <option value="en" selected>En</option>
-                <option value="ko">Ko</option>
-            </select>
 
-            <label for="input_items">Enter Items:</label>
-            <textarea id="input_items" name="input_items" rows="10" cols="50"></textarea>
-
-            <button type="button" id="calculateButton" class="btn">Calculate</button>
-        </form>
-
-        <!-- Results Section -->
-        <div id="resultSection" class="result-section">
-            <!-- Results will be dynamically inserted here -->
-        
-            
-
-        </div>
         <!-- Submit Button (Initially hidden) -->
         <div id="submitSection" class="submit-section" style="display: none;" > 
             <button type="button" id="submitButton" class="btn">Submit</button>
         </div>
-    </div>
-    
-    
-</body>
-</html>
