@@ -122,30 +122,60 @@ def process_and_store_data(orders):
 
 def save_to_db(data):
     """Save processed market data to the PostgreSQL database."""
-    query="""
-        INSERT INTO market_price(order_id,type_id,is_buy_order,price,volume_remain,region_id,system_id,location_id)
+    query = """
+        INSERT INTO market_price(order_id, type_id, is_buy_order, price, volume_remain, region_id, system_id, location_id)
         VALUES %s
-        ON CONFLICT (type_id,is_buy_order)
+        ON CONFLICT (type_id, is_buy_order)
         DO UPDATE SET
-            price=EXCLUDED.price,
-            volume_remain=EXCLUDED.volume_remain,
-            region_id = EXCLUDED.region_id,
-            system_id=EXCLUDED.system_id,
-            location_id = EXCLUDED.location_id,
-            updated = CURRENT_TIMESTAMP;
-        """
+            price = CASE
+                WHEN market_price.is_buy_order THEN 
+                    GREATEST(market_price.price, EXCLUDED.price)
+                ELSE 
+                    LEAST(market_price.price, EXCLUDED.price)
+                END,
+            volume_remain = CASE
+                WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
+                    OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
+                THEN EXCLUDED.volume_remain
+                ELSE market_price.volume_remain
+                END,
+            region_id = CASE
+                WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
+                    OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
+                THEN EXCLUDED.region_id
+                ELSE market_price.region_id
+                END,
+            system_id = CASE
+                WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
+                    OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
+                THEN EXCLUDED.system_id
+                ELSE market_price.system_id
+                END,
+            location_id = CASE
+                WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
+                    OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
+                THEN EXCLUDED.location_id
+                ELSE market_price.location_id
+                END,
+            updated = CASE
+                WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
+                    OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
+                THEN CURRENT_TIMESTAMP
+                ELSE market_price.updated
+                END;
+    """
     try:
         with connect_to_db() as dbconn:
             with dbconn.cursor() as cursor:
-                for i in  range(0,len(data),MARKET_BATCH_SIZE):
-                    batch=data[i:i+MARKET_BATCH_SIZE]
-                    execute_values(cursor,query,batch)
-                    print(f"{i+MARKET_BATCH_SIZE} data updated to DB.",flush=True)
-                    sys.stdout.flush()
+                for i in range(0, len(data), MARKET_BATCH_SIZE):
+                    batch = data[i:i + MARKET_BATCH_SIZE]
+                    execute_values(cursor, query, batch)
+                    print(f"{i + MARKET_BATCH_SIZE} data updated to DB.", flush=True)
             dbconn.commit()
         print_with_timestamp(f"Inserted/updated {len(data)} rows in the database.")
     except Exception as e:
-        print(f"Error occured: {e}",flush=True)
+        print(f"Error occurred: {e}", flush=True)
+
 
 if __name__ == "__main__":
     #print("Starting Market Updater")
