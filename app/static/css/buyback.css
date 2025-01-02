@@ -93,6 +93,7 @@ button#calculateButton:hover {
     margin: 0 auto; /* Same as form-container */     
     background-color: #fff;
     padding: 10px; /* Reduced padding */
+    display: none;
 }
 /* Submit Button Styling */
 button#submitButton {
