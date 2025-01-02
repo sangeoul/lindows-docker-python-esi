@@ -127,6 +127,10 @@ def get_type_info(type_id=0,item_name=None):
             external_data_ko = fetch_external_data(type_id, language="ko")
 
             if external_data_en and external_data_ko:
+
+                # Set default value for market_group_id if it does not exist 
+                market_group_id = external_data_en.get('market_group_id', 0)
+
                 # Prepare data to save
                 icon_id = external_data_en.get('icon_id', type_id)
                 cursor.execute("""
@@ -136,13 +140,13 @@ def get_type_info(type_id=0,item_name=None):
                 """, (
                     external_data_en['type_id'],
                     external_data_en['name'],
-                    external_data_ko.get('name', ""),
+                     external_data_ko.get('name', ""),
                     external_data_en['volume'],
                     external_data_en['packaged_volume'],
                     icon_id,
                     external_data_en['group_id'],
                     external_data_en['published'],
-                    external_data_en['market_group_id']
+                    market_group_id
                 ))
 
                 # Commit changes to the database
