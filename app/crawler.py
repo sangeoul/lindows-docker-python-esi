@@ -23,7 +23,6 @@ def fetch_market_data():
     page = 1
 
     while True:
-        gc.collect()
         batch_orders = []
         for _ in range(PAGE_BATCH_SIZE):
             if page % FETCHING_PAGE_BATCH == 0:
@@ -52,8 +51,10 @@ def fetch_market_data():
 
         if batch_orders:
             process_and_store_data(batch_orders)
-            all_orders.extend(batch_orders)
-            time.sleep(30)
+            #del batch_orders
+            #del data
+            #gc.collect()
+            #time.sleep(30)
         else:
             break
 
@@ -61,7 +62,7 @@ def fetch_market_data():
             break
 
     print(f"Fetched {page-1} pages. (1 page = 1000 orders). Checked actual orders: {len(all_orders)}", flush=True)
-    return all_orders
+    return
 
 def fetch_with_retries(url, retries=6, delay=5, page=0):
     for attempt in range(retries):
