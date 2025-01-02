@@ -1,7 +1,6 @@
 import requests
 import psycopg2 
 from psycopg2.extras import execute_values
-import os
 import time
 import sys
 from esi_library import connect_to_db
@@ -12,7 +11,7 @@ REGION_THE_FORGE = 10000002
 MARKET_BATCH_SIZE = 10000
 FETCHING_PAGE_BATCH = 10
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
-PAGE_BATCH_SIZE = 100  # Number of pages to process in each batch
+PAGE_BATCH_SIZE = 50  # Number of pages to process in each batch
 
 def print_with_timestamp(message):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
