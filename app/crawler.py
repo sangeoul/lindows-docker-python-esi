@@ -12,7 +12,7 @@ import datetime
 
 REGION_THE_FORGE=10000002
 MARKET_BATCH_SIZE=2000
-FETCHING_PAGE_BATCH=1
+FETCHING_PAGE_BATCH=10
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
 
 
@@ -23,7 +23,7 @@ def print_with_timestamp(message):
 def fetch_market_data():
 
     all_orders=[]
-    page=360
+    page=370 #DEBUG
 
     while True:
         if page%FETCHING_PAGE_BATCH == 0:
@@ -70,7 +70,7 @@ def fetch_with_retries(url, retries=6, delay=5,page=0):
 
 def process_and_store_data(orders):
 
-    print(f"!!DEBUG : orders: {len(orders)}",flush=True)
+    
     market_data={}
 
     for order in orders:
@@ -92,6 +92,7 @@ def process_and_store_data(orders):
             if not market_data[type_id]['lowest_sell'] or price < market_data[type_id]['lowest_sell']['price']:
                     market_data[type_id]['lowest_sell'] = order
     
+    print(f"!!DEBUG : market_data: {len(market_data)}",flush=True)
     db_data=[]
     for type_id,prices in market_data.items():
         if prices['lowest_sell']:
