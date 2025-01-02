@@ -10,4 +10,4 @@ app.add_url_rule('/api/iteminfo', 'iteminfo', get_type_info, methods=['GET'])
 app.add_url_rule('/api/jitaprice', 'jitaprice', get_prices, methods=['GET'])
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8009)

@@ -9,7 +9,7 @@ from esi_library import get_character_from_access_token,connect_to_db,update_use
 
 #app = Flask(__name__)
 
-ESI_CALLBACK_URI = "http://localhost:8001/callback"
+ESI_CALLBACK_URI = "https://lindows.kr:8001/callback"
 
 #@app.route('/oauth_redirect', methods=['POST'])
 def oauth_redirect():

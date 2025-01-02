@@ -1,7 +1,8 @@
 import requests
 from datetime import datetime, timedelta
 import json
-from esi_library import connect_to_db,SELFAPI_URL
+from esi_library import connect_to_db
+from iteminfo import get_type_info
 
 
 def get_typeid_by_itemname(item_name, language='en'):
@@ -22,16 +23,14 @@ def get_typeid_by_itemname(item_name, language='en'):
         return type_info[0]
 
     # If not found in the database, query the external API
-    endpoint = f"{SELFAPI_URL}/iteminfo?itemname={item_name}"
-    response = requests.get(endpoint)
 
-    if response.status_code == 200:
-        # Parse the API response and extract type_id
-        api_data = response.json()
-        return api_data.get('type_id')  # Return the type_id directly
-    else:
-        # Handle API errors
-        raise ValueError(f"Error fetching data from API: {response.status_code} - {response.text}")
+    try :
+        api_data=get_type_info(0,item_name)
+        return api_data.get('type_id') 
+    
+    except:
+        raise ValueError(f"Error fetching data")
+        
 
 
 def get_itemname_by_typeid(type_id, language='en'):
@@ -51,20 +50,15 @@ def get_itemname_by_typeid(type_id, language='en'):
         conn.close()
         return type_info[0]
 
-    # If not found in the database, query the external API
-    endpoint = f"{SELFAPI_URL}/iteminfo?type_id={type_id}"
-    response = requests.get(endpoint)
-
-    if response.status_code == 200:
-        # Parse the API response and extract type_id
-        api_data = response.json()
-        if language == 'ko':
-            return api_data.get('name_ko')  # Return the Korean name
-        else:
-            return api_data.get('name_en')  # Return the English name as default.
-    else:
-        # Handle API errors
-        raise ValueError(f"Error fetching data from API: {response.status_code} - {response.text}")
+    try :
+        api_data=get_type_info(type_id,"")
+        if language=='ko':
+            return api_data.get('name_ko') 
+        else :
+            return api_data.get('name_en') 
+    
+    except:
+        raise ValueError(f"Error fetching data")
  
 def get_groupid_by_typeid(type_id):
     conn = connect_to_db()
@@ -79,18 +73,13 @@ def get_groupid_by_typeid(type_id):
         conn.close()
         return type_info[0]
 
-    # If not found in the database, query the external API
-    endpoint = f"{SELFAPI_URL}/iteminfo?type_id={type_id}"
-    response = requests.get(endpoint)
 
-    if response.status_code == 200:
-        # Parse the API response and extract type_id
-        api_data = response.json()
-        return api_data.get('group_id')  # Return the English name as default.
-    else:
-        # Handle API errors
-        raise ValueError(f"Error fetching data from API: {response.status_code} - {response.text}")
-        
+    try :
+        api_data=get_type_info(type_id,"")
+        return api_data.get('group_id') 
+    
+    except:
+        raise ValueError(f"Error fetching data")
 
 def get_icon_by_typeid(type_id,icon_type="icon"):
     conn = connect_to_db()
