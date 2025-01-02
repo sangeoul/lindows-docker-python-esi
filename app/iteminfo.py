@@ -67,11 +67,13 @@ def fetch_type_id_by_name(item_name):
 
 # API endpoint for retrieving type info by type_id or itemname
 @app.route('/api/iteminfo', methods=['GET'])
-def get_type_info():
+def get_type_info(type_id=0,item_name=None):
     # Get the type_id and itemname from the query parameters
-    type_id = request.args.get('type_id', type=int)
-    item_name = request.args.get('itemname', type=str)
 
+    if type_id == None or type_id==0 :
+        type_id = request.args.get('type_id', type=int)
+    if item_name == None or item_name=="":
+        item_name = request.args.get('itemname', type=str)
     if type_id is None and item_name is None:
         return Response(
             json.dumps({"error": "type_id or itemname is required"}, ensure_ascii=False),

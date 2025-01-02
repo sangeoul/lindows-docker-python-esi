@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS industry_relation (
     input_amount INT NOT NULL,
     industry_type INT NOT NULL,
     recipe_id INT NOT NULL,
-    CONSTRAINT unique_client_service UNIQUE (output_id, input_id, recipe_id)
+    CONSTRAINT unique_recipe UNIQUE (output_id, input_id, recipe_id)
 );
 -- Adding indexes on output_id, input_id, and recipe_id
 CREATE INDEX IF NOT EXISTS idx_output_id ON industry_relation (output_id);
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS user_info (
     alliance_id BIGINT,
     alliance_ticker CHAR(20),
     birthday DATE,
-    registered_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    registered_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     -- Unique constraint on character_id
     CONSTRAINT unique_character_id UNIQUE (character_id),

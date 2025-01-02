@@ -2,9 +2,10 @@ import re
 import psycopg2
 import os
 from flask import Flask, request, render_template,render_template_string, redirect, url_for, flash
-from esi_library import connect_to_db,SELFAPI_URL
+from esi_library import connect_to_db
 from industry_library import get_typeid_by_itemname
 import requests
+from iteminfo import get_type_info
 
 
 # Initialize Flask app
@@ -257,20 +258,6 @@ def process_material_list_input(data):
     return item_names
 
 
-# Function to send a request to the external API for each item
-def send_item_request(item_name):
-    url = f"{SELFAPI_URL}/iteminfo?itemname={item_name}"
-
-
-    print(f"Send \"{item_name}\" to server.",flush=True)
-    try:
-        response = requests.get(url)
-        # Even though we don't need the response, you can log it if needed
-        if response.status_code != 200: 
-            print(f"Failed to get data for {item_name}: {response.status_code}",flush=True)
-    except requests.exceptions.RequestException as e:
-        print(f"Error sending request for {item_name}: {str(e)}",flush=True)
-
 # Route to serve the form page and process input
 @app.route("/input_items", methods=["GET", "POST"])
 def input_item_to_DB():
@@ -288,8 +275,8 @@ def input_item_to_DB():
         
         # Send requests for each item name
         for item_name in item_names:
-            send_item_request(item_name)
-
+            get_type_info(0,item_name)
+            print("Send Item : {item_name}",flush=True)
     # Inline HTML form definition
     form_html = '''
     <!DOCTYPE html>
@@ -412,4 +399,4 @@ def stock_update():
         return render_template_string(html_form)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8010)
