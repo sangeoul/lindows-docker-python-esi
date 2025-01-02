@@ -107,18 +107,18 @@ def process_and_store_data(orders):
                 prices['lowest_sell']['location_id']
 
             ))
-            if prices['highest_buy']:
-                db_data.append((
-                prices['highest_buy']['order_id'],
-                type_id,
-                True,
-                prices['highest_buy']['price'],
-                prices['highest_buy']['volume_remain'],
-                REGION_THE_FORGE,
-                prices['highest_buy']['system_id'],
-                prices['highest_buy']['location_id']
+        if prices['highest_buy']:
+            db_data.append((
+            prices['highest_buy']['order_id'],
+            type_id,
+            True,
+            prices['highest_buy']['price'],
+            prices['highest_buy']['volume_remain'],
+            REGION_THE_FORGE,
+            prices['highest_buy']['system_id'],
+            prices['highest_buy']['location_id']
 
-            ))
+        ))
     print(f"!!DEBUG1 : db_data: {len(db_data)}",flush=True)            
     save_to_db(db_data)
 
