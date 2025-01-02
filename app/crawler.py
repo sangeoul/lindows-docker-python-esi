@@ -12,7 +12,7 @@ import datetime
 
 REGION_THE_FORGE=10000002
 MARKET_BATCH_SIZE=2000
-FETCHING_PAGE_BATCH=50
+FETCHING_PAGE_BATCH=10
 API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
 
 
