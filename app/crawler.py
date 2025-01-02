@@ -23,7 +23,7 @@ def print_with_timestamp(message):
 def fetch_market_data():
 
     all_orders=[]
-    page=360
+    page=330
 
     while True:
         if page%FETCHING_PAGE_BATCH == 0:
@@ -34,7 +34,7 @@ def fetch_market_data():
             print(f"Failed to fetch data for page {page} after retries")
             break
         if response.status_code == 404:
-            print(f"Cannot find page. It may reached the last page, stopping.",flush=True)
+            print(f"Cannot find page. It may reached the last page({page}), stopping.",flush=True)
             break    
         if response.status_code !=200:
             print(f"FAILED TO FETCH DATA : {response.status_code}")
