@@ -19,7 +19,6 @@ def print_with_timestamp(message):
     print(f"[{timestamp}] {message}", flush=True)
 
 def fetch_market_data():
-    all_orders = []
     page = 1
 
     while True:
@@ -51,9 +50,9 @@ def fetch_market_data():
 
         if batch_orders:
             process_and_store_data(batch_orders)
-            #del batch_orders
-            #del data
-            #gc.collect()
+            del batch_orders
+            del data
+            gc.collect()
             #time.sleep(30)
         else:
             break
@@ -61,7 +60,7 @@ def fetch_market_data():
         if response and response.status_code == 404:
             break
 
-    print(f"Fetched {page-1} pages. (1 page = 1000 orders). Checked actual orders: {len(all_orders)}", flush=True)
+    print(f"Fetched {page-1} pages. (1 page = 1000 orders).", flush=True)
     return
 
 def fetch_with_retries(url, retries=6, delay=5, page=0):
