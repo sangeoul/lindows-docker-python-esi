@@ -18,7 +18,7 @@ API_URL = f"https://esi.evetech.net/latest/markets/{REGION_THE_FORGE}/orders/"
 
 def print_with_timestamp(message):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(f"[{timestamp}] {message}")
+    print(f"[{timestamp}] {message}",flush=True)
 
 def fetch_market_data():
 
@@ -144,7 +144,7 @@ def save_to_db(data):
                     print(f"{i+MARKET_BATCH_SIZE} data updated to DB.",flush=True)
                     sys.stdout.flush()
             dbconn.commit()
-        print_with_timestamp(f"Inserted/updated {len(data)} rows in the database.",flush=True)
+        print_with_timestamp(f"Inserted/updated {len(data)} rows in the database.")
     except Exception as e:
         print(f"Error occured: {e}",flush=True)
 
