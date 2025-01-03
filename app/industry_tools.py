@@ -277,6 +277,7 @@ def input_item_to_DB():
         for item_name in item_names:
             get_type_info(0,item_name)
             #print(f"Send Item : {item_name}",flush=True)
+        print(f"Task finished. end of input line.",flush=True)
     # Inline HTML form definition
     form_html = '''
     <!DOCTYPE html>
