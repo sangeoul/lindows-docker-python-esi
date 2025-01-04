@@ -5,7 +5,16 @@ from handle_sso import oauth_redirect, callback  # Import OAuth routes from hand
 from buyback import buyback,buyback_submit,buyback_history
 
 app = Flask(__name__)
-Talisman(app)
+
+# Define your CSP policy
+csp = {
+    'default-src': "'self'",
+    'img-src': ["'self'", "https://images.evetech.net"]
+}
+# Apply Talisman with the CSP policy
+Talisman(app,content_security_policy=csp)
+
+
 
 app.secret_key = os.environ.get('SECRET_KEY')
 
