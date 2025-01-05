@@ -210,7 +210,7 @@ def buyback():
         data = request.get_json()
 
         character_id=is_logged_in()
-
+        character_name=""
         if character_id:
             character_name=get_charactername_by_characterid(character_id)
         else:
