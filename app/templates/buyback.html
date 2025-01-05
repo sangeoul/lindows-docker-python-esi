@@ -13,12 +13,14 @@
         <h1>Buyback Calculator</h1>
 
         <!-- Character Info -->
+
+        <div id="characterInfo">
         {% if character_id == 0 %}
             <a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a>
         {% else %}
             <p>{{ character_name }}</p>
         {% endif %}
-        
+        </div>
         <!-- Input Form -->
         <form id="inputForm" class="form-container">
             <label for="language">Input language:</label>
