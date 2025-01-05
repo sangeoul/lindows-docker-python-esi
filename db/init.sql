@@ -83,9 +83,12 @@ CREATE TABLE IF NOT EXISTS buyback_contract_log (
     price_rate DECIMAL(10,8) NOT NULL,
     is_input BOOLEAN NOT NULL DEFAULT TRUE,
     registered_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_completed BOOLEAN NOT NULL DEFAULT FALSE
+    is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT unique_buyback_contract_history UNIQUE (contract_id, type_id,is_input);
 
 );
+-- Adding indexes on output_id, input_id, and recipe_id
+CREATE INDEX IF NOT EXISTS idx_contract_id ON buyback_contract_log (contract_id);
 
 -- OAuth Client Table Creation
 CREATE TABLE IF NOT EXISTS sso_client (
@@ -99,9 +102,6 @@ CREATE TABLE IF NOT EXISTS sso_client (
     -- Unique constraint on client_service
     CONSTRAINT unique_client_service UNIQUE (client_service)
 );
--- Adding indexes for faster lookup on client_id and client_service
-CREATE INDEX IF NOT EXISTS idx_client_id ON sso_client (client_id);
-CREATE INDEX IF NOT EXISTS idx_client_service ON sso_client (client_service);
 
 
 
@@ -124,10 +124,6 @@ CREATE TABLE IF NOT EXISTS user_info (
     -- Unique constraint on character_name
     CONSTRAINT unique_character_name UNIQUE (character_name)
 );
--- Adding index for character_id and character_name for faster lookup
-CREATE INDEX IF NOT EXISTS idx_character_id ON user_info (character_id);
-CREATE INDEX IF NOT EXISTS idx_character_name ON user_info (character_name);
-
 
 
 -- User OAuth Table Creation

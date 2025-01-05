@@ -106,9 +106,15 @@ def refresh_access_token(character_id, service_type):
         print(f"Response Text: {response.text}")
         raise Exception(f"Error refreshing token: {response.status_code}, {response.text}")
 
-def is_logged_in():
+def is_logged_in(_cid=0):
     if 'login_character_id' in session:
-        return session['login_character_id']
+        if _cid==0:
+            return session['login_character_id']
+        else:
+            if _cid==session['login_character_id']:
+                return True
+            else:
+                return False
     else:
         return False
     

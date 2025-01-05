@@ -2,7 +2,7 @@ import re
 import psycopg2
 import os
 from flask import Flask, request, render_template,render_template_string, redirect, url_for, flash
-from esi_library import connect_to_db
+from esi_library import connect_to_db,is_logged_in
 from industry_library import get_typeid_by_itemname
 import requests
 from iteminfo import get_type_info
@@ -15,6 +15,8 @@ app.secret_key = os.urandom(24)  # Required for session management and flashing 
 # Industry type constant
 INDUSTRY_REPROCESSING = 1
 INDUSTRY_MANUFACTURING = 2  # Manufacturing industry type
+
+ADMIN_UID=92371624
 
 
 def storeToDB(records):
@@ -38,7 +40,10 @@ def storeToDB(records):
     conn.close()
 
 def parsingReprocessing(input_text):
+
     """Parse input text specific to the Reprocessing industry type."""
+
+    
     lines = input_text.strip().split("\n")
     
     # Extract input information
@@ -154,6 +159,9 @@ def parsingManufacturing(input_text):
 
 @app.route("/register_industry", methods=["GET", "POST"])
 def register_industry():
+
+    if not is_logged_in(ADMIN_UID):
+        return
     """Handle both GET and POST requests on the same endpoint."""
     if request.method == "POST":
         # Get the input text and industry type from the form
@@ -261,6 +269,10 @@ def process_material_list_input(data):
 # Route to serve the form page and process input
 @app.route("/input_items", methods=["GET", "POST"])
 def input_item_to_DB():
+
+    if not is_logged_in(ADMIN_UID):
+        return
+    
     item_names = []  # Initialize an empty list to store item names
     
     if request.method == "POST":
@@ -334,6 +346,10 @@ def input_item_to_DB():
 
 @app.route("/stock_update", methods=["GET", "POST"])
 def stock_update():
+
+    if not is_logged_in(ADMIN_UID):
+        return
+    
     if request.method == "POST":
         # Get the input data from the form
         input_data = request.form['input_data']
