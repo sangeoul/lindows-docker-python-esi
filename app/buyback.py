@@ -541,7 +541,7 @@ def buyback_history():
     if contract_number:
         data = get_buyback_history(contract_number)
     else:
-        data = {"contract_id": 0 ,"character_id": 0, "character_name" : "", "is_completed": False ,"input_results": [], "output_results": []}
+        data = {"contract_id": 0 ,"character_id": 0, "character_name" : "", "is_completed": False ,"admin": False,"input_results": [], "output_results": []}
     
     return render_template('buyback_history.html', contract_number=contract_number, data=data)
 
@@ -584,7 +584,12 @@ def get_buyback_history(contract_number):
     cursor.close()
     conn.close()
 
-    return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"input_results": input_data, "output_results": output_data}
+    is_admin=False
+    
+    if is_logged_in(ADMIN_ID):
+        is_admin=True
+
+    return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"admin": is_admin,"input_results": input_data, "output_results": output_data}
 
 
 
