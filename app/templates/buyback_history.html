@@ -20,10 +20,13 @@
 
         <!-- Results Section -->
         <div id="resultSection" class="result-section">
-            {% if character_id>0 %}
-                <p>Contract from {{character_name}}</a></p>
+            {% if data.character_id>0 %}
+                <p>Contract from {{data.character_name}}</p>
+            {% endif %}
+            {% if data.is_completed %}
+                <p class="accepted-message">Accepted.</p>
             {% else %}
-                <p>{{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
+                <p class="pending-message">Pending.</p>
             {% endif %}
             {% if contract_number %}
             <!-- Tab Navigation -->

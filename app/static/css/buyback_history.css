@@ -29,6 +29,16 @@
     display: block; /* Show the active tab content */
 }
 
+p.accepted-message{
+    font-weight: bold;
+    color: green;
+}
+
+p.pending-message{
+    font-weight: bold;
+    color: orange;
+}
+
 /* Optional: Style for Table */
 table {
     width: 100%;

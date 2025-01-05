@@ -541,7 +541,7 @@ def buyback_history():
     if contract_number:
         data = get_buyback_history(contract_number)
     else:
-        data = {"input_results": [], "output_results": []}
+        data = {"contract_id": 0 ,"character_id": 0, "character_name" : "", "is_completed": False ,"input_results": [], "output_results": []}
     
     return render_template('buyback_history.html', contract_number=contract_number, data=data)
 
