@@ -24,14 +24,6 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.characterInfo{
-
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 10px;
-    
-}
-
 label {
     display: block;
     margin: 5px 0; /* Reduced margin */

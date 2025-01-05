@@ -14,15 +14,14 @@
 
         <!-- Character Info -->
 
-        <div id="characterInfo">
-        {% if character_id == 0 %}
-            <a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a>
-        {% else %}
-            <p>{{ character_name }}</p>
-        {% endif %}
-        </div>
+
         <!-- Input Form -->
         <form id="inputForm" class="form-container">
+            {% if character_id == 0 %}
+                <a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a>
+            {% else %}
+                <p>{{ character_name }}</p>
+            {% endif %}
             <label for="language">Input language:</label>
             <select id="language" name="language">
                 <option value="en" selected>En</option>
