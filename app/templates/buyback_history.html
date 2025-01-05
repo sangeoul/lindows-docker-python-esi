@@ -106,7 +106,7 @@
 
             {% endif %}
         </div>
-        {% if data.admin %}
+        {% if data.admin and not data.is_completed %}
             <p><a href="{{url_for('accept_buyback',contract_id=data.contract_id)}}">Accept</a></p>
         {% endif %}
     </div>
