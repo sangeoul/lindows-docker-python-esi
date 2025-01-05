@@ -209,12 +209,7 @@ def buyback():
         
         data = request.get_json()
 
-        character_id=is_logged_in()
-        character_name=""
-        if character_id:
-            character_name=get_charactername_by_characterid(character_id)
-        else:
-            character_name=""
+
         
         input_items = data.get("input_items")
         language = data.get("language")
@@ -261,7 +256,13 @@ def buyback():
             'icons': icons,
             'output_results': output_results
         })
-
+    
+    character_id=is_logged_in()
+    
+    if character_id:
+        character_name=get_charactername_by_characterid(character_id)
+    else:
+        character_name=""
     return render_template("buyback.html", results=None,character_id=character_id,character_name=character_name)
 
 
