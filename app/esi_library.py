@@ -3,7 +3,7 @@ import os
 import psycopg2
 from datetime import datetime, timedelta
 import base64
-from flask import request, session
+from flask import redirect,url_for,request, session
 
 # Database Configuration (use your database credentials)
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -128,6 +128,8 @@ def login(_cid,logging=True):
     if logging:
         logip(_cid)
     return 0
+
+
 
 def logip(character_id):
 
