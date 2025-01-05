@@ -107,7 +107,7 @@
             {% endif %}
         </div>
         {% if data.admin %}
-            <p><a href="{{url_for('accept_buyback')}}?contract_id={{data.contract_id}}">Accept</a></p>
+            <p><a href="{{url_for('accept_buyback',contract_id=data.contract_id)}}">Accept</a></p>
         {% endif %}
     </div>
     <script src="{{ url_for('static', filename='js/buyback_history.js') }}" defer></script>  
