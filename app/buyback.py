@@ -212,7 +212,7 @@ def buyback():
         character_id=is_logged_in()
 
         if character_id:
-            characater_name=get_charactername_by_characterid(character_id)
+            character_name=get_charactername_by_characterid(character_id)
         else:
             character_name=""
         
