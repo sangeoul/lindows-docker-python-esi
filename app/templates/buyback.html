@@ -11,6 +11,13 @@
 <body>
     <div class="container">
         <h1>Buyback Calculator</h1>
+
+        <!-- Character Info -->
+        {% if character_id == 0 %}
+            <a href="{{ url_for('login') }}">You can login with Eve online ESI</a>
+        {% else %}
+            <p>{{ character_name }}</p>
+        {% endif %}
         
         <!-- Input Form -->
         <form id="inputForm" class="form-container">
@@ -29,16 +36,13 @@
         <!-- Results Section -->
         <div id="resultSection" class="result-section">
             <!-- Results will be dynamically inserted here -->
-        
-            
-
         </div>
+
         <!-- Submit Button (Initially hidden) -->
-        <div id="submitSection" class="submit-section" > 
+        <div id="submitSection" class="submit-section"> 
             <button type="button" id="submitButton" class="btn">Submit</button>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/buyback.js') }}" defer></script>  
-    
 </body>
 </html>

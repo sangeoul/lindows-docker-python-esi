@@ -4,7 +4,7 @@ import psycopg2
 import math
 import json
 from flask import Flask,jsonify, render_template,redirect, request
-from esi_library import connect_to_db, get_access_token
+from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid
 from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
 
 # Define the main structure for Buyback Items
@@ -208,6 +208,13 @@ def buyback():
     if request.method == "POST":
         
         data = request.get_json()
+
+        character_id=is_logged_in()
+
+        if character_id:
+            characater_name=get_charactername_by_characterid(character_id)
+        else:
+            character_name=""
         
         input_items = data.get("input_items")
         language = data.get("language")
@@ -255,7 +262,7 @@ def buyback():
             'output_results': output_results
         })
 
-    return render_template("buyback.html", results=None)
+    return render_template("buyback.html", results=None,character_id=character_id,character_name=character_name)
 
 
 def buyback_calculate(parsed_items, language='en'):
@@ -538,7 +545,7 @@ def get_buyback_history(contract_number):
     
     # Query to get input and output records based on the contract_number
     query = """
-    SELECT contract_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input
+    SELECT contract_id, character_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input , is_completed
     FROM buyback_contract_log
     WHERE contract_id = %s
     ORDER BY registered_timestamp;
@@ -551,10 +558,9 @@ def get_buyback_history(contract_number):
     output_data = []
     
     for row in result:
-        contract_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input = row
+        contract_id, character_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input , is_completed= row
         icon_url = get_icon_by_typeid(type_id)  # Fetching icon URL for each item
         data = {
-            "character_name": character_name,
             "type_id": type_id,
             "name_en": name_en,
             "amount": amount,
@@ -571,7 +577,7 @@ def get_buyback_history(contract_number):
     cursor.close()
     conn.close()
 
-    return {"input_results": input_data, "output_results": output_data}
+    return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"input_results": input_data, "output_results": output_data}
 
 
 

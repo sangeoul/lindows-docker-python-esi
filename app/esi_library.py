@@ -116,7 +116,7 @@ def is_logged_in(_cid=0):
             else:
                 return False
     else:
-        return False
+        return 0
     
 def login(_cid,logging=True):
     session['login_character_id']=_cid
