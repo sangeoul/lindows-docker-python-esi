@@ -802,9 +802,9 @@ def show_contracts_list():
     cursor = conn.cursor()
     
     query = """
-    SELECT contract_id, character_name, registered_timestamp, is_completed
+    SELECT DISTINCT ON (contract_id) contract_id, character_name, registered_timestamp, is_completed
     FROM buyback_contract_log
-    ORDER BY registered_timestamp DESC
+    ORDER BY contract_id DESC
     LIMIT %s OFFSET %s
     """
     
@@ -815,5 +815,3 @@ def show_contracts_list():
     conn.close()
     
     return render_template('buyback_list.html', contracts=contracts, page=page)
-
-
