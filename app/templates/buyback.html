@@ -14,7 +14,7 @@
 
         <!-- Character Info -->
         {% if character_id == 0 %}
-            <a href="{{ url_for('login') }}">You can login with Eve online ESI</a>
+            <a href="{{ url_for('/login') }}">You can login with Eve online ESI</a>
         {% else %}
             <p>{{ character_name }}</p>
         {% endif %}
