@@ -23,7 +23,7 @@
                 <tr>
                     <td><a href="{{ url_for('buyback_history', contract_number=contract[0]) }}">{{ contract[0] }}</a></td>
                     <td><a href="{{ url_for('buyback_history', contract_number=contract[0]) }}">{{ contract[1] }}</a></td>
-                    <td>{{ contract[2] }}</td>
+                    <td><a href="{{ url_for('buyback_history', contract_number=contract[0]) }}">{{ contract[2] }}</a></td>
                     <td>{{ 'Yes' if contract[3] else 'No' }}</td>
                 </tr>
                 {% endfor %}
