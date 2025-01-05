@@ -3,8 +3,8 @@ import os
 import psycopg2
 import math
 import json
-from flask import Flask,jsonify, render_template,redirect, request
-from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid
+from flask import Flask,jsonify, render_template,render_template_string,redirect, request
+from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
 from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
 
 # Define the main structure for Buyback Items
@@ -322,6 +322,12 @@ def buyback_calculate(parsed_items, language='en'):
 def buyback_submit():
     # Step 1: Extract the form data (input_items, output_items, and language)
     language = request.form.get('language', 'en')  # Default to 'en' if not provided
+
+    character_id=is_logged_in()
+    if character_id:
+        character_name=get_charactername_by_characterid(character_id)
+    else:
+        character_name=""
     
     # Step 2: Initialize empty lists to store input_items and output_items
     input_items = []
@@ -405,8 +411,8 @@ def buyback_submit():
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     new_contract_id,
-                    0,  # Default value for charcater_id
-                    "",  # Default empty character_name
+                    character_id,  # Default character_id=0
+                    character_name,  # Default character_name = ""
                     type_id,
                     input['item_name'],
                     amount,
@@ -729,3 +735,41 @@ def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_
             +MINIMUM_BUYBACK_RATE*2*(current_stock_amount+output_amount-max_amount)\
 
     return weighted_rate/(2*output_amount)
+
+def accept_buyback():
+    if not is_logged_in(ADMIN_ID):
+        return render_template_string('''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Alert Page</title>
+            </head>
+            <body>
+                <h1>Alert Example</h1>
+                <script type="text/javascript">
+                    alert("No permission.");
+                </script>
+            </body>
+            </html>
+        ''')
+    else:
+        contract_id = request.args.get("contract_id")
+        
+        # Update the DB table to set is_completed=True where contract_id=contract_id
+        conn = connect_to_db()
+        cursor = conn.cursor()
+        update_query = """
+        UPDATE buyback_contract_log
+        SET is_completed = TRUE
+        WHERE contract_id = %s
+        """
+        cursor.execute(update_query, (contract_id,))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        
+        return "Buyback accepted and updated."
+

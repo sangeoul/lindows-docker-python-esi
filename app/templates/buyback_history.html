@@ -20,6 +20,11 @@
 
         <!-- Results Section -->
         <div id="resultSection" class="result-section">
+            {% if character_id>0 %}
+                <p>Contract from {{character_name}}</a></p>
+            {% else %}
+                <p>{{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
+            {% endif %}
             {% if contract_number %}
             <!-- Tab Navigation -->
             <div class="tab-links">

@@ -16,6 +16,8 @@ SELFAPI_URL="http://host.docker.internal:8009/api"
 ESI_TOKEN_ENDPOINT = "https://login.eveonline.com/v2/oauth/token"
 ESI_AUTHORIZATION_ENDPOINT = "https://login.eveonline.com/v2/oauth/authorize"
 
+ADMIN_ID=92371624
+
 def connect_to_db():
     """Create a connection to the database."""
     return psycopg2.connect(

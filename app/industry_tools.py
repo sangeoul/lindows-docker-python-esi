@@ -2,7 +2,7 @@ import re
 import psycopg2
 import os
 from flask import Flask, request, render_template,render_template_string, redirect, url_for, flash
-from esi_library import connect_to_db,is_logged_in
+from esi_library import connect_to_db,is_logged_in,ADMIN_ID
 from industry_library import get_typeid_by_itemname
 import requests
 from iteminfo import get_type_info
@@ -16,7 +16,7 @@ app.secret_key = os.urandom(24)  # Required for session management and flashing 
 INDUSTRY_REPROCESSING = 1
 INDUSTRY_MANUFACTURING = 2  # Manufacturing industry type
 
-ADMIN_UID=92371624
+
 
 
 def storeToDB(records):
@@ -160,7 +160,7 @@ def parsingManufacturing(input_text):
 @app.route("/register_industry", methods=["GET", "POST"])
 def register_industry():
 
-    if not is_logged_in(ADMIN_UID):
+    if not is_logged_in():
         return
     """Handle both GET and POST requests on the same endpoint."""
     if request.method == "POST":
@@ -270,7 +270,7 @@ def process_material_list_input(data):
 @app.route("/input_items", methods=["GET", "POST"])
 def input_item_to_DB():
 
-    if not is_logged_in(ADMIN_UID):
+    if not is_logged_in(ADMIN_ID):
         return
     
     item_names = []  # Initialize an empty list to store item names
@@ -347,7 +347,7 @@ def input_item_to_DB():
 @app.route("/stock_update", methods=["GET", "POST"])
 def stock_update():
 
-    if not is_logged_in(ADMIN_UID):
+    if not is_logged_in(ADMIN_ID):
         return
     
     if request.method == "POST":

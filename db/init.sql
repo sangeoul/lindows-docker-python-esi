@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS industry_stock (
 -- Buyback contract record
 CREATE TABLE IF NOT EXISTS buyback_contract_log (
     contract_id INT NOT NULL,
-    charcater_id BIGINT NOT NULL,
+    character_id BIGINT NOT NULL,
     character_name VARCHAR(255) NOT NULL,
     type_id INT NOT NULL,
     name_en TEXT,
