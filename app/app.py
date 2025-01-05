@@ -2,7 +2,7 @@ import os
 from flask import Flask , render_template, redirect, url_for, session
 from flask_talisman import Talisman
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
-from buyback import buyback,buyback_submit,buyback_history,accept_buyback
+from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list
 
 app = Flask(__name__)
 
@@ -40,6 +40,7 @@ app.add_url_rule('/industry/buyback', 'buyback', buyback, methods=["GET","POST"]
 app.add_url_rule('/industry/buyback_submit', 'buyback_submit', buyback_submit, methods=["GET","POST"])
 app.add_url_rule('/industry/buyback_history', 'buyback_history', buyback_history, methods=["GET"])
 app.add_url_rule('/industry/accept_buyback', 'accept_buyback', accept_buyback, methods=["GET"])
+app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, methods=["GET"])
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8001)

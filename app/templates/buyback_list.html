@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buyback_list.css') }}">
+    <title>Contract List</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Contract List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Contract ID</th>
+                    <th>Character Name</th>
+                    <th>Registered Timestamp</th>
+                    <th>Is Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contract in contracts %}
+                <tr>
+                    <td>{{ contract[0] }}</td>
+                    <td>{{ contract[1] }}</td>
+                    <td>{{ contract[2] }}</td>
+                    <td>{{ 'Yes' if contract[3] else 'No' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('show_contracts', page=page-1) }}">&laquo; Previous</a>
+            {% endif %}
+            <a href="{{ url_for('show_contracts', page=page) }}" class="active">{{ page }}</a>
+            <a href="{{ url_for('show_contracts', page=page+1) }}">Next &raquo;</a>
+        </div>
+    </div>
+</body>
+</html>

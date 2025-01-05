@@ -20,7 +20,7 @@
             {% if character_id == 0 %}
                 <p><a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a></p>
             {% else %}
-                <p>{{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
+                <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
             {% endif %}
             <label for="language">Input language:</label>
             <select id="language" name="language">

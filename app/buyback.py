@@ -585,7 +585,7 @@ def get_buyback_history(contract_number):
     conn.close()
 
     is_admin=False
-    
+
     if is_logged_in(ADMIN_ID):
         is_admin=True
 
@@ -777,4 +777,43 @@ def accept_buyback():
         conn.close()
         
         return "Buyback accepted and updated."
+
+def show_contracts_list():
+
+    if not is_logged_in(ADMIN_ID):
+        return render_template_string('''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Alert Page</title>
+            </head>
+            <body>
+                <h1>No permission.</h1>
+            </body>
+            </html>
+        ''')
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+    offset = (page - 1) * per_page
+    
+    conn = connect_to_db()
+    cursor = conn.cursor()
+    
+    query = """
+    SELECT contract_id, character_name, registered_timestamp, is_completed
+    FROM buyback_contract_log
+    ORDER BY registered_timestamp DESC
+    LIMIT %s OFFSET %s
+    """
+    
+    cursor.execute(query, (per_page, offset))
+    contracts = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return render_template('contracts_list.html', contracts=contracts, page=page)
+
 
