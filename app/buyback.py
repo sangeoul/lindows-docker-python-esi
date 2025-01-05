@@ -802,7 +802,7 @@ def show_contracts_list():
     cursor = conn.cursor()
     
     query = """
-    SELECT DISTINCT ON (contract_id) contract_id, character_name, registered_timestamp, is_completed
+    SELECT DISTINCT ON (contract_id) contract_id, character_name, to_char(registered_timestamp, 'YYYY-MM-DD HH24:MI:SS') AS registered_timestamp, is_completed
     FROM buyback_contract_log
     ORDER BY contract_id DESC
     LIMIT %s OFFSET %s
