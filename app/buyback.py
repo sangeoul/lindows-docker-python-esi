@@ -814,6 +814,6 @@ def show_contracts_list():
     cursor.close()
     conn.close()
     
-    return render_template('contracts_list.html', contracts=contracts, page=page)
+    return render_template('buyback_list.html', contracts=contracts, page=page)
 
 
