@@ -342,9 +342,8 @@ def input_item_to_DB():
 
 # Buyback stock management tool.
 
-@app.route("/stock_update", methods=["GET", "POST"])
+#@app.route("/stock_update", methods=["GET", "POST"])
 def stock_update():
-
     if not is_logged_in(ADMIN_ID):
         return
     
@@ -355,8 +354,7 @@ def stock_update():
         # Split the input data by new lines
         lines = input_data.splitlines()
 
-        conn = connect_to_db()
-        cursor = conn.cursor()
+        item_amounts = {}
 
         # Loop through each line and process it
         for line in lines:
@@ -371,6 +369,16 @@ def stock_update():
             except ValueError:
                 continue  # If amount is invalid, skip this line
 
+            if item_name in item_amounts:
+                item_amounts[item_name] += amount
+            else:
+                item_amounts[item_name] = amount
+
+        conn = connect_to_db()
+        cursor = conn.cursor()
+
+        # Loop through the item_amounts dictionary to insert or update the records
+        for item_name, total_amount in item_amounts.items():
             # Get type_id using the get_typeid_by_itemname function
             type_id = get_typeid_by_itemname(item_name)
             if not type_id:
@@ -382,9 +390,9 @@ def stock_update():
                 VALUES (%s, %s, %s)
                 ON CONFLICT (type_id) 
                 DO UPDATE SET 
-                    amount = EXCLUDED.amount, 
+                    amount = industry_stock.amount + EXCLUDED.amount, 
                     name_en = EXCLUDED.name_en
-            """, (type_id, amount, item_name))
+            """, (type_id, total_amount, item_name))
 
         # Commit the changes to the database
         conn.commit()
@@ -412,6 +420,7 @@ def stock_update():
             </html>
         """
         return render_template_string(html_form)
+
 
 #if __name__ == "__main__":
 #    app.run(host="0.0.0.0", port=8010)
