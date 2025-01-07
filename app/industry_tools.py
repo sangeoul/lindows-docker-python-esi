@@ -390,7 +390,7 @@ def stock_update():
                 VALUES (%s, %s, %s)
                 ON CONFLICT (type_id) 
                 DO UPDATE SET 
-                    amount = industry_stock.amount + EXCLUDED.amount, 
+                    amount = EXCLUDED.amount, 
                     name_en = EXCLUDED.name_en
             """, (type_id, total_amount, item_name))
 
