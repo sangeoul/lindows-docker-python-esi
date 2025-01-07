@@ -4,6 +4,8 @@ from flask_talisman import Talisman
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
 from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list
 
+from industry_tools import register_industry, input_item_to_DB, stock_update
+
 app = Flask(__name__)
 
 # Define your CSP policy
@@ -41,6 +43,11 @@ app.add_url_rule('/industry/buyback_submit', 'buyback_submit', buyback_submit, m
 app.add_url_rule('/industry/buyback_history', 'buyback_history', buyback_history, methods=["GET"])
 app.add_url_rule('/industry/accept_buyback', 'accept_buyback', accept_buyback, methods=["GET"])
 app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, methods=["GET"])
+
+
+app.add_url_rule('/register_industry', 'register_industry', register_industry, methods=["GET", "POST"])
+app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
+app.add_url_rule('/stock_update', 'stock_update', stock_update,methods=["GET", "POST"])
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8001)

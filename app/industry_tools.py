@@ -17,22 +17,6 @@ INDUSTRY_REPROCESSING = 1
 INDUSTRY_MANUFACTURING = 2  # Manufacturing industry type
 
 
-
-@app.route('/login')
-def login_page():
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session['login_character_id']=0
-
-    return redirect(url_for('login'))
-
-# Use the imported routes from handle_sso.py
-app.add_url_rule('/oauth_redirect', 'oauth_redirect', oauth_redirect, methods=['POST'])
-app.add_url_rule('/callback', 'callback', callback, methods=['GET'])
-
-
 def storeToDB(records):
     """Store parsed records in the database."""
     conn = connect_to_db()
@@ -429,5 +413,5 @@ def stock_update():
         """
         return render_template_string(html_form)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8010)
+#if __name__ == "__main__":
+#    app.run(host="0.0.0.0", port=8010)
