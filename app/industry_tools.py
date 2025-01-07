@@ -359,7 +359,7 @@ def stock_update():
         # Loop through each line and process it
         for line in lines:
             columns = line.split('\t')
-            if len(columns) < 7:  # Ensure the line has enough columns
+            if len(columns) < 2:  # Ensure the line has enough columns
                 continue
 
             item_name = columns[0]
