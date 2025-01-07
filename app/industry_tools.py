@@ -1,12 +1,12 @@
 import re
 import psycopg2
 import os
-from flask import Flask, request, render_template,render_template_string, redirect, url_for, flash
+from flask import Flask,render_template,render_template_string, redirect, url_for, session,request
 from esi_library import connect_to_db,is_logged_in,ADMIN_ID
 from industry_library import get_typeid_by_itemname
 import requests
 from iteminfo import get_type_info
-
+from handle_sso import oauth_redirect, callback
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -17,6 +17,20 @@ INDUSTRY_REPROCESSING = 1
 INDUSTRY_MANUFACTURING = 2  # Manufacturing industry type
 
 
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session['login_character_id']=0
+
+    return redirect(url_for('login'))
+
+# Use the imported routes from handle_sso.py
+app.add_url_rule('/oauth_redirect', 'oauth_redirect', oauth_redirect, methods=['POST'])
+app.add_url_rule('/callback', 'callback', callback, methods=['GET'])
 
 
 def storeToDB(records):
@@ -270,8 +284,8 @@ def process_material_list_input(data):
 @app.route("/input_items", methods=["GET", "POST"])
 def input_item_to_DB():
 
-    if not is_logged_in(ADMIN_ID):
-        return "No Permission"
+    #if not is_logged_in(ADMIN_ID):
+    #    return "No Permission"
     
     item_names = []  # Initialize an empty list to store item names
     
