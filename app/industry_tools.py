@@ -271,7 +271,7 @@ def process_material_list_input(data):
 def input_item_to_DB():
 
     if not is_logged_in(ADMIN_ID):
-        return
+        return "No Permission"
     
     item_names = []  # Initialize an empty list to store item names
     
