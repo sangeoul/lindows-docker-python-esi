@@ -471,7 +471,7 @@ def buyback_submit():
                 <p>Your buyback number is <h2>{new_contract_id}</h2></p>
                 <p>The contract should be offered to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a></p>
                 <p>The contract should be offered at between <font class="eve-link">FR46-E</font> ~ <font>O3-4MN</font></p>
-                <a href="/industry/buyback-history?contract_number={new_contract_id}">Go to Check Buyback</a>
+                <a href="/industry/buyback_history?contract_number={new_contract_id}">Go to Check Buyback</a>
             </body>
             </html>
             """
