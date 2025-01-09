@@ -18,11 +18,11 @@
         <!-- Input Form -->
         <form id="inputForm" class="form-container">
             {% if character_id == 0 %}
-                <p><a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a>
+                <p><a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a></p>
             {% else %}
-                <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a>
+                <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
             {% endif %}
-             <a href='open_notice_popup()'>Detailed Information(상세 설명)</a>
+            <p><a href='javascript:open_notice_popup()'>Detailed Information(상세 설명)</a></p>
             </p>
             <p>Buyback contract to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a>, at between <font class="eve-link">FR46-E</font> ~ <font class="eve-link">O3-4MN</font></p>
 
