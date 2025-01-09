@@ -820,6 +820,7 @@ def show_contracts_list():
     return render_template('buyback_list.html', contracts=contracts, page=page)
 
 
-def buyback_notice(language='en'):
+def buyback_notice():
 
+    language= request.args.get('language','en')
     return render_template('buyback_notice.html', language=language)
