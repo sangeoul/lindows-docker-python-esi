@@ -128,42 +128,55 @@ def save_to_db(data):
         ON CONFLICT (type_id, is_buy_order)
         DO UPDATE SET
             price = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN 
+                    EXCLUDED.price
                 WHEN market_price.is_buy_order THEN 
                     GREATEST(market_price.price, EXCLUDED.price)
                 ELSE 
                     LEAST(market_price.price, EXCLUDED.price)
                 END,
             volume_remain = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN
+                    EXCLUDED.volume_remain
                 WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
                     OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
                 THEN EXCLUDED.volume_remain
                 ELSE market_price.volume_remain
                 END,
             region_id = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN
+                    EXCLUDED.region_id
                 WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
                     OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
                 THEN EXCLUDED.region_id
                 ELSE market_price.region_id
                 END,
             system_id = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN
+                    EXCLUDED.system_id
                 WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
                     OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
                 THEN EXCLUDED.system_id
                 ELSE market_price.system_id
                 END,
             location_id = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN
+                    EXCLUDED.location_id
                 WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
                     OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
                 THEN EXCLUDED.location_id
                 ELSE market_price.location_id
                 END,
             updated = CASE
+                WHEN market_price.updated < (CURRENT_TIMESTAMP - INTERVAL '1 hour') THEN
+                    CURRENT_TIMESTAMP
                 WHEN (market_price.is_buy_order AND EXCLUDED.price > market_price.price)
                     OR (NOT market_price.is_buy_order AND EXCLUDED.price < market_price.price)
                 THEN CURRENT_TIMESTAMP
                 ELSE market_price.updated
                 END;
     """
+
     try:
         with connect_to_db() as dbconn:
             with dbconn.cursor() as cursor:
