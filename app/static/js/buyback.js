@@ -211,6 +211,6 @@ document.getElementById("submitButton").addEventListener("click", function() {
 
 function open_notice_popup(){
     
-    window.open('/buyback_notice', 'popupWindow', 'width=600,height=400,scrollbars=yes');
+    window.open('/buyback_notice?language=ko', 'popupWindow', 'width=600,height=400,scrollbars=yes');
 
 }
