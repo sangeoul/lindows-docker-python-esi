@@ -22,7 +22,7 @@
             {% else %}
                 <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
             {% endif %}
-            <p><a href='/buyback_notice' target="_blank">Detailed Information(상세 설명)</a></p>
+            <p><a href="{{ url_for('buyback_notice') }}" target="_blank">Detailed Information(상세 설명)</a></p>
             </p>
             <p>Buyback contract to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a>, at between <font class="eve-link">FR46-E</font> ~ <font class="eve-link">O3-4MN</font></p>
 
