@@ -1,6 +1,7 @@
 import os
 from flask import Flask , render_template, redirect, url_for, session
 from flask_talisman import Talisman
+from datetime import timedelta
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
 from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list
 
@@ -16,9 +17,12 @@ csp = {
 # Apply Talisman with the CSP policy
 Talisman(app,content_security_policy=csp)
 
-
-
 app.secret_key = os.environ.get('SECRET_KEY')
+
+
+# Session time setting.
+app.config['SESSION_PERMANENT'] = True 
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 
 # You can add other routes here if needed
 

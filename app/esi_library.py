@@ -121,6 +121,8 @@ def is_logged_in(_cid=0):
         return 0
     
 def login(_cid,logging=True):
+
+
     session['login_character_id']=_cid
 
     update_user_info(_cid)
