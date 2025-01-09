@@ -24,6 +24,12 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+a.character-name{
+
+    font-weight: bold;
+    color:rgba(217, 141, 0, 1);
+}
+
 label {
     display: block;
     margin: 5px 0; /* Reduced margin */
