@@ -1,29 +1,28 @@
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        padding: 8px;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-    th {
-        background-color: #f4f4f4;
-    }
-    .pagination {
-        margin-top: 20px;
-    }
-    .pagination a {
-        margin: 0 5px;
-        text-decoration: none;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        color: #333;
-    }
-    .pagination a.active {
-        background-color: #f4f4f4;
-        color: #333;
-        border: 1px solid #666;
-    }
-</style>
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+th {
+    background-color: #f4f4f4;
+}
+.pagination {
+    margin-top: 20px;
+}
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+.pagination a.active {
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #666;
+}
