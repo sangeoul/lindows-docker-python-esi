@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice</title>
+</head>
+<body>
+    {% if language=='en' %}
+    <h1>Buyback notice</h1>
+    <ul>
+        <li>Copy&paste from inventory or asset windows.</li>
+        <li>If there is no unavailable item after calculation, you can submit a buyback form.</li>
+        <li>Make contract that follwing buyback calcluation result to <b>Ubuntu Hakurei</b> after submit buyback.</li>
+        <li>The buyback price is based on Jita buy price and buyback price rate. You can check buyback rate at calculation result page.</li>
+        <li>The buyback rate of few items like ores changes dinamically to manage supply and demand. Feel free to "Cherrypicking" the price and sell items at high price. And I recommand it.</li>
+    </ul>
+    {% elif language=='ko' %}
+    <h1>바이백에 관해</h1>
+    <ul>
+        <li>인벤토리 혹은 에셋 창에서 복사 붙여넣기로 이용가능.</li>
+        <li>계산 결과 모든 아이템이 유효하면 바이백을 신청할 수 있습니다.</li>
+        <li>바이백 신청 후 <b>Ubuntu Hakurei</b> 캐릭터로 컨트랙을 걸어 주세요.</li>
+        <li>바이백 가격은 지타 바이가를 기반으로 바이백 비율을 따릅니다. 바이백 비율은 계산 결과 창에서 확인할 수 있습니다.</li>
+        <li>광물 등 몇몇 바이백 아이템들의 가격은 수요 공급 조절을 위해 동적으로 변화합니다. 비싼 가격을 받을 수 있는 원하는 물건만 판매하는 것은 자유이며 재고 관리가 용이해지므로 오히려 권장합니다.</li>
+    </ul>
+    {% endif %}
+
+</body>
+</html>
