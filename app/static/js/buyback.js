@@ -207,3 +207,10 @@ document.getElementById("submitButton").addEventListener("click", function() {
     document.body.appendChild(form);
     form.submit();
 });
+
+
+function open_notice_popup(){
+    
+    window.open('/buyback_notice', 'popupWindow', 'width=600,height=400,scrollbars=yes');
+
+}
