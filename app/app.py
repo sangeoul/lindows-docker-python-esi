@@ -3,7 +3,7 @@ from flask import Flask , render_template, redirect, url_for, session
 from flask_talisman import Talisman
 from datetime import timedelta
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
-from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list
+from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list,buyback_notice
 
 from industry_tools import register_industry, input_item_to_DB, stock_update
 
@@ -47,6 +47,7 @@ app.add_url_rule('/industry/buyback_submit', 'buyback_submit', buyback_submit, m
 app.add_url_rule('/industry/buyback_history', 'buyback_history', buyback_history, methods=["GET"])
 app.add_url_rule('/industry/accept_buyback', 'accept_buyback', accept_buyback, methods=["GET"])
 app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, methods=["GET"])
+app.add_url_rule('/industry/buyback_notice', 'buyback_notice', buyback_notice, methods=["GET"])
 
 
 app.add_url_rule('/register_industry', 'register_industry', register_industry, methods=["GET", "POST"])

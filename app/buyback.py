@@ -818,3 +818,7 @@ def show_contracts_list():
     conn.close()
     
     return render_template('buyback_list.html', contracts=contracts, page=page)
+
+def buyback_notice():
+    
+    return render_template('buyback_notice.html', language='en')
