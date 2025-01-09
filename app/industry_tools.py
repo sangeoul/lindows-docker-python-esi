@@ -158,8 +158,8 @@ def parsingManufacturing(input_text):
 @app.route("/register_industry", methods=["GET", "POST"])
 def register_industry():
 
-    if not is_logged_in():
-        return
+    if not is_logged_in(ADMIN_ID):
+        return "No Permission. <a href='https://lindows.kr:8001/login'>Login</a>"
     """Handle both GET and POST requests on the same endpoint."""
     if request.method == "POST":
         # Get the input text and industry type from the form
@@ -268,8 +268,8 @@ def process_material_list_input(data):
 @app.route("/input_items", methods=["GET", "POST"])
 def input_item_to_DB():
 
-    #if not is_logged_in(ADMIN_ID):
-    #    return "No Permission"
+    if not is_logged_in(ADMIN_ID):
+        return "No Permission. <a href='https://lindows.kr:8001/login'>Login</a>"
     
     item_names = []  # Initialize an empty list to store item names
     
@@ -345,7 +345,7 @@ def input_item_to_DB():
 #@app.route("/stock_update", methods=["GET", "POST"])
 def stock_update():
     if not is_logged_in(ADMIN_ID):
-        return
+        return "No Permission. <a href='https://lindows.kr:8001/login'>Login</a>"
     
     if request.method == "POST":
         # Get the input data from the form
