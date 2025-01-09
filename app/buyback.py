@@ -407,7 +407,7 @@ def buyback_submit():
                 
                 # Insert the record into the database
                 cursor.execute("""
-                    INSERT INTO buyback_contract_log (contract_id, charcater_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input)
+                    INSERT INTO buyback_contract_log (contract_id, character_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     new_contract_id,
@@ -434,11 +434,11 @@ def buyback_submit():
                 
                 # Insert the record into the database
                 cursor.execute("""
-                    INSERT INTO buyback_contract_log (contract_id, charcater_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input)
+                    INSERT INTO buyback_contract_log (contract_id, character_id, character_name, type_id, name_en, amount, buyprice, total_price, price_rate, is_input)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     new_contract_id,
-                    0,  # Default value for charcater_id
+                    0,  # Default value for character_id
                     "",  # Default empty character_name
                     type_id,
                     output['item_name'],
