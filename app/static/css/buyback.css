@@ -24,10 +24,13 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-a.character-name{
+.eve-link{
 
     font-weight: bold;
     color:rgba(217, 141, 0, 1);
+}
+a.character-name :hover{
+    text-decoration: underline;
 }
 
 label {

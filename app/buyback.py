@@ -463,11 +463,14 @@ def buyback_submit():
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="{{{{ url_for('static', filename='css/buyback.css') }}}}">
                 <title>Buyback Success</title>
             </head>
             <body>
                 <h1>Success: Buyback contract created successfully!</h1>
                 <p>Your buyback number is <h2>{new_contract_id}</h2></p>
+                <p>The contract should be offered to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a></p>
+                <p>The contract should be offered at between <font class="eve-link">FR46-E</font> ~ <font>O3-4MN</font></p>
                 <a href="/industry/buyback-history?contract_number={new_contract_id}">Go to Check Buyback</a>
             </body>
             </html>
