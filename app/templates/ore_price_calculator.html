@@ -34,7 +34,7 @@
                 <td>{{ item_name }}</td>
                 <td>{{ ore_price }}</td>
                 <td>{{ output_price }}</td>
-                <td>{{ price_rate|floatformat:2 }}</td>
+                <td>{{ '%.2f' % price_rate }}</td>
             </tr>
             {% endfor %}
         </tbody>
