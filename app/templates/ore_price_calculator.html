@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Ore Price Calculator</h1>
-    <form action="/calculate" method="post">
+    <form action="{{ url_for('ore_price_calculator') }}" method="get">
         <label><input type="checkbox" name="items" value="34"> Tritanium</label>
         <label><input type="checkbox" name="items" value="35"> Pyerite</label>
         <label><input type="checkbox" name="items" value="36"> Mexallon</label>

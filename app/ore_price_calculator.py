@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
-from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
+from esi_library import connect_to_db
 
 def ore_price_calculate():
     selected_items = request.form.getlist('items')
