@@ -3,12 +3,16 @@ from esi_library import connect_to_db
 
 def ore_price_calculate():
     selected_items = request.args.getlist('items')
+
     buy_prices = {}
     results = []
+
     if not selected_items:
-        print(f"!!DEBUG: load default page.",flush=True)
-        return render_template('ore_price_calculator.html', results=[])
-    print(f"!!DEBUG:{selected_items}",flush=True)
+        print(f"!!DEBUG: load default page.", flush=True)
+        return render_template('ore_price_calculator.html', results=[], selected_items=selected_items)
+
+    print(f"!!DEBUG: {selected_items}", flush=True)
+
     with connect_to_db() as conn:
         with conn.cursor() as cursor:
             # Fetch buy prices for selected items
@@ -30,7 +34,6 @@ def ore_price_calculate():
                 )
                 for row in cursor.fetchall():
                     output_id, output_amount, input_id, input_amount, input_name, ore_price = row
-                    print(f"!!DEBUG:{input_name}",flush=True)
                     cursor.execute(
                         "SELECT output_id, output_amount FROM industry_relation WHERE input_id = %s AND output_id IN %s",
                         (input_id, tuple(selected_items))
@@ -42,5 +45,4 @@ def ore_price_calculate():
 
     results.sort(key=lambda x: x[3], reverse=True)
 
-    return render_template('ore_price_calculator.html', results=results)
-
+    return render_template('ore_price_calculator.html', results=results, selected_items=selected_items)

@@ -8,13 +8,13 @@
 <body>
     <h1>Ore Price Calculator</h1>
     <form action="{{ url_for('ore_price_calculator') }}" method="get">
-        <label><input type="checkbox" name="items" value="34"> Tritanium</label>
-        <label><input type="checkbox" name="items" value="35"> Pyerite</label>
-        <label><input type="checkbox" name="items" value="36"> Mexallon</label>
-        <label><input type="checkbox" name="items" value="37"> Isogen</label>
-        <label><input type="checkbox" name="items" value="38"> Nocxium</label>
-        <label><input type="checkbox" name="items" value="39"> Zydrine</label>
-        <label><input type="checkbox" name="items" value="40"> Megacyte</label>
+        <label><input type="checkbox" name="items" value="34" {% if '34' in selected_items %}checked{% endif %}> Tritanium</label>
+        <label><input type="checkbox" name="items" value="35" {% if '35' in selected_items %}checked{% endif %}> Pyerite</label>
+        <label><input type="checkbox" name="items" value="36" {% if '36' in selected_items %}checked{% endif %}> Mexallon</label>
+        <label><input type="checkbox" name="items" value="37" {% if '37' in selected_items %}checked{% endif %}> Isogen</label>
+        <label><input type="checkbox" name="items" value="38" {% if '38' in selected_items %}checked{% endif %}> Nocxium</label>
+        <label><input type="checkbox" name="items" value="39" {% if '39' in selected_items %}checked{% endif %}> Zydrine</label>
+        <label><input type="checkbox" name="items" value="40" {% if '40' in selected_items %}checked{% endif %}> Megacyte</label>
         <button type="submit">Calculate</button>
     </form>
 
