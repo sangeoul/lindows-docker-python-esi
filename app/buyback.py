@@ -225,6 +225,9 @@ def buyback():
                     continue  # Skip invalid lines with fewer than 2 parts
                 
                 item_name = parts[0].strip()  # First part is the item name
+                if item_name.endswith('*'):
+                    item_name = item_name[:-1].strip()  # Remove trailing * if it exists
+
                 parts[1] = parts[1].replace(",", "").strip()
                 if parts[1] == "":
                     item_amount = 1
@@ -239,6 +242,7 @@ def buyback():
             except (IndexError, ValueError) as e:
                 print(f"Error parsing line: {line} - {e}")
                 continue
+
         
         # Convert the parsed_items dictionary to a list of dictionaries
         item_list = [{'input_name': name, 'input_amount': amount} for name, amount in parsed_items.items()]
