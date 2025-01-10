@@ -276,19 +276,24 @@ def input_item_to_DB():
     if request.method == "POST":
         # Get the input data from the form
         input_data = request.form["data"]
-        
-        # Determine which type of input we're processing
-        if "\t" in input_data and not "Time per run" in input_data:  # Check if the input contains tab-separated values
+
+        lines = input_data.splitlines()
+        for line in lines:
+            words = line.split()
+            if len(words) > 2 and words[1] == "x":  # Check if the second word is 'x'
+                item_names = process_material_list_input(input_data)
+                break  # Exit the loop as we've identified the input type
+        else:
             item_names = process_tab_separated_input(input_data)
-        elif " x " in input_data :  # Otherwise, treat it as a material list
-            item_names = process_material_list_input(input_data)
         
         # Send requests for each item name
         for item_name in item_names:
-            get_type_info(0,item_name)
-            #print(f"Send Item : {item_name}",flush=True)
-        print(f"Task finished. end of input line.",flush=True)
+            get_type_info(0, item_name)
+            #print(f"Send Item : {item_name}", flush=True)
+        print(f"Task finished. end of input line.", flush=True)
     # Inline HTML form definition
+
+
     form_html = '''
     <!DOCTYPE html>
     <html lang="en">
