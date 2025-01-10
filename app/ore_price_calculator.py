@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
+from decimal import Decimal
 from esi_library import connect_to_db
 
-REPROCESSING_RATE=0.876
+REPROCESSING_RATE=Decimal('0.876')
 
 def ore_price_calculate():
     selected_items = request.args.getlist('items')
