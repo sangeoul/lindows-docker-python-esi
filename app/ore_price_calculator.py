@@ -43,9 +43,9 @@ def ore_price_calculate():
                     )
                     output_price = sum([output_amount * buy_prices[output_id] for output_id, output_amount in cursor.fetchall()])*REPROCESSING_RATE
                     ore_price *= input_amount
-                    price_rate = output_price / ore_price if ore_price else 0
+                    price_rate = ore_price / output_price if output_price else 0
                     results.append((input_name, ore_price, output_price, price_rate))
 
-    results.sort(key=lambda x: x[3], reverse=True)
+    results.sort(key=lambda x: x[3], reverse=False)
 
     return render_template('ore_price_calculator.html', results=results, selected_items=selected_items)
