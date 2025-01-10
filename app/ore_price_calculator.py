@@ -6,6 +6,7 @@ def ore_price_calculate():
     buy_prices = {}
     results = []
     if not selected_items:
+        print(f"!!DEBUG: load default page.",flush=True)
         return render_template('ore_price_calculator.html', results=[])
     print(f"!!DEBUG:{selected_items}",flush=True)
     with connect_to_db() as conn:
