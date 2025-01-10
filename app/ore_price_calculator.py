@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from esi_library import connect_to_db
 
+REPROCESSING_RATE=0.876
+
 def ore_price_calculate():
     selected_items = request.args.getlist('items')
 
@@ -38,8 +40,8 @@ def ore_price_calculate():
                         "SELECT output_id, output_amount FROM industry_relation WHERE input_id = %s AND output_id IN %s",
                         (input_id, tuple(selected_items))
                     )
-                    output_price = sum([output_amount * buy_prices[output_id] for output_id, output_amount in cursor.fetchall()])
-                    ore_price *= output_amount
+                    output_price = sum([output_amount * buy_prices[output_id] for output_id, output_amount in cursor.fetchall()])*REPROCESSING_RATE
+                    ore_price *= input_amount
                     price_rate = output_price / ore_price if ore_price else 0
                     results.append((input_name, ore_price, output_price, price_rate))
 
