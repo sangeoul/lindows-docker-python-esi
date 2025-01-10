@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ore Price Calculator</title>
+</head>
+<body>
+    <h1>Ore Price Calculator</h1>
+    <form action="/calculate" method="post">
+        <label><input type="checkbox" name="items" value="34"> Tritanium</label>
+        <label><input type="checkbox" name="items" value="35"> Pyerite</label>
+        <label><input type="checkbox" name="items" value="36"> Mexallon</label>
+        <label><input type="checkbox" name="items" value="37"> Isogen</label>
+        <label><input type="checkbox" name="items" value="38"> Nocxium</label>
+        <label><input type="checkbox" name="items" value="39"> Zydrine</label>
+        <label><input type="checkbox" name="items" value="40"> Megacyte</label>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if results %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Ore Price</th>
+                <th>Output Price</th>
+                <th>Price Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item_name, ore_price, output_price, price_rate in results %}
+            <tr>
+                <td>{{ item_name }}</td>
+                <td>{{ ore_price }}</td>
+                <td>{{ output_price }}</td>
+                <td>{{ price_rate|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</body>
+</html>

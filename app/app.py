@@ -6,6 +6,7 @@ from handle_sso import oauth_redirect, callback  # Import OAuth routes from hand
 from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list,buyback_notice
 
 from industry_tools import register_industry, input_item_to_DB, stock_update
+from ore_price_calculator import ore_price_calculate
 
 app = Flask(__name__)
 
@@ -48,7 +49,9 @@ app.add_url_rule('/industry/buyback_history', 'buyback_history', buyback_history
 app.add_url_rule('/industry/accept_buyback', 'accept_buyback', accept_buyback, methods=["GET"])
 app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, methods=["GET"])
 app.add_url_rule('/industry/buyback_notice', 'buyback_notice', buyback_notice, methods=["GET"])
+app.add_url_rule('/industry/ore_price_calculator', 'ore_price_calculator', ore_price_calculate, methods=["POST"])
 
+@app.route('/calculate', methods=['POST'])
 
 app.add_url_rule('/register_industry', 'register_industry', register_industry, methods=["GET", "POST"])
 app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
