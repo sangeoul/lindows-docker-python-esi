@@ -51,8 +51,6 @@ app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, 
 app.add_url_rule('/industry/buyback_notice', 'buyback_notice', buyback_notice, methods=["GET"])
 app.add_url_rule('/industry/ore_price_calculator', 'ore_price_calculator', ore_price_calculate, methods=["POST"])
 
-@app.route('/calculate', methods=['POST'])
-
 app.add_url_rule('/register_industry', 'register_industry', register_industry, methods=["GET", "POST"])
 app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
 app.add_url_rule('/stock_update', 'stock_update', stock_update,methods=["GET", "POST"])
