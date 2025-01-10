@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from esi_library import connect_to_db
 
 def ore_price_calculate():
-    selected_items = request.form.getlist('items')
+    selected_items = request.args.getlist('items')
     buy_prices = {}
     results = []
     if not selected_items:
