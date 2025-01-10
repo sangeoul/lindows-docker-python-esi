@@ -32,8 +32,8 @@
             {% for item_name, ore_price, output_price, price_rate in results %}
             <tr>
                 <td>{{ item_name }}</td>
-                <td>{{ ore_price }}</td>
-                <td>{{ output_price }}</td>
+                <td>{{ '%.2f' % ore_price }}</td>
+                <td>{{ '%.2f' % output_price }}</td>
                 <td>{{ '%.2f' % price_rate }}</td>
             </tr>
             {% endfor %}
