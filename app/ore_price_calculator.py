@@ -29,6 +29,7 @@ def ore_price_calculate():
                 )
                 for row in cursor.fetchall():
                     output_id, output_amount, input_id, input_amount, input_name, ore_price = row
+                    print(f"!!DEBUG:{input_name}",flush=True)
                     cursor.execute(
                         "SELECT output_id, output_amount FROM industry_relation WHERE input_id = %s AND output_id IN %s",
                         (input_id, tuple(selected_items))
