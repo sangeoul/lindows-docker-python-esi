@@ -5,7 +5,8 @@ def ore_price_calculate():
     selected_items = request.form.getlist('items')
     buy_prices = {}
     results = []
-
+    if not selected_items:
+        return render_template('ore_price_calculator.html', results=[])
     with connect_to_db() as conn:
         with conn.cursor() as cursor:
             # Fetch buy prices for selected items
