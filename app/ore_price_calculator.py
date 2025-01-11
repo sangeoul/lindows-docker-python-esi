@@ -11,10 +11,7 @@ def ore_price_calculate():
     results = []
 
     if not selected_items:
-        print(f"!!DEBUG: load default page.", flush=True)
         return render_template('ore_price_calculator.html', results=[], selected_items=selected_items)
-
-    print(f"!!DEBUG: {selected_items}", flush=True)
 
     with connect_to_db() as conn:
         with conn.cursor() as cursor:
