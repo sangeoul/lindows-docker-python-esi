@@ -28,7 +28,7 @@ def ore_price_calculate():
 
             for item in selected_items:
                 cursor.execute(
-                    "SELECT ir.output_id, ir.output_amount, ir.input_id, ir.input_amount, ti.name_en, mp.price "
+                    "SELECT ir.input_id, ir.input_amount, ti.name_en, mp.price "
                     "FROM industry_relation ir "
                     "JOIN type_info ti ON ir.input_id = ti.type_id "
                     "JOIN market_price mp ON ir.input_id = mp.type_id "
@@ -36,7 +36,7 @@ def ore_price_calculate():
                     (item,)
                 )
                 for row in cursor.fetchall():
-                    output_id, output_amount, input_id, input_amount, input_name, ore_price = row
+                    input_id, input_amount, input_name, ore_price = row
                     cursor.execute(
                         "SELECT output_id, output_amount FROM industry_relation WHERE input_id = %s AND output_id IN %s",
                         (input_id, tuple(selected_items))
