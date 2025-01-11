@@ -736,18 +736,21 @@ def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_
                 *(current_stock_amount+output_amount-median_amount)
 
         else:
+                
                 weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice) + DEFAULT_BUYBACK_RATE)\
                 *(median_amount-current_stock_amount)\
                 \
                 +(DEFAULT_BUYBACK_RATE + MINIMUM_BUYBACK_RATE)*(max_amount-median_amount)
                 \
                 +MINIMUM_BUYBACK_RATE*2*(current_stock_amount+output_amount-max_amount)
+                print(f"!!DEBUG : weight4 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)} + {DEFAULT_BUYBACK_RATE})*{(median_amount-current_stock_amount)} + ({DEFAULT_BUYBACK_RATE} + {MINIMUM_BUYBACK_RATE}) * {(max_amount-median_amount)} + {MINIMUM_BUYBACK_RATE} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
                 
     else:
-        print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)} + {MINIMUM_BUYBACK_RATE})*{(max_amount-current_stock_amount)} + {MINIMUM_BUYBACK_RATE} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
+        
         weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice) + MINIMUM_BUYBACK_RATE)\
             *(max_amount-current_stock_amount)\
             +MINIMUM_BUYBACK_RATE*2*(current_stock_amount+output_amount-max_amount)
+        print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)} + {MINIMUM_BUYBACK_RATE})*{(max_amount-current_stock_amount)} + {MINIMUM_BUYBACK_RATE} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
 
     return weighted_rate/(2*output_amount)
 
