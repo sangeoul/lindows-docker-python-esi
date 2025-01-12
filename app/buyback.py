@@ -247,13 +247,13 @@ def get_buyback_rate(input_id, group_id, whitelist):
     # Check in type_id list first (priority)
     for item in whitelist["type_id"]:
         if item["id"] == input_id and "buyback_rate" in item:
-            print(f"!!DEBUG 1 : {item["buyback_rate"]}",flush=True)
+            print(f"!!DEBUG 1 : {item['buyback_rate']}",flush=True)
             return item["buyback_rate"][0],item["buyback_rate"][1],item["buyback_rate"][2]
     
     # Check in group_id list if not found in type_id
     for group in whitelist["group_id"]:
         if group["id"] == group_id and "buyback_rate" in group:
-            print(f"!!DEBUG 2 : {item["buyback_rate"]}",flush=True)
+            print(f"!!DEBUG 2 : {item['buyback_rate']}",flush=True)
             return group["buyback_rate"][0],group["buyback_rate"][1],group["buyback_rate"][2]
 
     # Default to False if not found or no reprocessing value
