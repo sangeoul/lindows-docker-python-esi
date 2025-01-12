@@ -90,7 +90,7 @@ def get_stock_info(type_id):
         # Return default values if no data is found
         return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0
 
-def create_buyback_item(input_name, input_amount, language):
+def create_buyback_item(input_name, input_amount, language,whitelist=None):
     try:
         # Fetch type_id using the library function
         validitem = True
@@ -101,12 +101,6 @@ def create_buyback_item(input_name, input_amount, language):
             input_id = 0
             group_id = 0
             validitem = False
-
-        # Load the whitelist from the JSON file
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
-        with open(whitelist_path, 'r') as file:
-            whitelist = json.load(file)
         
         # Check if the input_id or group_id is in the whitelist
         validitem = any(group["id"] == group_id for group in whitelist["group_id"]) or any(item["id"] == input_id for item in whitelist["type_id"])
@@ -129,18 +123,72 @@ def create_buyback_item(input_name, input_amount, language):
             outputs=[]
         )
         
-        # Populate outputs
-        conn = connect_to_db()
-        cursor = conn.cursor()
 
-        cursor.execute(""" 
-            SELECT output_id, output_amount, input_amount 
-            FROM industry_relation 
-            WHERE input_id = %s AND industry_type = 1 
-        """, (input_id,))
-        rows = cursor.fetchall()
+        if(get_reprocessing_value(input_id, group_id, whitelist)):
+            # Populate outputs
+            conn = connect_to_db()
+            cursor = conn.cursor()
 
-        if not rows:  # If no records are found, create the output with the same details as input
+            cursor.execute(""" 
+                SELECT output_id, output_amount, input_amount 
+                FROM industry_relation 
+                WHERE input_id = %s AND industry_type = 1 
+            """, (input_id,))
+            rows = cursor.fetchall()
+
+            if not rows:  # If no records are found, create the output with the same details as input
+                # Calculate the output price based on input amount and dynamic buyback rate
+                stock_data = get_stock_info(input_id)
+                dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice)
+                output_price = math.floor(input_amount) * input_buyprice * dynamic_buyback_rate
+
+                # Add the output item which is the same as input item
+                item.outputs.append(Output_Item(
+                    output_id=input_id,
+                    output_name=input_name,
+                    output_amount=input_amount,
+                    output_icon=input_icon,
+                    output_buyprice=input_buyprice,
+                    output_sellprice=input_sellprice,
+                    output_price=output_price  # Same dynamic buyback logic for the output
+                ))
+            else:
+                # Process the outputs from the industry_relation table
+                for row in rows:
+                    output_id, output_amount, required_input_amount = row
+                    possible_conversions = input_amount // required_input_amount
+
+                    # Calculate the resulting output amount by considering refining rate
+                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id)
+
+                    # Get output icon using type_id
+                    output_icon = get_icon_by_typeid(output_id)
+
+                    # Fetch output prices using get_sell_buy function
+                    output_sellprice, output_buyprice = get_sell_buy(output_id)
+
+                    stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
+
+                    dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice)
+                    
+                    # Calculate output price
+                    output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
+
+                    # Add the output to the item's output list
+                    item.outputs.append(Output_Item(
+                        output_id=output_id,
+                        output_name=get_itemname_by_typeid(output_id),  # You can fetch this if needed
+                        output_amount=total_output_amount,
+                        output_icon=output_icon,
+                        output_buyprice=output_buyprice,
+                        output_sellprice=output_sellprice,
+                        output_price=output_price  # Example pricing logic with floor and buyback rate
+                    ))
+
+            cursor.close()
+            conn.close()
+            
+        else:
             # Calculate the output price based on input amount and dynamic buyback rate
             stock_data = get_stock_info(input_id)
             dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice)
@@ -156,41 +204,6 @@ def create_buyback_item(input_name, input_amount, language):
                 output_sellprice=input_sellprice,
                 output_price=output_price  # Same dynamic buyback logic for the output
             ))
-        else:
-            # Process the outputs from the industry_relation table
-            for row in rows:
-                output_id, output_amount, required_input_amount = row
-                possible_conversions = input_amount // required_input_amount
-
-                # Calculate the resulting output amount by considering refining rate
-                total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id)
-
-                # Get output icon using type_id
-                output_icon = get_icon_by_typeid(output_id)
-
-                # Fetch output prices using get_sell_buy function
-                output_sellprice, output_buyprice = get_sell_buy(output_id)
-
-                stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
-
-                dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice)
-                
-                # Calculate output price
-                output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
-
-                # Add the output to the item's output list
-                item.outputs.append(Output_Item(
-                    output_id=output_id,
-                    output_name=get_itemname_by_typeid(output_id),  # You can fetch this if needed
-                    output_amount=total_output_amount,
-                    output_icon=output_icon,
-                    output_buyprice=output_buyprice,
-                    output_sellprice=output_sellprice,
-                    output_price=output_price  # Example pricing logic with floor and buyback rate
-                ))
-
-        cursor.close()
-        conn.close()
 
         # Calculate the sum of all output prices
         #if sum(output.output_price for output in item.outputs) == 0:
@@ -201,6 +214,20 @@ def create_buyback_item(input_name, input_amount, language):
         return None
 
     return item
+
+def get_reprocessing_value(input_id, group_id, whitelist):
+    # Check in type_id list first (priority)
+    for item in whitelist["type_id"]:
+        if item["id"] == input_id and "reprocessing" in item:
+            return item["reprocessing"]
+    
+    # Check in group_id list if not found in type_id
+    for group in whitelist["group_id"]:
+        if group["id"] == group_id and "reprocessing" in group:
+            return group["reprocessing"]
+
+    # Default to False if not found or no reprocessing value
+    return False
 
 
 
@@ -279,12 +306,18 @@ def buyback_calculate(parsed_items, language='en'):
     icons = {}
     output_results = []
 
+    # Load the whitelist from the JSON file
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+    with open(whitelist_path, 'r') as file:
+        whitelist = json.load(file)
+
     for item_data in parsed_items:
         input_name = item_data['input_name']
         input_amount = item_data['input_amount']
         
         # Create the buyback item using the helper function
-        item = create_buyback_item(input_name, input_amount, language)
+        item = create_buyback_item(input_name, input_amount, language,whitelist)
         
         if item is None:
             # Mark the item as invalid in the results
