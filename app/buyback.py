@@ -66,7 +66,8 @@ MAX_BUYBACK_RATE = 0.97
 
 COMPARE_TOLERANCE=0.01
 
-# Assume refining rate as 0.6 temporarily for all outputs
+# Assume default refining rate as 0.55
+DEFAULT_REFINING_RATE=0.55
 
 
 def get_stock_info(type_id):
@@ -187,7 +188,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
 
             cursor.close()
             conn.close()
-            
+
         else:
             # Calculate the output price based on input amount and dynamic buyback rate
             stock_data = get_stock_info(input_id)
@@ -229,6 +230,108 @@ def get_reprocessing_value(input_id, group_id, whitelist):
     # Default to False if not found or no reprocessing value
     return False
 
+
+def get_refining_rate_for_item(group_id):
+
+    # Load refining rates from the JSON file
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    #refining_rate_path = os.path.join(base_dir, 'static', 'refining_rates.json')
+    refining_rate_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+
+    with open(refining_rate_path, 'r') as file:
+        refining_data = json.load(file)
+
+    # Loop through the groups to find the group that contains the item
+    for group in refining_data['group_id']:
+        # Check each item in the group's item list
+        if group['id'] == group_id:
+            return group['refining_rate']
+    
+    # Return None if the item is not found
+    return DEFAULT_REFINING_RATE
+
+
+def calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice, sellprice,min_br=MINIMUM_BUYBACK_RATE,default_br=DEFAULT_BUYBACK_RATE,max_br=MAX_BUYBACK_RATE):
+
+    modified_max_buyback_rate = (max_br * sellprice) / buyprice
+
+    if current_stock_amount>=max_amount:
+        #print(f"!!DEBUG : simple1 : {min_br}",flush=True)
+        return min_br
+    elif current_stock_amount>=median_amount:
+        #print(f"!!DEBUG : simple2 : {default_br - (default_br - min_br)*(current_stock_amount-median_amount)/(max_amount-median_amount)}",flush=True)
+        return default_br - (default_br - min_br)*(current_stock_amount-median_amount)/(max_amount-median_amount)
+    elif current_stock_amount<=median_amount:
+        #print(f"!!DEBUG : simple3 : {modified_max_buyback_rate - (modified_max_buyback_rate - default_br)*(current_stock_amount/median_amount)}",flush=True)
+        return modified_max_buyback_rate - (modified_max_buyback_rate - default_br)*(current_stock_amount/median_amount)
+
+
+def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_amount, max_amount, buyprice, sellprice,min_br=MINIMUM_BUYBACK_RATE,default_br=DEFAULT_BUYBACK_RATE,max_br=MAX_BUYBACK_RATE):
+    """
+    Calculate the weighted average buyback rate based on the output amount and the current stock.
+
+    Args:
+        output_amount (int): Amount the user wants to sell.
+        current_stock_amount (int): Current stock amount of the item.
+        median_amount (int): Median stock amount from the database.
+        max_amount (int): Maximum stock amount from the database.
+        sellprice (float): Sell price of the item.
+        buyprice (float): Buy price of the item.
+
+    Returns:
+        float: The weighted average buyback rate.
+    """
+
+    #print(f"!!DEBUG : {current_stock_amount} + {output_amount} / ({median_amount} , {max_amount})",flush=True)
+    if median_amount == 0:
+        # If no valid stock information is available (i.e., median_amount is 0), return the default buyback rate.
+        return default_br
+
+    if current_stock_amount >= max_amount:
+        # If the current stock amount exceeds max_amount, return the minimum buyback rate.
+        return min_br
+
+    # Calculate modified max buyback rate for the first segment.
+    modified_max_buyback_rate = (max_br * sellprice) / buyprice
+    
+
+    if current_stock_amount+output_amount <= median_amount:
+        # If stock is less than or equal to median, we use a linear transition from DEFAULT to modified_max.
+        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)\
+                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)
+        return total_rate/2
+
+    elif current_stock_amount+output_amount >= median_amount\
+    and current_stock_amount>=median_amount\
+    and current_stock_amount+output_amount<=max_amount :
+        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)\
+                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice)
+        return total_rate/2
+    
+    elif current_stock_amount<=median_amount:
+        if current_stock_amount+output_amount<=max_amount:
+            weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + default_br)\
+                *(median_amount-current_stock_amount)\
+                +(default_br + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br))\
+                *(current_stock_amount+output_amount-median_amount)
+
+        else:
+                
+                weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + default_br)\
+                *(median_amount-current_stock_amount)\
+                +(default_br + min_br)*(max_amount-median_amount)\
+                +min_br*2*(current_stock_amount+output_amount-max_amount)
+                #print(f"!!DEBUG : weight4 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {default_br})*{(median_amount-current_stock_amount)} + ({default_br} + {min_br}) * {(max_amount-median_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
+                
+    else:
+        
+        weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + min_br)\
+            *(max_amount-current_stock_amount)\
+            +min_br*2*(current_stock_amount+output_amount-max_amount)
+        #print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {min_br})*{(max_amount-current_stock_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
+
+    return weighted_rate/(2*output_amount)
 
 
 def buyback():
@@ -684,105 +787,6 @@ def compare_results(input_items, output_items, results, output_results, toleranc
 
     # If all checks pass, return True
     return True
-
-
-def get_refining_rate_for_item(group_id):
-
-    # Load refining rates from the JSON file
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    refining_rate_path = os.path.join(base_dir, 'static', 'refining_rates.json')
-    with open(refining_rate_path, 'r') as file:
-        refining_data = json.load(file)
-
-    # Loop through the groups to find the group that contains the item
-    for group in refining_data['groups']:
-        # Check each item in the group's item list
-        if group['id'] == group_id:
-            return group['refining_rate']
-    
-    # Return None if the item is not found
-    return 0.55
-
-
-def calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice, sellprice):
-
-    modified_max_buyback_rate = (MAX_BUYBACK_RATE * sellprice) / buyprice
-
-    if current_stock_amount>=max_amount:
-        #print(f"!!DEBUG : simple1 : {MINIMUM_BUYBACK_RATE}",flush=True)
-        return MINIMUM_BUYBACK_RATE
-    elif current_stock_amount>=median_amount:
-        #print(f"!!DEBUG : simple2 : {DEFAULT_BUYBACK_RATE - (DEFAULT_BUYBACK_RATE - MINIMUM_BUYBACK_RATE)*(current_stock_amount-median_amount)/(max_amount-median_amount)}",flush=True)
-        return DEFAULT_BUYBACK_RATE - (DEFAULT_BUYBACK_RATE - MINIMUM_BUYBACK_RATE)*(current_stock_amount-median_amount)/(max_amount-median_amount)
-    elif current_stock_amount<=median_amount:
-        #print(f"!!DEBUG : simple3 : {modified_max_buyback_rate - (modified_max_buyback_rate - DEFAULT_BUYBACK_RATE)*(current_stock_amount/median_amount)}",flush=True)
-        return modified_max_buyback_rate - (modified_max_buyback_rate - DEFAULT_BUYBACK_RATE)*(current_stock_amount/median_amount)
-
-
-def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_amount, max_amount, buyprice, sellprice):
-    """
-    Calculate the weighted average buyback rate based on the output amount and the current stock.
-
-    Args:
-        output_amount (int): Amount the user wants to sell.
-        current_stock_amount (int): Current stock amount of the item.
-        median_amount (int): Median stock amount from the database.
-        max_amount (int): Maximum stock amount from the database.
-        sellprice (float): Sell price of the item.
-        buyprice (float): Buy price of the item.
-
-    Returns:
-        float: The weighted average buyback rate.
-    """
-    #print(f"!!DEBUG : {current_stock_amount} + {output_amount} / ({median_amount} , {max_amount})",flush=True)
-    if median_amount == 0:
-        # If no valid stock information is available (i.e., median_amount is 0), return the default buyback rate.
-        return DEFAULT_BUYBACK_RATE
-
-    if current_stock_amount >= max_amount:
-        # If the current stock amount exceeds max_amount, return the minimum buyback rate.
-        return MINIMUM_BUYBACK_RATE
-
-    # Calculate modified max buyback rate for the first segment.
-    modified_max_buyback_rate = (MAX_BUYBACK_RATE * sellprice) / buyprice
-    
-
-    if current_stock_amount+output_amount <= median_amount:
-        # If stock is less than or equal to median, we use a linear transition from DEFAULT to modified_max.
-        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)\
-                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice)
-        return total_rate/2
-
-    elif current_stock_amount+output_amount >= median_amount\
-    and current_stock_amount>=median_amount\
-    and current_stock_amount+output_amount<=max_amount :
-        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)\
-                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice)
-        return total_rate/2
-    
-    elif current_stock_amount<=median_amount:
-        if current_stock_amount+output_amount<=max_amount:
-            weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice) + DEFAULT_BUYBACK_RATE)\
-                *(median_amount-current_stock_amount)\
-                +(DEFAULT_BUYBACK_RATE + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice))\
-                *(current_stock_amount+output_amount-median_amount)
-
-        else:
-                
-                weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice) + DEFAULT_BUYBACK_RATE)\
-                *(median_amount-current_stock_amount)\
-                +(DEFAULT_BUYBACK_RATE + MINIMUM_BUYBACK_RATE)*(max_amount-median_amount)\
-                +MINIMUM_BUYBACK_RATE*2*(current_stock_amount+output_amount-max_amount)
-                #print(f"!!DEBUG : weight4 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)} + {DEFAULT_BUYBACK_RATE})*{(median_amount-current_stock_amount)} + ({DEFAULT_BUYBACK_RATE} + {MINIMUM_BUYBACK_RATE}) * {(max_amount-median_amount)} + {MINIMUM_BUYBACK_RATE} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
-                
-    else:
-        
-        weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice) + MINIMUM_BUYBACK_RATE)\
-            *(max_amount-current_stock_amount)\
-            +MINIMUM_BUYBACK_RATE*2*(current_stock_amount+output_amount-max_amount)
-        #print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice)} + {MINIMUM_BUYBACK_RATE})*{(max_amount-current_stock_amount)} + {MINIMUM_BUYBACK_RATE} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
-
-    return weighted_rate/(2*output_amount)
 
 def accept_buyback():
     if not is_logged_in(ADMIN_ID):
