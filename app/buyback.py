@@ -92,6 +92,14 @@ def get_stock_info(type_id):
         return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0
 
 def create_buyback_item(input_name, input_amount, language,whitelist=None):
+
+    if not whitelist:
+        # Load the whitelist from the JSON file
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+        with open(whitelist_path, 'r') as file:
+            whitelist = json.load(file)
+
     try:
         # Fetch type_id using the library function
         validitem = True
@@ -125,10 +133,13 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         )
         
 
-        if(get_reprocessing_value(input_id, group_id, whitelist)):
+        if(get_reprocessing_or_not(input_id, group_id, whitelist)):
             # Populate outputs
             conn = connect_to_db()
             cursor = conn.cursor()
+
+            # Get buyback rates
+            min_br,default_br,max_br=get_buyback_rate(input_id, group_id,whitelist)
 
             cursor.execute(""" 
                 SELECT output_id, output_amount, input_amount 
@@ -140,7 +151,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
             if not rows:  # If no records are found, create the output with the same details as input
                 # Calculate the output price based on input amount and dynamic buyback rate
                 stock_data = get_stock_info(input_id)
-                dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice)
+                dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice,min_br,default_br,max_br)
                 output_price = math.floor(input_amount) * input_buyprice * dynamic_buyback_rate
 
                 # Add the output item which is the same as input item
@@ -160,7 +171,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
                     possible_conversions = input_amount // required_input_amount
 
                     # Calculate the resulting output amount by considering refining rate
-                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id)
+                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id,whitelist)
 
                     # Get output icon using type_id
                     output_icon = get_icon_by_typeid(output_id)
@@ -170,7 +181,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
 
                     stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
 
-                    dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice)
+                    dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
                     
                     # Calculate output price
                     output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
@@ -192,7 +203,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         else:
             # Calculate the output price based on input amount and dynamic buyback rate
             stock_data = get_stock_info(input_id)
-            dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice)
+            dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice,min_br,default_br,max_br)
             output_price = math.floor(input_amount) * input_buyprice * dynamic_buyback_rate
 
             # Add the output item which is the same as input item
@@ -216,7 +227,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
 
     return item
 
-def get_reprocessing_value(input_id, group_id, whitelist):
+def get_reprocessing_or_not(input_id, group_id, whitelist):
     # Check in type_id list first (priority)
     for item in whitelist["type_id"]:
         if item["id"] == input_id and "reprocessing" in item:
@@ -230,20 +241,24 @@ def get_reprocessing_value(input_id, group_id, whitelist):
     # Default to False if not found or no reprocessing value
     return False
 
-
-def get_refining_rate_for_item(group_id):
-
-    # Load refining rates from the JSON file
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+def get_buyback_rate(input_id, group_id, whitelist):
+    # Check in type_id list first (priority)
+    for item in whitelist["type_id"]:
+        if item["id"] == input_id and "buyback_rate" in item:
+            return item["buyback_rate"][0],item["buyback_rate"][1],item["buyback_rate"][2]
     
-    #refining_rate_path = os.path.join(base_dir, 'static', 'refining_rates.json')
-    refining_rate_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+    # Check in group_id list if not found in type_id
+    for group in whitelist["group_id"]:
+        if group["id"] == group_id and "buyback_rate" in group:
+            return group["buyback_rate"][0],group["buyback_rate"][1],group["buyback_rate"][2]
 
-    with open(refining_rate_path, 'r') as file:
-        refining_data = json.load(file)
+    # Default to False if not found or no reprocessing value
+    return MINIMUM_BUYBACK_RATE, DEFAULT_BUYBACK_RATE, MAX_BUYBACK_RATE
+
+def get_refining_rate_for_item(group_id,whitelist):
 
     # Loop through the groups to find the group that contains the item
-    for group in refining_data['group_id']:
+    for group in whitelist['group_id']:
         # Check each item in the group's item list
         if group['id'] == group_id:
             return group['refining_rate']
