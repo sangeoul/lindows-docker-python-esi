@@ -120,6 +120,9 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         # Get the icon for the input item using type_id
         input_icon = get_icon_by_typeid(input_id)  # Assuming this function exists
         
+        # Get buyback rates
+        min_br,default_br,max_br=get_buyback_rate(input_id, group_id,whitelist)
+        
         # Create a Buyback_Item structure
         item = Buyback_Item(
             valid=validitem,
@@ -135,8 +138,7 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
 
         if(get_reprocessing_or_not(input_id, group_id, whitelist)):
 
-            # Get buyback rates
-            min_br,default_br,max_br=get_buyback_rate(input_id, group_id,whitelist)
+            
             print(f"!!DEBUG F: {[min_br,default_br,max_br]}",flush=True)
             # Populate outputs
             conn = connect_to_db()
