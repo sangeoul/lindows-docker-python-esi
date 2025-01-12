@@ -242,6 +242,8 @@ def get_reprocessing_or_not(input_id, group_id, whitelist):
     return False
 
 def get_buyback_rate(input_id, group_id, whitelist):
+
+    print(f"!!DEBUG : {input_id},{group_id}",flush=True)
     # Check in type_id list first (priority)
     for item in whitelist["type_id"]:
         if item["id"] == input_id and "buyback_rate" in item:
