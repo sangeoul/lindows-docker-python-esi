@@ -272,6 +272,7 @@ def get_refining_rate_for_item(group_id,whitelist):
 def calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice, sellprice,min_br=MINIMUM_BUYBACK_RATE,default_br=DEFAULT_BUYBACK_RATE,max_br=MAX_BUYBACK_RATE):
 
     modified_max_buyback_rate = (max_br * sellprice) / buyprice
+    print(f"!!DEBUG : simple rate : modified max buyback rate = {max_br} * ({sellprice}/{buyprice}) = {modified_max_buyback_rate}",flush=True)
 
     if current_stock_amount>=max_amount:
         #print(f"!!DEBUG : simple1 : {min_br}",flush=True)
@@ -280,7 +281,7 @@ def calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount,
         #print(f"!!DEBUG : simple2 : {default_br - (default_br - min_br)*(current_stock_amount-median_amount)/(max_amount-median_amount)}",flush=True)
         return default_br - (default_br - min_br)*(current_stock_amount-median_amount)/(max_amount-median_amount)
     elif current_stock_amount<=median_amount:
-        print(f"!!DEBUG : simple3 : {current_stock_amount} / {median_amount} -> modified_max_buyback_rate = {modified_max_buyback_rate} \n{modified_max_buyback_rate - (modified_max_buyback_rate - default_br)*(current_stock_amount/median_amount)}",flush=True)
+        print(f"!!DEBUG : simple3 : {current_stock_amount} / {median_amount} -> modified_max_buyback_rate = {modified_max_buyback_rate} (max buyback rate={max_br}) \n{modified_max_buyback_rate - (modified_max_buyback_rate - default_br)*(current_stock_amount/median_amount)}",flush=True)
         return modified_max_buyback_rate - (modified_max_buyback_rate - default_br)*(current_stock_amount/median_amount)
 
 
