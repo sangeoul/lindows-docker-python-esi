@@ -55,7 +55,8 @@ def get_prices():
                 return jsonify({
                     "type_id": type_id,
                     "buy": highest_buy,
-                    "sell": lowest_sell
+                    "sell": lowest_sell,
+                    "eiv": 0
                 })
     except Exception as e:
         return jsonify({"error": str(e)}), 500

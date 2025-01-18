@@ -317,6 +317,7 @@ def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_
         # If stock is less than or equal to median, we use a linear transition from DEFAULT to modified_max.
         total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)\
                     + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)
+        print(f"!!DEBUG : weight1 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)}) / 2 ",flush=True)
         return total_rate/2
 
     elif current_stock_amount+output_amount >= median_amount\
