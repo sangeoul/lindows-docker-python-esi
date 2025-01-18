@@ -351,7 +351,7 @@ def input_item_to_DB():
 def stock_update():
     if not is_logged_in(ADMIN_ID):
         return "No Permission. <a href='https://lindows.kr:8001/login'>Login</a>"
-    
+
     if request.method == "POST":
         # Get the input data from the form
         input_data = request.form['input_data']
@@ -408,7 +408,22 @@ def stock_update():
 
         return "Stock update successful!"
     else:
-        # If GET request, return the form
+        # If GET request, return the form and the stock data table
+        conn = connect_to_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT name_en, amount, median_amount, max_amount 
+            FROM industry_stock 
+            WHERE type_id IN (34, 35, 36, 37, 38, 39, 40, 11399) 
+            ORDER BY type_id ASC
+        """)
+        stock_data = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        def format_number(number):
+            return "{:,}".format(number)
+
         html_form = """
             <!DOCTYPE html>
             <html>
@@ -421,10 +436,32 @@ def stock_update():
                     <textarea name="input_data" rows="10" cols="50" placeholder="Enter item data here"></textarea><br>
                     <input type="submit" value="Submit">
                 </form>
+                <h2>Current Stock Data</h2>
+                <table border="1">
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Mid</th>
+                        <th>Top</th>
+                    </tr>
+        """
+        for row in stock_data:
+            name, amount, median_amount, max_amount = row
+            html_form += f"""
+                    <tr>
+                        <td>{name}</td>
+                        <td>{format_number(amount)}</td>
+                        <td>{format_number(median_amount)}</td>
+                        <td>{format_number(max_amount)}</td>
+                    </tr>
+            """
+        html_form += """
+                </table>
             </body>
             </html>
         """
         return render_template_string(html_form)
+
 
 
 #if __name__ == "__main__":
