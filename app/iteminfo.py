@@ -6,7 +6,7 @@ import json
 from esi_library import connect_to_db, get_access_token
 
 # Initialize Flask app
-app = Flask(__name__)
+#app = Flask(__name__)
 
 # External API URLs
 EXTERNAL_API_URL = "https://esi.evetech.net/latest/universe/types/{type_id}/?datasource=tranquility&language={language}"

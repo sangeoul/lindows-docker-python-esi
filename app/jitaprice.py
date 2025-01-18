@@ -6,10 +6,10 @@ from esi_library import connect_to_db
 REGION_THE_FORGE=10000002
 STATION_JITA=60003760
 
-app=Flask(__name__)
+#app=Flask(__name__)
 
 
-@app.route('/api/jitaprice',methods=['GET'])
+#@app.route('/api/jitaprice',methods=['GET'])
 def get_prices():
     """Fetch highest buy and lowest sell prices for a given type_id"""
     type_id=request.args.get('type_id')
