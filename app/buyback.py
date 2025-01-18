@@ -316,39 +316,39 @@ def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_
 
     if current_stock_amount+output_amount <= median_amount:
         # If stock is less than or equal to median, we use a linear transition from DEFAULT to modified_max.
-        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)\
-                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)
-        print(f"!!DEBUG : weight1 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)}) / 2 ",flush=True)
+        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice, min_br,default_br,max_br)\
+                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br)
+        print(f"!!DEBUG : weight1 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br)} + {calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)}) / 2 ",flush=True)
         return total_rate/2
 
     elif current_stock_amount+output_amount >= median_amount\
     and current_stock_amount>=median_amount\
     and current_stock_amount+output_amount<=max_amount :
-        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)\
-                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice)
+        total_rate = calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br)\
+                    + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, buyprice,sellprice)
         return total_rate/2
     
     elif current_stock_amount<=median_amount:
         if current_stock_amount+output_amount<=max_amount:
-            weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + default_br)\
+            weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br) + default_br)\
                 *(median_amount-current_stock_amount)\
-                +(default_br + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br))\
+                +(default_br + calculate_simple_buyback_rate(current_stock_amount+output_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br))\
                 *(current_stock_amount+output_amount-median_amount)
 
         else:
                 
-                weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + default_br)\
+                weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br) + default_br)\
                 *(median_amount-current_stock_amount)\
                 +(default_br + min_br)*(max_amount-median_amount)\
                 +min_br*2*(current_stock_amount+output_amount-max_amount)
-                #print(f"!!DEBUG : weight4 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {default_br})*{(median_amount-current_stock_amount)} + ({default_br} + {min_br}) * {(max_amount-median_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
+                #print(f"!!DEBUG : weight4 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br)} + {default_br})*{(median_amount-current_stock_amount)} + ({default_br} + {min_br}) * {(max_amount-median_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
                 
     else:
         
-        weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br) + min_br)\
+        weighted_rate = (calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br) + min_br)\
             *(max_amount-current_stock_amount)\
             +min_br*2*(current_stock_amount+output_amount-max_amount)
-        #print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, sellprice, buyprice,min_br,default_br,max_br)} + {min_br})*{(max_amount-current_stock_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
+        #print(f"!!DEBUG : weight5 : (({calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice,sellprice,min_br,default_br,max_br)} + {min_br})*{(max_amount-current_stock_amount)} + {min_br} * 2 * {(current_stock_amount+output_amount-max_amount)})/ (2* {(output_amount)} ) \n : {weighted_rate/(2*output_amount)}",flush=True)
 
     return weighted_rate/(2*output_amount)
 
