@@ -66,7 +66,7 @@ def fetch_type_id_by_name(item_name):
 
 
 # API endpoint for retrieving type info by type_id or itemname
-@app.route('/api/iteminfo', methods=['GET'])
+#@app.route('/api/iteminfo', methods=['GET'])
 def get_type_info(type_id=0,item_name=None):
     # Get the type_id and itemname from the query parameters
 
