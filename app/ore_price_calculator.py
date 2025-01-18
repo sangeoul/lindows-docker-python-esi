@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from decimal import Decimal
 from esi_library import connect_to_db
 
-REPROCESSING_RATE=Decimal('0.876')
+REPROCESSING_RATE = Decimal('0.876')
 
 def ore_price_calculate():
     selected_items = request.args.getlist('items')
@@ -41,7 +41,10 @@ def ore_price_calculate():
                     output_price = sum([output_amount * buy_prices[output_id] for output_id, output_amount in cursor.fetchall()])*REPROCESSING_RATE
                     ore_price *= input_amount
                     price_rate = ore_price / output_price if output_price else 0
-                    results.append((input_name, ore_price, output_price, price_rate))
+                    
+                    # Check for duplicates based on input_name
+                    if not any(result[0] == input_name for result in results):
+                        results.append((input_name, ore_price, output_price, price_rate))
 
     results.sort(key=lambda x: x[3], reverse=False)
 
