@@ -7,6 +7,7 @@ from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_c
 
 from industry_tools import register_industry, input_item_to_DB, stock_update
 from ore_price_calculator import ore_price_calculate
+from industry_calculator import industry_calculator
 
 app = Flask(__name__)
 
@@ -51,9 +52,13 @@ app.add_url_rule('/industry/buyback_list', 'buyback_list', show_contracts_list, 
 app.add_url_rule('/industry/buyback_notice', 'buyback_notice', buyback_notice, methods=["GET"])
 app.add_url_rule('/industry/ore_price_calculator', 'ore_price_calculator', ore_price_calculate, methods=["GET"])
 
+app.add_url_rule('/industry/industry_calculator', 'industry_calculator', industry_calculator, methods=["GET"])
+
 app.add_url_rule('/register_industry', 'register_industry', register_industry, methods=["GET", "POST"])
 app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
 app.add_url_rule('/stock_update', 'stock_update', stock_update,methods=["GET", "POST"])
+
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8001)
