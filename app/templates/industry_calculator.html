@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings Panel</title>
+    <!-- Link to the CSS file in the static/css directory -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Settings Panel</h1>
+    <table border="1">
+        <tr>
+            <th>Blueprint</th>
+            <td>
+                <input list="blueprint-options" id="blueprint-input">
+                <datalist id="blueprint-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                ME: <input type="number" id="me-input" min="0" max="10" step="1"> %
+            </td>
+        </tr>
+        <tr>
+            <th>Manufacturing</th>
+            <td>
+                System: <input list="system-options" class="system-input">
+                <datalist id="system-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                Structure&Rig: <input list="structure-options" class="structure-input">
+                <datalist id="structure-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                Tax: <input type="number" id="manufacturing-tax" min="0" max="100" step="0.1"> %
+            </td>
+        </tr>
+        <tr>
+            <th>Component</th>
+            <td>
+                System: <input list="system-options" class="system-input">
+                Structure&Rig: <input list="structure-options" class="structure-input">
+                Tax: <input type="number" id="component-tax" min="0" max="100" step="0.1"> %
+            </td>
+        </tr>
+        <tr>
+            <th>Reaction</th>
+            <td>
+                System: <input list="system-options" class="system-input">
+                Structure&Rig: <input list="structure-options" class="structure-input">
+                Tax: <input type="number" id="reaction-tax" min="0" max="100" step="0.1"> %
+            </td>
+        </tr>
+        <tr>
+            <th>Fuel</th>
+            <td>
+                System: <input list="system-options" class="system-input">
+                Structure&Rig: <input list="structure-options" class="structure-input">
+                Tax: <input type="number" id="fuel-tax" min="0" max="100" step="0.1"> %
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Basement <input type="checkbox" id="basement">
+                Component <input type="checkbox" id="component">
+                Reaction <input type="checkbox" id="reaction">
+                Fuel <input type="checkbox" id="fuel">
+                PI <input type="checkbox" id="pi">
+                <button id="open-button">Open</button>
+            </td>
+        </tr>
+    </table>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

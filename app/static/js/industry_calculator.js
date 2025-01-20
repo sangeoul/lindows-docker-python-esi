@@ -81,6 +81,7 @@ async function loadSystemData() {
 async function initializingData() {
     await loadPriceData();
     await loadSystemData();
+    
 }
 
 // Call the function to fetch and store data
@@ -117,6 +118,7 @@ class Product {
         this.manufacturing_row = row;
         this.product_node = product_node;
 
+        this.selected = level ? 0 : 1;
         this.visibility = level ? 0 : 1;
 
         this.me_bonus = 0;
