@@ -1,6 +1,5 @@
 // Object to store price data
 const eivData = {};
-
 // Object to store system data
 const systemData = [];
 
@@ -72,21 +71,46 @@ async function loadSystemData() {
         // Optionally, log the first few entries
         console.log(systemData.slice(0, 5));
 
+        // Populate system datalists
+        populateSystemDatalists(systemData);
+
     } catch (error) {
         console.error('Error fetching system data:', error);
     }
 }
 
-// Initialize data
-async function initializingData() {
-    await loadPriceData();
-    await loadSystemData();
-    
+// Function to populate system datalists
+function populateSystemDatalists(systemData) {
+    const datalistIds = ["manufacturing-system-options", "component-system-options", "reaction-system-options", "fuel-system-options"];
+
+    datalistIds.forEach(datalistId => {
+        const datalist = document.getElementById(datalistId);
+        systemData.forEach(system => {
+            const optionElement = document.createElement("option");
+            optionElement.value = system.solar_system_name;
+            optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
+            datalist.appendChild(optionElement);
+        });
+    });
+}
+
+async function loadBlueprintsData(){
+    // Populate blueprint datalist
+    const blueprintOptions = document.getElementById("blueprint-options");
+    blueprintData.forEach(blueprint => {
+        const optionElement = document.createElement("option");
+        optionElement.value = blueprint[1]; // output_name
+        optionElement.setAttribute("data-type_id", blueprint[0]); // output_id
+        blueprintOptions.appendChild(optionElement);
+    });
 }
 
 // Call the function to fetch and store data
-initializingData();
-
+document.addEventListener("DOMContentLoaded", function() {
+    loadPriceData();
+    loadSystemData();
+    loadBlueprintsData();
+});
 
 
 class Product {

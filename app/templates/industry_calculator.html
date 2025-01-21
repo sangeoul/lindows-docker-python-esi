@@ -19,53 +19,78 @@
         </tr>
         <tr>
             <th>Manufacturing</th>
-            <td>
-                System: <input list="system-options" class="system-input">
-                <datalist id="system-options">
-                    <!-- Options will be populated dynamically -->
-                </datalist>
-                Structure&Rig: <input list="structure-options" class="structure-input">
-                <datalist id="structure-options">
-                    <!-- Options will be populated dynamically -->
-                </datalist>
-                Tax: <input type="number" id="manufacturing-tax" min="0" max="100" step="0.1"> %
-            </td>
+                <td>
+                    System: <input list="manufacturing-system-options" class="system-input">
+                    <datalist id="manufacturing-system-options">
+                        <!-- Options will be populated dynamically -->
+                    </datalist>
+                    Structure&Rig: 
+                    <select class="manufacturing-structure-select">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    Tax: <input type="number" id="manufacturing-tax" min="0" max="100" step="0.1"> %
+                </td> 
         </tr>
         <tr>
             <th>Component</th>
             <td>
-                System: <input list="system-options" class="system-input">
-                Structure&Rig: <input list="structure-options" class="structure-input">
+                System: <input list="component-system-options" class="system-input">
+                <datalist id="component-system-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                Structure&Rig: 
+                <select class="component-structure-select">
+                    <!-- Options will be populated dynamically -->
+                </select>
                 Tax: <input type="number" id="component-tax" min="0" max="100" step="0.1"> %
             </td>
+            
         </tr>
         <tr>
             <th>Reaction</th>
             <td>
-                System: <input list="system-options" class="system-input">
-                Structure&Rig: <input list="structure-options" class="structure-input">
+                System: <input list="reaction-system-options" class="system-input">
+                <datalist id="reaction-system-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                Structure&Rig: 
+                <select class="reaction-structure-select">
+                    <!-- Options will be populated dynamically -->
+                </select>
                 Tax: <input type="number" id="reaction-tax" min="0" max="100" step="0.1"> %
             </td>
+            
         </tr>
         <tr>
             <th>Fuel</th>
             <td>
-                System: <input list="system-options" class="system-input">
-                Structure&Rig: <input list="structure-options" class="structure-input">
+                System: <input list="fuel-system-options" class="system-input">
+                <datalist id="fuel-system-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
+                Structure&Rig: 
+                <select class="fuel-structure-select">
+                    <!-- Options will be populated dynamically -->
+                </select>
                 Tax: <input type="number" id="fuel-tax" min="0" max="100" step="0.1"> %
             </td>
+            
         </tr>
         <tr>
             <td colspan="2">
-                Basement <input type="checkbox" id="basement">
-                Component <input type="checkbox" id="component">
-                Reaction <input type="checkbox" id="reaction">
-                Fuel <input type="checkbox" id="fuel">
-                PI <input type="checkbox" id="pi">
-                <button id="open-button">Open</button>
+                Basement <input type="checkbox" id="basement-checkbox">
+                Component <input type="checkbox" id="component-checkbox">
+                Reaction <input type="checkbox" id="reaction-checkbox">
+                Fuel <input type="checkbox" id="fuel-checkbox">
+                PI <input type="checkbox" id="pi-checkbox">
+                <button id="open-button">Open Tree</button>
             </td>
         </tr>
     </table>
+    <script>
+        // Pass blueprint data to JavaScript
+        const blueprintData = {{ blueprints|tojson }};
+    </script>
     <script src="{{ url_for('static', filename='js/industry_calculator.js') }}"></script>
 </body>
 </html>
