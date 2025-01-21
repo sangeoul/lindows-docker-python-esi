@@ -29,3 +29,4 @@ app/static/parser.py
 app/static/input.txt
 .pem
 Dockerfile.crawler
+Dockerfile
