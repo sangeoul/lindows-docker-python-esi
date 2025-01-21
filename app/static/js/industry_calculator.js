@@ -80,7 +80,7 @@ async function loadSystemData() {
         console.log(systemData.slice(0, 5));
 
         // Populate system datalists
-        populateSystemDatalists(systemData);
+        await populateSystemDatalists(systemData);
 
     } catch (error) {
         console.error('Error fetching system data:', error);
@@ -88,7 +88,7 @@ async function loadSystemData() {
 }
 
 // Function to populate system datalists
-function populateSystemDatalists(systemData) {
+async function populateSystemDatalists(systemData) {
     const datalistIds = ["manufacturing-system-options", "component-system-options", "reaction-system-options", "fuel-system-options"];
 
     datalistIds.forEach(datalistId => {
@@ -135,7 +135,9 @@ async function loadBlueprintsData() {
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", function() {
+    
+    loadBlueprintsData();
     loadPriceData();
     loadSystemData();
-    loadBlueprintsData();
+    
 });
