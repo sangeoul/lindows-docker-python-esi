@@ -29,14 +29,14 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 # You can add other routes here if needed
 
 @app.route('/login')
-def login_page():
+def login():
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     session['login_character_id']=0
 
-    return redirect(url_for('login_page'))
+    return redirect(url_for('login'))
 
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/oauth_redirect', 'oauth_redirect', oauth_redirect, methods=['POST'])

@@ -18,7 +18,7 @@
         <!-- Input Form -->
         <form id="inputForm" class="form-container">
             {% if character_id == 0 %}
-                <p><a href="{{ url_for('login_page') }}">You can login with Eve online ESI</a></p>
+                <p><a href="{{ url_for('login') }}">You can login with Eve online ESI</a></p>
             {% else %}
                 <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
             {% endif %}
