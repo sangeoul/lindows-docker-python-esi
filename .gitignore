@@ -27,6 +27,6 @@ docker-compose.yml
 #additional personal files
 app/static/parser.py
 app/static/input.txt
-.pem
+*.pem
 Dockerfile.crawler
 Dockerfile
