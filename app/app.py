@@ -36,7 +36,7 @@ def login_page():
 def logout():
     session['login_character_id']=0
 
-    return redirect(url_for('login'))
+    return redirect(url_for('login_page'))
 
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/oauth_redirect', 'oauth_redirect', oauth_redirect, methods=['POST'])
