@@ -3,6 +3,8 @@ const eivData = {};
 // Object to store system data
 const systemData = [];
 
+const blueprintData = {{ blueprints|tojson }};
+
 // Function to fetch data from the API and store it
 async function loadPriceData() {
     try {
