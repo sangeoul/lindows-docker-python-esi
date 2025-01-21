@@ -6,11 +6,12 @@ def industry_calculator():
     conn = connect_to_db()
     cursor = conn.cursor()
 
-    # Fetch blueprint data
+    # Fetch blueprint data with names from type_info table
     cursor.execute("""
-        SELECT DISTINCT output_id, output_name
-        FROM industry_relation
-        WHERE industry_type > 1
+        SELECT DISTINCT ir.output_id, ti.name_en
+        FROM industry_relation ir
+        JOIN type_info ti ON ir.output_id = ti.type_id
+        WHERE ir.industry_type > 1
     """)
     blueprints = cursor.fetchall()
 
