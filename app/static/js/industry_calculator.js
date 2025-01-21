@@ -9,7 +9,7 @@ const blueprintDataElement = document.getElementById('blueprint-data');
 const blueprintData = JSON.parse(blueprintDataElement.getAttribute('data-blueprints'));
 
 // Function to fetch data from the API and store it
-async function loadPriceData() {
+async function loadEivPriceData() {
     try {
         const response = await fetch('https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
         const data = await response.json();
@@ -135,9 +135,10 @@ async function loadBlueprintsData() {
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", function() {
-    
+
     loadBlueprintsData();
-    loadPriceData();
     loadSystemData();
+    loadEivPriceData();
+    
     
 });
