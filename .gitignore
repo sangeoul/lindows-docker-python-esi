@@ -28,3 +28,4 @@ docker-compose.yml
 app/static/parser.py
 app/static/input.txt
 .pem
+Dockerfile.crawler
