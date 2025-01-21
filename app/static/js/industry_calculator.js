@@ -100,9 +100,29 @@ function populateSystemDatalists(systemData) {
             datalist.appendChild(optionElement);
         });
     });
+
+    // Add event listener to the "Manufacturing" system input
+    const manufacturingSystemInput = document.querySelector('input[list="manufacturing-system-options"]');
+    manufacturingSystemInput.addEventListener('input', function() {
+        const newValue = manufacturingSystemInput.value;
+        updateOtherSystemInputs(newValue);
+    });
 }
 
-async function loadBlueprintsData(){
+// Function to update the other system inputs
+function updateOtherSystemInputs(newValue) {
+    const otherSystemInputs = [
+        document.querySelector('input[list="component-system-options"]'),
+        document.querySelector('input[list="reaction-system-options"]'),
+        document.querySelector('input[list="fuel-system-options"]')
+    ];
+
+    otherSystemInputs.forEach(input => {
+        input.value = newValue;
+    });
+}
+
+async function loadBlueprintsData() {
     // Populate blueprint datalist
     const blueprintOptions = document.getElementById("blueprint-options");
     blueprintData.forEach(blueprint => {
