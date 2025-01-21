@@ -80,34 +80,32 @@ async function loadSystemData() {
         console.log(systemData.slice(0, 5));
 
         // Populate system datalists
-        await populateSystemDatalists(systemData);
+        const datalistIds = ["manufacturing-system-options", "component-system-options", "reaction-system-options", "fuel-system-options"];
+
+        datalistIds.forEach(datalistId => {
+            const datalist = document.getElementById(datalistId);
+            systemData.forEach(system => {
+                const optionElement = document.createElement("option");
+                optionElement.value = system.solar_system_name;
+                optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
+                datalist.appendChild(optionElement);
+            });
+        });
+    
+        // Add event listener to the "Manufacturing" system input
+        const manufacturingSystemInput = document.querySelector('input[list="manufacturing-system-options"]');
+        manufacturingSystemInput.addEventListener('input', function() {
+            const newValue = manufacturingSystemInput.value;
+            updateOtherSystemInputs(newValue);
+        });
 
     } catch (error) {
         console.error('Error fetching system data:', error);
     }
 }
 
-// Function to populate system datalists
-async function populateSystemDatalists(systemData) {
-    const datalistIds = ["manufacturing-system-options", "component-system-options", "reaction-system-options", "fuel-system-options"];
 
-    datalistIds.forEach(datalistId => {
-        const datalist = document.getElementById(datalistId);
-        systemData.forEach(system => {
-            const optionElement = document.createElement("option");
-            optionElement.value = system.solar_system_name;
-            optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
-            datalist.appendChild(optionElement);
-        });
-    });
 
-    // Add event listener to the "Manufacturing" system input
-    const manufacturingSystemInput = document.querySelector('input[list="manufacturing-system-options"]');
-    manufacturingSystemInput.addEventListener('input', function() {
-        const newValue = manufacturingSystemInput.value;
-        updateOtherSystemInputs(newValue);
-    });
-}
 
 // Function to update the other system inputs
 function updateOtherSystemInputs(newValue) {
@@ -121,6 +119,8 @@ function updateOtherSystemInputs(newValue) {
         input.value = newValue;
     });
 }
+
+
 
 async function loadBlueprintsData() {
     // Populate blueprint datalist
