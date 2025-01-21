@@ -72,6 +72,9 @@ async function loadSystemData() {
             systemData.push(systemInfo);
         });
 
+        // Sort systemData by solar_system_name in ascending order
+        systemData.sort((a, b) => a.solar_system_name.localeCompare(b.solar_system_name));
+
         console.log('System data fetched and structured successfully.');
         // Optionally, log the first few entries
         console.log(systemData.slice(0, 5));
