@@ -112,7 +112,6 @@ async function loadSystemData() {
                 const system_index_id = selectedOption.getAttribute("data-solar_system_id");
                 console.log("Selected System ID:", system_index_id);
                 updateSystemIndex(system_index_id);
-                setManufacturingStructureAndRigData();
             }
 
         });
@@ -182,7 +181,7 @@ function setManufacturingStructureAndRigData() {
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
-        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
+        optionElement.textContent = option.text;
         manufacturingSelect.appendChild(optionElement);
     });
 
@@ -193,7 +192,7 @@ function setManufacturingStructureAndRigData() {
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
-        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
+        optionElement.textContent = option.text;
         componentSelect.appendChild(optionElement);
     });
 
@@ -204,7 +203,7 @@ function setManufacturingStructureAndRigData() {
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
-        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
+        optionElement.textContent = option.text;
         reactionSelect.appendChild(optionElement);
     });
 
@@ -215,7 +214,7 @@ function setManufacturingStructureAndRigData() {
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
-        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
+        optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
 }
