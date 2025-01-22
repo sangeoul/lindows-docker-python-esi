@@ -196,7 +196,7 @@ async function loadBlueprintsData() {
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", function() {
-
+    setManufacturingStructureAndRigData()
     loadBlueprintsData();
     loadSystemData();
     loadEivPriceData();
