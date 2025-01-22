@@ -93,7 +93,7 @@ async function loadSystemData() {
 
 
         // Add event listener to the "Manufacturing" system input
-        const industrySystemInput = document.querySelector('input[list="manufacturing-system-options"]');
+        const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
 
         systemData.forEach(system => {
             const optionElement = document.createElement("option");
