@@ -128,39 +128,42 @@ async function setManufacturingStructureAndRigData() {
         { bonus: 1, text: 'Tatara II' }
     ];
 
-    // Populate Manufacturing Structure&Rig select element
     const manufacturingSelect = document.querySelector(".manufacturing-structure-select");
+    const componentSelect = document.querySelector(".component-structure-select");
+    const reactionSelect = document.querySelector(".reaction-structure-select");
+    const fuelSelect = document.querySelector(".fuel-structure-select");
+
+
+    // Populate Manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.text;
+        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
         manufacturingSelect.appendChild(optionElement);
     });
+
     // Populate Component manufacturing Structure&Rig select element
-    const componentSelect = document.querySelector(".component-structure-select");
     manufacturingStructureRigOptions.forEach(option => {
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.text;
-        manufacturingSelect.appendChild(optionElement);
+        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        componentSelect.appendChild(optionElement);
     });
 
     // Populate Reation Structure&Rig select element
-    const reactionSelect = document.querySelector(".reaction-structure-select");
-    manufacturingStructureRigOptions.forEach(option => {
+    reactionStructureRigOptions.forEach(option => {
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.text;
-        manufacturingSelect.appendChild(optionElement);
+        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        reactionSelect.appendChild(optionElement);
     });
 
     // Populate Fuel manufacturing Structure&Rig select element
-    const fuelSelect = document.querySelector(".fuel-structure-select");
     manufacturingStructureRigOptions.forEach(option => {
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.text;
-        manufacturingSelect.appendChild(optionElement);
+        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        fuelSelect.appendChild(optionElement);
     });
 }
 
