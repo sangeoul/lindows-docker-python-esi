@@ -100,6 +100,7 @@ async function loadSystemData() {
             optionElement.value = system.solar_system_name;
             optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
             industrySystemInput.appendChild(optionElement);
+            console.log(system.solar_system_name +" Set");
         });
 
         industrySystemInput.addEventListener('input', function() {
