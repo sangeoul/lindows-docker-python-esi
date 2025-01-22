@@ -104,28 +104,21 @@ async function loadSystemData() {
     }
 }
 
-async function setManufacturingStructureAndRigData() {
+function setManufacturingStructureAndRigData() {
     // Example options for Manufacturing Structure&Rig select element
     const manufacturingStructureRigOptions = [
-        { bonus: 1, text: 'Raitaru I' },
-        { bonus: 1, text: 'Raitaru II' },
-        //{ bonus: 1, text: 'Raitaru Thuk' },
-        { bonus: 1, text: 'Azbel I' },
-        { bonus: 1, text: 'Azbel II' },
-        //{ bonus: 1, text: 'Azbel Thuk' },
-        { bonus: 1, text: 'Sotiyo I' },
-        { bonus: 1, text: 'Sotiyo II' },
-        //{ bonus: 1, text: 'Sotiyo Thuk' },
-        { bonus: 1, text: 'Other I' },
-        { bonus: 1, text: 'Other II' },
+        { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
+        { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
+        //{ bonus: 1, text: 'Engineering Thukker' },
+        { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
+        { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
         //{ bonus: 1, text: 'Other Thuk' },
-        { bonus: 1, text: 'Station' }
+        { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
+        { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
     ];
     const reactionStructureRigOptions = [
-        { bonus: 1, text: 'Athanor I' },
-        { bonus: 1, text: 'Athanor II' },
-        { bonus: 1, text: 'Tatara I' },
-        { bonus: 1, text: 'Tatara II' }
+        { structure_bonus: 0, rig_bonus: 1, text: 'Refinery I' },
+        { structure_bonus: 0, rig_bonus: 1, text: 'Refinery II' }
     ];
 
     const manufacturingSelect = document.querySelector(".manufacturing-structure-select");
@@ -136,33 +129,45 @@ async function setManufacturingStructureAndRigData() {
 
     // Populate Manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
+
+        SYSTEM_BONUS=2.1
+        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         manufacturingSelect.appendChild(optionElement);
     });
 
     // Populate Component manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
+
+        SYSTEM_BONUS=2.1
+        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         componentSelect.appendChild(optionElement);
     });
 
     // Populate Reation Structure&Rig select element
     reactionStructureRigOptions.forEach(option => {
+
+        SYSTEM_BONUS=1.1
+        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         reactionSelect.appendChild(optionElement);
     });
 
     // Populate Fuel manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
+
+        SYSTEM_BONUS=2.1
+        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = option.bonus;
-        optionElement.textContent = option.bonus.toFixed(1).toString() + ":" + option.text;
+        optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         fuelSelect.appendChild(optionElement);
     });
 }
@@ -196,9 +201,10 @@ async function loadBlueprintsData() {
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", function() {
-    setManufacturingStructureAndRigData()
+    
     loadBlueprintsData();
     loadSystemData();
     loadEivPriceData();
+    setManufacturingStructureAndRigData()
     
 });
