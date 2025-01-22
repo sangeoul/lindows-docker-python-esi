@@ -105,7 +105,9 @@ async function loadSystemData() {
         });
 
         industrySystemInput.addEventListener('input', function() {
-            const system_index_id = industrySystemInput.value;
+
+            selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+            system_index_id = selectedOption.getAttribute("data-solar_system_id");
             updateSystemIndex(system_index_id);
             setManufacturingStructureAndRigData();
         });
