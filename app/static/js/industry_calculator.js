@@ -94,13 +94,14 @@ async function loadSystemData() {
 
         // Add event listener to the "Manufacturing" system input
         const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+        const industrySystemDataList = document.querySelector('#industry-system-options');
 
         systemData.forEach(system => {
             const optionElement = document.createElement("option");
             optionElement.value = system.solar_system_name;
             optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
-            industrySystemInput.appendChild(optionElement);
-            console.log(system.solar_system_name +" Set");
+            industrySystemDataList.appendChild(optionElement);
+            //console.log(system.solar_system_name +" Set");
         });
 
         industrySystemInput.addEventListener('input', function() {
