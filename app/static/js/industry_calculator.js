@@ -104,8 +104,65 @@ async function loadSystemData() {
     }
 }
 
+async function setManufacturingStructureAndRigData() {
+    // Example options for Manufacturing Structure&Rig select element
+    const manufacturingStructureRigOptions = [
+        { bonus: 1, text: 'Raitaru I' },
+        { bonus: 1, text: 'Raitaru II' },
+        //{ bonus: 1, text: 'Raitaru Thuk' },
+        { bonus: 1, text: 'Azbel I' },
+        { bonus: 1, text: 'Azbel II' },
+        //{ bonus: 1, text: 'Azbel Thuk' },
+        { bonus: 1, text: 'Sotiyo I' },
+        { bonus: 1, text: 'Sotiyo II' },
+        //{ bonus: 1, text: 'Sotiyo Thuk' },
+        { bonus: 1, text: 'Other I' },
+        { bonus: 1, text: 'Other II' },
+        //{ bonus: 1, text: 'Other Thuk' },
+        { bonus: 1, text: 'Station' }
+    ];
+    const reactionStructureRigOptions = [
+        { bonus: 1, text: 'Athanor I' },
+        { bonus: 1, text: 'Athanor II' },
+        { bonus: 1, text: 'Tatara I' },
+        { bonus: 1, text: 'Tatara II' }
+    ];
 
+    // Populate Manufacturing Structure&Rig select element
+    const manufacturingSelect = document.querySelector(".manufacturing-structure-select");
+    manufacturingStructureRigOptions.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.bonus;
+        optionElement.textContent = option.text;
+        manufacturingSelect.appendChild(optionElement);
+    });
+    // Populate Component manufacturing Structure&Rig select element
+    const componentSelect = document.querySelector(".component-structure-select");
+    manufacturingStructureRigOptions.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.bonus;
+        optionElement.textContent = option.text;
+        manufacturingSelect.appendChild(optionElement);
+    });
 
+    // Populate Reation Structure&Rig select element
+    const reactionSelect = document.querySelector(".reaction-structure-select");
+    manufacturingStructureRigOptions.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.bonus;
+        optionElement.textContent = option.text;
+        manufacturingSelect.appendChild(optionElement);
+    });
+
+    // Populate Fuel manufacturing Structure&Rig select element
+    const fuelSelect = document.querySelector(".fuel-structure-select");
+    manufacturingStructureRigOptions.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.bonus;
+        optionElement.textContent = option.text;
+        manufacturingSelect.appendChild(optionElement);
+    });
+}
 
 // Function to update the other system inputs
 function updateOtherSystemInputs(newValue) {
@@ -119,6 +176,7 @@ function updateOtherSystemInputs(newValue) {
         input.value = newValue;
     });
 }
+
 
 
 
@@ -139,6 +197,5 @@ document.addEventListener("DOMContentLoaded", function() {
     loadBlueprintsData();
     loadSystemData();
     loadEivPriceData();
-    
     
 });
