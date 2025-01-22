@@ -105,11 +105,11 @@ async function loadSystemData() {
         });
 
         industrySystemInput.addEventListener('input', function() {
-            value = industrySystemInput.value;
-            isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
+            const value = industrySystemInput.value;
+            const isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
             if(isValueInOptions){
-                selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
-                system_index_id = selectedOption.getAttribute("data-solar_system_id");
+                const selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+                const system_index_id = selectedOption.getAttribute("data-solar_system_id");
                 updateSystemIndex(system_index_id);
                 setManufacturingStructureAndRigData();
             }
@@ -198,7 +198,7 @@ function setManufacturingStructureAndRigData() {
 // Function to update the other system inputs
 function updateSystemIndex(system_id) {
 
-    const systemInfo = systemData.find(system => system.solar_system_id === system_id);
+    const systemInfo = systemData.find(system => parseInt(system.solar_system_id) === parseInt(system_id));
 
     if (!systemInfo) {
         console.error("System ID not found in systemData. ID : "+ system_id);
