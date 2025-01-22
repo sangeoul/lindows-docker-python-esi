@@ -195,7 +195,7 @@ function updateSystemIndex(system_id) {
     const systemInfo = systemData.find(system => system.solar_system_id === system_id);
 
     if (!systemInfo) {
-        console.error("System ID not found in systemData");
+        console.error("System ID not found in systemData. ID : "+ system_id);
         return;
     }
 
