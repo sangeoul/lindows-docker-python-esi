@@ -151,7 +151,7 @@ function setManufacturingStructureAndRigData() {
         SYSTEM_BONUS=2.1
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
-        optionElement.value = option.bonus;
+        optionElement.value = bonus;
         optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         manufacturingSelect.appendChild(optionElement);
     });
@@ -162,7 +162,7 @@ function setManufacturingStructureAndRigData() {
         SYSTEM_BONUS=2.1
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
-        optionElement.value = option.bonus;
+        optionElement.value = bonus;
         optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         componentSelect.appendChild(optionElement);
     });
@@ -173,7 +173,7 @@ function setManufacturingStructureAndRigData() {
         SYSTEM_BONUS=1.1
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
-        optionElement.value = option.bonus;
+        optionElement.value = bonus;
         optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         reactionSelect.appendChild(optionElement);
     });
@@ -184,7 +184,7 @@ function setManufacturingStructureAndRigData() {
         SYSTEM_BONUS=2.1
         bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
-        optionElement.value = option.bonus;
+        optionElement.value = bonus;
         optionElement.textContent = option.text + ":"+bonus.toFixed(1).toString() + "%";
         fuelSelect.appendChild(optionElement);
     });
