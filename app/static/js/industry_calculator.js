@@ -198,7 +198,7 @@ function setManufacturingStructureAndRigData() {
 // Function to update the other system inputs
 function updateSystemIndex(system_id) {
 
-    const systemInfo = systemData.find(system => parseInt(system.solar_system_id) === parseInt(system_id));
+    const systemInfo = systemData.find(system => system.solar_system_id === system_id);
 
     if (!systemInfo) {
         console.error("System ID not found in systemData. ID : "+ system_id);
