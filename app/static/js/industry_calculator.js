@@ -133,10 +133,10 @@ function updateSystemIndex(system_id) {
         return;
     }
 
-    manufacturingSystemIndex=document.querySelector(".manufacturing-structure-select");
-    componentSystemIndex=document.querySelector(".component-structure-select");
-    reactionSystemIndex=document.querySelector("reaction-structure-select");
-    fuelSystemIndex=document.querySelector(".fuel-structure-select");
+    manufacturingSystemIndex=document.querySelector(".manufacturing-system-index");
+    componentSystemIndex=document.querySelector(".component-system-index");
+    reactionSystemIndex=document.querySelector("reaction-system-index");
+    fuelSystemIndex=document.querySelector(".fuel-system-index");
 
     //need system info from systemData by system_id
 
