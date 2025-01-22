@@ -105,11 +105,15 @@ async function loadSystemData() {
         });
 
         industrySystemInput.addEventListener('input', function() {
+            value = industrySystemInput.value;
+            isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
+            if(isValueInOptions){
+                selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+                system_index_id = selectedOption.getAttribute("data-solar_system_id");
+                updateSystemIndex(system_index_id);
+                setManufacturingStructureAndRigData();
+            }
 
-            selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
-            system_index_id = selectedOption.getAttribute("data-solar_system_id");
-            updateSystemIndex(system_index_id);
-            setManufacturingStructureAndRigData();
         });
 
     
