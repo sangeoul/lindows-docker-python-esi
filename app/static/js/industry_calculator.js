@@ -72,7 +72,7 @@ async function loadSystemData() {
             systemData.push(systemInfo);
         });
 
-        const whsystemInfo={solar_system_id: 31000000, solar_system_name: "Wormhole"};
+        const whsystemInfo={solar_system_id: 32000000, solar_system_name: "Custom"};
         whsystemInfo["manufacturing"]=0.10;
         whsystemInfo["researching_time_efficiency"]=0.10;
         whsystemInfo["researching_material_efficiency"]=0.10;
