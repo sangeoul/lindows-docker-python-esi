@@ -43,7 +43,7 @@ async function loadSystemData() {
             const response = await fetch('https://esi.evetech.net/latest/universe/names/?datasource=tranquility', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(ids)
+                body: JSON.stringify(ids    )
             });
             return response.json();
         }
@@ -110,6 +110,7 @@ async function loadSystemData() {
             if(isValueInOptions){
                 const selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
                 const system_index_id = selectedOption.getAttribute("data-solar_system_id");
+                console.log("Selected System ID:", system_index_id);
                 updateSystemIndex(system_index_id);
                 setManufacturingStructureAndRigData();
             }
@@ -121,6 +122,30 @@ async function loadSystemData() {
         console.error('Error fetching system data:', error);
     }
 }
+
+// Function to update the other system inputs
+function updateSystemIndex(system_id) {
+
+    const systemInfo = systemData.find(system => system.solar_system_id === parseInt(system_id, 10));
+
+    if (!systemInfo) {
+        console.error("System ID not found in systemData. ID : "+ system_id);
+        return;
+    }
+
+    manufacturingSystemIndex=document.querySelector(".manufacturing-structure-select");
+    componentSystemIndex=document.querySelector(".component-structure-select");
+    reactionSystemIndex=document.querySelector("reaction-structure-select");
+    fuelSystemIndex=document.querySelector(".fuel-structure-select");
+
+    //need system info from systemData by system_id
+
+    manufacturingSystemIndex.value=systemInfo["manufacturing"] || 0;
+    componentSystemIndex.value=systemInfo["manufacturing"] || 0;
+    reactionSystemIndex.value=systemInfo["reaction"] || 0;
+    fuelSystemIndex.value=systemInfo["manufacturing"] || 0;
+}
+
 
 function setManufacturingStructureAndRigData() {
     // Example options for Manufacturing Structure&Rig select element
@@ -195,28 +220,6 @@ function setManufacturingStructureAndRigData() {
     });
 }
 
-// Function to update the other system inputs
-function updateSystemIndex(system_id) {
-
-    const systemInfo = systemData.find(system => system.solar_system_id === system_id);
-
-    if (!systemInfo) {
-        console.error("System ID not found in systemData. ID : "+ system_id);
-        return;
-    }
-
-    manufacturingSystemIndex=document.querySelector(".manufacturing-structure-select");
-    componentSystemIndex=document.querySelector(".component-structure-select");
-    reactionSystemIndex=document.querySelector("reaction-structure-select");
-    fuelSystemIndex=document.querySelector(".fuel-structure-select");
-
-    //need system info from systemData by system_id
-
-    manufacturingSystemIndex.value=systemInfo["manufacturing"] || 0;
-    componentSystemIndex.value=systemInfo["manufacturing"] || 0;
-    reactionSystemIndex.value=systemInfo["reaction"] || 0;
-    fuelSystemIndex.value=systemInfo["manufacturing"] || 0;
-}
 
 
 
