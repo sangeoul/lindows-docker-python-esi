@@ -10,12 +10,12 @@
         <tr>
             <th>Blueprint</th>
             <td>
-                <input list="blueprint-options" id="blueprint-input">
+                <input list="blueprint-options" id="blueprint-input" class="blueprint-input">
                 <datalist id="blueprint-options">
                     <!-- Options will be populated dynamically -->
                 </datalist>
-                ME: <input type="number" id="me-input" min="0" max="10" step="1"> %  
-                System : <input list="industry-system-options" class="system-input">
+                ME: <input type="number" id="me-input" min="0" max="10" step="1" class="me-input"> %  
+                System : <input list="industry-system-options" id="system-input" class="system-input">
                 <datalist id="industry-system-options">
                     <!-- Options will be populated dynamically -->
                 </datalist>
@@ -24,62 +24,63 @@
         <tr>
             <th>Manufacturing</th>
                 <td>
-                    Index: <input type="number" id="manufacturing-system-index" min="0.1" max="100" step="0.01">
+                    Index: <input type="number" id="manufacturing-system-index" min="0.1" max="100" step="0.01" class="index-input">
                     Structure&Rig: 
-                    <select id="manufacturing-structure-select">
+                    <select id="manufacturing-structure-select" class="structure-input">
                         <!-- Options will be populated dynamically -->
                     </select>
-                    Bonus: <input type="number" id="manufacturing-structure-bonus" min="0" max="10" step="0.001">
-                    Tax: <input type="number" id="manufacturing-tax" min="0" max="100" step="0.1"> %
+                    Bonus: <input type="number" id="manufacturing-structure-bonus" min="0" max="10" step="0.001" class="structure-bonus-input">
+                    Tax: <input type="number" id="manufacturing-tax" min="0" max="100" step="0.1" class="tax-input"> %
                 </td> 
         </tr>
         <tr>
             <th>Component</th>
             <td>
-                Index: <input type="number" id="component-system-index" min="0.1" max="100" step="0.01">
+                Index: <input type="number" id="component-system-index" min="0.1" max="100" step="0.01" class="index-input">
                 Structure&Rig: 
-                <select id="component-structure-select">
+                <select id="component-structure-select" class="structure-input">
                     <!-- Options will be populated dynamically -->
                 </select>
-                Bonus: <input type="number" id="component-structure-bonus" min="0" max="10" step="0.001">
-                Tax: <input type="number" id="component-tax" min="0" max="100" step="0.1"> %
+                Bonus: <input type="number" id="component-structure-bonus" min="0" max="10" step="0.001" class="structure-bonus-input">
+                Tax: <input type="number" id="component-tax" min="0" max="100" step="0.1" class="tax-input"> %
             </td>
             
         </tr>
         <tr>
             <th>Reaction</th>
             <td>
-                Index: <input type="number" id="reaction-system-index" min="0.1" max="100" step="0.01">
+                Index: <input type="number" id="reaction-system-index" min="0.1" max="100" step="0.01" class="index-input">
                 Structure&Rig: 
-                <select id="reaction-structure-select">
+                <select id="reaction-structure-select" class="structure-input">
                     <!-- Options will be populated dynamically -->
                 </select>
-                Bonus: <input type="number" id="reaction-structure-bonus" min="0" max="10" step="0.001">
-                Tax: <input type="number" id="reaction-tax" min="0" max="100" step="0.1"> %
+                Bonus: <input type="number" id="reaction-structure-bonus" min="0" max="10" step="0.001" class="structure-bonus-input">
+                Tax: <input type="number" id="reaction-tax" min="0" max="100" step="0.1" class="tax-input"> %
             </td>
             
         </tr>
         <tr>
             <th>Fuel</th>
             <td>
-                Index: <input type="number" id="fuel-system-index" min="0.1" max="100" step="0.01">
+                Index: <input type="number" id="fuel-system-index" min="0.1" max="100" step="0.01" class="index-input">
                 Structure&Rig: 
-                <select id="fuel-structure-select">
+                <select id="fuel-structure-select" class="structure-input">
                     <!-- Options will be populated dynamically -->
                 </select>
-                Bonus: <input type="number" id="fuel-structure-bonus" min="0" max="10" step="0.001">
-                Tax: <input type="number" id="fuel-tax" min="0" max="100" step="0.1"> %
+                Bonus: <input type="number" id="fuel-structure-bonus" min="0" max="10" step="0.001" class="structure-bonus-input">
+                Tax: <input type="number" id="fuel-tax" min="0" max="100" step="0.1" class="tax-input"> %
             </td>
             
         </tr>
         <tr>
             <td colspan="2">
+                <button id="open-button">Open Tree</button> 
                 Basement <input type="checkbox" id="basement-checkbox">
                 Component <input type="checkbox" id="component-checkbox">
                 Reaction <input type="checkbox" id="reaction-checkbox">
                 Fuel <input type="checkbox" id="fuel-checkbox">
                 PI <input type="checkbox" id="pi-checkbox">
-                <button id="open-button">Open Tree</button>
+                
             </td>
         </tr>
     </table>
