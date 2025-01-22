@@ -139,6 +139,11 @@ function setManufacturingStructureAndRigData() {
     const reactionSelect = document.querySelector(".reaction-structure-select");
     const fuelSelect = document.querySelector(".fuel-structure-select");
 
+    manufacturingSelect.innerHTML="";
+    componentSelect.innerHTML="";
+    reactionSelect.innerHTML="";
+    fuelSelect.innerHTML="";
+
 
     // Populate Manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
