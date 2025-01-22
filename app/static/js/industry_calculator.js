@@ -133,10 +133,10 @@ function updateSystemIndex(system_id) {
         return;
     }
 
-    manufacturingSystemIndex=document.querySelector(".manufacturing-system-index");
-    componentSystemIndex=document.querySelector(".component-system-index");
-    reactionSystemIndex=document.querySelector("reaction-system-index");
-    fuelSystemIndex=document.querySelector(".fuel-system-index");
+    manufacturingSystemIndex=document.querySelector("#manufacturing-system-index");
+    componentSystemIndex=document.querySelector("#component-system-index");
+    reactionSystemIndex=document.querySelector("#reaction-system-index");
+    fuelSystemIndex=document.querySelector("#fuel-system-index");
 
     //need system info from systemData by system_id
 
@@ -164,10 +164,10 @@ function setManufacturingStructureAndRigData() {
         { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
     ];
 
-    const manufacturingSelect = document.querySelector(".manufacturing-structure-select");
-    const componentSelect = document.querySelector(".component-structure-select");
-    const reactionSelect = document.querySelector(".reaction-structure-select");
-    const fuelSelect = document.querySelector(".fuel-structure-select");
+    const manufacturingSelect = document.querySelector("#manufacturing-structure-select");
+    const componentSelect = document.querySelector("#component-structure-select");
+    const reactionSelect = document.querySelector("#reaction-structure-select");
+    const fuelSelect = document.querySelector("#fuel-structure-select");
 
     manufacturingSelect.innerHTML="";
     componentSelect.innerHTML="";
