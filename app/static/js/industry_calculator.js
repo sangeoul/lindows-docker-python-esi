@@ -140,8 +140,8 @@ function setManufacturingStructureAndRigData() {
         { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
     ];
     const reactionStructureRigOptions = [
-        { structure_bonus: 0, rig_bonus: 1, text: 'Refinery I' },
-        { structure_bonus: 0, rig_bonus: 1, text: 'Refinery II' }
+        { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
+        { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
     ];
 
     const manufacturingSelect = document.querySelector(".manufacturing-structure-select");
