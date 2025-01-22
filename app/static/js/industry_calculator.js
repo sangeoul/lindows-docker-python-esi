@@ -140,10 +140,10 @@ function updateSystemIndex(system_id) {
 
     //need system info from systemData by system_id
 
-    manufacturingSystemIndex.value=systemInfo["manufacturing"] || 0;
-    componentSystemIndex.value=systemInfo["manufacturing"] || 0;
-    reactionSystemIndex.value=systemInfo["reaction"] || 0;
-    fuelSystemIndex.value=systemInfo["manufacturing"] || 0;
+    manufacturingSystemIndex.value=systemInfo["manufacturing"]*100 || 0.1;
+    componentSystemIndex.value=systemInfo["manufacturing"]*100 || 0.1;
+    reactionSystemIndex.value=systemInfo["reaction"]*100 || 0.1;
+    fuelSystemIndex.value=systemInfo["manufacturing"]*100 || 0.1;
 }
 
 
