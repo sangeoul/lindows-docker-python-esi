@@ -72,6 +72,16 @@ async function loadSystemData() {
             systemData.push(systemInfo);
         });
 
+        const whsystemInfo={solar_system_id: 0, solar_system_name: "Wormhole"};
+        whsystemInfo["manufacturing"]=0.10;
+        whsystemInfo["researching_time_efficiency"]=0.10;
+        whsystemInfo["researching_material_efficiency"]=0.10;
+        whsystemInfo["copying"]=0.10;
+        whsystemInfo["invention"]=0.10;
+        whsystemInfo["reaction"]=0.10;
+
+        systemData.push(whsystemInfo);
+
         // Sort systemData by solar_system_name in ascending order
         systemData.sort((a, b) => a.solar_system_name.localeCompare(b.solar_system_name));
 
