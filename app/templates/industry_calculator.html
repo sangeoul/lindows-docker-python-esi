@@ -14,16 +14,17 @@
                 <datalist id="blueprint-options">
                     <!-- Options will be populated dynamically -->
                 </datalist>
-                ME: <input type="number" id="me-input" min="0" max="10" step="1"> %
+                ME: <input type="number" id="me-input" min="0" max="10" step="1"> % 
+                System : <input list="industry-system-options" class="system-input">
+                <datalist id="industry-system-options">
+                    <!-- Options will be populated dynamically -->
+                </datalist>
             </td>
         </tr>
         <tr>
             <th>Manufacturing</th>
                 <td>
-                    System: <input list="manufacturing-system-options" class="system-input">
-                    <datalist id="manufacturing-system-options">
-                        <!-- Options will be populated dynamically -->
-                    </datalist>
+                    System: <input type="number" id="manufacturing-system-index" min="0" max="100" step="0.01">
                     Structure&Rig: 
                     <select class="manufacturing-structure-select">
                         <!-- Options will be populated dynamically -->
@@ -34,10 +35,7 @@
         <tr>
             <th>Component</th>
             <td>
-                System: <input list="component-system-options" class="system-input">
-                <datalist id="component-system-options">
-                    <!-- Options will be populated dynamically -->
-                </datalist>
+                System: <input type="number" id="component-system-index" min="0" max="100" step="0.01">
                 Structure&Rig: 
                 <select class="component-structure-select">
                     <!-- Options will be populated dynamically -->
@@ -49,10 +47,7 @@
         <tr>
             <th>Reaction</th>
             <td>
-                System: <input list="reaction-system-options" class="system-input">
-                <datalist id="reaction-system-options">
-                    <!-- Options will be populated dynamically -->
-                </datalist>
+                System: <input type="number" id="reaction-system-index" min="0" max="100" step="0.01">
                 Structure&Rig: 
                 <select class="reaction-structure-select">
                     <!-- Options will be populated dynamically -->
@@ -64,10 +59,7 @@
         <tr>
             <th>Fuel</th>
             <td>
-                System: <input list="fuel-system-options" class="system-input">
-                <datalist id="fuel-system-options">
-                    <!-- Options will be populated dynamically -->
-                </datalist>
+                System: <input type="number" id="fuel-system-index" min="0" max="100" step="0.01">
                 Structure&Rig: 
                 <select class="fuel-structure-select">
                     <!-- Options will be populated dynamically -->

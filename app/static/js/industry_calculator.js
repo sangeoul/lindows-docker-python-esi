@@ -72,15 +72,17 @@ async function loadSystemData() {
             systemData.push(systemInfo);
         });
 
-        const whsystemInfo={solar_system_id: 32000000, solar_system_name: "Custom"};
-        whsystemInfo["manufacturing"]=0.10;
-        whsystemInfo["researching_time_efficiency"]=0.10;
-        whsystemInfo["researching_material_efficiency"]=0.10;
-        whsystemInfo["copying"]=0.10;
-        whsystemInfo["invention"]=0.10;
-        whsystemInfo["reaction"]=0.10;
+        /*
+        customSystemInfo={solar_system_id: 32000000, solar_system_name: "Custom"};
+        customSystemInfo["manufacturing"]=0.10;
+        customSystemInfo["researching_time_efficiency"]=0.10;
+        customSystemInfo["researching_material_efficiency"]=0.10;
+        customSystemInfo["copying"]=0.10;
+        customSystemInfo["invention"]=0.10;
+        customSystemInfo["reaction"]=0.10;
 
-        systemData.push(whsystemInfo);
+        systemData.push(customSystemInfo);
+        */
 
         // Sort systemData by solar_system_name in ascending order
         systemData.sort((a, b) => a.solar_system_name.localeCompare(b.solar_system_name));
@@ -89,39 +91,24 @@ async function loadSystemData() {
         // Optionally, log the first few entries
         console.log(systemData.slice(0, 5));
 
-        // Populate system datalists
-        const datalistIds = ["manufacturing-system-options", "component-system-options", "reaction-system-options", "fuel-system-options"];
 
-        datalistIds.forEach(datalistId => {
-            const datalist = document.getElementById(datalistId);
-            systemData.forEach(system => {
-                const optionElement = document.createElement("option");
-                optionElement.value = system.solar_system_name;
-                optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
-                datalist.appendChild(optionElement);
-            });
-        });
-    
         // Add event listener to the "Manufacturing" system input
-        const manufacturingSystemInput = document.querySelector('input[list="manufacturing-system-options"]');
-        manufacturingSystemInput.addEventListener('input', function() {
-            const newValue = manufacturingSystemInput.value;
-            updateOtherSystemInputs(newValue);
+        const industrySystemInput = document.querySelector('input[list="manufacturing-system-options"]');
+
+        systemData.forEach(system => {
+            const optionElement = document.createElement("option");
+            optionElement.value = system.solar_system_name;
+            optionElement.setAttribute("data-solar_system_id", system.solar_system_id); // solar_system_id
+            industrySystemInput.appendChild(optionElement);
+        });
+
+        industrySystemInput.addEventListener('input', function() {
+            const system_index_id = industrySystemInput.value;
+            updateSystemIndex(system_index_id);
             setManufacturingStructureAndRigData();
         });
-        const componentSystemInput = document.querySelector('input[list="component-system-options"]');
-        componentSystemInput.addEventListener('input', function() {
-            setManufacturingStructureAndRigData();
-        })
-        const reactionSystemInput = document.querySelector('input[list="reaction-system-options"]');
-        reactionSystemInput.addEventListener('input', function() {
-            setManufacturingStructureAndRigData();
-        })
-        const fuelSystemInput = document.querySelector('input[list="fuel-system-options"]');
-        fuelSystemInput.addEventListener('input', function() {
-            setManufacturingStructureAndRigData();
-        })
 
+    
     } catch (error) {
         console.error('Error fetching system data:', error);
     }
@@ -201,16 +188,26 @@ function setManufacturingStructureAndRigData() {
 }
 
 // Function to update the other system inputs
-function updateOtherSystemInputs(newValue) {
-    const otherSystemInputs = [
-        document.querySelector('input[list="component-system-options"]'),
-        document.querySelector('input[list="reaction-system-options"]'),
-        document.querySelector('input[list="fuel-system-options"]')
-    ];
+function updateSystemIndex(system_id) {
 
-    otherSystemInputs.forEach(input => {
-        input.value = newValue;
-    });
+    const systemInfo = systemData.find(system => system.solar_system_id === system_id);
+
+    if (!systemInfo) {
+        console.error("System ID not found in systemData");
+        return;
+    }
+
+    manufacturingSystemIndex=document.querySelector(".manufacturing-structure-select");
+    componentSystemIndex=document.querySelector(".component-structure-select");
+    reactionSystemIndex=document.querySelector("reaction-structure-select");
+    fuelSystemIndex=document.querySelector(".fuel-structure-select");
+
+    //need system info from systemData by system_id
+
+    manufacturingSystemIndex.value=systemInfo["manufacturing"] || 0;
+    componentSystemIndex.value=systemInfo["manufacturing"] || 0;
+    reactionSystemIndex.value=systemInfo["reaction"] || 0;
+    fuelSystemIndex.value=systemInfo["manufacturing"] || 0;
 }
 
 
