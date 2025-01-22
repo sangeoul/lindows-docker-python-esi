@@ -97,7 +97,20 @@ async function loadSystemData() {
         manufacturingSystemInput.addEventListener('input', function() {
             const newValue = manufacturingSystemInput.value;
             updateOtherSystemInputs(newValue);
+            setManufacturingStructureAndRigData();
         });
+        const componentSystemInput = document.querySelector('input[list="component-system-options"]');
+        componentSystemInput.addEventListener('input', function() {
+            setManufacturingStructureAndRigData();
+        })
+        const reactionSystemInput = document.querySelector('input[list="reaction-system-options"]');
+        reactionSystemInput.addEventListener('input', function() {
+            setManufacturingStructureAndRigData();
+        })
+        const fuelSystemInput = document.querySelector('input[list="fuel-system-options"]');
+        fuelSystemInput.addEventListener('input', function() {
+            setManufacturingStructureAndRigData();
+        })
 
     } catch (error) {
         console.error('Error fetching system data:', error);
