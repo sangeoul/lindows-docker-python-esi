@@ -434,7 +434,7 @@ async function addAllEventListener(){
     opentreeDetailButton.addEventListener('click', function() {
         const isInvisible = opentreeCheckboxs.classList.contains('hidden-data');
         if(isInvisible){
-            opentreeDetailButton.innerHTML="▤▼";
+            opentreeDetailButton.innerHTML="▤◀";
         }
         else{
             opentreeDetailButton.innerHTML="▤▶";
