@@ -292,9 +292,9 @@ async function calcStructureBonus(industry_type) {
     else if (systemSecurity > 0) SYSTEM_BONUS_MULTIPLIER = 1.9;
     else SYSTEM_BONUS_MULTIPLIER = 2.1;
 
-    const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100));
+    const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100)*10000)/10000;
     structureBonusInput.setAttribute("accurate-structure-bonus",structure_bonus)
-    structureBonusInput.value = structure_bonus.toFixed(3);
+    structureBonusInput.value = Math.round(structure_bonus*1000)/1000;
 }
 
 
