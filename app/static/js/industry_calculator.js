@@ -220,7 +220,7 @@ function setManufacturingStructureAndRigData() {
     });
 }
 
-function calcStructureBonus(industry_type) {
+async function calcStructureBonus(industry_type) {
 
     /*
     const manufacturingStructureRigOptions = [
@@ -269,10 +269,8 @@ function calcStructureBonus(industry_type) {
         return;
     }
 
-    const response = fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
-    console.log(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
-    console.log(response);
-    const jsonResult = response.json();
+    const response = await fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    const jsonResult = await response.json();
 
     const systemSecurity = parseFloat(jsonResult["security_status"]).toFixed(1);
 
