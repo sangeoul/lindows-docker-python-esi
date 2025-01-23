@@ -179,8 +179,6 @@ function setManufacturingStructureAndRigData() {
     // Populate Manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
 
-        SYSTEM_BONUS=2.1
-        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
         optionElement.textContent = option.text;
@@ -190,8 +188,6 @@ function setManufacturingStructureAndRigData() {
     // Populate Component manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
 
-        SYSTEM_BONUS=2.1
-        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
         optionElement.textContent = option.text;
@@ -201,8 +197,6 @@ function setManufacturingStructureAndRigData() {
     // Populate Reation Structure&Rig select element
     reactionStructureRigOptions.forEach(option => {
 
-        SYSTEM_BONUS=1.1
-        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
         optionElement.textContent = option.text;
@@ -212,16 +206,21 @@ function setManufacturingStructureAndRigData() {
     // Populate Fuel manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
 
-        SYSTEM_BONUS=2.1
-        bonus=(1-(1-(option.rig_bonus*SYSTEM_BONUS/100))*(1-option.structure_bonus/100)) *100;
         const optionElement = document.createElement("option");
         optionElement.value = bonus;
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
+
+    calcStructureBonus("manufacturing");
+    calcStructureBonus("component");
+    calcStructureBonus("reaction");
+    calcStructureBonus("fuel");
 }
 
 function calcStructureBonus(industry_type) {
+
+    /*
     const manufacturingStructureRigOptions = [
         { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
         { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
@@ -234,6 +233,7 @@ function calcStructureBonus(industry_type) {
         { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
         { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
     ];
+    */
 
     if (!["manufacturing", "component", "reaction", "fuel"].includes(industry_type)) {
         console.error('Invalid industry type:', industry_type);
