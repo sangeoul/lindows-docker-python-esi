@@ -221,15 +221,12 @@ function setManufacturingStructureAndRigData() {
     });
 }
 
-function calcStructureBonus(industry_type){
-
+function calcStructureBonus(industry_type) {
     const manufacturingStructureRigOptions = [
         { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
         { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
-        //{ bonus: 1, text: 'Engineering Thukker' },
         { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
         { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
-        //{ bonus: 1, text: 'Other Thuk' },
         { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
         { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
     ];
@@ -238,38 +235,51 @@ function calcStructureBonus(industry_type){
         { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
     ];
 
-    if(industry_type not isin ["manufacturing","component","reaction","fuel"]){
-        return error;
+    if (!["manufacturing", "component", "reaction", "fuel"].includes(industry_type)) {
+        console.error('Invalid industry type:', industry_type);
+        return;
     }
 
     const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
     const industrySystemDataList = document.querySelector('#industry-system-options');
-    const structureSelectInput = document.querySelector("#"+industry_type+"-structure-select");
-    const structureBonusInput = document.querySelector("#"+industry_type+"-structure-bonus");
+    const structureSelectInput = document.querySelector(`#${industry_type}-structure-select`);
+    const structureBonusInput = document.querySelector(`#${industry_type}-structure-bonus`);
 
-    const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+    const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === industrySystemInput.value);
+    if (!selectedSystemOption) {
+        console.error('Selected system not found in datalist.');
+        return;
+    }
     const system_index_id = selectedSystemOption.getAttribute("data-solar_system_id");
 
-    const selectedStructureOption = findSelectedOptionElement_from_structureSelectInput()
-    const selectedStructure=selectedStructureOption.textContent;
+    const selectedStructureOption = Array.from(structureSelectInput.options).find(option => option.selected);
+    if (!selectedStructureOption) {
+        console.error('Selected structure not found in select input.');
+        return;
+    }
+    const selectedStructure = selectedStructureOption.textContent;
 
+    const currentRigOption = industry_type === "reaction"
+        ? reactionStructureRigOptions.find(option => option.text === selectedStructure)
+        : manufacturingStructureRigOptions.find(option => option.text === selectedStructure);
+    if (!currentRigOption) {
+        console.error('Selected rig option not found.');
+        return;
+    }
 
-    const currentRigOption= industry_type=="reaction"?findRigOptionFrom_reactionStructureRigOptions(text=selectedStructure):findRigOptionFrom_manufacturingStructureRigOptions(text=selectedStructure)
+    const response = fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    const jsonResult = response.json();
 
-    jsonResult=Json_API_request_to("https://esi.evetech.net/latest/universe/systems/"+system_index_id+"/?datasource=tranquility&language=en");
+    const systemSecurity = parseFloat(jsonResult["security_status"]).toFixed(1);
 
-    systemSecurity=jsonResult["security_status"].toFixed(1);
+    let SYSTEM_BONUS_MULTIPLIER;
+    if (systemSecurity >= 0.5) SYSTEM_BONUS_MULTIPLIER = 1;
+    else if (systemSecurity > 0) SYSTEM_BONUS_MULTIPLIER = 1.9;
+    else SYSTEM_BONUS_MULTIPLIER = 2.1;
 
-    if(systemSecurity>=0.5) SYSTEM_BONUS_MULTIPLIER=1
-    else if(systemSecurity>0) SYSTEM_BONUS_MULTIPLIER=1.9
-    else SYSTEM_BONUS_MULTIPLIER=2.1
-
-    const structure_bonus=(1-(1-(selectedRigBonus*SYSTEM_BONUS_MULTIPLIER/100))*(1-option.structure_bonus/100)) *100;
-
+    const structure_bonus = ((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100).toFixed(2);
+    structureBonusInput.value = structure_bonus;
 }
-
-
-
 
 
 async function loadBlueprintsData() {
