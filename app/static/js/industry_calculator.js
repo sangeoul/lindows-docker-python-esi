@@ -404,9 +404,9 @@ async function addAllEventListener(){
 
 
     const detailButton = document.querySelector("#detail-button");
-    const componentRow = document.querySelector("#component-row");
-    const reactionRow = document.querySelector("#reaction-row");
-    const fuelRow = document.querySelector("#fuel-row");
+    const componentRow = document.querySelector("#component-setting-row");
+    const reactionRow = document.querySelector("#reaction-setting-row");
+    const fuelRow = document.querySelector("#fuel-setting-row");
 
     detailButton.addEventListener('click', function() {
         const isVisible = componentRow.classList.contains('hidden-data');
@@ -454,9 +454,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         await Promise.all([
             loadSystemIndex()  
         ]);
-
-
-
         addAllEventListener();
 
 
