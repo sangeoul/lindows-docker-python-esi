@@ -24,6 +24,48 @@ const reactionStructureRigOptions = [
     { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
 ];
 
+
+// Function to set a cookie
+function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+// Function to save the value of an element to a cookie
+function saveValueToCookie(element) {
+    const id = element.id;
+    const value = element.type === 'checkbox' ? element.checked : element.value;
+    setCookie(id, value, 365);
+}
+
+// Function to load the value from a cookie to an element
+function loadValueFromCookie(element) {
+    const id = element.id;
+    const value = getCookie(id);
+    if (value !== null) {
+        if (element.type === 'checkbox') {
+            element.checked = (value === 'true');
+        } else {
+            element.value = value;
+        }
+    }
+}
+
+
 // Function to fetch data from the API and store it
 async function loadEivPriceData() {
     try {
@@ -221,7 +263,7 @@ function setManufacturingStructureAndRigData() {
 
     manufacturingSelect.addEventListener("input",function(){
         const selectedValue = manufacturingSelect.value;
-        
+
         calcStructureBonus("manufacturing");
 
         componentSelect.value = selectedValue;
@@ -321,5 +363,17 @@ document.addEventListener("DOMContentLoaded", function() {
     loadSystemData();
     loadEivPriceData();
     setManufacturingStructureAndRigData()
+
+    const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
+    inputs.forEach(input => loadValueFromCookie(input));
     
+});
+
+
+// Save values to cookies whenever they change
+document.addEventListener("input", function(event) {
+    const target = event.target;
+    if (target.matches("input:not(#blueprint-input, #me-input), select")) {
+        saveValueToCookie(target);
+    }
 });
