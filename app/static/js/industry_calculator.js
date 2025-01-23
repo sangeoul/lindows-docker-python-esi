@@ -202,7 +202,7 @@ function updateSystemIndex(system_id) {
     
 }
 
-function loadSystemIndex(){
+async function loadSystemIndex(){
 
     
     const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
@@ -288,6 +288,8 @@ function setManufacturingStructureAndRigData() {
     fuelSelect.addEventListener("input",function(){
         calcStructureBonus("fuel");
     });
+
+    
 }
 
 async function calcStructureBonus(industry_type) {
@@ -354,6 +356,20 @@ async function calcStructureBonus(industry_type) {
     structureBonusInput.value = Math.round(structure_bonus*1000)/1000;
 }
 
+async function setTaxInputLink(){
+    manufacturingTaxInput=document.querySelector('#manufacturing-tax');
+    componentTaxInput=document.querySelector('#component-tax');
+    reactionTaxInput=document.querySelector('#reaction-tax');
+    fuelTaxInput=document.querySelector('#fuel-tax');
+
+    manufacturingTaxInput.addEventListener("input",function(){
+        const manufacturingTaxValue = manufacturingTaxInput.value;
+
+        componentTaxInput.value = manufacturingTaxValue;
+        reactionTaxInput.value = manufacturingTaxValue;
+        fuelTaxInput.value = manufacturingTaxValue;
+    });
+}
 
 async function loadBlueprintsData() {
     // Populate blueprint datalist
@@ -374,18 +390,21 @@ document.addEventListener("DOMContentLoaded", async function() {
             loadBlueprintsData(),
             loadSystemData(),
             loadEivPriceData(),
-            setManufacturingStructureAndRigData()
+            setManufacturingStructureAndRigData(),
+
+            calcStructureBonus("manufacturing"),
+            calcStructureBonus("component"),
+            calcStructureBonus("reaction"),
+            calcStructureBonus("fuel"),
+            setTaxInputLink(),
+            loadSystemIndex()          
         ]);
 
         // After all async functions are done, load values from cookies
         const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
         inputs.forEach(input => loadValueFromCookie(input));
 
-        calcStructureBonus("manufacturing");
-        calcStructureBonus("component");
-        calcStructureBonus("reaction");
-        calcStructureBonus("fuel");
-        loadSystemIndex();
+
 
     } catch (error) {
         console.error('Error loading data:', error);
