@@ -431,6 +431,7 @@ async function addAllEventListener(){
 
     const opentreeDetailButton = document.querySelector("#opentree-detail-button");
     const opentreeCheckboxs = document.querySelector("#opentree-checkboxs-area");
+    console.log(opentreeCheckboxs);
     opentreeDetailButton.addEventListener('click', function() {
         const isInvisible = opentreeCheckboxs.classList.contains('hidden-data');
         if(isInvisible){
