@@ -410,6 +410,12 @@ async function addAllEventListener(){
 
     detailButton.addEventListener('click', function() {
         const isVisible = componentRow.classList.contains('hidden-data');
+        if(isVisible){
+            detailButton.innerHTML="Detail▶";
+        }
+        else{
+            detailButton.innerHTML="Detail▼";
+        }
         componentRow.classList.toggle('hidden-data', !isVisible);
         reactionRow.classList.toggle('hidden-data', !isVisible);
         fuelRow.classList.toggle('hidden-data', !isVisible);
