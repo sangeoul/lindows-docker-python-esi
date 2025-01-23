@@ -414,10 +414,10 @@ async function addAllEventListener(){
     calculatorDetailButton.addEventListener('click', function() {
         const isInvisible = componentRow.classList.contains('hidden-data');
         if(isInvisible){
-            calculatorDetailButton.innerHTML="Detail▼";
+            calculatorDetailButton.innerHTML="▤▼";
         }
         else{
-            calculatorDetailButton.innerHTML="Detail▶";
+            calculatorDetailButton.innerHTML="▤▶";
         }
         componentRow.classList.toggle('hidden-data', !isInvisible);
         reactionRow.classList.toggle('hidden-data', !isInvisible);
@@ -434,10 +434,10 @@ async function addAllEventListener(){
     opentreeDetailButton.addEventListener('click', function() {
         const isInvisible = opentreeCheckboxs.classList.contains('hidden-data');
         if(isInvisible){
-            opentreeDetailButton.innerHTML="Detail▼";
+            opentreeDetailButton.innerHTML="▤▼";
         }
         else{
-            opentreeDetailButton.innerHTML="Detail▶";
+            opentreeDetailButton.innerHTML="▤▶";
         }
         opentreeCheckboxs.classList.toggle('hidden-data', !isInvisible);
 
