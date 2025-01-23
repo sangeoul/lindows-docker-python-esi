@@ -162,10 +162,7 @@ async function loadSystemData() {
             //console.log(system.solar_system_name +" Set");
         });
 
-        industrySystemInput.addEventListener('input', function() {
-            loadSystemIndex();
 
-        });
 
     
     } catch (error) {
@@ -271,24 +268,6 @@ function setManufacturingStructureAndRigData() {
         fuelSelect.appendChild(optionElement);
     });
 
-    manufacturingSelect.addEventListener("input",function(){
-        const selectedValue = manufacturingSelect.value;
-
-        calcStructureBonus("manufacturing");
-
-        componentSelect.value = selectedValue;
-        fuelSelect.value = selectedValue;
-    });
-    componentSelect.addEventListener("input",function(){
-        calcStructureBonus("component");
-    });
-    reactionSelect.addEventListener("input",function(){
-        calcStructureBonus("reaction");
-    });
-    fuelSelect.addEventListener("input",function(){
-        calcStructureBonus("fuel");
-    });
-
     
 }
 
@@ -356,20 +335,7 @@ async function calcStructureBonus(industry_type) {
     structureBonusInput.value = Math.round(structure_bonus*1000)/1000;
 }
 
-async function setTaxInputLink(){
-    manufacturingTaxInput=document.querySelector('#manufacturing-tax');
-    componentTaxInput=document.querySelector('#component-tax');
-    reactionTaxInput=document.querySelector('#reaction-tax');
-    fuelTaxInput=document.querySelector('#fuel-tax');
 
-    manufacturingTaxInput.addEventListener("input",function(){
-        const manufacturingTaxValue = manufacturingTaxInput.value;
-
-        componentTaxInput.value = manufacturingTaxValue;
-        reactionTaxInput.value = manufacturingTaxValue;
-        fuelTaxInput.value = manufacturingTaxValue;
-    });
-}
 
 async function loadBlueprintsData() {
     // Populate blueprint datalist
@@ -396,8 +362,52 @@ async function loadPanelVisibility() {
     componentRow.classList.toggle('hidden-data', !componentVisible);
     reactionRow.classList.toggle('hidden-data', !reactionVisible);
     fuelRow.classList.toggle('hidden-data', !fuelVisible);
+}
+
+
+async function addAllEventListener(){
+
+    const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+
+    const manufacturingSelect = document.querySelector("#manufacturing-structure-select");
+    const componentSelect = document.querySelector("#component-structure-select");
+    const reactionSelect = document.querySelector("#reaction-structure-select");
+    const fuelSelect = document.querySelector("#fuel-structure-select");
+
+
+
+    industrySystemInput.addEventListener('input', function() {
+        loadSystemIndex();
+
+    });
+
+
+    manufacturingSelect.addEventListener("input",function(){
+        const selectedValue = manufacturingSelect.value;
+
+        calcStructureBonus("manufacturing");
+
+        componentSelect.value = selectedValue;
+        fuelSelect.value = selectedValue;
+    });
+    componentSelect.addEventListener("input",function(){
+        calcStructureBonus("component");
+    });
+    reactionSelect.addEventListener("input",function(){
+        calcStructureBonus("reaction");
+    });
+    fuelSelect.addEventListener("input",function(){
+        calcStructureBonus("fuel");
+    });
+
+    setTaxInputLink();
+
 
     const detailButton = document.querySelector("#detail-button");
+    const componentRow = document.querySelector("#component-row");
+    const reactionRow = document.querySelector("#reaction-row");
+    const fuelRow = document.querySelector("#fuel-row");
+
     detailButton.addEventListener('click', function() {
         const isVisible = componentRow.classList.contains('hidden-data');
         componentRow.classList.toggle('hidden-data', !isVisible);
@@ -411,6 +421,20 @@ async function loadPanelVisibility() {
     });
 }
 
+async function setTaxInputLink(){
+    manufacturingTaxInput=document.querySelector('#manufacturing-tax');
+    componentTaxInput=document.querySelector('#component-tax');
+    reactionTaxInput=document.querySelector('#reaction-tax');
+    fuelTaxInput=document.querySelector('#fuel-tax');
+
+    manufacturingTaxInput.addEventListener("input",function(){
+        const manufacturingTaxValue = manufacturingTaxInput.value;
+
+        componentTaxInput.value = manufacturingTaxValue;
+        reactionTaxInput.value = manufacturingTaxValue;
+        fuelTaxInput.value = manufacturingTaxValue;
+    });
+}
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", async function() {
@@ -436,12 +460,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
         inputs.forEach(input => loadValueFromCookie(input));
 
+        addAllEventListener()
+
 
 
     } catch (error) {
         console.error('Error loading data:', error);
     }
 });
+
 
 
 // Save values to cookies whenever they change
