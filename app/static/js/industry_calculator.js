@@ -128,11 +128,6 @@ async function loadSystemData() {
                 const system_index_id = selectedOption.getAttribute("data-solar_system_id");
                 console.log("Selected System ID:", system_index_id);
                 updateSystemIndex(system_index_id);
-
-                calcStructureBonus("manufacturing");
-                calcStructureBonus("component");
-                calcStructureBonus("reaction");
-                calcStructureBonus("fuel");
                 
             }
 
@@ -165,6 +160,11 @@ function updateSystemIndex(system_id) {
     componentSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
     reactionSystemIndex.value=(systemInfo["reaction"]*100).toFixed(2) || 0.1;
     fuelSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
+
+    calcStructureBonus("manufacturing");
+    calcStructureBonus("component");
+    calcStructureBonus("reaction");
+    calcStructureBonus("fuel");
 }
 
 
