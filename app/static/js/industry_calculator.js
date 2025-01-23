@@ -204,7 +204,9 @@ function updateSystemIndex(system_id) {
 
 function loadSystemIndex(){
 
+    
     const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+    const industrySystemDataList = document.querySelector('#industry-system-options');
     const value = industrySystemInput.value;
     const isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
     if(isValueInOptions){
