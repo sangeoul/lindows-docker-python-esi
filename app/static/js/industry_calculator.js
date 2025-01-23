@@ -218,6 +218,19 @@ function setManufacturingStructureAndRigData() {
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
+
+    manufacturingSelect.addEventListener("input",function(){
+        calcStructureBonus("manufacturing");
+    });
+    componentSelect.addEventListener("input",function(){
+        calcStructureBonus("component");
+    });
+    reactionSelect.addEventListener("input",function(){
+        calcStructureBonus("reaction");
+    });
+    fuelSelect.addEventListener("input",function(){
+        calcStructureBonus("fuel");
+    });
 }
 
 async function calcStructureBonus(industry_type) {
