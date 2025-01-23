@@ -420,14 +420,16 @@ document.addEventListener("DOMContentLoaded", async function() {
             loadBlueprintsData(),
             loadSystemData(),
             loadEivPriceData(),
-            setManufacturingStructureAndRigData(),
+            setManufacturingStructureAndRigData()        
+        ]);
 
+        await Promise.all([
             calcStructureBonus("manufacturing"),
             calcStructureBonus("component"),
             calcStructureBonus("reaction"),
             calcStructureBonus("fuel"),
             setTaxInputLink(),
-            loadSystemIndex()          
+            loadSystemIndex()  
         ]);
 
         // After all async functions are done, load values from cookies
