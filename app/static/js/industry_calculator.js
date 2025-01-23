@@ -128,6 +128,12 @@ async function loadSystemData() {
                 const system_index_id = selectedOption.getAttribute("data-solar_system_id");
                 console.log("Selected System ID:", system_index_id);
                 updateSystemIndex(system_index_id);
+                
+                calcStructureBonus("manufacturing");
+                calcStructureBonus("component");
+                calcStructureBonus("reaction");
+                calcStructureBonus("fuel");
+                
             }
 
         });
@@ -212,11 +218,6 @@ function setManufacturingStructureAndRigData() {
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
-
-    calcStructureBonus("manufacturing");
-    calcStructureBonus("component");
-    calcStructureBonus("reaction");
-    calcStructureBonus("fuel");
 }
 
 function calcStructureBonus(industry_type) {
