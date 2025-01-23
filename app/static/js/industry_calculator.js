@@ -128,7 +128,7 @@ async function loadSystemData() {
                 const system_index_id = selectedOption.getAttribute("data-solar_system_id");
                 console.log("Selected System ID:", system_index_id);
                 updateSystemIndex(system_index_id);
-                
+
                 calcStructureBonus("manufacturing");
                 calcStructureBonus("component");
                 calcStructureBonus("reaction");
@@ -270,6 +270,8 @@ function calcStructureBonus(industry_type) {
     }
 
     const response = fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    console.log(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    console.log(response);
     const jsonResult = response.json();
 
     const systemSecurity = parseFloat(jsonResult["security_status"]).toFixed(1);
