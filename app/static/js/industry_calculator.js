@@ -447,6 +447,10 @@ document.addEventListener("DOMContentLoaded", async function() {
             setManufacturingStructureAndRigData()        
         ]);
 
+        // After all async functions are done, load values from cookies
+        const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
+        inputs.forEach(input => loadValueFromCookie(input));
+        
         await Promise.all([
             calcStructureBonus("manufacturing"),
             calcStructureBonus("component"),
@@ -456,11 +460,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             loadSystemIndex()  
         ]);
 
-        // After all async functions are done, load values from cookies
-        const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
-        inputs.forEach(input => loadValueFromCookie(input));
 
-        addAllEventListener()
+
+        addAllEventListener();
 
 
 
