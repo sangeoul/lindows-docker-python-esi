@@ -450,13 +450,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         // After all async functions are done, load values from cookies
         const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
         inputs.forEach(input => loadValueFromCookie(input));
-        
+
         await Promise.all([
-            calcStructureBonus("manufacturing"),
-            calcStructureBonus("component"),
-            calcStructureBonus("reaction"),
-            calcStructureBonus("fuel"),
-            setTaxInputLink(),
             loadSystemIndex()  
         ]);
 
