@@ -353,15 +353,18 @@ async function loadPanelVisibility() {
     const componentRow = document.querySelector("#component-setting-row");
     const reactionRow = document.querySelector("#reaction-setting-row");
     const fuelRow = document.querySelector("#fuel-setting-row");
+    const opentree = document.querySelector("#opentree-checkboxs-area");
 
     // Load visibility state from cookies
     const componentVisible = getCookie('componentVisible') === 'true';
     const reactionVisible = getCookie('reactionVisible') === 'true';
     const fuelVisible = getCookie('fuelVisible') === 'true';
+    const opentreeVisible = getCookie('opentreeCheckboxsVisible') === 'true';
 
     componentRow.classList.toggle('hidden-data', !componentVisible);
     reactionRow.classList.toggle('hidden-data', !reactionVisible);
     fuelRow.classList.toggle('hidden-data', !fuelVisible);
+    opentree.classList.toggle('hidden-dadta',!opentreeVisible);
 }
 
 
@@ -403,27 +406,43 @@ async function addAllEventListener(){
     setTaxInputLink();
 
 
-    const detailButton = document.querySelector("#calculator-detail-button");
+    const calculatorDetailButton = document.querySelector("#calculator-detail-button");
     const componentRow = document.querySelector("#component-setting-row");
     const reactionRow = document.querySelector("#reaction-setting-row");
     const fuelRow = document.querySelector("#fuel-setting-row");
 
-    detailButton.addEventListener('click', function() {
-        const isVisible = componentRow.classList.contains('hidden-data');
-        if(isVisible){
-            detailButton.innerHTML="Detail▼";
+    calculatorDetailButton.addEventListener('click', function() {
+        const isInvisible = componentRow.classList.contains('hidden-data');
+        if(isInvisible){
+            calculatorDetailButton.innerHTML="Detail▼";
         }
         else{
-            detailButton.innerHTML="Detail▶";
+            calculatorDetailButton.innerHTML="Detail▶";
         }
-        componentRow.classList.toggle('hidden-data', !isVisible);
-        reactionRow.classList.toggle('hidden-data', !isVisible);
-        fuelRow.classList.toggle('hidden-data', !isVisible);
+        componentRow.classList.toggle('hidden-data', !isInvisible);
+        reactionRow.classList.toggle('hidden-data', !isInvisible);
+        fuelRow.classList.toggle('hidden-data', !isInvisible);
 
         // Save visibility state to cookies
         setCookie('componentVisible', !componentRow.classList.contains('hidden-data'), 365);
         setCookie('reactionVisible', !reactionRow.classList.contains('hidden-data'), 365);
         setCookie('fuelVisible', !fuelRow.classList.contains('hidden-data'), 365);
+    });
+
+    const opentreeDetailButton = document.querySelector("#opentree-detail-button");
+    const opentreeCheckboxs = document.querySelector("#opentree-checkboxs-area");
+    opentreeDetailButton.addEventListener('click', function() {
+        const isInvisible = opentreeCheckboxs.classList.contains('hidden-data');
+        if(isInvisible){
+            opentreeDetailButton.innerHTML="Detail▼";
+        }
+        else{
+            opentreeDetailButton.innerHTML="Detail▶";
+        }
+        opentreeCheckboxs.classList.toggle('hidden-data', !isInvisible);
+
+        // Save visibility state to cookies
+        setCookie('opentreeCheckboxsVisible', !opentreeCheckboxs.classList.contains('hidden-data'), 365);
     });
 }
 
