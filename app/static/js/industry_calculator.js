@@ -8,6 +8,22 @@ const systemData = [];
 const blueprintDataElement = document.getElementById('blueprint-data');
 const blueprintData = JSON.parse(blueprintDataElement.getAttribute('data-blueprints'));
 
+// Example options for Manufacturing Structure&Rig select element
+const manufacturingStructureRigOptions = [
+    { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
+    { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
+    //{ bonus: 1, text: 'Engineering Thukker' },
+    { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
+    { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
+    //{ bonus: 1, text: 'Other Thuk' },
+    { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
+    { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
+];
+const reactionStructureRigOptions = [
+    { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
+    { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
+];
+
 // Function to fetch data from the API and store it
 async function loadEivPriceData() {
     try {
@@ -147,21 +163,7 @@ function updateSystemIndex(system_id) {
 
 
 function setManufacturingStructureAndRigData() {
-    // Example options for Manufacturing Structure&Rig select element
-    const manufacturingStructureRigOptions = [
-        { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
-        { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
-        //{ bonus: 1, text: 'Engineering Thukker' },
-        { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
-        { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
-        //{ bonus: 1, text: 'Other Thuk' },
-        { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
-        { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
-    ];
-    const reactionStructureRigOptions = [
-        { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
-        { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
-    ];
+
 
     const manufacturingSelect = document.querySelector("#manufacturing-structure-select");
     const componentSelect = document.querySelector("#component-structure-select");
@@ -217,6 +219,53 @@ function setManufacturingStructureAndRigData() {
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
+}
+
+function calcStructureBonus(industry_type){
+
+    const manufacturingStructureRigOptions = [
+        { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
+        { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
+        //{ bonus: 1, text: 'Engineering Thukker' },
+        { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
+        { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
+        //{ bonus: 1, text: 'Other Thuk' },
+        { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
+        { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
+    ];
+    const reactionStructureRigOptions = [
+        { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
+        { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
+    ];
+
+    if(industry_type not isin ["manufacturing","component","reaction","fuel"]){
+        return error;
+    }
+
+    const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+    const industrySystemDataList = document.querySelector('#industry-system-options');
+    const structureSelectInput = document.querySelector("#"+industry_type+"-structure-select");
+    const structureBonusInput = document.querySelector("#"+industry_type+"-structure-bonus");
+
+    const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+    const system_index_id = selectedSystemOption.getAttribute("data-solar_system_id");
+
+    const selectedStructureOption = findSelectedOptionElement_from_structureSelectInput()
+    const selectedStructure=selectedStructureOption.textContent;
+
+
+    const currentRigOption= industry_type=="reaction"?findRigOptionFrom_reactionStructureRigOptions(text=selectedStructure):findRigOptionFrom_manufacturingStructureRigOptions(text=selectedStructure)
+
+    jsonResult=Json_API_request_to("https://esi.evetech.net/latest/universe/systems/"+system_index_id+"/?datasource=tranquility&language=en");
+
+    systemSecurity=jsonResult["security_status"].toFixed(1);
+
+    if(systemSecurity>=0.5) SYSTEM_BONUS_MULTIPLIER=1
+    else if(systemSecurity>0) SYSTEM_BONUS_MULTIPLIER=1.9
+    else SYSTEM_BONUS_MULTIPLIER=2.1
+
+    const structure_bonus=(1-(1-(selectedRigBonus*SYSTEM_BONUS_MULTIPLIER/100))*(1-option.structure_bonus/100)) *100;
+
 }
 
 
