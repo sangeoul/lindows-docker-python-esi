@@ -457,6 +457,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
         inputs.forEach(input => loadValueFromCookie(input));
 
+        loadPanelVisibility();
+
         await Promise.all([
             loadSystemIndex()  
         ]);
