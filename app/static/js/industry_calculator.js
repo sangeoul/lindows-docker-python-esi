@@ -364,7 +364,7 @@ async function loadPanelVisibility() {
     componentRow.classList.toggle('hidden-data', !componentVisible);
     reactionRow.classList.toggle('hidden-data', !reactionVisible);
     fuelRow.classList.toggle('hidden-data', !fuelVisible);
-    opentree.classList.toggle('hidden-dadta',!opentreeVisible);
+    opentree.classList.toggle('hidden-data',!opentreeVisible);
 }
 
 
