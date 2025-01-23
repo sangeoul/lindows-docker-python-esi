@@ -382,6 +382,36 @@ async function loadBlueprintsData() {
     });
 }
 
+// Function to load panel visibility state from cookies
+async function loadPanelVisibility() {
+    const componentRow = document.querySelector("#component-row");
+    const reactionRow = document.querySelector("#reaction-row");
+    const fuelRow = document.querySelector("#fuel-row");
+
+    // Load visibility state from cookies
+    const componentVisible = getCookie('componentVisible') === 'true';
+    const reactionVisible = getCookie('reactionVisible') === 'true';
+    const fuelVisible = getCookie('fuelVisible') === 'true';
+
+    componentRow.classList.toggle('hidden-data', !componentVisible);
+    reactionRow.classList.toggle('hidden-data', !reactionVisible);
+    fuelRow.classList.toggle('hidden-data', !fuelVisible);
+
+    const detailButton = document.querySelector("#detail-button");
+    detailButton.addEventListener('click', function() {
+        const isVisible = componentRow.classList.contains('hidden-data');
+        componentRow.classList.toggle('hidden-data', !isVisible);
+        reactionRow.classList.toggle('hidden-data', !isVisible);
+        fuelRow.classList.toggle('hidden-data', !isVisible);
+
+        // Save visibility state to cookies
+        setCookie('componentVisible', !componentRow.classList.contains('hidden-data'), 365);
+        setCookie('reactionVisible', !reactionRow.classList.contains('hidden-data'), 365);
+        setCookie('fuelVisible', !fuelRow.classList.contains('hidden-data'), 365);
+    });
+}
+
+
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", async function() {
     try {
@@ -419,3 +449,5 @@ document.addEventListener("input", function(event) {
         saveValueToCookie(target);
     }
 });
+
+
