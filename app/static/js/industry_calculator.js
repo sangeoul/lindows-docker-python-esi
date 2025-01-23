@@ -179,8 +179,9 @@ function setManufacturingStructureAndRigData() {
     // Populate Manufacturing Structure&Rig select element
     manufacturingStructureRigOptions.forEach(option => {
 
+        
         const optionElement = document.createElement("option");
-        optionElement.value = bonus;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         manufacturingSelect.appendChild(optionElement);
     });
@@ -189,7 +190,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = bonus;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
         optionElement.textContent = option.text;
         componentSelect.appendChild(optionElement);
     });
@@ -198,7 +199,7 @@ function setManufacturingStructureAndRigData() {
     reactionStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = bonus;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
         optionElement.textContent = option.text;
         reactionSelect.appendChild(optionElement);
     });
@@ -207,7 +208,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = bonus;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
