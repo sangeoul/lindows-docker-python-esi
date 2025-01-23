@@ -242,14 +242,14 @@ def register_industry():
         except Exception as e:
             print(f"Error: {str(e)}",flush=True)
 
-        return redirect(url_for("register_industry"))
+        return redirect(url_for("register_industry",init=industry_type))
 
     # Handle GET request
     # Get the 'init' parameter from the URL and set the default value for the dropdown
     init_value = request.args.get("init", default="1")  # Default to "Reprocessing"
     if not init_value:
         init_value=industry_type
-        
+
     try:
         init_value = int(init_value)  # Ensure the value is an integer
     except ValueError:
