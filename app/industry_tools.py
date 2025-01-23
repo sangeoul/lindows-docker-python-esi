@@ -15,6 +15,7 @@ app.secret_key = os.urandom(24)  # Required for session management and flashing 
 # Industry type constant
 INDUSTRY_REPROCESSING = 1
 INDUSTRY_MANUFACTURING = 2  # Manufacturing industry type
+INDUSTRY_REACTION = 3
 
 
 def storeToDB(records):
@@ -154,6 +155,58 @@ def parsingManufacturing(input_text):
 
     return records
 
+def parsingReaction(input_text):
+    """Parse input text specific to the Manufacturing industry type."""
+    lines = input_text.strip().split("\n")
+    output_line = lines[1]
+    input_lines = [line for line in lines[2:] if re.match(r"^\d+(,\d{3})* x", line)]
+
+    # Extract output information
+    output_match = re.match(r"^(\d+(,\d{3})*) x (.+)", output_line)
+    if not output_match:
+        raise ValueError("Invalid output line format")
+
+    output_amount = int(output_match.group(1).replace(",", ""))
+    output_name = output_match.group(3).strip().replace("\n", "").replace("\t", "")  # Clean the name
+
+    # Find output_id from the database
+    conn = connect_to_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT type_id FROM type_info WHERE name_en = %s OR name_ko = %s", (output_name, output_name))
+    output_id_row = cursor.fetchone()
+    if not output_id_row:
+        print(f"Output item '{output_name}' not found in the database", flush=True)
+        raise ValueError(f"Output item '{output_name}' not found in the database")
+    output_id = output_id_row[0]
+    print(f"Product item type_id:{output_id}", flush=True)
+
+    # Extract input information
+    records = []
+    for line in input_lines:
+        input_match = re.match(r"^(\d+(,\d{3})*) x (.+)", line)
+        if not input_match:
+            continue  # Skip invalid lines
+
+        input_amount = int(input_match.group(1).replace(",", ""))
+        input_name = input_match.group(3).strip().replace("\n", "").replace("\t", "")  # Clean the name
+
+        # Find input_id from the database
+        cursor.execute("SELECT type_id FROM type_info WHERE name_en = %s OR name_ko = %s", (input_name, input_name))
+        input_id_row = cursor.fetchone()
+        if not input_id_row:
+            print(f"Input item '{input_name}' not found in the database", flush=True)
+            raise ValueError(f"Input item '{input_name}' not found in the database")
+        input_id = input_id_row[0]
+        print(f"Material item type_id:{input_id}", flush=True)
+
+        # Construct the record
+        records.append((output_id, output_amount, input_id, input_amount, INDUSTRY_MANUFACTURING, output_id))
+
+    # Close the connection after processing
+    cursor.close()
+    conn.close()
+
+    return records
 
 @app.route("/register_industry", methods=["GET", "POST"])
 def register_industry():
@@ -176,6 +229,8 @@ def register_industry():
                 records = parsingManufacturing(input_text)
             elif industry_type == INDUSTRY_REPROCESSING:
                 records = parsingReprocessing(input_text)
+            elif industry_type == INDUSTRY_REACTION:
+                records = parsingReaction(input_text)
             else:
                 print("Error : Industry type not yet supported.",flush=True)
                 return redirect(url_for("register_industry"))
@@ -192,6 +247,9 @@ def register_industry():
     # Handle GET request
     # Get the 'init' parameter from the URL and set the default value for the dropdown
     init_value = request.args.get("init", default="1")  # Default to "Reprocessing"
+    if not init_value:
+        init_value=industry_type
+        
     try:
         init_value = int(init_value)  # Ensure the value is an integer
     except ValueError:
@@ -229,6 +287,7 @@ def register_industry():
                 <select id="industry_type" name="industry_type">
                     <option value="1" {% if init_value == 1 %}selected{% endif %}>Reprocessing</option>
                     <option value="2" {% if init_value == 2 %}selected{% endif %}>Manufacturing</option>
+                    <option value="3" {% if init_value == 3 %}selected{% endif %}>Reaction</option>
                     <!-- You can add more options for other industry types in the future -->
                 </select><br><br>
 
