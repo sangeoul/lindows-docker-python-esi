@@ -220,7 +220,12 @@ function setManufacturingStructureAndRigData() {
     });
 
     manufacturingSelect.addEventListener("input",function(){
+        const selectedValue = manufacturingSelect.value;
+        
         calcStructureBonus("manufacturing");
+
+        componentSelect.value = selectedValue;
+        fuelSelect.value = selectedValue;
     });
     componentSelect.addEventListener("input",function(){
         calcStructureBonus("component");
