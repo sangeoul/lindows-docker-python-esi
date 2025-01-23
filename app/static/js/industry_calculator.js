@@ -285,7 +285,7 @@ async function calcStructureBonus(industry_type) {
     const response = await fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
     const jsonResult = await response.json();
 
-    const systemSecurity = parseFloat(jsonResult["security_status"]).toFixed(1);
+    const systemSecurity = Math.round(parseFloat(jsonResult["security_status"])*10)/10;
 
     let SYSTEM_BONUS_MULTIPLIER;
     if (systemSecurity >= 0.5) SYSTEM_BONUS_MULTIPLIER = 1;
