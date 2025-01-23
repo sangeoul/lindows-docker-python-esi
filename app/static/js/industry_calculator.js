@@ -163,15 +163,7 @@ async function loadSystemData() {
         });
 
         industrySystemInput.addEventListener('input', function() {
-            const value = industrySystemInput.value;
-            const isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
-            if(isValueInOptions){
-                const selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
-                const system_index_id = selectedOption.getAttribute("data-solar_system_id");
-                console.log("Selected System ID:", system_index_id);
-                updateSystemIndex(system_index_id);
-                
-            }
+            loadSystemIndex();
 
         });
 
@@ -207,6 +199,22 @@ function updateSystemIndex(system_id) {
     calcStructureBonus("component");
     calcStructureBonus("reaction");
     calcStructureBonus("fuel");
+    
+}
+
+function loadSystemIndex(){
+
+    const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+    const value = industrySystemInput.value;
+    const isValueInOptions = Array.from(industrySystemDataList.options).some(option => option.value === value);
+    if(isValueInOptions){
+        const selectedOption = Array.from(industrySystemDataList.options).find(option => option.value === value);
+        const system_index_id = selectedOption.getAttribute("data-solar_system_id");
+        console.log("Selected System ID:", system_index_id);
+        updateSystemIndex(system_index_id);
+        
+    }
+
 }
 
 
@@ -357,16 +365,29 @@ async function loadBlueprintsData() {
 }
 
 // Call the function to fetch and store data
-document.addEventListener("DOMContentLoaded", function() {
-    
-    loadBlueprintsData();
-    loadSystemData();
-    loadEivPriceData();
-    setManufacturingStructureAndRigData()
+document.addEventListener("DOMContentLoaded", async function() {
+    try {
+        // Wait for all asynchronous functions to complete
+        await Promise.all([
+            loadBlueprintsData(),
+            loadSystemData(),
+            loadEivPriceData(),
+            setManufacturingStructureAndRigData()
+        ]);
 
-    const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
-    inputs.forEach(input => loadValueFromCookie(input));
-    
+        // After all async functions are done, load values from cookies
+        const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
+        inputs.forEach(input => loadValueFromCookie(input));
+
+        calcStructureBonus("manufacturing");
+        calcStructureBonus("component");
+        calcStructureBonus("reaction");
+        calcStructureBonus("fuel");
+        loadSystemIndex();
+
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
 });
 
 
