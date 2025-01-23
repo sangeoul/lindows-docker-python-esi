@@ -350,9 +350,9 @@ async function loadBlueprintsData() {
 
 // Function to load panel visibility state from cookies
 async function loadPanelVisibility() {
-    const componentRow = document.querySelector("#component-row");
-    const reactionRow = document.querySelector("#reaction-row");
-    const fuelRow = document.querySelector("#fuel-row");
+    const componentRow = document.querySelector("#component-setting-row");
+    const reactionRow = document.querySelector("#reaction-setting-row");
+    const fuelRow = document.querySelector("#fuel-setting-row");
 
     // Load visibility state from cookies
     const componentVisible = getCookie('componentVisible') === 'true';
