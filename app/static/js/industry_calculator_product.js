@@ -76,9 +76,10 @@ class Product {
     // Method to set materials by fetching data from API
     async setMaterials() {
         try {
+            console.log("!!DEUBG-TIMETEST : setMaterials step 1");
             const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${this.typeid}&industry_type=2`);
             const data = await response.json();
-
+            console.log("!!DEUBG-TIMETEST : setMaterials step 2");
             // Process the relation data
             if (data.relation && data.relation.length > 0) {
                 this.industry_type = data.industry_type; // Set the industry_type from the data
@@ -87,10 +88,10 @@ class Product {
                 this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
 
                 const promises = data.relation.map(async (rel, index) => {
-
+                    console.log("!!DEUBG-TIMETEST : setMaterials step 3");
                     const material_response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${rel.input_id}&industry_type=2`);
                     const material_material_data = await material_response.json();
-
+                    console.log("!!DEUBG-TIMETEST : setMaterials step 4");
                     let material_industry_type=INDUSTRY_TYPE_NO_DATA;
                     if(material_material_data.relation && material_material_data.relation.length>0){
                         material_industry_type=material_material_data.industry_type;
@@ -109,7 +110,9 @@ class Product {
                         this
                     );
                     this.material.push(material);
+                    console.log("!!DEUBG-TIMETEST : setMaterials step 5");
                     await material.getMarketPrices(); // Fetch market prices for each material
+                    console.log("!!DEUBG-TIMETEST : setMaterials step 6");
                 });
 
                 // Wait for all prices to be fetched
@@ -372,7 +375,7 @@ class Product {
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
         tableNextLevel.innerHTML="";
-        //await this.sortMaterials();
+        await this.sortMaterials();
         await this.updateTable();
 
         this.material.forEach(material => {
