@@ -14,6 +14,12 @@ const INDUSTRY_TYPE_REACTION = 3
 
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 
+
+QUANTITY_OPTION_ACCURATE=1;
+QUANTITY_OPTION_MINIMUM=2;
+
+quantity_option=1;
+
 origin_product="";
 
 product_index=1;
@@ -118,7 +124,11 @@ class Product {
             console.error('Error fetching materials:', error);
         }
     }
-
+    sortMaterials(pivot='priceSum') {
+        if (pivot === 'priceSum') {
+            this.material.sort((a, b) => b.getPriceSum() - a.getPriceSum()); // Sort by priceSum DESC
+        }
+    }
     // Method to set prices by fetching data from API
     async getMarketPrices() {
         try {
@@ -141,20 +151,45 @@ class Product {
             let total = 0;
             this.material.forEach(material => {
                 if (material.pricetype === PIRCETYPE_BUY) {
-                    total += material.buyprice * material.quantity;
+                    total += material.buyprice * material.getQuantity();
                 } else if (material.pricetype === PIRCETYPE_SELL) {
-                    total += material.sellprice * material.quantity;
+                    total += material.sellprice * material.getQuantity();
                 } else if (material.pricetype === PIRCETYPE_COST) {
                     material.calcPrice(); // Calculate the custom price for the material
-                    total += material.costprice * material.quantity;
+                    total += material.costprice * material.getQuantity();
                 } else if (material.pricetype === PIRCETYPE_CUSTOM) {
                     material.calcPrice(); // Calculate the custom price for the material
-                    total += material.customprice * material.quantity;
+                    total += material.customprice * material.getQuantity();
                 }
 
             });
-            this.costprice = total;
+            this.costprice = total/this.getQuantity();
         }
+        this.updateTable();
+    }
+    getPriceSum(){
+        if(this.pricetype===PRICETYPE_BUY){
+            return this.buyprice * this.getQuantity();
+        }
+        else if(this.pricetype===PIRCETYPE_SELL){
+            return this.sellprice * this.getQuantity();
+        }
+        else if(this.pricetype===PIRCETYPE_COST){
+            return this.costprice * this.getQuantity();
+        }
+        else if(this.pricetype===PIRCETYPE_CUSTOM){
+            return this.customprice * this.getQuantity();
+        }
+    }
+
+    getQuantity(){
+        if(quantity_option===QUANTITY_OPTION_MINIMUM){
+            return this.minimum_unit_quantity;
+        }
+        else{
+            return this.quantity;
+        }
+        
     }
 
     async makeTable(){
@@ -176,8 +211,9 @@ class Product {
         }
 
         // Item Name Area
-        itemNameCell.textContent = Math.ceil(this.quantity).toString()+"x "+ this.itemname;
+        itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
         itemNameCell.classList.add('product-name');
+        
 
         // Setting Icon Area
         const settingIcon = document.createElement('img');
@@ -198,32 +234,17 @@ class Product {
         const priceTable = document.createElement('table');
         priceTable.classList.add('price-table');
 
-        const sellRow = document.createElement('tr');
-        const sellLabelCell = document.createElement('td');
-        const sellPriceCell = document.createElement('td');
-        const sellRadioCell = document.createElement('td');
-        sellLabelCell.textContent = 'Sell:';
-        sellPriceCell.textContent = this.sellprice;
-        const sellRadio = document.createElement('input');
-        sellRadio.type = 'radio';
-        sellRadio.name = `price-type-${this.product_id}`;
-        sellRadio.value = 2;
-        sellRadio.checked = (this.pricetype === PIRCETYPE_SELL);
-        sellRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_SELL);
-        sellRadioCell.appendChild(sellRadio);
-        sellRow.appendChild(sellLabelCell);
-        sellRow.appendChild(sellPriceCell);
-        sellRow.appendChild(sellRadioCell);
 
         const buyRow = document.createElement('tr');
         const buyLabelCell = document.createElement('td');
         const buyPriceCell = document.createElement('td');
         const buyRadioCell = document.createElement('td');
         buyLabelCell.textContent = 'Buy:';
-        buyPriceCell.textContent = this.buyprice;
+        buyPriceCell.textContent = this.buyprice.toFixed(2);
+        buyPriceCell.setAttribute('id','td-buy-price');
         const buyRadio = document.createElement('input');
         buyRadio.type = 'radio';
-        buyRadio.name = `price-type-${this.product_id}`;
+        buyRadio.name = `price-type-${this.product_index}`;
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PIRCETYPE_BUY);
         buyRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_BUY);
@@ -232,15 +253,34 @@ class Product {
         buyRow.appendChild(buyPriceCell);
         buyRow.appendChild(buyRadioCell);
 
+        const sellRow = document.createElement('tr');
+        const sellLabelCell = document.createElement('td');
+        const sellPriceCell = document.createElement('td');
+        const sellRadioCell = document.createElement('td');
+        sellLabelCell.textContent = 'Sell:';
+        sellPriceCell.textContent = this.sellprice.toFixed(2);
+        sellPriceCell.setAttribute('id','td-sell-price');
+        const sellRadio = document.createElement('input');
+        sellRadio.type = 'radio';
+        sellRadio.name = `price-type-${this.product_index}`;
+        sellRadio.value = 2;
+        sellRadio.checked = (this.pricetype === PIRCETYPE_SELL);
+        sellRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_SELL);
+        sellRadioCell.appendChild(sellRadio);
+        sellRow.appendChild(sellLabelCell);
+        sellRow.appendChild(sellPriceCell);
+        sellRow.appendChild(sellRadioCell);
+
         const costRow = document.createElement('tr');
         const costLabelCell = document.createElement('td');
         const costPriceCell = document.createElement('td');
         const costRadioCell = document.createElement('td');
         costLabelCell.textContent = 'Cost:';
-        costPriceCell.textContent = this.costprice;
+        costPriceCell.textContent = this.costprice.toFixed(2);
+        costPriceCell.setAttribute('id','td-cost-price');
         const costRadio = document.createElement('input');
         costRadio.type = 'radio';
-        costRadio.name = `price-type-${this.product_id}`;
+        costRadio.name = `price-type-${this.product_index}`;
         costRadio.value = 3;
         costRadio.checked = (this.pricetype === PIRCETYPE_COST);
         costRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_COST);
@@ -264,7 +304,7 @@ class Product {
         customPriceInputCell.appendChild(customPriceInput);
         const customRadio = document.createElement('input');
         customRadio.type = 'radio';
-        customRadio.name = `price-type-${this.product_id}`;
+        customRadio.name = `price-type-${this.product_index}`;
         customRadio.value = 0;
         customRadio.checked = (this.pricetype!=PIRCETYPE_CUSTOM);
         customRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_CUSTOM);
@@ -273,8 +313,9 @@ class Product {
         customRow.appendChild(customPriceInputCell);
         customRow.appendChild(customRadioCell);
 
-        priceTable.appendChild(sellRow);
+
         priceTable.appendChild(buyRow);
+        priceTable.appendChild(sellRow);
         priceTable.appendChild(costRow);
         priceTable.appendChild(customRow);
         
@@ -297,6 +338,20 @@ class Product {
         this.table_pannel.appendChild(row2);
     }
 
+    async updateTable(){
+
+        const tdItemName=this.table_name.querySelector(".product-name");
+        const tdBuyPrice=this.table_name.querySelector("#td-buy-price");
+        const tdSellPrice=this.table_name.querySelector("#td-sell-price");
+        const tdCostPrice=this.table_name.querySelector("#td-cost-price");
+
+        tdItemName.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
+        tdBuyPrice.textContent = this.buyprice.toFixed(2);
+        tdSellPrice.textContent = this.sellprice.toFixed(2);
+        tdCostPrice.textContent = this.costprice.toFixed(2);
+
+    }
+
     async openNextTree(){
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
@@ -304,6 +359,15 @@ class Product {
         if(this.material.length==0){
             this.setMaterials();
         }
+        const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.level+1).toString);
+        tableNextLevel.innerHTML="";
+        this.sortMaterials();
+        this.updateTable();
+
+        this.material.forEach(material => {
+            tableNextLevel.appendChild(material.table_pannel);
+        });
+
     }
 }
 
@@ -332,7 +396,7 @@ async function runCalculate(){
         0
     )
 
-    const tableLevel1=querySelector("#product-pannel-lv0");
+    const tableLevel1=document.querySelector("#product-pannel-lv0");
     tableLevel1.appendChild(origin_product.table_pannel);
     origin_product.openNextTree();
 
