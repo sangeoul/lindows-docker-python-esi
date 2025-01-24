@@ -376,9 +376,17 @@ async function runCalculate(){
     
     const inputBlueprint= document.querySelector('input[list="blueprint-options"]');
     const inputBlueprintRun=document.querySelector('#blueprint-run-input');
+    const blueprintOptions = document.getElementById("blueprint-options");
+    const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
 
-    const typeId=inputBlueprint.getAttribute("data-type_id");
-
+    if(selectedOption){
+        const typeId=selectedOption.getAttribute("data-type_id");
+    }
+    else{
+        console.error("No matching option found with the blueprint");
+        return;
+    }
+    
     const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
     const data = await response.json();
     industry_type = data.industry_type;
