@@ -340,10 +340,10 @@ class Product {
 
     async updateTable(){
 
-        const tdItemName=this.table_name.querySelector(".product-name");
-        const tdBuyPrice=this.table_name.querySelector("#td-buy-price");
-        const tdSellPrice=this.table_name.querySelector("#td-sell-price");
-        const tdCostPrice=this.table_name.querySelector("#td-cost-price");
+        const tdItemName=this.table_pannel.querySelector(".product-name");
+        const tdBuyPrice=this.table_pannel.querySelector("#td-buy-price");
+        const tdSellPrice=this.table_pannel.querySelector("#td-sell-price");
+        const tdCostPrice=this.table_pannel.querySelector("#td-cost-price");
 
         tdItemName.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
         tdBuyPrice.textContent = this.buyprice.toFixed(2);
