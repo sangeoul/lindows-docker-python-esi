@@ -24,6 +24,12 @@ let origin_product="";
 
 let product_index=1;
 
+
+let industry_relation_cache={};
+let market_price_cache={};
+
+
+
 class Product {
     constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node,explicit_product_index=-1) {
         
@@ -76,10 +82,7 @@ class Product {
     // Method to set materials by fetching data from API
     async setMaterials() {
         try {
-            console.log("!!DEUBG-TIMETEST : setMaterials step 1");
-            const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${this.typeid}&industry_type=2`);
-            const data = await response.json();
-            console.log("!!DEUBG-TIMETEST : setMaterials step 2");
+            const data = await loadIndustryRelationWithCache(this.typeid);
             // Process the relation data
             if (data.relation && data.relation.length > 0) {
                 this.industry_type = data.industry_type; // Set the industry_type from the data
@@ -88,10 +91,7 @@ class Product {
                 this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
 
                 const promises = data.relation.map(async (rel, index) => {
-                    console.log("!!DEUBG-TIMETEST : setMaterials step 3");
-                    const material_response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${rel.input_id}&industry_type=2`);
-                    const material_material_data = await material_response.json();
-                    console.log("!!DEUBG-TIMETEST : setMaterials step 4");
+                    const material_material_data = await loadIndustryRelationWithCache(rel.input_id);
                     let material_industry_type=INDUSTRY_TYPE_NO_DATA;
                     if(material_material_data.relation && material_material_data.relation.length>0){
                         material_industry_type=material_material_data.industry_type;
@@ -110,9 +110,7 @@ class Product {
                         this
                     );
                     this.material.push(material);
-                    console.log("!!DEUBG-TIMETEST : setMaterials step 5");
                     await material.getMarketPrices(); // Fetch market prices for each material
-                    console.log("!!DEUBG-TIMETEST : setMaterials step 6");
                 });
 
                 // Wait for all prices to be fetched
@@ -137,8 +135,7 @@ class Product {
     // Method to set prices by fetching data from API
     async getMarketPrices() {
         try {
-            const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${this.typeid}`);
-            const data = await response.json();
+            const data = await loadMarketDataWithCache(this.typeid);
 
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
@@ -378,10 +375,46 @@ class Product {
         await this.sortMaterials();
         await this.updateTable();
 
-        this.material.forEach(material => {
-            tableNextLevel.appendChild(material.table_pannel);
-        });
 
+        for (const mat of this.material) {
+            await tableNextLevel.appendChild(mat.table_pannel);
+        }
+        
+    
+
+    }
+}
+
+async function loadIndustryRelationWithCache(typeId){
+
+    if(industry_relation_cache[typeId]){
+        const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
+        industry_relation_cache[typeId.toString()] = await response.json();
+        return industry_relation_cache[typeId];
+    }
+    else{
+        return industry_relation_cache[typeId];
+    }
+
+}
+
+async function loadMarketDataWithCache(typeId){
+
+    if(market_price_cache[typeId]){
+        const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
+        market_price_cache[typeId] = await response.json();
+        return industry_relation_cache[typeId];
+    }
+    else{
+        return industry_relation_cache[typeId];
+    }    
+}
+
+async function preloadIndustryRelationData(typeId){
+
+    let cache=await loadIndustryRelationWithCache(typeId);
+    for (const material of cache["relation"]){
+        await preloadIndustryRelationData(material["input_id"]);
     }
 }
 
@@ -403,8 +436,7 @@ async function runCalculate(){
         return;
     }
     
-    const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
-    const data = await response.json();
+    const data = await loadIndustryRelationWithCache(typeId);
     let industry_type = data.industry_type;
 
     origin_product=new Product(
@@ -422,6 +454,11 @@ async function runCalculate(){
 
     const tableLevel1=document.querySelector("#product-pannel-lv0");
     await origin_product.openNextTree();
+
+
+    // preload and save data for UX
+    preloadIndustryRelationData(typeId);
+
     tableLevel1.appendChild(origin_product.table_pannel);
 }
 
