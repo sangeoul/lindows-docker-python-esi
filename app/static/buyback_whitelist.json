@@ -15,7 +15,7 @@
         {"id": 456, "name": "Jaspet", "reprocessing": true ,"refining_rate":0.876},
         {"id": 457, "name": "Kernite", "reprocessing": true ,"refining_rate":0.876},
         {"id": 4755, "name": "Kylixium", "reprocessing": true ,"refining_rate":0.876},
-        {"id": 468, "name": "Mercoxit", "reprocessing": true ,"refining_rate":0.800},
+        {"id": 468, "name": "Mercoxit", "reprocessing": true ,"refining_rate":0.876},
         {"id": 4513, "name": "Mordunium", "reprocessing": true ,"refining_rate":0.876},
         {"id": 4756, "name": "Nocxite", "reprocessing": true ,"refining_rate":0.876},
         {"id": 469, "name": "Omber", "reprocessing": true ,"refining_rate":0.876},
@@ -105,5 +105,6 @@
         {"id": 34201, "name": "Accelerant Decryptor"},
         {"id": 11461, "name": "R.Db - Boundless Creations"},
         {"id": 20421, "name": "Datacore - Amarrian Starship Engineering"}
+        {"id": 11399, "name": "Morphite","buyback_rate":[0.95,1.02,1.03]}
     ]
 }
