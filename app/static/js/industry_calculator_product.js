@@ -220,7 +220,8 @@ class Product {
         settingIcon.src = BONUS_SETTING_ICON_URL; // Replace with actual setting icon URL
         settingIcon.alt = 'Settings';
         settingIcon.classList.add('setting-icon');
-        settingIconCell.appendChild(settingIcon);
+        //settingIconCell.appendChild(settingIcon);
+        settingIconCell.textContent=" [B]"
 
         row1.appendChild(itemIconCell);
         row1.appendChild(itemNameCell);
