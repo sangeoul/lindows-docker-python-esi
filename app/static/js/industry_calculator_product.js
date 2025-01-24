@@ -336,7 +336,7 @@ class Product {
         row2.appendChild(nextTreeCell);
 
         this.table_pennel=document.createElement('table');
-        this.table_pannel.classList.add('product-table');
+        this.table_pannel.classList.add('product-table-pannel');
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
 

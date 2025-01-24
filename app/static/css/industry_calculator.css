@@ -2,6 +2,9 @@
 table{
     border-collapse:collapse;
 }
+table.product-table-pannel{
+    display:block;
+}
 td,th{
     border:0px solid black;
     border-collapse:collapse;
