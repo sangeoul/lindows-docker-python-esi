@@ -360,6 +360,7 @@ class Product {
             this.setMaterials();
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.level+1).toString());
+        console.log("#product-pannel-lv"+(this.level+1).toString() + " : " + typeof tableNextLevel)
         tableNextLevel.innerHTML="";
         this.sortMaterials();
         this.updateTable();
