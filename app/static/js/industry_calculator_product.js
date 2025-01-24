@@ -372,7 +372,7 @@ class Product {
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
         tableNextLevel.innerHTML="";
-        await this.sortMaterials();
+        //await this.sortMaterials();
         await this.updateTable();
 
         this.material.forEach(material => {
