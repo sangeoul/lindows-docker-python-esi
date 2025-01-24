@@ -1,7 +1,7 @@
 import os
 from flask import Flask , render_template, redirect, url_for, session
 from flask_talisman import Talisman
-from flask_cors import CORS
+
 from datetime import timedelta
 from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
 from buyback import buyback,buyback_submit,buyback_history,accept_buyback,show_contracts_list,buyback_notice
@@ -11,10 +11,6 @@ from ore_price_calculator import ore_price_calculate
 from industry_calculator import industry_calculator
 
 app = Flask(__name__)
-
-###
-CORS(app, origins=["https://lindows.kr:8001"])
-###
 
 # Define your CSP policy
 csp = {
