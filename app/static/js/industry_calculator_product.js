@@ -29,7 +29,7 @@ class Product {
         
         if(explicit_product_index==-1){
             this.product_index=product_index;
-            product_inded++;
+            product_index++;
         }
 
         this.itemname = itemname;
