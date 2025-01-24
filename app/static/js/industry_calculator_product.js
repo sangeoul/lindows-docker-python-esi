@@ -51,7 +51,7 @@ class Product {
         }
 
         // pricetype 0: custom, 1: buy, 2: sell. , 3: cost Default = 1 (buy)
-        this.pricetype = PIRCETYPE_BUY;
+        this.pricetype = PRICETYPE_BUY;
 
         this.industry_type = industry_type;
         this.material = new Array();
@@ -150,14 +150,14 @@ class Product {
         } else {
             let total = 0;
             this.material.forEach(material => {
-                if (material.pricetype === PIRCETYPE_BUY) {
+                if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
-                } else if (material.pricetype === PIRCETYPE_SELL) {
+                } else if (material.pricetype === PRICETYPE_SELL) {
                     total += material.sellprice * material.getQuantity();
-                } else if (material.pricetype === PIRCETYPE_COST) {
+                } else if (material.pricetype === PRICETYPE_COST) {
                     material.calcPrice(); // Calculate the custom price for the material
                     total += material.costprice * material.getQuantity();
-                } else if (material.pricetype === PIRCETYPE_CUSTOM) {
+                } else if (material.pricetype === PRICETYPE_CUSTOM) {
                     material.calcPrice(); // Calculate the custom price for the material
                     total += material.customprice * material.getQuantity();
                 }
@@ -171,13 +171,13 @@ class Product {
         if(this.pricetype===PRICETYPE_BUY){
             return this.buyprice * this.getQuantity();
         }
-        else if(this.pricetype===PIRCETYPE_SELL){
+        else if(this.pricetype===PRICETYPE_SELL){
             return this.sellprice * this.getQuantity();
         }
-        else if(this.pricetype===PIRCETYPE_COST){
+        else if(this.pricetype===PRICETYPE_COST){
             return this.costprice * this.getQuantity();
         }
-        else if(this.pricetype===PIRCETYPE_CUSTOM){
+        else if(this.pricetype===PRICETYPE_CUSTOM){
             return this.customprice * this.getQuantity();
         }
     }
@@ -246,8 +246,8 @@ class Product {
         buyRadio.type = 'radio';
         buyRadio.name = `price-type-${this.product_index}`;
         buyRadio.value = 1;
-        buyRadio.checked = (this.pricetype === PIRCETYPE_BUY);
-        buyRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_BUY);
+        buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
+        buyRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_BUY);
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
         buyRow.appendChild(buyPriceCell);
@@ -264,8 +264,8 @@ class Product {
         sellRadio.type = 'radio';
         sellRadio.name = `price-type-${this.product_index}`;
         sellRadio.value = 2;
-        sellRadio.checked = (this.pricetype === PIRCETYPE_SELL);
-        sellRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_SELL);
+        sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
+        sellRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_SELL);
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
         sellRow.appendChild(sellPriceCell);
@@ -282,8 +282,8 @@ class Product {
         costRadio.type = 'radio';
         costRadio.name = `price-type-${this.product_index}`;
         costRadio.value = 3;
-        costRadio.checked = (this.pricetype === PIRCETYPE_COST);
-        costRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_COST);
+        costRadio.checked = (this.pricetype === PRICETYPE_COST);
+        costRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_COST);
         costRadioCell.appendChild(costRadio);
         costRow.appendChild(costLabelCell);
         costRow.appendChild(costPriceCell);
@@ -306,8 +306,8 @@ class Product {
         customRadio.type = 'radio';
         customRadio.name = `price-type-${this.product_index}`;
         customRadio.value = 0;
-        customRadio.checked = (this.pricetype!=PIRCETYPE_CUSTOM);
-        customRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_CUSTOM);
+        customRadio.checked = (this.pricetype!=PRICETYPE_CUSTOM);
+        customRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_CUSTOM);
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceLabelCell);
         customRow.appendChild(customPriceInputCell);
