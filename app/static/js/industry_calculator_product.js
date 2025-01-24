@@ -32,6 +32,7 @@ class Product {
             product_index++;
         }
 
+        console.log("Creating "+this.itemname+" Pannel.");
         this.itemname = itemname;
         this.typeid = typeid;
         this.iconurl = iconurl;
@@ -361,6 +362,8 @@ class Product {
     }
 
     async openNextTree(){
+
+        console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
         }
