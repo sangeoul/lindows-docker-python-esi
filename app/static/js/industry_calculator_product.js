@@ -67,7 +67,7 @@ class Product {
         this.rig_bonus = 0;
         this.structure_bonus = 0;
 
-        this.table_pannel=(HTMLTableElement)document.createElement("table");
+        this.table_pannel=document.createElement("table");
         this.makeTable();
     }
 
