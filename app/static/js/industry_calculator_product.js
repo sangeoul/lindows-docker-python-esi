@@ -15,14 +15,14 @@ const INDUSTRY_TYPE_REACTION = 3
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 
 
-QUANTITY_OPTION_ACCURATE=1;
-QUANTITY_OPTION_MINIMUM=2;
+const QUANTITY_OPTION_ACCURATE=1;
+const QUANTITY_OPTION_MINIMUM=2;
 
-quantity_option=1;
+let quantity_option=1;
 
-origin_product="";
+let origin_product="";
 
-product_index=1;
+let product_index=1;
 
 class Product {
     constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node,explicit_product_index=-1) {
@@ -89,7 +89,7 @@ class Product {
                     const material_response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${rel.input_id}&industry_type=2`);
                     const material_material_data = await material_response.json();
 
-                    material_industry_type=INDUSTRY_TYPE_NO_DATA;
+                    let material_industry_type=INDUSTRY_TYPE_NO_DATA;
                     if(material_material_data.relation && material_material_data.relation.length>0){
                         material_industry_type=material_material_data.industry_type;
                     }
@@ -379,8 +379,10 @@ async function runCalculate(){
     const blueprintOptions = document.getElementById("blueprint-options");
     const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
 
+    let typeId=0;
+    
     if(selectedOption){
-        const typeId=selectedOption.getAttribute("data-type_id");
+        typeId=selectedOption.getAttribute("data-type_id");
     }
     else{
         console.error("No matching option found with the blueprint");
@@ -389,7 +391,7 @@ async function runCalculate(){
     
     const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
     const data = await response.json();
-    industry_type = data.industry_type;
+    let industry_type = data.industry_type;
 
     origin_product=new Product(
         inputBlueprint.value,
