@@ -325,6 +325,9 @@ class Product {
         const nextTreeButton = document.createElement('button');
         nextTreeButton.textContent = '>';
         nextTreeButton.classList.add('next-tree-button');
+        nextTreeButton.addEventListener('click',()=>{
+            this.openNextTree();
+        });
         if(this.industry_type!=INDUSTRY_TYPE_NO_DATA){
             nextTreeCell.appendChild(nextTreeButton);
         }
@@ -336,6 +339,8 @@ class Product {
         this.table_pannel.classList.add('product-table');
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
+
+
     }
 
     async updateTable(){
