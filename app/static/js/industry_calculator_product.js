@@ -32,7 +32,7 @@ class Product {
             product_index++;
         }
 
-        console.log("Creating "+this.itemname+" Pannel.");
+        console.log("Creating "+itemname+" Pannel.");
         this.itemname = itemname;
         this.typeid = typeid;
         this.iconurl = iconurl;
