@@ -3,6 +3,7 @@ table{
     border-collapse:collapse;
 }
 table.product-table-pannel{
+    border: 1px black;
     display:block;
 }
 td,th{
