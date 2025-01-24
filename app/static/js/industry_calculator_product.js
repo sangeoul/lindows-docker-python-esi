@@ -365,7 +365,7 @@ class Product {
             return;
         }
         if(this.material.length==0){
-            this.setMaterials();
+            await this.setMaterials();
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
         tableNextLevel.innerHTML="";
