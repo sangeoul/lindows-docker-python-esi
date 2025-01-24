@@ -359,8 +359,8 @@ class Product {
         if(this.material.length==0){
             this.setMaterials();
         }
-        const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.level+1).toString());
-        console.log("#product-pannel-lv + "+this.level + "+1 : " + typeof tableNextLevel)
+        const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
+        console.log("#product-pannel-lv + "+this.manufacturing_level + "+1 : " + typeof tableNextLevel)
         tableNextLevel.innerHTML="";
         this.sortMaterials();
         this.updateTable();
