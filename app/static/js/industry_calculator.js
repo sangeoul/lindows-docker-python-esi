@@ -151,7 +151,7 @@ async function loadSystemData() {
 
 
         // Add event listener to the "Manufacturing" system input
-        const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
+
         const industrySystemDataList = document.querySelector('#industry-system-options');
 
         systemData.forEach(system => {
@@ -443,6 +443,11 @@ async function addAllEventListener(){
 
         // Save visibility state to cookies
         setCookie('opentreeCheckboxsVisible', !opentreeCheckboxs.classList.contains('hidden-data'), 365);
+    });
+
+    const calculateButton= document.querySelector("#calculate-button");
+    calculateButton.addEventListener('click',function(){
+        runCalculate();
     });
 }
 

@@ -1,13 +1,37 @@
 
 const BONUS_SETTING_ICON_URL=""
 
+const PRICETYPE_CUSTOM=0;
+const PRICETYPE_BUY=1;
+const PRICETYPE_SELL=2;
+const PRICETYPE_COST=3;
+
+const INDUSTRY_TYPE_NO_DATA=-1;
+const INDUSTRY_TYPE_REPROCESSING = 1
+const INDUSTRY_TYPE_MANUFACTURING = 2
+const INDUSTRY_TYPE_REACTION = 3
+
+
+const FUEL_BLOCKS=[4051,4246,4247,4312];
+
+origin_product="";
+
+product_index=1;
+
 class Product {
-    constructor(itemname, typeid, iconurl, output_per_run, quantity, level, row, product_node) {
+    constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node,explicit_product_index=-1) {
+        
+        if(explicit_product_index==-1){
+            this.product_index=product_index;
+            product_inded++;
+        }
+
         this.itemname = itemname;
         this.typeid = typeid;
         this.iconurl = iconurl;
         this.output_per_run = output_per_run;
         this.quantity = quantity;
+        this.minimum_unit_quantity=minimum_quantity;
 
         this.buyprice = 0;
         this.sellprice = 0;
@@ -21,9 +45,9 @@ class Product {
         }
 
         // pricetype 0: custom, 1: buy, 2: sell. , 3: cost Default = 1 (buy)
-        this.pricetype = 1;
+        this.pricetype = PIRCETYPE_BUY;
 
-        this.industry_type = 0;
+        this.industry_type = industry_type;
         this.material = new Array();
 
         this.manufacturing_level = level;
@@ -37,8 +61,8 @@ class Product {
         this.rig_bonus = 0;
         this.structure_bonus = 0;
 
-        this.table_pannel=document.createElement('table');
-        this.table_pannel.classList.add('product-table');
+        this.table_pannel="";
+        this.makeTable();
     }
 
     // Method to set materials by fetching data from API
@@ -50,13 +74,28 @@ class Product {
             // Process the relation data
             if (data.relation && data.relation.length > 0) {
                 this.industry_type = data.industry_type; // Set the industry_type from the data
+                const output_unit=data["relation"][0]["output_amount"];
+
+                this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
+
                 const promises = data.relation.map(async (rel, index) => {
+
+                    const material_response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${rel.input_id}&industry_type=2`);
+                    const material_material_data = await material_response.json();
+
+                    material_industry_type=INDUSTRY_TYPE_NO_DATA;
+                    if(material_material_data.relation && material_material_data.relation.length>0){
+                        material_industry_type=material_material_data.industry_type;
+                    }
+                    
                     const material = new Product(
                         rel.input_name,
                         rel.input_id,
                         get_iconurl(rel.input_id),
+                        material_industry_type,
                         rel.output_amount,
-                        (rel.input_amount / rel.output_amount) * get_bonusmodifier(rel.input_id),
+                        Math.ceil((rel.input_amount*this.quantity / rel.output_amount) * get_bonusmodifier(rel.input_id)),
+                        Math.ceil((rel.input_amount*this.minimum_unit_quantity / rel.output_amount) * get_bonusmodifier(rel.input_id)),
                         this.manufacturing_level + 1,
                         index,
                         this
@@ -69,7 +108,7 @@ class Product {
                 await Promise.all(promises);
             } else {
                 // No data case
-                this.industry_type = -1; // Set industry_type to -1 when there is no data
+                this.industry_type = INDUSTRY_TYPE_NO_DATA; // Set industry_type to INDUSTRY_TYPE_NO_DATA when there is no data
             }
 
             // Calculate the custom price for the original product
@@ -101,14 +140,18 @@ class Product {
         } else {
             let total = 0;
             this.material.forEach(material => {
-                if (material.pricetype === 1) {
+                if (material.pricetype === PIRCETYPE_BUY) {
                     total += material.buyprice * material.quantity;
-                } else if (material.pricetype === 2) {
+                } else if (material.pricetype === PIRCETYPE_SELL) {
                     total += material.sellprice * material.quantity;
-                } else if (material.pricetype === 3) {
+                } else if (material.pricetype === PIRCETYPE_COST) {
                     material.calcPrice(); // Calculate the custom price for the material
                     total += material.costprice * material.quantity;
+                } else if (material.pricetype === PIRCETYPE_CUSTOM) {
+                    material.calcPrice(); // Calculate the custom price for the material
+                    total += material.customprice * material.quantity;
                 }
+
             });
             this.costprice = total;
         }
@@ -163,9 +206,10 @@ class Product {
         sellPriceCell.textContent = this.sellprice;
         const sellRadio = document.createElement('input');
         sellRadio.type = 'radio';
-        sellRadio.name = `price-type-${this.typeid}`;
+        sellRadio.name = `price-type-${this.product_id}`;
         sellRadio.value = 2;
-        sellRadio.checked = (this.pricetype === 2);
+        sellRadio.checked = (this.pricetype === PIRCETYPE_SELL);
+        sellRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_SELL);
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
         sellRow.appendChild(sellPriceCell);
@@ -179,9 +223,10 @@ class Product {
         buyPriceCell.textContent = this.buyprice;
         const buyRadio = document.createElement('input');
         buyRadio.type = 'radio';
-        buyRadio.name = `price-type-${this.typeid}`;
+        buyRadio.name = `price-type-${this.product_id}`;
         buyRadio.value = 1;
-        buyRadio.checked = (this.pricetype === 1);
+        buyRadio.checked = (this.pricetype === PIRCETYPE_BUY);
+        buyRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_BUY);
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
         buyRow.appendChild(buyPriceCell);
@@ -195,9 +240,10 @@ class Product {
         costPriceCell.textContent = this.costprice;
         const costRadio = document.createElement('input');
         costRadio.type = 'radio';
-        costRadio.name = `price-type-${this.typeid}`;
+        costRadio.name = `price-type-${this.product_id}`;
         costRadio.value = 3;
-        costRadio.checked = (this.pricetype === 3);
+        costRadio.checked = (this.pricetype === PIRCETYPE_COST);
+        costRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_COST);
         costRadioCell.appendChild(costRadio);
         costRow.appendChild(costLabelCell);
         costRow.appendChild(costPriceCell);
@@ -218,9 +264,10 @@ class Product {
         customPriceInputCell.appendChild(customPriceInput);
         const customRadio = document.createElement('input');
         customRadio.type = 'radio';
-        customRadio.name = `price-type-${this.typeid}`;
+        customRadio.name = `price-type-${this.product_id}`;
         customRadio.value = 0;
-        customRadio.checked = (this.pricetype === 0);
+        customRadio.checked = (this.pricetype!=PIRCETYPE_CUSTOM);
+        customRow.classList.toggle("hidden-data",this.pricetype!=PIRCETYPE_CUSTOM);
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceLabelCell);
         customRow.appendChild(customPriceInputCell);
@@ -235,13 +282,60 @@ class Product {
         
         const nextTreeCell = document.createElement('td');
         const nextTreeButton = document.createElement('button');
-        nextTreeButton.textContent = 'Next Tree';
+        nextTreeButton.textContent = '>';
         nextTreeButton.classList.add('next-tree-button');
-        nextTreeCell.appendChild(nextTreeButton);
+        if(this.industry_type!=INDUSTRY_TYPE_NO_DATA){
+            nextTreeCell.appendChild(nextTreeButton);
+        }
         
         row2.appendChild(priceTableCell);
         row2.appendChild(nextTreeCell);
+
+        this.table_pennel=document.createElement('table');
+        this.table_pannel.classList.add('product-table');
+        this.table_pannel.appendChild(row1);
+        this.table_pannel.appendChild(row2);
     }
+
+    async openNextTree(){
+        if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
+            return;
+        }
+        if(this.material.length==0){
+            this.setMaterials();
+        }
+    }
+}
+
+//
+async function runCalculate(){
+    
+    const inputBlueprint= document.querySelector('input[list="blueprint-options"]');
+    const inputBlueprintRun=document.querySelector('#blueprint-run-input');
+
+    const typeId=inputBlueprint.getAttribute("data-type_id");
+
+    const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
+    const data = await response.json();
+    industry_type = data.industry_type;
+
+    origin_product=new Product(
+        inputBlueprint.value,
+        typeId,
+        get_iconurl(typeId),
+        industry_type,
+        data["relation"][0]["output_amount"],
+        inputBlueprintRun.value*data["relation"][0]["output_amount"],
+        0,
+        0,
+        NULL,
+        0
+    )
+
+    const tableLevel1=querySelector("#product-pannel-lv0");
+    tableLevel1.appendChild(origin_product.table_pannel);
+    origin_product.openNextTree();
+
 }
 
 // Function to get the icon URL for a given type ID

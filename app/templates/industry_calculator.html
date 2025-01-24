@@ -15,11 +15,13 @@
                 <datalist id="blueprint-options">
                     <!-- Options will be populated dynamically -->
                 </datalist>
+                Run: <input type="number" id="blueprint-run-input" min="1" step="1" class="blueprint-run-input" value="1"> 
                 ME: <input type="number" id="me-input" min="0" max="10" step="1" class="me-input"> %  
                 System : <input list="industry-system-options" id="system-input" class="system-input">
                 <datalist id="industry-system-options">
                     <!-- Options will be populated dynamically -->
                 </datalist>
+                <button id="calculate-button" class="caculate-button">Calculate</button>
             </td>
         </tr>
         <tr id="manufacturing-setting-row">
@@ -88,6 +90,30 @@
                 
             </td>
         </tr>
+    </table>
+
+    <table id="product-pannel-area" class="product-pannel-area">
+        <tr>
+            <td id="product-pannel-lv0">
+
+            </td>
+            <td id="product-pannel-lv1">
+
+            </td>
+            <td id="product-pannel-lv2">
+
+            </td>
+            <td id="product-pannel-lv3">
+
+            </td>
+            <td id="product-pannel-lv4">
+
+            </td>
+            <td id="product-pannel-lv5">
+
+            </td>
+        </tr>
+
     </table>
     <!-- Store blueprint data in a data attribute or script tag --> 
     <div id="blueprint-data" data-blueprints='{{ blueprints|tojson }}' class="hidden-data"></div>
