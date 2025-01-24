@@ -137,8 +137,8 @@ class Product {
             const data = await response.json();
 
             // Set the buyprice and sellprice from the API response
-            this.buyprice = data.buy;
-            this.sellprice = data.sell;
+            this.buyprice = parseFloat(data.buy);
+            this.sellprice = parseFloat(data.sell);
         } catch (error) {
             console.error('Error fetching prices:', error);
         }
