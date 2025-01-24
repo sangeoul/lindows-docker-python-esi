@@ -15,7 +15,7 @@ app = Flask(__name__)
 csp = {
     'default-src': "'self'",
     'img-src': ["'self'", "https://images.evetech.net"],
-    'connect-src': ["'self'", "https://esi.evetech.net"]
+    'connect-src': ["'self'", "https://esi.evetech.net","https://lindows.kr:8009"]
 }
 # Apply Talisman with the CSP policy
 Talisman(app,content_security_policy=csp)
