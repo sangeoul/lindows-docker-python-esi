@@ -2,13 +2,15 @@
 table{
     border-collapse:collapse;
 }
-table.product-table-pannel{
-    border: 1px black;
-    display:block;
-}
+
 td,th{
     border:0px solid black;
     border-collapse:collapse;
+}
+
+table.product-table-pannel{
+    border: 1px black;
+    display:block;
 }
 
 td.pannel-tree-layer{
