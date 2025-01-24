@@ -104,7 +104,7 @@
         {"id": 21571, "name": "Sleeper Technical Schematics"},
         {"id": 34201, "name": "Accelerant Decryptor"},
         {"id": 11461, "name": "R.Db - Boundless Creations"},
-        {"id": 20421, "name": "Datacore - Amarrian Starship Engineering"}
+        {"id": 20421, "name": "Datacore - Amarrian Starship Engineering"},
         {"id": 11399, "name": "Morphite","buyback_rate":[0.95,1.02,1.03]}
     ]
 }
