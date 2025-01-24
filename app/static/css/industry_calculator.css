@@ -17,3 +17,6 @@ td.pannel-tree-layer{
 .hidden-data{
     display: none;
 }
+img.product-icon{
+    width: 32px;
+}
