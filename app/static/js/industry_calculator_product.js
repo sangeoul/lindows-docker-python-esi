@@ -418,9 +418,8 @@ async function runCalculate(){
     )
 
     const tableLevel1=document.querySelector("#product-pannel-lv0");
+    await origin_product.openNextTree();
     tableLevel1.appendChild(origin_product.table_pannel);
-    origin_product.openNextTree();
-
 }
 
 // Function to get the icon URL for a given type ID
