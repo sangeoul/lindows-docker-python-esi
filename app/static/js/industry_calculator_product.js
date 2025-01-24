@@ -402,7 +402,7 @@ async function runCalculate(){
         inputBlueprintRun.value*data["relation"][0]["output_amount"],
         0,
         0,
-        NULL,
+        null,
         0
     )
 
