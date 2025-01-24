@@ -68,7 +68,7 @@ class Product {
         this.structure_bonus = 0;
 
         this.table_pannel=document.createElement("table");
-        getMarketPrices();
+        this.getMarketPrices();
         this.makeTable();
     }
 
