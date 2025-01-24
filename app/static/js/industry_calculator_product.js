@@ -68,8 +68,8 @@ class Product {
         this.structure_bonus = 0;
 
         this.table_pannel=document.createElement("table");
-        this.getMarketPrices();
         this.makeTable();
+        this.getMarketPrices();
     }
 
     // Method to set materials by fetching data from API
@@ -139,6 +139,7 @@ class Product {
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
             this.sellprice = parseFloat(data.sell);
+            this.updateTable();
         } catch (error) {
             console.error('Error fetching prices:', error);
         }
@@ -367,7 +368,6 @@ class Product {
             this.setMaterials();
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
-        console.log("#product-pannel-lv + "+this.manufacturing_level + "+1 : " + typeof tableNextLevel)
         tableNextLevel.innerHTML="";
         this.sortMaterials();
         this.updateTable();
