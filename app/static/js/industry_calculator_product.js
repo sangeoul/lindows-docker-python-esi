@@ -163,18 +163,20 @@ class Product {
                 }
 
             });
-            console.log("!!DEBUG : total==" +total+";");
+            console.log("!!DEBUG : "+this.itemname+" total==" +total+";");
             this.costprice = total/this.getQuantity();
         }
         this.updateTable();
     }
     async loadAndCalcCost(){
+        console.log("!!DEBUG : loadAndCalcCost("+this.itemname+");");
 
         const promises=this.materials.map( async(material)=>{
             material.getMarketPrices();
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
+        console.log("!!DEBUG : promise finish ("+this.itemname+")");
         this.calcCost();
 
     }
@@ -548,6 +550,7 @@ async function runCalculate(){
     )
 
     await origin_product.openNextTree();
+    origin_produdct.openPriceTable();
 
 }
 
