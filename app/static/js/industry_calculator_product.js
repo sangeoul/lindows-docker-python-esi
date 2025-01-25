@@ -256,12 +256,17 @@ class Product {
 
 
         const buyRow = document.createElement('tr');
+        buyRow.setAttribute('id','tr-buy-price');
+        buyRow.classList.add('buy-row');
+
         const buyLabelCell = document.createElement('td');
+        buyLabelCell.classList.add('buy-label');
         const buyPriceCell = document.createElement('td');
+        buyLabelCell.classList.add('buy-price');
         const buyRadioCell = document.createElement('td');
+        buyLabelCell.classList.add('buy-radio');
         buyLabelCell.textContent = 'Buy:';
         buyPriceCell.textContent = this.buyprice.toFixed(2);
-        buyRow.setAttribute('id','tr-buy-price');
         buyPriceCell.setAttribute('id','td-buy-price');
         const buyRadio = document.createElement('input');
         buyRadio.type = 'radio';
@@ -275,12 +280,14 @@ class Product {
         buyRow.appendChild(buyRadioCell);
 
         const sellRow = document.createElement('tr');
+        sellRow.setAttribute('id','tr-sell-price');
+        buyRow.classList.add('sell-row');
+
         const sellLabelCell = document.createElement('td');
         const sellPriceCell = document.createElement('td');
         const sellRadioCell = document.createElement('td');
         sellLabelCell.textContent = 'Sell:';
         sellPriceCell.textContent = this.sellprice.toFixed(2);
-        sellRow.setAttribute('id','tr-sell-price');
         sellPriceCell.setAttribute('id','td-sell-price');
         const sellRadio = document.createElement('input');
         sellRadio.type = 'radio';
@@ -294,12 +301,14 @@ class Product {
         sellRow.appendChild(sellRadioCell);
 
         const costRow = document.createElement('tr');
+        costRow.setAttribute('id','tr-cost-price');
+        buyRow.classList.add('cost-row');
+
         const costLabelCell = document.createElement('td');
         const costPriceCell = document.createElement('td');
         const costRadioCell = document.createElement('td');
         costLabelCell.textContent = 'Cost:';
         costPriceCell.textContent = this.costprice.toFixed(2);
-        costRow.setAttribute('id','tr-cost-price');
         costPriceCell.setAttribute('id','td-cost-price');
         const costRadio = document.createElement('input');
         costRadio.type = 'radio';
@@ -313,6 +322,9 @@ class Product {
         costRow.appendChild(costRadioCell);
 
         const customRow = document.createElement('tr');
+        customRow.setAttribute('id','tr-custom-price');
+        buyRow.classList.add('custom-row');
+
         const customPriceInputCell = document.createElement('td');
         const customRadioCell = document.createElement('td');
         const customPriceInput = document.createElement('input');
@@ -322,7 +334,6 @@ class Product {
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
         customPriceInputCell.colSpan = 2;
-        customRow.setAttribute('id','tr-custom-price');
         customPriceInputCell.setAttribute('id','td-custom-price');
         customPriceInputCell.appendChild(customPriceInput);
         const customRadio = document.createElement('input');
