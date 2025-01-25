@@ -350,8 +350,9 @@ class Product {
         this.table_pannel.appendChild(row2);
 
 
-        console.log("!!DEBUG : #product-pannel-lv"+this.manufacturing_level+"pennel add. "+this.itemname);
+        console.log("!!DEBUG : #product-pannel-lv"+this.manufacturing_level+" pannel add. "+this.itemname);
         const manufacturing_board=document.querySelector("#product-pannel-lv"+this.manufacturing_level);
+        console.log(manufacturing_board);
         manufacturing_board.appendChild(this.table_pennel);
         //this.showPannel();
 
