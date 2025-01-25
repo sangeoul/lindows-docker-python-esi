@@ -316,7 +316,6 @@ class Product {
         customRadio.checked = (this.pricetype!=PRICETYPE_CUSTOM);
         customRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_CUSTOM);
         customRadioCell.appendChild(customRadio);
-        customRow.appendChild(customPriceLabelCell);
         customRow.appendChild(customPriceInputCell);
         customRow.appendChild(customRadioCell);
 
@@ -445,10 +444,10 @@ async function loadMarketDataWithCache(typeId){
     if(market_price_cache[typeId]){
         const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
         market_price_cache[typeId] = await response.json();
-        return industry_relation_cache[typeId];
+        return market_price_cache[typeId];
     }
     else{
-        return industry_relation_cache[typeId];
+        return market_price_cache[typeId];
     }    
 }
 
