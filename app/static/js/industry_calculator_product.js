@@ -113,7 +113,7 @@ class Product {
                     this.materials.push(material); 
                 });
                 const promises=this.materials.map( async(material)=>{
-                    material.getMarketPrices()
+                    material.getMarketPrices();
                 });
                 // Wait for all prices to be fetched and calculate the custom price for the original product
                 await Promise.all(promises);
@@ -154,6 +154,7 @@ class Product {
             this.costprice = 0;
         } else {
             let total = 0;
+            console.log("!!DEBUG : calcPrice(" +this.itemname+");");
             this.materials.forEach(material => {
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
@@ -168,6 +169,7 @@ class Product {
                 }
 
             });
+            console.log("!!DEBUG : total==" +total+";");
             this.costprice = total/this.getQuantity();
         }
         this.updateTable();
