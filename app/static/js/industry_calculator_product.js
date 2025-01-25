@@ -442,6 +442,7 @@ class Product {
     async selectPannel(){
 
         if(this.manufacturing_level==0){
+            this.openPriceTable(true);
             return;
         }
         for (const materials of this.product_node.materials){
