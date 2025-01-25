@@ -550,7 +550,7 @@ async function runCalculate(){
     )
 
     await origin_product.openNextTree();
-    origin_produdct.openPriceTable();
+    origin_product.openPriceTable();
 
 }
 
