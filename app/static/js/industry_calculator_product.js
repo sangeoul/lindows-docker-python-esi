@@ -114,8 +114,8 @@ class Product {
                 });
                 console.log("!!DEBUG : setMaterial processing : " +this.itemname);
                 const promises=this.materials.map( async(material)=>{
-                    console.log("!!DEBUG : add Promise : " +materal.itemname);
-                    material.getMarketPrices();
+                    console.log("!!DEBUG : add Promise : " +material.itemname);
+                    await material.getMarketPrices();
                 });
                 // Wait for all prices to be fetched and calculate the custom price for the original product
                 await Promise.all(promises);
