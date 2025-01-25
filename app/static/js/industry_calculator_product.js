@@ -409,7 +409,9 @@ class Product {
     async openNextTree(){
 
         if(this.manufacturing_level){
-            await this.product_node.closeTree();
+            await this.product_node.materials.forEach(material=>{
+                material.closeTree();
+            });
         }
         
 
