@@ -68,7 +68,7 @@ class Product {
         this.product_node = product_node;
 
         this.selected = false;
-        this.visibility = false;
+        this.visibility = level?false:true;
 
         this.me_bonus = 0;
         this.rig_bonus = 0;
@@ -409,6 +409,12 @@ class Product {
         this.selected=true;
         this.openPriceTable();
 
+    }
+    async showPannel(){
+        if(this.manufacturing_level==0){
+            return;
+        }
+        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
     }
 }
 
