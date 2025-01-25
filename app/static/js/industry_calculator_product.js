@@ -415,6 +415,8 @@ class Product {
         }
         this.selected=true;
         this.openPriceTable();
+        console.log("Pannel " +this.itemname+" is selected.");
+        
 
     }
     async showPannel(){
