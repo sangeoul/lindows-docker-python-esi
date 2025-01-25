@@ -395,6 +395,7 @@ class Product {
 
     async openNextTree(){
 
+        this.selectPannel();
         console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
