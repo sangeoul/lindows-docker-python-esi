@@ -384,6 +384,12 @@ class Product {
 
     }
     async openPriceTable(selected=this.selected){
+        if(this.manufacturing_level===0){
+            this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
+            this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
+            this.table_pannel.querySelector("#tr-cost-prfice").classList.toggle("hidden-data",false);
+            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
+        }
 
         this.table_pannel.classList.toggle("selected-pannel",selected);
         this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",!selected);
