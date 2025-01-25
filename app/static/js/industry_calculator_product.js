@@ -111,7 +111,7 @@ class Product {
                         this
                     );
                     this.materials.push(material);
-                    await material.getMarketPrices(); // Fetch market prices for each material
+                    material.getMarketPrices(); // Fetch market prices for each material
                 });
 
                 // Wait for all prices to be fetched
@@ -424,7 +424,7 @@ class Product {
         if(this.materials.length==0){
             await this.setMaterials();
         }
-        await this.sortMaterials();
+        //await this.sortMaterials();
         await this.updateTable();
         
         this.materials.forEach(material=>{
