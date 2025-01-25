@@ -268,7 +268,7 @@ class Product {
         buyRadio.name = `price-type-${this.product_index}`;
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
-        buyRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_BUY);
+        buyRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_BUY && this.manufacturing_level));
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
         buyRow.appendChild(buyPriceCell);
@@ -287,7 +287,7 @@ class Product {
         sellRadio.name = `price-type-${this.product_index}`;
         sellRadio.value = 2;
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
-        sellRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_SELL);
+        sellRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_SELL && this.manufacturing_level));
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
         sellRow.appendChild(sellPriceCell);
@@ -306,7 +306,7 @@ class Product {
         costRadio.name = `price-type-${this.product_index}`;
         costRadio.value = 3;
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
-        costRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_COST);
+        costRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_COST && this.manufacturing_level));
         costRadioCell.appendChild(costRadio);
         costRow.appendChild(costLabelCell);
         costRow.appendChild(costPriceCell);
@@ -330,7 +330,7 @@ class Product {
         customRadio.name = `price-type-${this.product_index}`;
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
-        customRow.classList.toggle("hidden-data",this.pricetype!=PRICETYPE_CUSTOM);
+        customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM && !this.manufacturing_level));
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceInputCell);
         customRow.appendChild(customRadioCell);
@@ -397,7 +397,7 @@ class Product {
             this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
             this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
             this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
-            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
+            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",true);
         }
 
         this.table_pannel.classList.toggle("selected-pannel",selected);
