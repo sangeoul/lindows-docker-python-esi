@@ -4,12 +4,12 @@ table{
 }
 
 td,th{
-    border:0px solid black;
+    border:1px solid black;
     border-collapse:collapse;
 }
 
 table.product-table-pannel{
-    border: 1px black;
+    border: 1px solid black;
     display:block;
 }
 
