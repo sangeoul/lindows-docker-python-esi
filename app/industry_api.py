@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app, origins=["https://lindows.kr:8001"])
 ###
 # Define the path to the static folder
-static_folder_path = os.path.join(os.getcwd(), 'app', 'static')
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/api/iteminfo', 'iteminfo', get_type_info, methods=['GET'])
@@ -23,12 +23,14 @@ app.add_url_rule('/api/industry_relation_info', 'get_industry_relation_info', ge
 @app.route('/api/reaction_formulas', methods=['GET'])
 def get_reaction_formulas():
     # Send the JSON file from the static folder
-    return send_from_directory(static_folder_path, 'reactions.json', as_attachment=False, mimetype='application/json')
+    filedir=os.path.join(base_dir, 'static')
+    return send_from_directory(filedir, 'reactions.json', as_attachment=False, mimetype='application/json')
 
 @app.route('/api/manufacturing_blueprints', methods=['GET'])
 def get_manufacturing_blueprints():
     # Send the JSON file from the static folder
-    return send_from_directory(static_folder_path, 'manufacturings.json', as_attachment=False, mimetype='application/json')
+    filedir=os.path.join(base_dir, 'static')
+    return send_from_directory(filedir, 'manufacturings.json', as_attachment=False, mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8009)
