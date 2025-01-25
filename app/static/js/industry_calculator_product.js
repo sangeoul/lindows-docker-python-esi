@@ -449,7 +449,6 @@ async function loadIndustryRelation(typeId){
 
 async function loadMarketDataWithCache(typeId){
 
-    console.log("!!DEBUG : Price TypeID : " +typeId);
     if(!market_price_cache[typeId.toString()]){
         const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
         market_price_cache[typeId.toString()] = await response.json();
