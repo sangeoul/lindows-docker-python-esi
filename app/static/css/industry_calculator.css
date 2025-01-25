@@ -15,6 +15,7 @@ table.product-table-pannel{
 
 td.pannel-tree-layer{
     vertical-align: top;
+    width:200px;
 }
 
 .hidden-data{
