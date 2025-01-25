@@ -134,8 +134,8 @@ class Product {
             const data = await loadMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
-            this.buyprice = parseFloat(data.buy);
-            this.sellprice = parseFloat(data.sell);
+            this.buyprice = await parseFloat(data.buy);
+            this.sellprice = await parseFloat(data.sell);
             this.updateTable();
         } catch (error) {
             console.error('Error fetching prices:', error);
