@@ -91,7 +91,7 @@ class Product {
 
                 this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
 
-                const promises = data.m.map(async (rel, index) => {
+                await data.m.map(async (rel, index) => {
                     const material_material_data = await loadIndustryRelation(rel.i);
                     let material_industry_type=INDUSTRY_TYPE_NO_DATA;
                     if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
@@ -110,19 +110,20 @@ class Product {
                         index,
                         this
                     );
-                    this.materials.push(material);
-                    material.getMarketPrices(); // Fetch market prices for each material
+                    this.materials.push(material); 
                 });
-
-                // Wait for all prices to be fetched
+                const promises=this.materials.map( async(material)=>{
+                    material.getMarketPrices()
+                });
+                // Wait for all prices to be fetched and calculate the custom price for the original product
                 await Promise.all(promises);
+                this.calcPrice();
             } else {
                 // No data case
                 this.industry_type = INDUSTRY_TYPE_NO_DATA; // Set industry_type to INDUSTRY_TYPE_NO_DATA when there is no data
             }
 
-            // Calculate the custom price for the original product
-            this.calcPrice();
+            
 
         } catch (error) {
             console.error('Error fetching materials:', error);
