@@ -371,18 +371,18 @@ class Product {
     async openPriceTable(selected=this.selected){
 
         this.table_pannel.classList.toggle("selected-pannel",selected);
-        this.table_pannel.querySelector("tr-buy-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("tr-sell-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("tr-cost-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("tr-custom-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",!selected);
         if(this.pricetype===PRICETYPE_BUY)
-            this.table_pannel.querySelector("tr-buy-price").classList.toggle("hidden-data".false);
+            this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data".false);
         if(this.pricetype===PRICETYPE_SELL)
-            this.table_pannel.querySelector("tr-sell-price").classList.toggle("hidden-data".false);
+            this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data".false);
         if(this.pricetype===PRICETYPE_COST)
-            this.table_pannel.querySelector("tr-cost-price").classList.toggle("hidden-data".false);
+            this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data".false);
         if(this.pricetype===PRICETYPE_CUSTOM)
-            this.table_pannel.querySelector("tr-custom-price").classList.toggle("hidden-data".false);
+            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data".false);
     }
 
     async openNextTree(){
@@ -434,8 +434,8 @@ async function loadIndustryRelation(typeId){
         return formulaData[typeId];
     }
     else{
-        let nodata={"industry_type":INDUSTRY_NO_DATA};
-        nodata.industry_type=INDUSTRY_NO_DATA;
+        let nodata={"industry_type":INDUSTRY_TYPE_NO_DATA};
+        nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
         return nodata;
     }
 }
