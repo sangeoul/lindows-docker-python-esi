@@ -112,14 +112,6 @@ class Product {
                     );
                     this.materials.push(material); 
                 });
-                console.log("!!DEBUG : setMaterial processing : " +this.itemname);
-                const promises=this.materials.map( async(material)=>{
-                    console.log("!!DEBUG : add Promise : " +material.itemname);
-                    await material.getMarketPrices();
-                });
-                // Wait for all prices to be fetched and calculate the custom price for the original product
-                await Promise.all(promises);
-                this.calcPrice();
             } else {
                 // No data case
                 this.industry_type = INDUSTRY_TYPE_NO_DATA; // Set industry_type to INDUSTRY_TYPE_NO_DATA when there is no data
@@ -151,22 +143,22 @@ class Product {
     }
 
     // Method to calculate custom price based on materials
-    async calcPrice() {
+    async calcCost() {
         if (this.materials.length === 0) {
             this.costprice = 0;
         } else {
             let total = 0;
-            console.log("!!DEBUG : calcPrice(" +this.itemname+");");
+            console.log("!!DEBUG : calcCost(" +this.itemname+");");
             this.materials.forEach(material => {
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_SELL) {
                     total += material.sellprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_COST) {
-                    material.calcPrice(); // Calculate the custom price for the material
+                    material.calcCost(); // Calculate the custom price for the material
                     total += material.costprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_CUSTOM) {
-                    material.calcPrice(); // Calculate the custom price for the material
+                    material.calcCost(); // Calculate the custom price for the material
                     total += material.customprice * material.getQuantity();
                 }
 
@@ -175,6 +167,16 @@ class Product {
             this.costprice = total/this.getQuantity();
         }
         this.updateTable();
+    }
+    async loadAndCalcCost(){
+
+        const promises=this.materials.map( async(material)=>{
+            material.getMarketPrices();
+        });
+        // Wait for all prices to be fetched and calculate the custom price for the original product
+        await Promise.all(promises);
+        this.calcPrice();
+
     }
     getPriceSum(){
         if(this.pricetype===PRICETYPE_BUY){
@@ -427,7 +429,8 @@ class Product {
             return;
         }
         if(this.materials.length==0){
-            this.setMaterials();
+            await this.setMaterials();
+            this.loadAndCalcCost();
         }
         //await this.sortMaterials();
         await this.updateTable();
