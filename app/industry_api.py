@@ -21,12 +21,12 @@ app.add_url_rule('/api/industry_relation_info', 'get_industry_relation_info', ge
 
 # Route to serve the JSON file
 @app.route('/api/reaction_formulas', methods=['GET'])
-def get_reaction_formula():
+def get_reaction_formulas():
     # Send the JSON file from the static folder
     return send_from_directory(static_folder_path, 'reactions.json', as_attachment=False, mimetype='application/json')
 
 @app.route('/api/manufacturing_blueprints', methods=['GET'])
-def get_reaction_formula():
+def get_manufacturing_blueprints():
     # Send the JSON file from the static folder
     return send_from_directory(static_folder_path, 'manufacturings.json', as_attachment=False, mimetype='application/json')
 
