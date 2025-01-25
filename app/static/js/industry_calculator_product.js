@@ -82,29 +82,29 @@ class Product {
     // Method to set materials by fetching data from API
     async setMaterials() {
         try {
-            const data = await loadIndustryRelationWithCache(this.typeid);
+            const data = await loadIndustryRelation(this.typeid);
             // Process the relation data
-            if (data.relation && data.relation.length > 0) {
+            if (data.industry_type!=INDUSTRY_TYPE_NO_DATA && data.m.length > 0) {
                 this.industry_type = data.industry_type; // Set the industry_type from the data
-                const output_unit=data["relation"][0]["output_amount"];
+                const output_unit=data.q;
 
                 this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
 
-                const promises = data.relation.map(async (rel, index) => {
-                    const material_material_data = await loadIndustryRelationWithCache(rel.input_id);
+                const promises = data.m.map(async (rel, index) => {
+                    const material_material_data = await loadIndustryRelation(rel.i);
                     let material_industry_type=INDUSTRY_TYPE_NO_DATA;
-                    if(material_material_data.relation && material_material_data.relation.length>0){
+                    if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
                         material_industry_type=material_material_data.industry_type;
                     }
                     
                     const material = new Product(
-                        rel.input_name,
-                        rel.input_id,
-                        get_iconurl(rel.input_id),
+                        rel.n,
+                        rel.i,
+                        get_iconurl(rel.i),
                         material_industry_type,
-                        rel.output_amount,
-                        Math.ceil((rel.input_amount*this.quantity / rel.output_amount) * get_bonusmodifier(rel.input_id)),
-                        Math.ceil((rel.input_amount*this.minimum_unit_quantity / rel.output_amount) * get_bonusmodifier(rel.input_id)),
+                        data.q,
+                        Math.ceil((rel.q*this.quantity / data.q) * get_bonusmodifier(rel.i)),
+                        Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * get_bonusmodifier(rel.i)),
                         this.manufacturing_level + 1,
                         index,
                         this
@@ -422,18 +422,23 @@ class Product {
     }
 }
 
-async function loadIndustryRelationWithCache(typeId){
+async function loadIndustryRelation(typeId){
 
-    if(industry_relation_cache[typeId]){
-        const response = await fetch(`https://lindows.kr:8009/api/industry_relation_info?type_id=${typeId}&industry_type=2`);
-        industry_relation_cache[typeId.toString()] = await response.json();
-        return industry_relation_cache[typeId];
+    if(blueprintData[typeId]){
+        blueprintData[typeId].industry_type=INDUSTRY_TYPE_MANUFACTURING;
+        return blueprintData[typeId];
+    }
+    else if(formulaData[typeId]){
+        formulaData[typeId].industry_type=INDUSTRY_TYPE_REACTION;
+        return formulaData[typeId];
     }
     else{
-        return industry_relation_cache[typeId];
+        let nodata={"industry_type":INDUSTRY_NO_DATA};
+        nodata.industry_type=INDUSTRY_NO_DATA;
+        return nodata;
     }
-
 }
+
 
 async function loadMarketDataWithCache(typeId){
 
@@ -447,13 +452,6 @@ async function loadMarketDataWithCache(typeId){
     }    
 }
 
-async function preloadIndustryRelationData(typeId){
-
-    let cache=await loadIndustryRelationWithCache(typeId);
-    for (const material of cache["relation"]){
-        await preloadIndustryRelationData(material["input_id"]);
-    }
-}
 
 //
 async function runCalculate(){
@@ -473,7 +471,7 @@ async function runCalculate(){
         return;
     }
     
-    const data = await loadIndustryRelationWithCache(typeId);
+    const data = await loadIndustryRelation(typeId);
     let industry_type = data.industry_type;
 
     origin_product=new Product(
@@ -481,8 +479,8 @@ async function runCalculate(){
         typeId,
         get_iconurl(typeId),
         industry_type,
-        data["relation"][0]["output_amount"],
-        inputBlueprintRun.value*data["relation"][0]["output_amount"],
+        data.q,
+        inputBlueprintRun.value*data.q,
         0,
         0,
         null,
@@ -490,9 +488,6 @@ async function runCalculate(){
     )
 
     await origin_product.openNextTree();
-
-    // preload and save data for UX
-    preloadIndustryRelationData(typeId);
 
 }
 

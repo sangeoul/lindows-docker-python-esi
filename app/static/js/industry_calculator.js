@@ -356,7 +356,13 @@ async function loadBlueprintsData() {
     // Assuming blueprintData is an object with key-value pairs
     Object.entries(blueprintData).forEach(([key, value]) => {
         const optionElement = document.createElement("option");
-        optionElement.value = value[1]; // output_name
+        optionElement.value = value["n"]; // output_name
+        optionElement.setAttribute("data-type_id", key); // output_id
+        blueprintOptions.appendChild(optionElement);
+    });
+    Object.entries(formulaData).forEach(([key, value]) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = value["n"]; // output_name
         optionElement.setAttribute("data-type_id", key); // output_id
         blueprintOptions.appendChild(optionElement);
     });
