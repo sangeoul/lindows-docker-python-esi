@@ -69,6 +69,7 @@ class Product {
 
         this.selected = false;
         this.visibility = level?false:true;
+        this.opened=level?false:true;
 
         this.me_bonus = 0;
         this.rig_bonus = 0;
@@ -338,7 +339,13 @@ class Product {
         nextTreeButton.textContent = '>';
         nextTreeButton.classList.add('next-tree-button');
         nextTreeButton.addEventListener('click',()=>{
-            this.openNextTree();
+            if(this.opened){
+                this.closeTree();
+            }
+            else{
+                this.openNextTree();
+            }
+            
         });
         if(this.industry_type!=INDUSTRY_TYPE_NO_DATA){
             nextTreeCell.appendChild(nextTreeButton);
@@ -388,13 +395,16 @@ class Product {
         if(this.pricetype===PRICETYPE_SELL)
             this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_COST)
-            this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
+            this.table_pannel.querySelector("#tr-cost-prfice").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_CUSTOM)
             this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
     }
 
     async openNextTree(){
 
+        await this.product_node.closeTree();
+
+        this.opened=true;
         this.selectPannel();
         console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
@@ -405,18 +415,21 @@ class Product {
         }
         await this.sortMaterials();
         await this.updateTable();
-        this.product_node.closeTree();
+        
         this.materials.forEach(material=>{
-
             material.showPannel(true);
         });
     }
+
     async closeTree(){
+        this.opened=false;
         this.materials.forEach(material=>{
             material.showPannel(false);
+            material.opened=false;
             material.closeTree();
         });
     }
+
     async selectPannel(){
 
         if(this.manufacturing_level==0){
