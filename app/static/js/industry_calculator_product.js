@@ -262,9 +262,9 @@ class Product {
         const buyLabelCell = document.createElement('td');
         buyLabelCell.classList.add('buy-label');
         const buyPriceCell = document.createElement('td');
-        buyLabelCell.classList.add('buy-price');
+        buyPriceCell.classList.add('buy-price');
         const buyRadioCell = document.createElement('td');
-        buyLabelCell.classList.add('buy-radio');
+        buyRadioCell.classList.add('buy-radio');
         buyLabelCell.textContent = 'Buy:';
         buyPriceCell.textContent = this.buyprice.toFixed(2);
         buyPriceCell.setAttribute('id','td-buy-price');
