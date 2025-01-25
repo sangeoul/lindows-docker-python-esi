@@ -343,13 +343,15 @@ class Product {
 
         this.table_pennel=document.createElement('table');
         this.table_pannel.classList.add('product-table-pannel');
-        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+        //DEBUG
+        //this.table_pannel.classList.toggle("hidden-data",!this.visibility);
 
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
 
         const manufacturing_board=document.querySelector("#product-pannel-lv"+this.manufacturing_level);
         manufacturing_board.appendChild(this.table_pennel);
+        this.showPannel();
 
     }
 
