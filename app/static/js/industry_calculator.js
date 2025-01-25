@@ -19,7 +19,6 @@ async function fetchData() {
         console.error('Error loading Blueprints and Formulas:', error);
     }
 }
-fetchData();
 
 // Example options for Manufacturing Structure&Rig select element
 const manufacturingStructureRigOptions = [
