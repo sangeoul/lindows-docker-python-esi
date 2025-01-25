@@ -61,7 +61,7 @@ class Product {
         this.pricetype = PRICETYPE_BUY;
 
         this.industry_type = industry_type;
-        this.material = new Array();
+        this.materials = new Array();
 
         this.manufacturing_level = level;
         this.manufacturing_row = row;
@@ -109,7 +109,7 @@ class Product {
                         index,
                         this
                     );
-                    this.material.push(material);
+                    this.materials.push(material);
                     await material.getMarketPrices(); // Fetch market prices for each material
                 });
 
@@ -129,7 +129,7 @@ class Product {
     }
     sortMaterials(pivot='priceSum') {
         if (pivot === 'priceSum') {
-            this.material.sort((a, b) => b.getPriceSum() - a.getPriceSum()); // Sort by priceSum DESC
+            this.materials.sort((a, b) => b.getPriceSum() - a.getPriceSum()); // Sort by priceSum DESC
         }
     }
     // Method to set prices by fetching data from API
@@ -148,11 +148,11 @@ class Product {
 
     // Method to calculate custom price based on materials
     async calcPrice() {
-        if (this.material.length === 0) {
+        if (this.materials.length === 0) {
             this.costprice = 0;
         } else {
             let total = 0;
-            this.material.forEach(material => {
+            this.materials.forEach(material => {
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_SELL) {
@@ -391,18 +391,23 @@ class Product {
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
         }
-        if(this.material.length==0){
+        if(this.materials.length==0){
             await this.setMaterials();
         }
         await this.sortMaterials();
         await this.updateTable();
+        this.materials.forEach(material=>{
+
+            material.visibility=true;
+            material.showPannel();
+        });
     }
     async selectPannel(){
 
         if(this.manufacturing_level==0){
             return;
         }
-        for (const materials of this.product_node.material){
+        for (const materials of this.product_node.materials){
             materials.selected=false;
             materials.openPriceTable(false);
         }
