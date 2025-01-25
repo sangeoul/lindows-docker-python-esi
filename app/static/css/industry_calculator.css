@@ -11,11 +11,11 @@ td,th{
 table.product-table-pannel{
     border: 1px solid black;
     display:block;
+    font:8px;
 }
 
 td.pannel-tree-layer{
     vertical-align: top;
-    width:200px;
 }
 
 .hidden-data{

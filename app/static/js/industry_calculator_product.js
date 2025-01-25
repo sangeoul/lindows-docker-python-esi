@@ -402,7 +402,10 @@ class Product {
 
     async openNextTree(){
 
-        await this.product_node.closeTree();
+        if(this.manufacturing_level){
+            await this.product_node.closeTree();
+        }
+        
 
         this.opened=true;
         this.selectPannel();
