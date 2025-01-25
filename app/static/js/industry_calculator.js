@@ -5,8 +5,21 @@ const eivData = {};
 const systemData = [];
 
 // Access blueprint data from data attribute
-const blueprintDataElement = document.getElementById('blueprint-data');
-const blueprintData = JSON.parse(blueprintDataElement.getAttribute('data-blueprints'));
+let blueprintData;
+let formulaData;
+async function fetchData() {
+    try {
+        let response = await fetch('https://lindows.kr:8009/api/reaction_formulas');
+        formulaData = await response.json();
+        response = await fetch('https://lindows.kr:8009/api/manufacturing_blueprints');
+        blueprintData = await response.json();
+        console.log("Blueprints and Formulas have been loaded.");
+
+    } catch (error) {
+        console.error('Error loading Blueprints and Formulas:', error);
+    }
+}
+await fetchData();
 
 // Example options for Manufacturing Structure&Rig select element
 const manufacturingStructureRigOptions = [
@@ -340,12 +353,14 @@ async function calcStructureBonus(industry_type) {
 async function loadBlueprintsData() {
     // Populate blueprint datalist
     const blueprintOptions = document.getElementById("blueprint-options");
-    blueprintData.forEach(blueprint => {
+    // Assuming blueprintData is an object with key-value pairs
+    Object.entries(blueprintData).forEach(([key, value]) => {
         const optionElement = document.createElement("option");
-        optionElement.value = blueprint[1]; // output_name
-        optionElement.setAttribute("data-type_id", blueprint[0]); // output_id
+        optionElement.value = value[1]; // output_name
+        optionElement.setAttribute("data-type_id", key); // output_id
         blueprintOptions.appendChild(optionElement);
     });
+
 }
 
 // Function to load panel visibility state from cookies
@@ -471,6 +486,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         // Wait for all asynchronous functions to complete
         await Promise.all([
+            await fetchData(),
             loadBlueprintsData(),
             loadSystemData(),
             loadEivPriceData(),

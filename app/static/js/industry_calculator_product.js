@@ -67,8 +67,8 @@ class Product {
         this.manufacturing_row = row;
         this.product_node = product_node;
 
-        this.selected = level ? 0 : 1;
-        this.visibility = level ? 0 : 1;
+        this.selected = false;
+        this.visibility = false;
 
         this.me_bonus = 0;
         this.rig_bonus = 0;
@@ -245,6 +245,7 @@ class Product {
         const buyRadioCell = document.createElement('td');
         buyLabelCell.textContent = 'Buy:';
         buyPriceCell.textContent = this.buyprice.toFixed(2);
+        buyRow.setAttribute('id','tr-buy-price');
         buyPriceCell.setAttribute('id','td-buy-price');
         const buyRadio = document.createElement('input');
         buyRadio.type = 'radio';
@@ -263,6 +264,7 @@ class Product {
         const sellRadioCell = document.createElement('td');
         sellLabelCell.textContent = 'Sell:';
         sellPriceCell.textContent = this.sellprice.toFixed(2);
+        sellRow.setAttribute('id','tr-sell-price');
         sellPriceCell.setAttribute('id','td-sell-price');
         const sellRadio = document.createElement('input');
         sellRadio.type = 'radio';
@@ -281,6 +283,7 @@ class Product {
         const costRadioCell = document.createElement('td');
         costLabelCell.textContent = 'Cost:';
         costPriceCell.textContent = this.costprice.toFixed(2);
+        costRow.setAttribute('id','tr-cost-price');
         costPriceCell.setAttribute('id','td-cost-price');
         const costRadio = document.createElement('input');
         costRadio.type = 'radio';
@@ -294,10 +297,8 @@ class Product {
         costRow.appendChild(costRadioCell);
 
         const customRow = document.createElement('tr');
-        const customPriceLabelCell = document.createElement('td');
         const customPriceInputCell = document.createElement('td');
         const customRadioCell = document.createElement('td');
-        customPriceLabelCell.textContent = 'Custom price:';
         const customPriceInput = document.createElement('input');
         customPriceInput.type = 'number';
         customPriceInput.min = 0;
@@ -305,6 +306,8 @@ class Product {
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
         customPriceInputCell.colSpan = 2;
+        customRow.setAttribute('id','tr-custom-price');
+        customPriceInputCell.setAttribute('id','td-custom-price');
         customPriceInputCell.appendChild(customPriceInput);
         const customRadio = document.createElement('input');
         customRadio.type = 'radio';
@@ -341,8 +344,13 @@ class Product {
 
         this.table_pennel=document.createElement('table');
         this.table_pannel.classList.add('product-table-pannel');
+        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
+
+        document.querySelector("#product-pannel-lv"+this.manufacturing_level)   
+        
 
 
     }
@@ -359,6 +367,24 @@ class Product {
         tdSellPrice.textContent = this.sellprice.toFixed(2);
         tdCostPrice.textContent = this.costprice.toFixed(2);
 
+        this.openPriceTable();
+
+    }
+    async openPriceTable(selected=this.selected){
+
+        this.table_pannel.classList.toggle("selected-pannel",selected);
+        this.table_pannel.querySelector("tr-buy-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("tr-sell-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("tr-cost-price").classList.toggle("hidden-data",!selected);
+        this.table_pannel.querySelector("tr-custom-price").classList.toggle("hidden-data",!selected);
+        if(this.pricetype===PRICETYPE_BUY)
+            this.table_pannel.querySelector("tr-buy-price").classList.toggle("hidden-data".false);
+        if(this.pricetype===PRICETYPE_SELL)
+            this.table_pannel.querySelector("tr-sell-price").classList.toggle("hidden-data".false);
+        if(this.pricetype===PRICETYPE_COST)
+            this.table_pannel.querySelector("tr-cost-price").classList.toggle("hidden-data".false);
+        if(this.pricetype===PRICETYPE_CUSTOM)
+            this.table_pannel.querySelector("tr-custom-price").classList.toggle("hidden-data".false);
     }
 
     async openNextTree(){
@@ -371,6 +397,7 @@ class Product {
             await this.setMaterials();
         }
         const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
+
         tableNextLevel.innerHTML="";
         await this.sortMaterials();
         await this.updateTable();
@@ -379,8 +406,18 @@ class Product {
         for (const mat of this.material) {
             await tableNextLevel.appendChild(mat.table_pannel);
         }
-        
-    
+    }
+    async selectPannel(){
+
+        if(this.manufacturing_level==0){
+            return;
+        }
+        for (const materials of this.product_node.material){
+            materials.selected=false;
+            materials.openPriceTable(false);
+        }
+        this.selected=true;
+        this.openPriceTable();
 
     }
 }
@@ -452,14 +489,11 @@ async function runCalculate(){
         0
     )
 
-    const tableLevel1=document.querySelector("#product-pannel-lv0");
     await origin_product.openNextTree();
-
 
     // preload and save data for UX
     preloadIndustryRelationData(typeId);
 
-    tableLevel1.appendChild(origin_product.table_pannel);
 }
 
 // Function to get the icon URL for a given type ID
