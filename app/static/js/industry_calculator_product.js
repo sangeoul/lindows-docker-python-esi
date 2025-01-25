@@ -405,10 +405,16 @@ class Product {
         }
         await this.sortMaterials();
         await this.updateTable();
+        this.product_node.closeTree();
         this.materials.forEach(material=>{
 
-            material.visibility=true;
-            material.showPannel();
+            material.showPannel(true);
+        });
+    }
+    async closeTree(){
+        this.materials.forEach(material=>{
+            material.showPannel(false);
+            material.closeTree();
         });
     }
     async selectPannel(){
@@ -426,11 +432,12 @@ class Product {
         
 
     }
-    async showPannel(){
+    async showPannel(v=this.visibility){
+        this.visibility=v;
         if(this.manufacturing_level==0){
             return;
         }
-        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+        this.table_pannel.classList.toggle("hidden-data",!v);
         /*
         if(this.visibility){
             console.log("Show '"+this.itemname+"' Pannel.");
