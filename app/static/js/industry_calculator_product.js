@@ -236,6 +236,7 @@ class Product {
         
 
         // Setting Icon Area
+        settingIconCell.classList.add('product-setting');
         const settingIcon = document.createElement('img');
         settingIcon.src = BONUS_SETTING_ICON_URL; // Replace with actual setting icon URL
         settingIcon.alt = 'Settings';
