@@ -490,8 +490,9 @@ async function setTaxInputLink(){
 document.addEventListener("DOMContentLoaded", async function() {
     try {
         // Wait for all asynchronous functions to complete
+        await fetchData();
         await Promise.all([
-            fetchData(),
+            
             loadBlueprintsData(),
             loadSystemData(),
             loadEivPriceData(),
@@ -508,9 +509,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             loadSystemIndex()  
         ]);
         addAllEventListener();
-
-
-
     } catch (error) {
         console.error('Error loading data:', error);
     }
