@@ -112,6 +112,7 @@ class Product {
                     );
                     this.materials.push(material); 
                 });
+                console.log("!!DEBUG : setMaterial processing : " +this.itemname);
                 const promises=this.materials.map( async(material)=>{
                     material.getMarketPrices();
                 });
