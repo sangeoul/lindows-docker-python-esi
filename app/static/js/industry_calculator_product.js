@@ -330,7 +330,7 @@ class Product {
         customRadio.name = `price-type-${this.product_index}`;
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
-        customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM && !this.manufacturing_level));
+        customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceInputCell);
         customRow.appendChild(customRadioCell);
