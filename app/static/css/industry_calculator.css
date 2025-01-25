@@ -26,7 +26,10 @@ table.product-table-pannel{
     width: var(--product-pannel-width);
 }   
 
-img.product-icon{
+table.product-table-pannel img.product-icon{
+    width: 32px;
+}
+table.product-table-pannel td.product-icon{
     width: 32px;
 }
 
