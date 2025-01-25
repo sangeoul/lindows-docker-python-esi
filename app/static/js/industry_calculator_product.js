@@ -38,7 +38,7 @@ class Product {
             product_index++;
         }
 
-        console.log("Creating "+itemname+" Pannel.");
+        console.log("Creating "+itemname+" Panel.");
         this.itemname = itemname;
         this.typeid = typeid;
         this.iconurl = iconurl;
@@ -75,7 +75,7 @@ class Product {
         this.rig_bonus = 0;
         this.structure_bonus = 0;
 
-        this.table_pannel=document.createElement("table");
+        this.table_panel=document.createElement("table");
         this.makeTable();
         this.getMarketPrices();
     }
@@ -224,14 +224,14 @@ class Product {
         }
         itemIconCell.classList.add('product-icon');
         itemIconCell.addEventListener("click",()=>{
-            this.selectPannel();
+            this.selectPanel();
         });
 
         // Item Name Area
-        itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
+        itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+" x "+ this.itemname;
         itemNameCell.classList.add('product-name');
         itemNameCell.addEventListener("click",()=>{
-            this.selectPannel();
+            this.selectPanel();
         });
         
 
@@ -376,26 +376,26 @@ class Product {
         row2.appendChild(priceTableCell);
         row2.appendChild(nextTreeCell);
 
-        this.table_pannel=document.createElement('table');
-        this.table_pannel.classList.add('product-table-pannel');
-        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+        this.table_panel=document.createElement('table');
+        this.table_panel.classList.add('product-table-panel');
+        this.table_panel.classList.toggle("hidden-data",!this.visibility);
 
-        this.table_pannel.appendChild(row1);
-        this.table_pannel.appendChild(row2);
+        this.table_panel.appendChild(row1);
+        this.table_panel.appendChild(row2);
 
-        const manufacturing_board=document.querySelector("#product-pannel-lv"+this.manufacturing_level);
+        const manufacturing_board=document.querySelector("#product-panel-lv"+this.manufacturing_level);
         
-        manufacturing_board.appendChild(this.table_pannel);
-        this.showPannel();
+        manufacturing_board.appendChild(this.table_panel);
+        this.showPanel();
 
     }
 
     async updateTable(){
 
-        const tdItemName=this.table_pannel.querySelector(".product-name");
-        const tdBuyPrice=this.table_pannel.querySelector("#td-buy-price");
-        const tdSellPrice=this.table_pannel.querySelector("#td-sell-price");
-        const tdCostPrice=this.table_pannel.querySelector("#td-cost-price");
+        const tdItemName=this.table_panel.querySelector(".product-name");
+        const tdBuyPrice=this.table_panel.querySelector("#td-buy-price");
+        const tdSellPrice=this.table_panel.querySelector("#td-sell-price");
+        const tdCostPrice=this.table_panel.querySelector("#td-cost-price");
 
         tdItemName.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
         tdBuyPrice.textContent = this.buyprice.toFixed(2);
@@ -407,25 +407,25 @@ class Product {
     }
     async openPriceTable(selected=this.selected){
         if(this.manufacturing_level===0){
-            this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
-            this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
-            this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
-            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",true);
+            this.table_panel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",true);
         }
 
-        this.table_pannel.classList.toggle("selected-pannel",selected);
-        this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("#tr-cost-price").classList.toggle("hidden-data",!selected);
-        this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",!selected);
+        this.table_panel.classList.toggle("selected-panel",selected);
+        this.table_panel.querySelector("#tr-buy-price").classList.toggle("hidden-data",!selected);
+        this.table_panel.querySelector("#tr-sell-price").classList.toggle("hidden-data",!selected);
+        this.table_panel.querySelector("#tr-cost-price").classList.toggle("hidden-data",!selected);
+        this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",!selected);
         if(this.pricetype===PRICETYPE_BUY)
-            this.table_pannel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_SELL)
-            this.table_pannel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_COST)
-            this.table_pannel.querySelector("#tr-cost-prfice").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-cost-prfice").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_CUSTOM)
-            this.table_pannel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
     }
 
     async openNextTree(){
@@ -438,7 +438,7 @@ class Product {
         
 
         this.opened=true;
-        this.selectPannel();
+        this.selectPanel();
         console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
@@ -451,20 +451,20 @@ class Product {
         await this.updateTable();
         
         this.materials.forEach(material=>{
-            material.showPannel(true);
+            material.showPanel(true);
         });
     }
 
     async closeTree(){
         this.opened=false;
         this.materials.forEach(material=>{
-            material.showPannel(false);
+            material.showPanel(false);
             material.opened=false;
             material.closeTree();
         });
     }
 
-    async selectPannel(){
+    async selectPanel(){
 
         if(this.manufacturing_level==0){
             this.openPriceTable(true);
@@ -472,26 +472,27 @@ class Product {
         }
         for (const materials of this.product_node.materials){
             materials.selected=false;
+            materials.table_panel.classList.toggle("selected-panel",false);
             materials.openPriceTable(false);
         }
         this.selected=true;
         this.openPriceTable();
-        console.log("Pannel " +this.itemname+" is selected.");
+        console.log("Panel " +this.itemname+" is selected.");
         
 
     }
-    async showPannel(v=this.visibility){
+    async showPanel(v=this.visibility){
         this.visibility=v;
         if(this.manufacturing_level==0){
             return;
         }
-        this.table_pannel.classList.toggle("hidden-data",!v);
+        this.table_panel.classList.toggle("hidden-data",!v);
         
         if(v){
-            console.log("Show '"+this.itemname+"' Pannel.");
+            console.log("Show '"+this.itemname+"' Panel.");
         }
         if(!v){
-            console.log("Hide '"+this.itemname+"' Pannel.");
+            console.log("Hide '"+this.itemname+"' Panel.");
         }
             
     }

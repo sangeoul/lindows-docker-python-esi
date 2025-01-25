@@ -11,28 +11,28 @@ td,th{
 }
 
 
-td.pannel-tree-layer{
+td.panel-tree-layer{
     vertical-align: top;
 }
 
 
-table.product-table-pannel{
+table.product-table-panel{
     border: 1px solid black;
     display:block;
     font-size:14px;
-    width: var(--product-pannel-width);
+    width: var(--product-panel-width);
 }   
 
-table.product-table-pannel img.product-icon{
+table.product-table-panel img.product-icon{
     width: 32px;
 }
-table.product-table-pannel td.product-icon{
+table.product-table-panel td.product-icon{
     width: 32px;
 }
-table.product-table-pannel td.product-name{
+table.product-table-panel td.product-name{
     width: 165px;
 }
-table.product-table-pannel td.product-setting{
+table.product-table-panel td.product-setting{
     width:25px;
 }
 
