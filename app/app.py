@@ -28,10 +28,12 @@ app.secret_key = os.environ.get('SECRET_KEY')
 app.config['SESSION_PERMANENT'] = True 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 
+
+
 # Middleware to set Permissions-Policy header
 @app.after_request
 def set_permissions_policy(response):
-    response.headers['Permissions-Policy'] = '<other-features>'  # Update with your policy
+    response.headers['Permissions-Policy'] = 'geolocation=(self), microphone=(), camera=(), fullscreen=()'
     return response
 
 # You can add other routes here if needed
