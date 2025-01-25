@@ -472,7 +472,6 @@ class Product {
         }
         for (const materials of this.product_node.materials){
             materials.selected=false;
-            materials.table_panel.classList.toggle("selected-panel",false);
             materials.openPriceTable(false);
         }
         this.selected=true;
