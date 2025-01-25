@@ -427,7 +427,7 @@ class Product {
             return;
         }
         if(this.materials.length==0){
-            await this.setMaterials();
+            this.setMaterials();
         }
         //await this.sortMaterials();
         await this.updateTable();
