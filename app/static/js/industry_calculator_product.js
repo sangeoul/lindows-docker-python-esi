@@ -348,9 +348,8 @@ class Product {
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
 
-        document.querySelector("#product-pannel-lv"+this.manufacturing_level)   
-        
-
+        const manufacturing_board=document.querySelector("#product-pannel-lv"+this.manufacturing_level);
+        manufacturing_board.appendChild(this.table_pennel);
 
     }
 
@@ -395,16 +394,8 @@ class Product {
         if(this.material.length==0){
             await this.setMaterials();
         }
-        const tableNextLevel=document.querySelector("#product-pannel-lv"+(this.manufacturing_level+1).toString());
-
-        tableNextLevel.innerHTML="";
         await this.sortMaterials();
         await this.updateTable();
-
-
-        for (const mat of this.material) {
-            await tableNextLevel.appendChild(mat.table_pannel);
-        }
     }
     async selectPannel(){
 
