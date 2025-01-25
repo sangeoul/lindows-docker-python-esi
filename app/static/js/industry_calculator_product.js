@@ -212,10 +212,16 @@ class Product {
         } else {
             itemIconCell.textContent = 'No Icon';
         }
+        itemIconCell.addEventListener("click",()=>{
+            this.selectPannel();
+        });
 
         // Item Name Area
         itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
         itemNameCell.classList.add('product-name');
+        itemNameCell.addEventListener("click",()=>{
+            this.selectPannel();
+        });
         
 
         // Setting Icon Area
