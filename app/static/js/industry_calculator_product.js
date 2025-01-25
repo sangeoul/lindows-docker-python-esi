@@ -222,6 +222,7 @@ class Product {
         } else {
             itemIconCell.textContent = 'No Icon';
         }
+        itemIconCell.classList.add('product-name');
         itemIconCell.addEventListener("click",()=>{
             this.selectPannel();
         });
