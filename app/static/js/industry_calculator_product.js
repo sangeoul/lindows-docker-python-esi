@@ -423,7 +423,7 @@ class Product {
         if(this.visibility){
             console.log("Show '"+this.itemname+"' Pannel.");
         }
-        if(this.visibility){
+        if(!this.visibility){
             console.log("Hide '"+this.itemname+"' Pannel.");
         }
     }
