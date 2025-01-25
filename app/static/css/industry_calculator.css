@@ -19,7 +19,7 @@ td.pannel-tree-layer{
 }
 
 .hidden-data{
-    display: none;
+    display: none !important;
 }
 img.product-icon{
     width: 32px;

@@ -462,10 +462,10 @@ class Product {
         }
         this.table_pannel.classList.toggle("hidden-data",!v);
         
-        if(this.visibility){
+        if(v){
             console.log("Show '"+this.itemname+"' Pannel.");
         }
-        if(!this.visibility){
+        if(!v){
             console.log("Hide '"+this.itemname+"' Pannel.");
         }
             
