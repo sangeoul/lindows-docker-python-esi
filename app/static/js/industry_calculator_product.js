@@ -136,7 +136,7 @@ class Product {
     async getMarketPrices() {
         try {
             const data = await loadMarketDataWithCache(this.typeid);
-            console.log("!!DEBUG : Price data : " +data);
+            
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
             this.sellprice = parseFloat(data.sell);
@@ -443,7 +443,8 @@ async function loadIndustryRelation(typeId){
 
 async function loadMarketDataWithCache(typeId){
 
-    if(market_price_cache[typeId.toString()]){
+    console.log("!!DEBUG : Price TypeID : " +typeId);
+    if(!market_price_cache[typeId.toString()]){
         const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
         market_price_cache[typeId.toString()] = await response.json();
         return market_price_cache[typeId.toString()];
