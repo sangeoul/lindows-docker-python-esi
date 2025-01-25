@@ -420,6 +420,12 @@ class Product {
             return;
         }
         this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+        if(this.visibility){
+            console.log("Show '"+this.itemname+"' Pannel.");
+        }
+        if(this.visibility){
+            console.log("Hide '"+this.itemname+"' Pannel.");
+        }
     }
 }
 
