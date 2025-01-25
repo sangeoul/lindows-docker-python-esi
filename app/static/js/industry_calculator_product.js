@@ -134,8 +134,8 @@ class Product {
             const data = await loadMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
-            this.buyprice = await parseFloat(data.buy);
-            this.sellprice = await parseFloat(data.sell);
+            this.buyprice = parseFloat(data.buy);
+            this.sellprice = parseFloat(data.sell);
             this.updateTable();
         } catch (error) {
             console.error('Error fetching prices:', error);
@@ -172,7 +172,7 @@ class Product {
         console.log("!!DEBUG : loadAndCalcCost("+this.itemname+");");
 
         const promises=this.materials.map( async(material)=>{
-            material.getMarketPrices();
+            await material.getMarketPrices();
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
