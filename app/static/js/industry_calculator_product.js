@@ -443,13 +443,13 @@ async function loadIndustryRelation(typeId){
 
 async function loadMarketDataWithCache(typeId){
 
-    if(market_price_cache[typeId]){
+    if(market_price_cache.typeId){
         const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
-        market_price_cache[typeId] = await response.json();
-        return market_price_cache[typeId];
+        market_price_cache.typeId = await response.json();
+        return market_price_cache.typeId;
     }
     else{
-        return market_price_cache[typeId];
+        return market_price_cache.typeId;
     }    
 }
 
