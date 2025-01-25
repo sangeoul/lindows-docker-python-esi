@@ -341,24 +341,21 @@ class Product {
         row2.appendChild(priceTableCell);
         row2.appendChild(nextTreeCell);
 
-        this.table_pennel=document.createElement('table');
+        this.table_pannel=document.createElement('table');
         this.table_pannel.classList.add('product-table-pannel');
-        //DEBUG
-        //this.table_pannel.classList.toggle("hidden-data",!this.visibility);
+        this.table_pannel.classList.toggle("hidden-data",!this.visibility);
 
         this.table_pannel.appendChild(row1);
         this.table_pannel.appendChild(row2);
 
-        console.log(row1);
-        console.log(row2);
 
         console.log("!!DEBUG : #product-pannel-lv"+this.manufacturing_level+" pannel add. "+this.itemname);
         const manufacturing_board=document.querySelector("#product-pannel-lv"+this.manufacturing_level);
         
-        manufacturing_board.appendChild(this.table_pennel);
+        manufacturing_board.appendChild(this.table_pannel);
         console.log(manufacturing_board);
-        console.log(this.table_pennel);
-        //this.showPannel();
+        console.log(this.table_pannel);
+        this.showPannel();
 
     }
 
