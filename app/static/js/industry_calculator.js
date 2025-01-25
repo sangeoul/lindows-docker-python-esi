@@ -492,7 +492,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         // Wait for all asynchronous functions to complete
         await Promise.all([
-            await fetchData(),
+            fetchData(),
             loadBlueprintsData(),
             loadSystemData(),
             loadEivPriceData(),
