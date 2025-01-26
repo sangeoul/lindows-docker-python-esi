@@ -109,8 +109,6 @@ class Product {
                         material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100);
                         material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
                     }
-                    console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
-                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(this.typeid))*100);
 
                     const material = new Product(
                         rel.n,
@@ -237,13 +235,13 @@ class Product {
     }
 
     getQuantity(){
-        alert("!!DEBUG : quantity_option : "+quantity_option);
+        console.log("!!DEBUG : quantity_option : "+quantity_option);
         if(quantity_option===QUANTITY_OPTION_MATERIAL){
-            alert("!!DEBUG : Material calculator");
+            console.log("!!DEBUG : Material calculator");
             return this.minimum_unit_quantity;
         }
         else if(quantity_option===QUANTITY_OPTION_PRICE){
-            alert("!!DEBUG : Price calculator");
+            console.log("!!DEBUG : Price calculator");
             return this.quantity;
         }
         
@@ -671,6 +669,8 @@ async function runCalculate(){
     const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
 
     const selectedCalculatorRadio=document.querySelector('input[name="calculate-type"]:checked');
+    console.log("!!DEBUG:");
+    console.log(selectedCalculatorRadio);
     quantity_option=parseInt(selectedCalculatorRadio.value);
 
     let typeId=0;
