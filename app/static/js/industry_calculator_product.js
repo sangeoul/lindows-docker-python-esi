@@ -498,7 +498,7 @@ class Product {
         if(this.pricetype===PRICETYPE_SELL)
             this.table_panel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_COST)
-            this.table_panel.querySelector("#tr-cost-prfice").classList.toggle("hidden-data",false);
+            this.table_panel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
         if(this.pricetype===PRICETYPE_CUSTOM)
             this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
     }
