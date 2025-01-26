@@ -301,11 +301,11 @@ class Product {
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
         buyRow.appendChild(buyPriceCell);
-        buyRow.appendChild(buyRadioCell);
+        if(this.manufacturing_level)buyRow.appendChild(buyRadioCell);
 
         const sellRow = document.createElement('tr');
         sellRow.setAttribute('id','tr-sell-price');
-        buyRow.classList.add('sell-row');
+        sellRow.classList.add('sell-row');
 
         const sellLabelCell = document.createElement('td');
         const sellPriceCell = document.createElement('td');
@@ -329,11 +329,11 @@ class Product {
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
         sellRow.appendChild(sellPriceCell);
-        sellRow.appendChild(sellRadioCell);
+        if(this.manufacturing_level)sellRow.appendChild(sellRadioCell);
 
         const costRow = document.createElement('tr');
         costRow.setAttribute('id','tr-cost-price');
-        buyRow.classList.add('cost-row');
+        costRow.classList.add('cost-row');
 
         const costLabelCell = document.createElement('td');
         const costPriceCell = document.createElement('td');
@@ -358,11 +358,11 @@ class Product {
         costRadioCell.appendChild(costRadio);
         costRow.appendChild(costLabelCell);
         costRow.appendChild(costPriceCell);
-        costRow.appendChild(costRadioCell);
+        if(this.manufacturing_level)costRow.appendChild(costRadioCell);
 
         const customRow = document.createElement('tr');
         customRow.setAttribute('id','tr-custom-price');
-        buyRow.classList.add('custom-row');
+        customRow.classList.add('custom-row');
 
         const customPriceInputCell = document.createElement('td');
         const customRadioCell = document.createElement('td');
@@ -396,7 +396,7 @@ class Product {
         customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceInputCell);
-        customRow.appendChild(customRadioCell);
+        if(this.manufacturing_level)customRow.appendChild(customRadioCell);
 
 
         priceTable.appendChild(buyRow);
