@@ -628,7 +628,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 
     //me<0 : Origin product.
     if(me<0){
-        const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#manufacturing-structure-bonus").value;
         return calcBonusMultiplier(me+100,structureAndRigBonus);
     }
     if(CONSTRUCTION_COMPONENTS.includes(type_id)){
@@ -644,7 +644,9 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         return calcBonusMultiplier(10,structureAndRigBonus);
     }
     
-    return 1;
+    const structureAndRigBonus=document.querySelector("#manufacturing-structure-bonus").value;
+    return calcBonusMultiplier(10,structureAndRigBonus);
+
 
 }
 
