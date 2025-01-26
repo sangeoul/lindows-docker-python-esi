@@ -634,7 +634,7 @@ async function loadEIV(type_id){
     console.log(data);
     let eiv=0;
     const promises=data.m.map( async(material)=>{
-        console.log("!!DEBUG:"+material.i+":"+materialn);
+        console.log("!!DEBUG:"+material.i+":"+material.n);
         p=await loadMarketDataWithCache(material.i);
         eiv+=material.q*p;
     });
