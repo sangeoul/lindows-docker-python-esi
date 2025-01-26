@@ -11,6 +11,8 @@ const INDUSTRY_TYPE_REPROCESSING = 1
 const INDUSTRY_TYPE_MANUFACTURING = 2
 const INDUSTRY_TYPE_REACTION = 3
 
+const SCC_SUBCHARGE=4.00;
+
 
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,11538,11539,11540,11541,11542,11543,11544,11545,11547,11548,11549,11550,11551,11552,11553,11554,11555,11556,11557,11558,11688,11689,11690,11691,11692,11693,11694,11695,33195,52310,52311,52312,52313,52314,53288,53289,53290,57470,57471,57472,57473,57478,57479,57480,57481,57482,57483,57484,57485,57486,81063,81064,81065,81066,81067,81068,81069,83467,83468,83469,83470,83471,83472,83473];
@@ -143,7 +145,7 @@ class Product {
     // Method to set prices by fetching data from API
     async getMarketPrices() {
         try {
-            const data = await getMarketDataWithCache(this.typeid);
+            const data = await loadMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
@@ -174,7 +176,37 @@ class Product {
                 }
 
             });
-            this.costprice = total/this.getQuantity();
+            const eiv= await loadEIV(this.typeid);
+            const savedBonus=localStorage.getItem(type_id);
+            let index;
+            let structureBonus;
+            let tax;
+            if(savedBonus){
+                index=savedBonus.index[this.industry_type];
+                structureBonus=savedBonus.costBonus;
+                tax=savedBonus.tax;
+            }
+            else{
+                if(this.industry_type==INDUSTRY_TYPE_REACTION){
+                    index = document.querySelector("#reaction-system-index").value;
+                    structureBonus = document.querySelector("#reaction-structure-cost-bonus").value;
+                    tax = document.querySelector("#reaction-tax").value;
+                }else if(CONSTRUCTION_COMPONENTS.includes(this.typeid)){
+                    index = document.querySelector("#component-system-index").value;
+                    structureBonus = document.querySelector("#component-structure-cost-bonus").value;
+                    tax = document.querySelector("#component-tax").value;
+                }else if(FUEL_BLOCKS.includes(this.typeid)){
+                    index = document.querySelector("#fuel-system-index").value;
+                    structureBonus = document.querySelector("#fuel-structure-cost-bonus").value;
+                    tax = document.querySelector("#fuel-tax").value;
+                }else{
+                    index = document.querySelector("#manufacturing-system-index").value;
+                    structureBonus = document.querySelector("#manufacturing-structure-cost-bonus").value;
+                    tax = document.querySelector("#manufacturing-tax").value;
+                }                
+            }
+            const jobcost=getJobCost(eiv,index,structureBonus,tax);
+            this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
     }
@@ -580,7 +612,34 @@ class Product {
 
 
 
+async function loadMarketDataWithCache(typeId){
 
+    if(!market_price_cache[typeId.toString()]){
+        const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
+        market_price_cache[typeId.toString()] = await response.json();
+        return market_price_cache[typeId.toString()];
+    }
+    else{
+        return market_price_cache[typeId.toString()];
+    }    
+}
+
+async function loadEIV(type_id){
+    data=getIndustryRelation(type_id);
+
+    let eiv=0;
+    const promises=data.m.map( async(material)=>{
+        p=await loadMarketDataWithCache(material.i);
+        eiv+=material.q*p;
+    });
+    // Wait for all prices to be fetched and calculate the custom price for the original product
+    await Promise.all(promises);
+    
+    return eiv;
+}
+
+
+ 
 
 
 //
@@ -653,29 +712,6 @@ async function changeFollowingPriceType(typeId,pricetype,productNode){
 
 }
 
-function getMarketDataWithCache(typeId) {
-    const typeIdStr = typeId.toString();
-    if (market_price_cache[typeIdStr]) {
-        return market_price_cache[typeIdStr];
-    } else {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`, false); // false for synchronous request
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                market_price_cache[typeIdStr] = data;
-                return data;
-            } else {
-                throw new Error(xhr.statusText);
-            }
-        };
-        xhr.onerror = function() {
-            throw new Error("Network error");
-        };
-        xhr.send();
-    }
-}
-
 function getIndustryRelation(typeId){
 
     if(blueprintData[typeId]){
@@ -693,9 +729,8 @@ function getIndustryRelation(typeId){
     }
 }
 
-function get_EIV(type_id){
-   data=getIndustryRelation(type_id);
-   
+function getJobCost(eiv,index,structureBonus,tax){
+    return eiv*((index/100)*(1-(structureBonus/100))+(tax/100)+(SCC_SUBCHARGE/100));
 }
 
 // Function to get the icon URL for a given type ID
@@ -716,7 +751,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 
     //me<0 : Origin product.
     if(CONSTRUCTION_COMPONENTS.includes(type_id)){
-        const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#component-structure-efficiency-bonus").value;
         let efficiency=10;
         if(me<0){
             efficiency=me+100;
@@ -724,7 +759,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
-        const structureAndRigBonus=document.querySelector("#reaction-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#reaction-structure-efficiency-bonus").value;
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
@@ -732,11 +767,11 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         if(me<0){
             efficiency=me+100;
         }
-        const structureAndRigBonus=document.querySelector("#fuel-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#fuel-structure-efficiency-bonus").value;
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
-    const structureAndRigBonus=document.querySelector("#manufacturing-structure-bonus").value;
+    const structureAndRigBonus=document.querySelector("#manufacturing-structure-efficiency-bonus").value;
     let efficiency=10;
     if(me<0){
         efficiency=me+100;

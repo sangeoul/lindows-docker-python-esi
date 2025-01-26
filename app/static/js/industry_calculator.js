@@ -22,14 +22,23 @@ async function fetchData() {
 
 // Example options for Manufacturing Structure&Rig select element
 const manufacturingStructureRigOptions = [
-    { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
-    { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
-    //{ bonus: 1, text: 'Engineering Thukker' },
-    { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
-    { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
-    //{ bonus: 1, text: 'Other Thuk' },
-    { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
-    { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
+    { structure_bonus: 1, rig_bonus: 2, cost_bonus:3 ,text: 'Raitaru I' },
+    { structure_bonus: 1, rig_bonus: 2.4, cost_bonus:3 ,text: 'Raitaru II' },
+    //{ structure_bonus: 1, rig_bonus: 2.4, cost_bonus:3 ,text: 'Raitaru Thukker' },
+    { structure_bonus: 1, rig_bonus: 2, cost_bonus:4 ,text: 'Azbel I' },
+    { structure_bonus: 1, rig_bonus: 2.4, cost_bonus:4 ,text: 'Azbel II' },
+    //{ structure_bonus: 1, rig_bonus: 2.4, cost_bonus:4 ,text: 'Azbel Thukker' },
+    { structure_bonus: 1, rig_bonus: 2, cost_bonus:5 ,text: 'Sotiyo I' },
+    { structure_bonus: 1, rig_bonus: 2.4, cost_bonus:5 ,text: 'Sotiyo II' },
+    //{ structure_bonus: 1, rig_bonus: 2.4, cost_bonus:5 ,text: 'Sotiyo Thukker' },
+    { structure_bonus: 0, rig_bonus: 2, cost_bonus:0 ,text: 'Other I' },
+    { structure_bonus: 0, rig_bonus: 2.4, cost_bonus:0 ,text: 'Other II' },
+    //{ structure_bonus: 0, rig_bonus: 2.4, cost_bonus:0 ,text: 'Other Thukker' },
+    { structure_bonus: 1, rig_bonus: 0, cost_bonus:3 ,text: 'Raitaru' },
+    { structure_bonus: 1, rig_bonus: 0, cost_bonus:4 ,text: 'Azbel' },
+    { structure_bonus: 1, rig_bonus: 0, cost_bonus:5 ,text: 'Sotiyo' },
+
+    { structure_bonus: 0, rig_bonus: 0, cost_bonus:0 ,text: 'Station' }
 ];
 const reactionStructureRigOptions = [
     { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
@@ -293,7 +302,8 @@ async function calcStructureBonus(industry_type) {
     const industrySystemInput = document.querySelector('input[list="industry-system-options"]');
     const industrySystemDataList = document.querySelector('#industry-system-options');
     const structureSelectInput = document.querySelector(`#${industry_type}-structure-select`);
-    const structureBonusInput = document.querySelector(`#${industry_type}-structure-bonus`);
+    const structureBonusInput = document.querySelector(`#${industry_type}-structure-efficiency-bonus`);
+    const structureCostBonusInput= document.querySelector(`#${industry_type}-structure-cost-bonus`);
 
     const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === industrySystemInput.value);
     if (!selectedSystemOption) {
@@ -329,7 +339,9 @@ async function calcStructureBonus(industry_type) {
 
     const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100)*100000)/100000;
     structureBonusInput.value = structure_bonus;
+    structureCostBonusInput.value=currentRigOption.cost_bonus;
     saveValueToCookie(structureBonusInput);
+    saveValueToCookie(structureCostBonusInput);
 }
 
 
