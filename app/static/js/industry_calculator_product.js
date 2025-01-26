@@ -26,8 +26,6 @@ let origin_product=null;
 
 let product_index=1;
 
-
-let industry_relation_cache={};
 let market_price_cache={};
 
 
@@ -86,7 +84,7 @@ class Product {
     // Method to set materials by fetching data from API
     async setMaterials() {
         try {
-            const data = await loadIndustryRelation(this.typeid);
+            const data = getIndustryRelation(this.typeid);
             // Process the relation data
             if (data.industry_type!=INDUSTRY_TYPE_NO_DATA && data.m.length > 0) {
                 this.industry_type = data.industry_type; // Set the industry_type from the data
@@ -95,7 +93,7 @@ class Product {
                 this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
 
                 await data.m.map(async (rel, index) => {
-                    const material_material_data = await loadIndustryRelation(rel.i);
+                    const material_material_data = getIndustryRelation(rel.i);
                     let material_industry_type=INDUSTRY_TYPE_NO_DATA;
                     if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
                         material_industry_type=material_material_data.industry_type;
@@ -145,7 +143,7 @@ class Product {
     // Method to set prices by fetching data from API
     async getMarketPrices() {
         try {
-            const data = await loadMarketDataWithCache(this.typeid);
+            const data = getMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
@@ -291,9 +289,10 @@ class Product {
         buyRadio.id = 'radio-buy';
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
-        buyRadio.addEventListener('change',()=>{
+        buyRadio.addEventListener('click',async ()=>{
             const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            await changeAllPriceType(this.typeid,PRICETYPE_BUY);
             origin_product.calcCost();
         });
 
@@ -319,9 +318,10 @@ class Product {
         sellRadio.id = 'radio-sell';
         sellRadio.value = 2;
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
-        sellRadio.addEventListener('change',()=>{
+        sellRadio.addEventListener('click',async ()=>{
             const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            await changeAllPriceType(this.typeid,PRICETYPE_SELL);
             origin_product.calcCost();
         });
 
@@ -348,9 +348,10 @@ class Product {
         costRadio.value = 3;
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
 
-        costRadio.addEventListener('change',()=>{
+        costRadio.addEventListener('click',async ()=>{
             const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            await changeAllPriceType(this.typeid,PRICETYPE_COST);
             origin_product.calcCost();
         });
 
@@ -387,9 +388,10 @@ class Product {
         customRadio.id = 'radio-custom';
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
-        customRadio.addEventListener('change',()=>{
+        customRadio.addEventListener('click',async ()=>{
             const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM);
             origin_product.calcCost();
         });
 
@@ -575,35 +577,10 @@ class Product {
     }
 }
 
-async function loadIndustryRelation(typeId){
-
-    if(blueprintData[typeId]){
-        blueprintData[typeId].industry_type=INDUSTRY_TYPE_MANUFACTURING;
-        return blueprintData[typeId];
-    }
-    else if(formulaData[typeId]){
-        formulaData[typeId].industry_type=INDUSTRY_TYPE_REACTION;
-        return formulaData[typeId];
-    }
-    else{
-        let nodata={"industry_type":INDUSTRY_TYPE_NO_DATA};
-        nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
-        return nodata;
-    }
-}
 
 
-async function loadMarketDataWithCache(typeId){
 
-    if(!market_price_cache[typeId.toString()]){
-        const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
-        market_price_cache[typeId.toString()] = await response.json();
-        return market_price_cache[typeId.toString()];
-    }
-    else{
-        return market_price_cache[typeId.toString()];
-    }    
-}
+
 
 
 //
@@ -641,7 +618,7 @@ async function runCalculate(){
         return;
     }
     
-    const data = await loadIndustryRelation(typeId);
+    const data = getIndustryRelation(typeId);
     let industry_type = data.industry_type;
 
     origin_product=new Product(
@@ -662,6 +639,65 @@ async function runCalculate(){
 
 }
 
+async function changeAllPriceType(typeId,pricetype){
+    await changeFollowingPriceType(typeId,pricetype,origin_product);
+}
+async function changeFollowingPriceType(typeId,pricetype,productNode){
+    if(productNode.typeid==typeId){
+        productNode.pricetype=pricetype;
+        productNode.updatePanel();
+    }
+    for (const material of productNode.materials) {
+        await changeFollowingPriceType(typeId, pricetype, material);
+    }
+
+}
+
+function getMarketDataWithCache(typeId) {
+    const typeIdStr = typeId.toString();
+    if (market_price_cache[typeIdStr]) {
+        return market_price_cache[typeIdStr];
+    } else {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`, false); // false for synchronous request
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                market_price_cache[typeIdStr] = data;
+                return data;
+            } else {
+                throw new Error(xhr.statusText);
+            }
+        };
+        xhr.onerror = function() {
+            throw new Error("Network error");
+        };
+        xhr.send();
+    }
+}
+
+function getIndustryRelation(typeId){
+
+    if(blueprintData[typeId]){
+        blueprintData[typeId].industry_type=INDUSTRY_TYPE_MANUFACTURING;
+        return blueprintData[typeId];
+    }
+    else if(formulaData[typeId]){
+        formulaData[typeId].industry_type=INDUSTRY_TYPE_REACTION;
+        return formulaData[typeId];
+    }
+    else{
+        let nodata={"industry_type":INDUSTRY_TYPE_NO_DATA};
+        nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
+        return nodata;
+    }
+}
+
+function get_EIV(type_id){
+   data=getIndustryRelation(type_id);
+   
+}
+
 // Function to get the icon URL for a given type ID
 function get_iconurl(type_id) {
     return `https://images.evetech.net/types/${type_id}/icon`;
@@ -679,25 +715,33 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     }
 
     //me<0 : Origin product.
-    if(me<0){
-        const structureAndRigBonus=document.querySelector("#manufacturing-structure-bonus").value;
-        return calcBonusMultiplier(me+100,structureAndRigBonus);
-    }
     if(CONSTRUCTION_COMPONENTS.includes(type_id)){
         const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
-        return calcBonusMultiplier(10,structureAndRigBonus);
+        let efficiency=10;
+        if(me<0){
+            efficiency=me+100;
+        }
+        return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
         const structureAndRigBonus=document.querySelector("#reaction-structure-bonus").value;
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
+        let efficiency=10;
+        if(me<0){
+            efficiency=me+100;
+        }
         const structureAndRigBonus=document.querySelector("#fuel-structure-bonus").value;
-        return calcBonusMultiplier(10,structureAndRigBonus);
+        return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
     const structureAndRigBonus=document.querySelector("#manufacturing-structure-bonus").value;
-    return calcBonusMultiplier(10,structureAndRigBonus);
+    let efficiency=10;
+    if(me<0){
+        efficiency=me+100;
+    }
+    return calcBonusMultiplier(efficiency,structureAndRigBonus);
 
 
 }
