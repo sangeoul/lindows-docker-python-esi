@@ -100,15 +100,24 @@ class Product {
                     if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
                         material_industry_type=material_material_data.industry_type;
                     }
-                    console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
+                    
+                    let material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i));
+                    let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i));
+
+                    if(this.manufacturing_level==0){
+                        defined_me=parseInt(document.querySelector("#me-input").value);
+                        material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
+                        material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
+                    }
+
                     const material = new Product(
                         rel.n,
                         rel.i,
                         get_iconurl(rel.i),
                         material_industry_type,
                         data.q,
-                        Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i)),
-                        Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i)),
+                        material_quantity,
+                        material_minumun_unit,
                         this.manufacturing_level + 1,
                         index,
                         this
@@ -617,9 +626,10 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
     }
 
-    if(me!=10){
+    //me<0 : Origin product.
+    if(me<0){
         const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
-        return calcBonusMultiplier(me,structureAndRigBonus);
+        return calcBonusMultiplier(me+100,structureAndRigBonus);
     }
     if(CONSTRUCTION_COMPONENTS.includes(type_id)){
         const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
