@@ -503,10 +503,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         inputs.forEach(input => loadValueFromCookie(input));
 
         loadPanelVisibility();
+        await loadSystemIndex();
 
-        await Promise.all([
-            loadSystemIndex()  
-        ]);
         addAllEventListener();
     } catch (error) {
         console.error('Error loading data:', error);
