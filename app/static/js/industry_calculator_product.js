@@ -107,8 +107,8 @@ class Product {
                         get_iconurl(rel.i),
                         material_industry_type,
                         data.q,
-                        Math.ceil((rel.q*this.quantity / data.q) * get_bonusmodifier(rel.i)),
-                        Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * get_bonusmodifier(rel.i)),
+                        Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i)),
+                        Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i)),
                         this.manufacturing_level + 1,
                         index,
                         this
@@ -606,8 +606,8 @@ function get_iconurl(type_id) {
     return `https://images.evetech.net/types/${type_id}/icon`;
 }
 
-// Placeholder function for get_bonusmodifier - to be defined later
-function get_bonusmodifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
+// Placeholder function for getBonusModifier - to be defined later
+function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     // Default bonus modifier for now, should be replaced with actual logic 
     
 
@@ -639,5 +639,5 @@ function get_bonusmodifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 }
 
 function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
-    return 1-((1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100)));
+    return (1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100));
 }
