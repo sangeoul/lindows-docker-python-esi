@@ -105,7 +105,7 @@ class Product {
                     let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i));
 
                     if(this.manufacturing_level==0){
-                        defined_me=parseInt(document.querySelector("#me-input").value);
+                        let defined_me=parseInt(document.querySelector("#me-input").value);
                         material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
                         material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
                     }
