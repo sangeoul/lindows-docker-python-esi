@@ -10,6 +10,22 @@ td,th{
     border-collapse:collapse;
 }
 
+input.blueprint-run-input{
+    width:60px;
+}
+input.me-input{
+    width:34px;
+}
+input.system-input{
+    width:75px;
+}
+
+select.structure-input{
+    width:120px;
+}
+input.structure-bonus-input{
+    width:72px;
+}
 
 td.panel-tree-layer{
     vertical-align: top;
@@ -19,25 +35,37 @@ td.panel-tree-layer{
 table.product-table-panel{
     border: 1px solid black;
     display:block;
-    font-size:14px;
+    font-size:13px;
     width: var(--product-panel-width);
 }   
 
 table.product-table-panel img.product-icon{
-    width: 32px;
+    width: 30px;
 }
 table.product-table-panel td.product-icon{
-    width: 32px;
+    width: 30px;
 }
 table.product-table-panel td.product-name{
-    width: 165px;
+    width: 140px;
 }
 table.product-table-panel td.product-setting{
-    width:25px;
+    width:22px;
+}
+
+table.product-table-panel span.design-area-mouseover:hover {
+    background-color:rgb(201, 255, 214);
+}
+
+table.product-table-panel.selected-panel td.product-icon, table.product-table-panel.selected-panel td.product-name {
+    background-color:rgb(201, 255, 214);
+}
+
+table.product-table-panel.oepned-panel td.product-icon, table.product-table-panel.opened-panel td.product-name {
+    background-color:rgb(152, 255, 178);
 }
 
 table.price-table{
-    font-size:12px;
+    font-size:11px;
 }
 
 table.price-table tr{

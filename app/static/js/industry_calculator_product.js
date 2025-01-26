@@ -15,7 +15,6 @@ const INDUSTRY_TYPE_REACTION = 3
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,11538,11539,11540,11541,11542,11543,11544,11545,11547,11548,11549,11550,11551,11552,11553,11554,11555,11556,11557,11558,11688,11689,11690,11691,11692,11693,11694,11695,33195,52310,52311,52312,52313,52314,53288,53289,53290,57470,57471,57472,57473,57478,57479,57480,57481,57482,57483,57484,57485,57486,81063,81064,81065,81066,81067,81068,81069,83467,83468,83469,83470,83471,83472,83473];
 
-
 const QUANTITY_OPTION_ACCURATE=1;
 const QUANTITY_OPTION_MINIMUM=2;
 
@@ -547,6 +546,22 @@ async function loadMarketDataWithCache(typeId){
 //
 async function runCalculate(){
     
+    origin_product=null;
+    document.querySelector("#product-panel-lv0").innerHTML="";
+    document.querySelector("#product-panel-lv1").innerHTML="";
+    document.querySelector("#product-panel-lv2").innerHTML="";
+    document.querySelector("#product-panel-lv3").innerHTML="";
+    document.querySelector("#product-panel-lv4").innerHTML="";
+    document.querySelector("#product-panel-lv5").innerHTML="";
+    document.querySelector("#product-panel-lv6").innerHTML="";
+    document.querySelector("#product-panel-lv7").innerHTML="";
+    document.querySelector("#product-panel-lv8").innerHTML="";
+    document.querySelector("#product-panel-lv9").innerHTML="";
+    document.querySelector("#product-panel-lv10").innerHTML="";
+
+
+
+
     const inputBlueprint= document.querySelector('input[list="blueprint-options"]');
     const inputBlueprintRun=document.querySelector('#blueprint-run-input');
     const blueprintOptions = document.getElementById("blueprint-options");
@@ -595,7 +610,24 @@ function get_bonusmodifier(type_id) {
     let efficiencyBonus=0.1;
     let structureBonus=0.01;
     let rigBonus=0.02;
+    let structureAndRigBonus;
+
+    let savedBonus=localStorage.getItem(type_id);
+    if(savedBonus){
+        return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
+    }
+    if(CONSTRUCTION_COMPONENTS.includes(type_id)){
+        structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
+        return calcBonusMultiplier(10,structureAndRigBonus);
+    }
+    if(FUEL_BLOCKS.includes(type_id)){
+        structureAndRigBonus=document.querySelector("#fuel-structure-bonus").value;
+        return calcBonusMultiplier(10,structureAndRigBonus);
+    }
+
 
 }
 
-function get
+function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
+    return 1-((1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100)));
+}
