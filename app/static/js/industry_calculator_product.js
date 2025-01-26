@@ -21,7 +21,7 @@ const QUANTITY_OPTION_MINIMUM=2;
 
 let quantity_option=1;
 
-let origin_product="";
+let origin_product=null;
 
 let product_index=1;
 
