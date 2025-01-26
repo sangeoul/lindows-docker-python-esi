@@ -461,7 +461,7 @@ class Product {
         this.opened=true;
         this.isEndNode=false;
         this.selectPanel();
-        console.log("Opening "+this.itemname+"...");
+        //console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
         }
