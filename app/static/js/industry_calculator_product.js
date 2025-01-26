@@ -294,6 +294,7 @@ class Product {
         buyRadio.addEventListener('change',()=>{
             selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            origin_product.calcCost();
         });
 
         buyRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_BUY && this.manufacturing_level));
@@ -321,6 +322,7 @@ class Product {
         sellRadio.addEventListener('change',()=>{
             selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            origin_product.calcCost();
         });
 
         sellRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_SELL && this.manufacturing_level));
@@ -349,6 +351,7 @@ class Product {
         costRadio.addEventListener('change',()=>{
             selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            origin_product.calcCost();
         });
 
         costRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_COST && this.manufacturing_level));
@@ -370,7 +373,7 @@ class Product {
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
 
-        customPriceInput.addEventListener('focus',()=>{
+        customPriceInput.addEventListener('input',()=>{
             this.pricetype=PRICETYPE_CUSTOM;
             this.updatePanel();
         });
@@ -387,6 +390,7 @@ class Product {
         customRadio.addEventListener('change',()=>{
             selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
+            origin_product.calcCost();
         });
 
         customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
