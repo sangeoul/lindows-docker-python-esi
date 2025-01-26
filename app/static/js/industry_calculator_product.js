@@ -177,7 +177,7 @@ class Product {
 
             });
             const eiv= await loadEIV(this.typeid);
-            const savedBonus=localStorage.getItem(type_id);
+            const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
             let tax;

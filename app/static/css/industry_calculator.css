@@ -28,11 +28,19 @@ input.system-input{
     width:75px;
 }
 
+input.reaction-efficiency-bonus-input{
+    margin-left:80px;
+}
+
 select.structure-input{
     width:120px;
 }
 input.structure-efficiency-bonus-input{
     width:72px;
+}
+
+input.tax-input{
+    width:34px;
 }
 
 td.panel-tree-layer{
