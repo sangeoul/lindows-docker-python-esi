@@ -444,6 +444,7 @@ class Product {
         nextTreeButton.textContent = '>';
         nextTreeButton.classList.add('next-tree-button');
         nextTreeButton.addEventListener('click',()=>{
+            this.pricetype=PRICETYPE_COST;
             this.openNextTree();
             nextTreeButton.classList.add('hidden-data');
             closeTreeButton.classList.remove('hidden-data');   
