@@ -52,12 +52,7 @@ class Product {
         this.sellprice = 0;
         this.costprice = 0;
 
-        if (eivData[typeid]) {
-            this.eiv = eivData[typeid].adjusted_price;
-        } else {
-            this.eiv=0;
-            console.log(`Price data for "${itemname}" not found.`);
-        }
+        this.eiv=getEIV(this.typeid);
 
         // pricetype 0: custom, 1: buy, 2: sell. , 3: cost Default = 1 (buy)
         this.pricetype = PRICETYPE_BUY;
@@ -174,7 +169,6 @@ class Product {
                 }
 
             });
-            const eiv= await loadEIV(this.typeid);
             const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
@@ -204,8 +198,8 @@ class Product {
                 }                
             }
             
-            const jobcost=getJobCost(eiv,index,structureBonus,tax);
-            console.log("!!DEBUG: eiv : " +eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
+            const jobcost=getJobCost(this.eiv,index,structureBonus,tax);
+            console.log("!!DEBUG: eiv : " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
@@ -627,20 +621,16 @@ async function loadMarketDataWithCache(typeId){
     }    
 }
 
-async function loadEIV(type_id){
+function getEIV(type_id){
     data=getIndustryRelation(type_id);
 
     console.log("!!DEBUG:");
     console.log(data);
     let eiv=0;
-    const promises=data.m.map( async(material)=>{
-        console.log("!!DEBUG:"+material.i+":"+material.n);
-        p=await loadMarketDataWithCache(material.i);
-        eiv+=material.q*p;
+    data.m.map( (material)=>{
+        eiv+=material.q*eivData[type_id].adjusted_price;
     });
-    // Wait for all prices to be fetched and calculate the custom price for the original product
-    await Promise.all(promises);
-    
+
     return eiv;
 }
 
