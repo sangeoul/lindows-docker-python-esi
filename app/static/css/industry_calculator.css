@@ -8,6 +8,12 @@ table{
 td,th{
     border:1px solid black;
     border-collapse:collapse;
+    padding:0;
+    margin:0;
+}
+img{
+    padding:0;
+    margin:0;
 }
 
 input.blueprint-run-input{
@@ -44,6 +50,7 @@ table.product-table-panel img.product-icon{
 }
 table.product-table-panel td.product-icon{
     width: 30px;
+    height:30px;
 }
 table.product-table-panel td.product-name{
     width: 140px;
