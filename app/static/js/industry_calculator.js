@@ -203,11 +203,6 @@ function updateSystemIndex(system_id) {
     componentSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
     reactionSystemIndex.value=(systemInfo["reaction"]*100).toFixed(2) || 0.1;
     fuelSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
-
-    calcStructureBonus("manufacturing");
-    calcStructureBonus("component");
-    calcStructureBonus("reaction");
-    calcStructureBonus("fuel");
     
 }
 
@@ -284,21 +279,6 @@ function setManufacturingStructureAndRigData() {
 }
 
 async function calcStructureBonus(industry_type) {
-
-    /*
-    const manufacturingStructureRigOptions = [
-        { structure_bonus: 1, rig_bonus: 2, text: 'Engineering I' },
-        { structure_bonus: 1, rig_bonus: 2.4, text: 'Engineering II' },
-        { structure_bonus: 0, rig_bonus: 2, text: 'Other I' },
-        { structure_bonus: 0, rig_bonus: 2.4, text: 'Other II' },
-        { structure_bonus: 1, rig_bonus: 0, text: 'Engineering' },
-        { structure_bonus: 0, rig_bonus: 0, text: 'Station' }
-    ];
-    const reactionStructureRigOptions = [
-        { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
-        { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
-    ];
-    */
 
     if (!["manufacturing", "component", "reaction", "fuel"].includes(industry_type)) {
         console.error('Invalid industry type:', industry_type);
@@ -398,8 +378,12 @@ async function addAllEventListener(){
 
 
 
-    industrySystemInput.addEventListener('input', function() {
-        loadSystemIndex();
+    industrySystemInput.addEventListener('input', async function() {
+        await loadSystemIndex();
+        calcStructureBonus("manufacturing");
+        calcStructureBonus("component");
+        calcStructureBonus("reaction");
+        calcStructureBonus("fuel");
 
     });
 
@@ -503,6 +487,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         inputs.forEach(input => loadValueFromCookie(input));
 
         loadPanelVisibility();
+
         await loadSystemIndex();
 
         addAllEventListener();
