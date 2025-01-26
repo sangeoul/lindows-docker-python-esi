@@ -406,11 +406,11 @@ async function addAllEventListener(){
 
     manufacturingSelect.addEventListener("input",function(){
         const selectedValue = manufacturingSelect.value;
-
-        calcStructureBonus("manufacturing");
-
         componentSelect.value = selectedValue;
         fuelSelect.value = selectedValue;
+        calcStructureBonus("manufacturing");
+        calcStructureBonus("component");
+        calcStructureBonus("fuel");
     });
     componentSelect.addEventListener("input",function(){
         calcStructureBonus("component");
