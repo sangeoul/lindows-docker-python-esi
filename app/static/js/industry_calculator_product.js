@@ -201,7 +201,8 @@ class Product {
             const jobcost=getJobCost(this.eiv,index,structureBonus,tax,(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?blueprintdata.q:1));
             console.log("!!DEBUG:"+this.itemname+"/ eiv: " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax + " / units per run : "+(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?blueprintdata.q:1));
             console.log(blueprintdata);
-            console.log(blueprintdata.q);
+            console.log(jobcost + " x " + blueprintdata.q);
+            console.log(total + " / " + this.getQuantity());
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
