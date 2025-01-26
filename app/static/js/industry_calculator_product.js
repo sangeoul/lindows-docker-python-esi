@@ -668,11 +668,13 @@ async function runCalculate(){
     const blueprintOptions = document.getElementById("blueprint-options");
     const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
 
-    const selectedCalculatorRadio=document.querySelector('input[name="calculate-type"]:checked');
+    const selectedCalculatorRadio = document.querySelector('input[name="calculate-type"]:checked');
     console.log("!!DEBUG:");
     console.log(selectedCalculatorRadio);
     console.log(selectedCalculatorRadio.value);
     quantity_option=parseInt(selectedCalculatorRadio.value);
+
+    
 
     let typeId=0;
     
