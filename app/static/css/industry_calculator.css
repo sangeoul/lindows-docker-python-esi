@@ -52,7 +52,7 @@ table.product-table-panel td.product-setting{
     width:22px;
 }
 
-table.product-table-panel span.design-area-mouseover:hover {
+table.product-table-panel .mouseover-group:hover , table.product-table-panel .mouseover-group:hover ~ table.product-table-panel .mouseover-group{
     background-color:rgb(201, 255, 214);
 }
 

@@ -14,6 +14,7 @@ const INDUSTRY_TYPE_REACTION = 3
 
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,11538,11539,11540,11541,11542,11543,11544,11545,11547,11548,11549,11550,11551,11552,11553,11554,11555,11556,11557,11558,11688,11689,11690,11691,11692,11693,11694,11695,33195,52310,52311,52312,52313,52314,53288,53289,53290,57470,57471,57472,57473,57478,57479,57480,57481,57482,57483,57484,57485,57486,81063,81064,81065,81066,81067,81068,81069,83467,83468,83469,83470,83471,83472,83473];
+const 
 
 const QUANTITY_OPTION_ACCURATE=1;
 const QUANTITY_OPTION_MINIMUM=2;
@@ -224,6 +225,7 @@ class Product {
             itemIconCell.textContent = 'No Icon';
         }
         itemIconCell.classList.add('product-icon');
+        itemIconCell.classList.add('mouseover-group');
         itemIconCell.addEventListener("click",()=>{
             this.selectPanel();
         });
@@ -231,6 +233,7 @@ class Product {
         // Item Name Area
         itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+" x "+ this.itemname;
         itemNameCell.classList.add('product-name');
+        itemNameCell.classList.add('mouseover-group');
         itemNameCell.addEventListener("click",()=>{
             this.selectPanel();
         });
@@ -245,11 +248,6 @@ class Product {
         //settingIconCell.appendChild(settingIcon);
         settingIconCell.textContent=" [B]"
 
-        const mouseoverControlPanel=document.createElement('span');
-        mouseoverControlPanel.classList.add("design-area-mouseover");
-        mouseoverControlPanel.appendChild(itemIconCell);
-        mouseoverControlPanel.appendChild(itemNameCell);
-        row1.appendChild(mouseoverControlPanel);
         row1.appendChild(settingIconCell);
 
         const row2 = document.createElement('tr');
