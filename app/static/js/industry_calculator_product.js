@@ -237,10 +237,13 @@ class Product {
     }
 
     getQuantity(){
+        alert("!!DEBUG : quantity_option : "+quantity_option);
         if(quantity_option===QUANTITY_OPTION_MATERIAL){
+            alert("!!DEBUG : Material calculator");
             return this.minimum_unit_quantity;
         }
         else if(quantity_option===QUANTITY_OPTION_PRICE){
+            alert("!!DEBUG : Price calculator");
             return this.quantity;
         }
         
