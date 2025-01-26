@@ -481,11 +481,13 @@ class Product {
 
     }
     async openPriceTable(selected=this.selected){
+
         if(this.manufacturing_level===0){
             this.table_panel.querySelector("#tr-buy-price").classList.toggle("hidden-data",false);
             this.table_panel.querySelector("#tr-sell-price").classList.toggle("hidden-data",false);
             this.table_panel.querySelector("#tr-cost-price").classList.toggle("hidden-data",false);
             this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",true);
+            return;
         }
 
         this.table_panel.classList.toggle("selected-panel",selected);
