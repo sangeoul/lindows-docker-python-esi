@@ -101,16 +101,16 @@ class Product {
                         material_industry_type=material_material_data.industry_type;
                     }
                     
-                    let material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i));
-                    let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i));
+                    let material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(this.typeid));
+                    let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
 
                     if(this.manufacturing_level==0){
                         let defined_me=parseInt(document.querySelector("#me-input").value);
-                        material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
-                        material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
+                        material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
+                        material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
                     }
                     console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
-                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(rel.i))*100);
+                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(this.typeid))*100);
 
                     const material = new Product(
                         rel.n,
