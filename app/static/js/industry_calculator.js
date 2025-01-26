@@ -192,10 +192,10 @@ function updateSystemIndex(system_id) {
         return;
     }
 
-    manufacturingSystemIndex=document.querySelector("#manufacturing-system-index");
-    componentSystemIndex=document.querySelector("#component-system-index");
-    reactionSystemIndex=document.querySelector("#reaction-system-index");
-    fuelSystemIndex=document.querySelector("#fuel-system-index");
+    const manufacturingSystemIndex=document.querySelector("#manufacturing-system-index");
+    const componentSystemIndex=document.querySelector("#component-system-index");
+    const reactionSystemIndex=document.querySelector("#reaction-system-index");
+    const fuelSystemIndex=document.querySelector("#fuel-system-index");
 
     //need system info from systemData by system_id
 
@@ -203,6 +203,11 @@ function updateSystemIndex(system_id) {
     componentSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
     reactionSystemIndex.value=(systemInfo["reaction"]*100).toFixed(2) || 0.1;
     fuelSystemIndex.value=(systemInfo["manufacturing"]*100).toFixed(2) || 0.1;
+
+    saveValueToCookie(manufacturingSystemIndex);
+    saveValueToCookie(componentSystemIndex);
+    saveValueToCookie(reactionSystemIndex);
+    saveValueToCookie(fuelSystemIndex);
     
 }
 
@@ -324,6 +329,7 @@ async function calcStructureBonus(industry_type) {
 
     const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100)*100000)/100000;
     structureBonusInput.value = structure_bonus;
+    saveValueToCookie(structureBonusInput);
 }
 
 
