@@ -288,6 +288,7 @@ class Product {
         const buyRadio = document.createElement('input');
         buyRadio.type = 'radio';
         buyRadio.name = `price-type-${this.product_index}`;
+        buyRadio.id = 'radio-buy';
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
         buyRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_BUY && this.manufacturing_level));
@@ -309,6 +310,7 @@ class Product {
         const sellRadio = document.createElement('input');
         sellRadio.type = 'radio';
         sellRadio.name = `price-type-${this.product_index}`;
+        sellRadio.id = 'radio-sell';
         sellRadio.value = 2;
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
         sellRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_SELL && this.manufacturing_level));
@@ -330,6 +332,7 @@ class Product {
         const costRadio = document.createElement('input');
         costRadio.type = 'radio';
         costRadio.name = `price-type-${this.product_index}`;
+        costRadio.id = 'radio-cost';
         costRadio.value = 3;
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
         costRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_COST && this.manufacturing_level));
@@ -350,12 +353,19 @@ class Product {
         customPriceInput.step = 0.01;
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
+
+        customPriceInput.addEventListener('focus',()=>{
+            this.pricetype=PRICETYPE_CUSTOM;
+            this.updatePanel();
+        });
+
         customPriceInputCell.colSpan = 2;
         customPriceInputCell.setAttribute('id','td-custom-price');
         customPriceInputCell.appendChild(customPriceInput);
         const customRadio = document.createElement('input');
         customRadio.type = 'radio';
         customRadio.name = `price-type-${this.product_index}`;
+        customRadio.id = 'radio-custom';
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
         customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
@@ -424,6 +434,11 @@ class Product {
         const tdSellPrice=this.table_panel.querySelector("#td-sell-price");
         const tdCostPrice=this.table_panel.querySelector("#td-cost-price");
 
+        const buyRadio=this.table_panel.querySelector("#radio-buy");
+        const sellRadio=this.table_panel.querySelector("#radio-sell");
+        const costRadio=this.table_panel.querySelector("#radio-cost");
+        const customRadio=this.table_panel.querySelector("#radio-custom");
+
         tdItemName.textContent = Math.ceil(this.getQuantity()).toString()+"x "+ this.itemname;
         tdBuyPrice.textContent = this.buyprice.toFixed(2);
         tdSellPrice.textContent = this.sellprice.toFixed(2);
@@ -431,6 +446,11 @@ class Product {
         
         this.table_panel.classList.toggle("opened-panel",this.opened);
 
+        buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
+        sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
+        costRadio.checked = (this.pricetype === PRICETYPE_COST);
+        customRadio.checked = (this.pricetype === PRICETYPE_CUSTOM);
+        
         this.openPriceTable();
         
 
