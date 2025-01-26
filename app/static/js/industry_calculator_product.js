@@ -19,8 +19,8 @@ const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,1
 const COMPOSITE=[16670,16671,16672,16673,16678,16679,16680,16681,16682,16683,17317,33359,33360,33361,33362,57456,57457];
 const INTERMEDIATE_MATERIALS=[16654,16655,16656,16657,16658,16659,16660,16661,16662,16663,16664,16665,16666,16667,16668,16669,17769,17959,17960,20431,29659,29660,29661,29662,29663,29664,32821,32822,32823,32824,32825,32826,32827,32828,32829,33336,33337,33338,33339,57453,57454,57455];
 
-const QUANTITY_OPTION_ACCURATE=1;
-const QUANTITY_OPTION_MINIMUM=2;
+const QUANTITY_OPTION_MATERIAL=1;
+const QUANTITY_OPTION_PRICE=2;
 
 let quantity_option=1;
 
@@ -237,10 +237,10 @@ class Product {
     }
 
     getQuantity(){
-        if(quantity_option===QUANTITY_OPTION_MINIMUM){
+        if(quantity_option===QUANTITY_OPTION_MATERIAL){
             return this.minimum_unit_quantity;
         }
-        else{
+        else if(quantity_option===QUANTITY_OPTION_PRICE){
             return this.quantity;
         }
         
@@ -666,6 +666,9 @@ async function runCalculate(){
     const inputBlueprintRun=document.querySelector('#blueprint-run-input');
     const blueprintOptions = document.getElementById("blueprint-options");
     const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
+
+    const selectedCalculatorRadio=document.querySelector('input[name="calculate-type"]:checked');
+    quantity_option=selectedCalculatorRadio.value;
 
     let typeId=0;
     
