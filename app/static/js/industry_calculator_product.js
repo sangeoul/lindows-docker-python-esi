@@ -109,6 +109,8 @@ class Product {
                         material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
                         material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
                     }
+                    console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
+                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(rel.i,defined_me-100))*100);
 
                     const material = new Product(
                         rel.n,
@@ -160,7 +162,6 @@ class Product {
             this.costprice = 0;
         } else {
             let total = 0;
-            console.log("!!DEBUG : calcCost(" +this.itemname+");");
             this.materials.forEach(material => {
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
@@ -175,20 +176,18 @@ class Product {
                 }
 
             });
-            console.log("!!DEBUG : "+this.itemname+" total==" +total+";");
             this.costprice = total/this.getQuantity();
         }
         this.updatePanel();
     }
     async loadAndCalcCost(){
-        console.log("!!DEBUG : loadAndCalcCost("+this.itemname+");");
+
 
         const promises=this.materials.map( async(material)=>{
             await material.getMarketPrices();
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
-        console.log("!!DEBUG : promise finish ("+this.itemname+")");
         this.calcCost();
 
     }
