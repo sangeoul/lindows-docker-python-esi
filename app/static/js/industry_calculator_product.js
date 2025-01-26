@@ -548,8 +548,8 @@ async function loadMarketDataWithCache(typeId){
 //
 async function runCalculate(){
     
-    //origin_product=null;
-    /*
+    origin_product=null;
+    
     document.querySelector("#product-panel-lv0").innerHTML="";
     document.querySelector("#product-panel-lv1").innerHTML="";
     document.querySelector("#product-panel-lv2").innerHTML="";
@@ -561,7 +561,7 @@ async function runCalculate(){
     document.querySelector("#product-panel-lv8").innerHTML="";
     document.querySelector("#product-panel-lv9").innerHTML="";
     document.querySelector("#product-panel-lv10").innerHTML="";
-*/
+
 
 
 
