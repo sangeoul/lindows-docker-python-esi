@@ -100,7 +100,7 @@ class Product {
                     if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
                         material_industry_type=material_material_data.industry_type;
                     }
-                    
+                    console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
                     const material = new Product(
                         rel.n,
                         rel.i,
