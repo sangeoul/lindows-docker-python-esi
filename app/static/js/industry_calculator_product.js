@@ -199,7 +199,7 @@ class Product {
             }
             
             const jobcost=getJobCost(this.eiv,index,structureBonus,tax);
-            console.log("!!DEBUG: eiv : " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
+            console.log("!!DEBUG:"+this.itemname+"/ eiv: " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
@@ -628,7 +628,7 @@ function getEIV(type_id){
     console.log(data);
     let eiv=0;
     data.m.map( (material)=>{
-        eiv+=material.q*eivData[type_id].adjusted_price;
+        eiv+=material.q*eivData[material.i].adjusted_price;
     });
 
     return eiv;
