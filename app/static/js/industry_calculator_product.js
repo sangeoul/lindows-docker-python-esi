@@ -627,9 +627,12 @@ function getEIV(type_id){
     console.log("!!DEBUG:");
     console.log(data);
     let eiv=0;
-    data.m.map( (material)=>{
-        eiv+=material.q*eivData[material.i].adjusted_price;
-    });
+    if(data){
+        data.m.map( (material)=>{
+            eiv+=material.q*eivData[material.i].adjusted_price;
+        });
+    }
+
 
     return eiv;
 }
