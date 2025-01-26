@@ -203,7 +203,9 @@ class Product {
                     tax = document.querySelector("#manufacturing-tax").value;
                 }                
             }
+            
             const jobcost=getJobCost(eiv,index,structureBonus,tax);
+            console.log("!!DEBUG: total : " +total + " / jobcost : "+jobcost);
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
@@ -235,13 +237,13 @@ class Product {
     }
 
     getQuantity(){
-        //console.log("!!DEBUG : quantity_option : "+quantity_option);
+        
         if(quantity_option===QUANTITY_OPTION_MATERIAL){
-            //console.log("!!DEBUG : Material calculator");
+            
             return this.minimum_unit_quantity;
         }
         else if(quantity_option===QUANTITY_OPTION_PRICE){
-            //console.log("!!DEBUG : Price calculator");
+           
             return this.quantity;
         }
         
@@ -669,9 +671,6 @@ async function runCalculate(){
     const selectedOption = Array.from(blueprintOptions.options).find(option => option.value === inputBlueprint.value);
 
     const selectedCalculatorRadio = document.querySelector('input[name="calculate-type"]:checked');
-    console.log("!!DEBUG:");
-    console.log(selectedCalculatorRadio);
-    console.log(selectedCalculatorRadio.value);
     quantity_option=parseInt(selectedCalculatorRadio.value);
 
     
