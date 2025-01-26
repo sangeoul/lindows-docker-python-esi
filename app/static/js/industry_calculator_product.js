@@ -14,7 +14,8 @@ const INDUSTRY_TYPE_REACTION = 3
 
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,11538,11539,11540,11541,11542,11543,11544,11545,11547,11548,11549,11550,11551,11552,11553,11554,11555,11556,11557,11558,11688,11689,11690,11691,11692,11693,11694,11695,33195,52310,52311,52312,52313,52314,53288,53289,53290,57470,57471,57472,57473,57478,57479,57480,57481,57482,57483,57484,57485,57486,81063,81064,81065,81066,81067,81068,81069,83467,83468,83469,83470,83471,83472,83473];
-//const  
+const COMPOSITE=[16670,16671,16672,16673,16678,16679,16680,16681,16682,16683,17317,33359,33360,33361,33362,57456,57457];
+const INTERMEDIATE_MATERIALS=[16654,16655,16656,16657,16658,16659,16660,16661,16662,16663,16664,16665,16666,16667,16668,16669,17769,17959,17960,20431,29659,29660,29661,29662,29663,29664,32821,32822,32823,32824,32825,32826,32827,32828,32829,33336,33337,33338,33339,57453,57454,57455];
 
 const QUANTITY_OPTION_ACCURATE=1;
 const QUANTITY_OPTION_MINIMUM=2;
@@ -606,27 +607,34 @@ function get_iconurl(type_id) {
 }
 
 // Placeholder function for get_bonusmodifier - to be defined later
-function get_bonusmodifier(type_id) {
+function get_bonusmodifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     // Default bonus modifier for now, should be replaced with actual logic 
-    return 1;
-    let efficiencyBonus=0.1;
-    let structureBonus=0.01;
-    let rigBonus=0.02;
-    let structureAndRigBonus;
+    
 
-    let savedBonus=localStorage.getItem(type_id);
+
+    const savedBonus=localStorage.getItem(type_id);
     if(savedBonus){
         return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
     }
+
+    if(me!=10){
+        const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
+        return calcBonusMultiplier(me,structureAndRigBonus);
+    }
     if(CONSTRUCTION_COMPONENTS.includes(type_id)){
-        structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#component-structure-bonus").value;
         return calcBonusMultiplier(10,structureAndRigBonus);
+    }
+    if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
+        const structureAndRigBonus=document.querySelector("#reaction-structure-bonus").value;
+        return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
-        structureAndRigBonus=document.querySelector("#fuel-structure-bonus").value;
+        const structureAndRigBonus=document.querySelector("#fuel-structure-bonus").value;
         return calcBonusMultiplier(10,structureAndRigBonus);
     }
-
+    
+    return 1;
 
 }
 

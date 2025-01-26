@@ -61,7 +61,7 @@ table.product-table-panel.selected-panel td.product-icon, table.product-table-pa
 }
 
 table.product-table-panel.oepned-panel td.product-icon, table.product-table-panel.opened-panel td.product-name {
-    background-color:rgb(152, 255, 178);
+    background-color:rgb(178, 196, 255);
 }
 
 table.price-table{
