@@ -197,8 +197,8 @@ class Product {
                     tax = document.querySelector("#manufacturing-tax").value;
                 }                
             }
-            
-            const jobcost=getJobCost(this.eiv,index,structureBonus,tax);
+            const blueprintdata=getIndustryRelation(this.typeid);
+            const jobcost=getJobCost(this.eiv,index,structureBonus,tax,blueprintdata.q);
             console.log("!!DEBUG:"+this.itemname+"/ eiv: " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
             this.costprice = (total/this.getQuantity())+jobcost;
         }
@@ -732,8 +732,8 @@ function getIndustryRelation(typeId){
     }
 }
 
-function getJobCost(eiv,index,structureBonus,tax){
-    return eiv*((index/100)*(1-(structureBonus/100))+(tax/100)+(SCC_SUBCHARGE/100));
+function getJobCost(eiv,index,structureBonus,tax,unitsPerRun=1){
+    return eiv*((index/100)*(1-(structureBonus/100))+(tax/100)+(SCC_SUBCHARGE/100))/unitsPerRun;
 }
 
 // Function to get the icon URL for a given type ID
