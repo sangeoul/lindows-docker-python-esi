@@ -212,7 +212,8 @@ class Product {
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
-        this.calcCost();
+        origin_product.calcCost();
+        
 
     }
     getPriceSum(){
