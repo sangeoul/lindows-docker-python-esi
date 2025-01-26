@@ -465,9 +465,9 @@ class Product {
         const customRadio=this.table_panel.querySelector("#radio-custom");
 
         tdItemName.textContent = Math.ceil(this.getQuantity()).toLocaleString()+"x "+ this.itemname;
-        tdBuyPrice.textContent = parseFloat(this.buyprice.toFixed(2)).toLocaleString();
-        tdSellPrice.textContent = parseFloat(this.sellprice.toFixed(2)).toLocaleString();
-        tdCostPrice.textContent = parseFloat(this.costprice.toFixed(2)).toLocaleString();
+        tdBuyPrice.textContent = parseFloat(this.buyprice.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2,maximumFractionDigits: 2});
+        tdSellPrice.textContent = parseFloat(this.sellprice.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2,maximumFractionDigits: 2});
+        tdCostPrice.textContent = parseFloat(this.costprice.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2,maximumFractionDigits: 2});
         
         this.table_panel.classList.toggle("opened-panel",this.opened);
 
