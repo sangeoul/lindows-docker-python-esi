@@ -292,7 +292,7 @@ class Product {
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
         buyRadio.addEventListener('change',()=>{
-            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
             origin_product.calcCost();
         });
