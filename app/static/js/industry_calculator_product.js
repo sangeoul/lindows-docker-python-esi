@@ -248,7 +248,10 @@ class Product {
         //settingIconCell.appendChild(settingIcon);
         settingIconCell.textContent=" [B]"
 
+        row1.appendChild(itemIconCell);
+        row1.appendChild(itemNameCell);
         row1.appendChild(settingIconCell);
+    
 
         const row2 = document.createElement('tr');
         const priceTableCell = document.createElement('td');
