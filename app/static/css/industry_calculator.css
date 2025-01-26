@@ -13,6 +13,9 @@ td,th{
     padding:0.5px;
     background-color:white;
 }
+table.control-panel td,table.control-panel th, table.control-panel tr{
+    border: 1px solid black;
+}
 img{
     padding:0;
     margin:0;
