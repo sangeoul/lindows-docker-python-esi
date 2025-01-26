@@ -143,7 +143,7 @@ class Product {
     // Method to set prices by fetching data from API
     async getMarketPrices() {
         try {
-            const data = getMarketDataWithCache(this.typeid);
+            const data = await getMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
