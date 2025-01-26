@@ -106,7 +106,7 @@ class Product {
 
                     if(this.manufacturing_level==0){
                         let defined_me=parseInt(document.querySelector("#me-input").value);
-                        material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
+                        material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100);
                         material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
                     }
                     console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
@@ -189,7 +189,7 @@ class Product {
             else{
                 if(this.industry_type==INDUSTRY_TYPE_REACTION){
                     index = document.querySelector("#reaction-system-index").value;
-                    structureBonus = document.querySelector("#reaction-structure-cost-bonus").value;
+                    structureBonus = 0;
                     tax = document.querySelector("#reaction-tax").value;
                 }else if(CONSTRUCTION_COMPONENTS.includes(this.typeid)){
                     index = document.querySelector("#component-system-index").value;
