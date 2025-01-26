@@ -624,7 +624,7 @@ async function loadMarketDataWithCache(typeId){
 function getEIV(type_id){
     data=getIndustryRelation(type_id);
     let eiv=0;
-    if(data){
+    if(data.industry_type!=INDUSTRY_TYPE_NO_DATA){
         data.m.map( (material)=>{
             eiv+=material.q*eivData[material.i].adjusted_price;
         });
