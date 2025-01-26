@@ -630,6 +630,8 @@ async function loadMarketDataWithCache(typeId){
 async function loadEIV(type_id){
     data=getIndustryRelation(type_id);
 
+    console.log("!!DEBUG:");
+    console.log(data);
     let eiv=0;
     const promises=data.m.map( async(material)=>{
         p=await loadMarketDataWithCache(material.i);
