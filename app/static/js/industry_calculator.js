@@ -257,7 +257,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         componentSelect.appendChild(optionElement);
     });
@@ -266,7 +266,7 @@ function setManufacturingStructureAndRigData() {
     reactionStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         reactionSelect.appendChild(optionElement);
     });
@@ -275,7 +275,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;;
+        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
@@ -342,9 +342,8 @@ async function calcStructureBonus(industry_type) {
     else if (systemSecurity > 0) SYSTEM_BONUS_MULTIPLIER = 1.9;
     else SYSTEM_BONUS_MULTIPLIER = 2.1;
 
-    const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100)*10000)/10000;
-    structureBonusInput.setAttribute("accurate-structure-bonus",structure_bonus)
-    structureBonusInput.value = Math.round(structure_bonus*1000)/1000;
+    const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100)*100000)/100000;
+    structureBonusInput.value = structure_bonus;
 }
 
 
