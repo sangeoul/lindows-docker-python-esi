@@ -70,6 +70,7 @@ class Product {
         this.selected = false;
         this.visibility = level?false:true;
         this.opened=level?false:true;
+        this.isEndNode=level?true:false;
 
         this.me_bonus = 0;
         this.rig_bonus = 0;
@@ -136,7 +137,7 @@ class Product {
             // Set the buyprice and sellprice from the API response
             this.buyprice = parseFloat(data.buy);
             this.sellprice = parseFloat(data.sell);
-            this.updateTable();
+            this.updatePanel();
         } catch (error) {
             console.error('Error fetching prices:', error);
         }
@@ -166,7 +167,7 @@ class Product {
             console.log("!!DEBUG : "+this.itemname+" total==" +total+";");
             this.costprice = total/this.getQuantity();
         }
-        this.updateTable();
+        this.updatePanel();
     }
     async loadAndCalcCost(){
         console.log("!!DEBUG : loadAndCalcCost("+this.itemname+");");
@@ -244,8 +245,11 @@ class Product {
         //settingIconCell.appendChild(settingIcon);
         settingIconCell.textContent=" [B]"
 
-        row1.appendChild(itemIconCell);
-        row1.appendChild(itemNameCell);
+        const mouseoverControlPanel=document.createElement('span');
+        mouseoverControlPanel.classList.add("design-area-mouseover");
+        mouseoverControlPanel.appendChild(itemIconCell);
+        mouseoverControlPanel.appendChild(itemNameCell);
+        row1.appendChild(mouseoverControlPanel);
         row1.appendChild(settingIconCell);
 
         const row2 = document.createElement('tr');
@@ -357,20 +361,29 @@ class Product {
         priceTableCell.appendChild(priceTable);
         
         const nextTreeCell = document.createElement('td');
+
         const nextTreeButton = document.createElement('button');
+        const closeTreeButton = document.createElement('button');
         nextTreeButton.textContent = '>';
         nextTreeButton.classList.add('next-tree-button');
         nextTreeButton.addEventListener('click',()=>{
-            if(this.opened){
-                this.closeTree();
-            }
-            else{
-                this.openNextTree();
-            }
-            
+            this.openNextTree();
+            nextTreeButton.classList.add('hidden-data');
+            closeTreeButton.classList.remove('hidden-data');   
         });
-        if(this.industry_type!=INDUSTRY_TYPE_NO_DATA){
+        closeTreeButton.textContent = '<';
+        closeTreeButton.classList.add('close-tree-button');
+        closeTreeButton.classList.add('hidden-data');
+        closeTreeButton.addEventListener('click',()=>{
+            this.isEndNode=true;
+            this.closeTree();
+            nextTreeButton.classList.remove('hidden-data');
+            closeTreeButton.classList.add('hidden-data'); 
+        });
+
+        if(this.industry_type!=INDUSTRY_TYPE_NO_DATA && this.manufacturing_level){
             nextTreeCell.appendChild(nextTreeButton);
+            nextTreeCell.appendChild(closeTreeButton);
         }
         
         row2.appendChild(priceTableCell);
@@ -390,7 +403,10 @@ class Product {
 
     }
 
-    async updateTable(){
+    async updatePanel(){
+
+
+        this.table_panel.classList.toggle("hidden-data",!this.visibility);
 
         const tdItemName=this.table_panel.querySelector(".product-name");
         const tdBuyPrice=this.table_panel.querySelector("#td-buy-price");
@@ -401,8 +417,11 @@ class Product {
         tdBuyPrice.textContent = this.buyprice.toFixed(2);
         tdSellPrice.textContent = this.sellprice.toFixed(2);
         tdCostPrice.textContent = this.costprice.toFixed(2);
+        
+        this.table_panel.classList.toggle("opened-panel",this.opened);
 
         this.openPriceTable();
+        
 
     }
     async openPriceTable(selected=this.selected){
@@ -438,6 +457,7 @@ class Product {
         
 
         this.opened=true;
+        this.isEndNode=false;
         this.selectPanel();
         console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
@@ -448,7 +468,7 @@ class Product {
             this.loadAndCalcCost();
         }
         //await this.sortMaterials();
-        await this.updateTable();
+        await this.updatePanel();
         
         this.materials.forEach(material=>{
             material.showPanel(true);
@@ -457,11 +477,13 @@ class Product {
 
     async closeTree(){
         this.opened=false;
+        
         this.materials.forEach(material=>{
             material.showPanel(false);
             material.opened=false;
             material.closeTree();
         });
+        this.updatePanel();
     }
 
     async selectPanel(){
@@ -485,14 +507,7 @@ class Product {
         if(this.manufacturing_level==0){
             return;
         }
-        this.table_panel.classList.toggle("hidden-data",!v);
-        
-        if(v){
-            console.log("Show '"+this.itemname+"' Panel.");
-        }
-        if(!v){
-            console.log("Hide '"+this.itemname+"' Panel.");
-        }
+        this.updatePanel();
             
     }
 }
