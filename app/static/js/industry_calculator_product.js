@@ -110,7 +110,7 @@ class Product {
                         material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(rel.i,defined_me-100));
                     }
                     console.log("!!DEBUG : "+this.itemname+" -> "+rel.n+" : " + rel.q + " x "+this.quantity+" / " + data.q);
-                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(rel.i,defined_me-100))*100);
+                    console.log("!!DEBUG : bonus = "+(1-getBonusModifier(rel.i))*100);
 
                     const material = new Product(
                         rel.n,
