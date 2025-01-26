@@ -623,9 +623,6 @@ async function loadMarketDataWithCache(typeId){
 
 function getEIV(type_id){
     data=getIndustryRelation(type_id);
-
-    console.log("!!DEBUG:");
-    console.log(data);
     let eiv=0;
     if(data){
         data.m.map( (material)=>{
