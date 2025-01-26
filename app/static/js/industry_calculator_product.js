@@ -320,7 +320,7 @@ class Product {
         sellRadio.value = 2;
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
         sellRadio.addEventListener('change',()=>{
-            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
             origin_product.calcCost();
         });
@@ -349,7 +349,7 @@ class Product {
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
 
         costRadio.addEventListener('change',()=>{
-            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
             origin_product.calcCost();
         });
@@ -388,7 +388,7 @@ class Product {
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
         customRadio.addEventListener('change',()=>{
-            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
             origin_product.calcCost();
         });
