@@ -205,7 +205,7 @@ class Product {
             }
             
             const jobcost=getJobCost(eiv,index,structureBonus,tax);
-            console.log("!!DEBUG: total : " +total + " / jobcost : "+jobcost);
+            console.log("!!DEBUG: eiv : " +eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax);
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
