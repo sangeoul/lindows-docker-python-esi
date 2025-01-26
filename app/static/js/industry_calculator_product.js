@@ -459,10 +459,7 @@ class Product {
         const tdSellPrice=this.table_panel.querySelector("#td-sell-price");
         const tdCostPrice=this.table_panel.querySelector("#td-cost-price");
 
-        const buyRadio=this.table_panel.querySelector("#radio-buy");
-        const sellRadio=this.table_panel.querySelector("#radio-sell");
-        const costRadio=this.table_panel.querySelector("#radio-cost");
-        const customRadio=this.table_panel.querySelector("#radio-custom");
+
 
         tdItemName.textContent = Math.ceil(this.getQuantity()).toLocaleString()+"x "+ this.itemname;
         tdBuyPrice.textContent = parseFloat(this.buyprice.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2,maximumFractionDigits: 2});
@@ -471,10 +468,18 @@ class Product {
         
         this.table_panel.classList.toggle("opened-panel",this.opened);
 
-        buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
-        sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
-        costRadio.checked = (this.pricetype === PRICETYPE_COST);
-        customRadio.checked = (this.pricetype === PRICETYPE_CUSTOM);
+
+        if(this.manufacturing_level){
+            const buyRadio=this.table_panel.querySelector("#radio-buy");
+            const sellRadio=this.table_panel.querySelector("#radio-sell");
+            const costRadio=this.table_panel.querySelector("#radio-cost");
+            const customRadio=this.table_panel.querySelector("#radio-custom");
+            buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
+            sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
+            costRadio.checked = (this.pricetype === PRICETYPE_COST);
+            customRadio.checked = (this.pricetype === PRICETYPE_CUSTOM);
+        }
+
 
         this.openPriceTable();
         
