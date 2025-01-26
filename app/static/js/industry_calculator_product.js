@@ -250,6 +250,7 @@ class Product {
 
         // Setting Icon Area
         settingIconCell.classList.add('product-setting');
+        settingIconCell.classList.add('mouseover-group');
         const settingIcon = document.createElement('img');
         settingIcon.src = BONUS_SETTING_ICON_URL; // Replace with actual setting icon URL
         settingIcon.alt = 'Settings';
