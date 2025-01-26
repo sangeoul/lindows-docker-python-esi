@@ -101,7 +101,7 @@ class Product {
                         material_industry_type=material_material_data.industry_type;
                     }
                     
-                    let material_quantity=Math.ceil((rel.q*this.quantity / data.q) * getBonusModifier(this.typeid));
+                    let material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid);
                     let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
 
                     if(this.manufacturing_level==0){
