@@ -291,6 +291,11 @@ class Product {
         buyRadio.id = 'radio-buy';
         buyRadio.value = 1;
         buyRadio.checked = (this.pricetype === PRICETYPE_BUY);
+        buyRadio.addEventListener('change',()=>{
+            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            this.pricetype=parseInt(selectedRadio.value);
+        });
+
         buyRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_BUY && this.manufacturing_level));
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
@@ -313,6 +318,11 @@ class Product {
         sellRadio.id = 'radio-sell';
         sellRadio.value = 2;
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
+        sellRadio.addEventListener('change',()=>{
+            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            this.pricetype=parseInt(selectedRadio.value);
+        });
+
         sellRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_SELL && this.manufacturing_level));
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
@@ -335,6 +345,12 @@ class Product {
         costRadio.id = 'radio-cost';
         costRadio.value = 3;
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
+
+        costRadio.addEventListener('change',()=>{
+            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            this.pricetype=parseInt(selectedRadio.value);
+        });
+
         costRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_COST && this.manufacturing_level));
         costRadioCell.appendChild(costRadio);
         costRow.appendChild(costLabelCell);
@@ -368,6 +384,11 @@ class Product {
         customRadio.id = 'radio-custom';
         customRadio.value = 0;
         customRadio.checked = (this.pricetype===PRICETYPE_CUSTOM);
+        customRadio.addEventListener('change',()=>{
+            selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
+            this.pricetype=parseInt(selectedRadio.value);
+        });
+
         customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
         customRadioCell.appendChild(customRadio);
         customRow.appendChild(customPriceInputCell);
@@ -450,7 +471,7 @@ class Product {
         sellRadio.checked = (this.pricetype === PRICETYPE_SELL);
         costRadio.checked = (this.pricetype === PRICETYPE_COST);
         customRadio.checked = (this.pricetype === PRICETYPE_CUSTOM);
-        
+
         this.openPriceTable();
         
 
