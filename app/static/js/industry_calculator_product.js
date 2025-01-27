@@ -828,22 +828,35 @@ async function openFollowingTree(product){
             if(checkboxes["component"]){
                 await node.openNextTree();
                 await openFollowingTree(node);
-            }else continue;
+            }else {
+                node.closeTree(true);
+                continue;
+            }
+                
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
                 await node.openNextTree();
                 await openFollowingTree(node);
-            }else continue;
+            }else {
+                node.closeTree(true);
+                continue;
+            }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
                 await node.openNextTree();
                 await openFollowingTree(node);
-            }else continue;
+            }else {
+                node.closeTree(true);
+                continue;
+            }
         } else{
             if(checkboxes["basement"]){
                 await node.openNextTree();
                 await openFollowingTree(node);
-            }else continue;    
+            }else {
+                node.closeTree(true);
+                continue;
+            }   
         }
         
     }
