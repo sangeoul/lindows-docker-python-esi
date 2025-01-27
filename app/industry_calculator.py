@@ -3,14 +3,15 @@ import aiohttp
 import asyncio
 import json
 from datetime import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from esi_library import connect_to_db  # Update with your actual database module
 
 app = Flask(__name__)
 
 @app.route('/industry_calculator')
 def industry_calculator():
-    asyncio.run(fetch_and_save_json("https://esi.evetech.net/latest/markets/prices/?datasource=tranquility", "market_eiv_prices"))
+    if request.args.get('update') == '1':
+        asyncio.run(fetch_and_save_json("https://esi.evetech.net/latest/markets/prices/?datasource=tranquility", "market_eiv_prices"))
     return render_template("industry_calculator.html")
 
 async def fetch_and_save_json(api_url, filename):
