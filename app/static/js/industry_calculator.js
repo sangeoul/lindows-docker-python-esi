@@ -152,6 +152,8 @@ async function loadEivPriceData() {
         let data;
 
         response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
+        console.log("!!DEBUG");
+        console.log(response);
         data = await response.json();
 
         // Store data in the eivData object
