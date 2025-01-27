@@ -712,7 +712,7 @@ async function runCalculate(){
     });
 
 }
-s
+
 async function openFollowingTree(product){
     for( const node of product.materials){
         let checkboxes;
