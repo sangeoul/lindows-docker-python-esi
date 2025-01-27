@@ -127,11 +127,13 @@ img.total-item-icon{
 td.total-item-itemname{
     width:100px;
     text-align:left;
+    font-size:11px;
 }
 
 td.total-item-quantity{
     width:67px;
     text-align:right;
+    font-size:11px;
 }
 
 
