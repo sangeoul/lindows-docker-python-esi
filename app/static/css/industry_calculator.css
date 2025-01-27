@@ -94,13 +94,13 @@ table.price-table tr{
     height:15px;
 }
 
-table.price-table td.buy-label{
+table.price-table td.buy-label, table.price-table td.sell-label, table.price-table td.cost-label{
     width:32px;
 }
-table.price-table td.buy-price{
+table.price-table td.buy-price , table.price-table td.sell-price, table.price-table td.cost-price{
     width:150px;
 }
-table.price-table td.buy-radio{
+table.price-table td.buy-radio , table.price-table td.sell-radio, table.price-table td.cost-radio{
     width:15px;
 }
 
