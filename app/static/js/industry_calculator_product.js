@@ -341,6 +341,7 @@ class Product {
             const buttonBuyMaterials=document.createElement('button');
             buttonBuyMaterials.setAttribute('id','button-buy-materials');
             buttonBuyMaterials.classList.add('buy-materials');
+            buttonBuyMaterials.textContent="C";
             buttonBuyMaterials.addEventListener('click',()=>{
                 this.changeEndMaterialsPricetype(PRICETYPE_BUY);
             });
@@ -383,6 +384,7 @@ class Product {
             const buttonSellMaterials=document.createElement('button');
             buttonSellMaterials.setAttribute('id','button-sell-materials');
             buttonSellMaterials.classList.add('sell-materials');
+            buttonSellMaterials.textContent="C";
             buttonSellMaterials.addEventListener('click',()=>{
                 this.changeEndMaterialsPricetype(PRICETYPE_SELL);
             });
