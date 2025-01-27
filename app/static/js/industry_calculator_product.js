@@ -199,10 +199,6 @@ class Product {
             }
             const blueprintdata=getIndustryRelation(this.typeid);
             const jobcost=getJobCost(this.eiv,index,structureBonus,tax,(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?1:blueprintdata.q));
-            console.log("!!DEBUG:"+this.itemname+"/ eiv: " +this.eiv + " / index : "+index+ " / structureBonus: "+structureBonus+" / tax:"+tax + " / units per run : "+(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?1:blueprintdata.q));
-            console.log(blueprintdata);
-            console.log(jobcost + " x " + blueprintdata.q);
-            console.log(total + " / " + this.getQuantity());
             this.costprice = (total/this.getQuantity())+jobcost;
         }
         this.updatePanel();
@@ -547,7 +543,7 @@ class Product {
             this.table_panel.querySelector("#tr-custom-price").classList.toggle("hidden-data",false);
     }
 
-    async openNextTree(){
+    async openNextTree(calcCost=true){
 
         if(this.manufacturing_level){
             await this.product_node.materials.forEach(material=>{
@@ -564,7 +560,10 @@ class Product {
         }
         if(this.materials.length==0){
             await this.setMaterials();
-            this.loadAndCalcCost();
+            if(calcCost){
+                this.loadAndCalcCost();
+            }
+            
         }
         //await this.sortMaterials();
         await this.updatePanel();
@@ -711,7 +710,13 @@ async function runCalculate(){
 
 async function openFollowingTree(product){
     for( const node of product.materials){
-        let checkboxes={};
+        let checkboxes={
+            basement:null,
+            component:null,
+            reaction:null,
+            fuel:null,
+            pi:null
+        };
         checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
         checkboxes["component"]=document.querySelector("#component-checkbox:checked");
         checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
@@ -720,22 +725,22 @@ async function openFollowingTree(product){
 
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
-                await node.openNextTree();
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else continue;
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
-                await node.openNextTree();
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else continue;
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
-                await node.openNextTree();
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else continue;
         } else{
             if(checkboxes["basement"]){
-                await node.openNextTree();
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else continue;    
         }
