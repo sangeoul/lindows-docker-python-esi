@@ -744,6 +744,7 @@ async function openFollowingTree(product){
                 await openFollowingTree(node);
             }else continue;    
         }
+        origin_product.calcCost()
     }
 }
 
