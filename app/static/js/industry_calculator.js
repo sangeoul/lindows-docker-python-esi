@@ -144,7 +144,7 @@ async function loadEivPriceData() {
         let response;
         let data;
 
-        response = await tryFetchWithAlternatives(null,'https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
+        response = await tryFetchWithAlternatives({},'https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
         data = await response.json();
 
         // Store data in the eivData object
@@ -167,7 +167,7 @@ async function loadEivPriceData() {
 // Function to fetch system data and store it
 async function loadSystemData() {
     try {
-        const response = await tryFetchWithAlternatives(null,'https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
+        const response = await tryFetchWithAlternatives({},'https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
         const systems = await response.json();
         const systemIds = systems.map(system => system.solar_system_id);
 
@@ -382,7 +382,7 @@ async function calcStructureBonus(industry_type) {
         return;
     }
 
-    const response = await tryFetchWithAlternatives(null,`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    const response = await tryFetchWithAlternatives({},`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
     const jsonResult = await response.json();
 
     const systemSecurity = Math.round(parseFloat(jsonResult["security_status"])*10)/10;
