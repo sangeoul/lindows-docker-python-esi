@@ -442,7 +442,7 @@ def buyback_calculate(parsed_items, language='en'):
 
     requesting_item = []
     for item_data in type_id_list:
-        requesting_item.append(item_data["input_name"])
+        requesting_item.append(item_data["id"])
 
     input_price_data=get_sell_buy(requesting_item)
 

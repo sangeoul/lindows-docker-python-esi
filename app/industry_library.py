@@ -45,7 +45,7 @@ def get_typeid_by_itemnamelist(item_name_list, language='en'):
     rows = cursor.fetchall()
 
     if not rows:
-        return []
+        return {}
             
     typeids={}
 
@@ -53,7 +53,7 @@ def get_typeid_by_itemnamelist(item_name_list, language='en'):
     for row in rows:
         type_id, name = row
         if type_id not in typeids:
-            typeids["name"]=type_id
+            typeids[name]=type_id
 
     return typeids
         
