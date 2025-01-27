@@ -748,6 +748,7 @@ async function runCalculate(){
     origin_product=null;
     
     document.querySelector("#product-panel-lv0").innerHTML="";
+    document.querySelector("#total-materials").innerHTML="";
     document.querySelector("#product-panel-lv1").innerHTML="";
     document.querySelector("#product-panel-lv2").innerHTML="";
     document.querySelector("#product-panel-lv3").innerHTML="";
@@ -863,6 +864,65 @@ async function changeFollowingPriceType(typeId,pricetype,productNode){
 
 }
 
+async function calcTotalMaterials() {
+    const material_list = [];
+
+    function addMaterials(node) {
+        if (node.isEndNode || node.materials.length === 0) {
+            let idx = material_list.findIndex(item => item.id === node.typeId);
+            if (idx !== -1) {
+                material_list[idx].quantity += node.getQuantity();
+            } else {
+                material_list.push({
+                    id: node.typeId,
+                    name: node.itemname,
+                    icon: node.iconurl,
+                    quantity: node.getQuantity()
+                });
+            }
+        } else {
+            for (const material of node.materials) {
+                addMaterials(material);
+            }
+        }
+    }
+
+    addMaterials(origin_product);
+    material_list.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
+
+    const table_total = document.createElement('table');
+    table_total.classList.add('total-item');
+    material_list.forEach(m => {
+        const tr_total = document.createElement('tr');
+
+        const td_totalIcon = document.createElement('td');
+        td_totalIcon.classList.add('total-item-icon');
+
+        const img_totalIcon = document.createElement('img');
+        img_totalIcon.src = m.icon;
+        img_totalIcon.classList.add('total-item-icon');
+
+        const td_totalItemname = document.createElement('td');
+        td_totalItemname.classList.add('total-item-itemname');
+        td_totalItemname.textContent = m.name;
+
+        const td_totalQuantity = document.createElement('td');
+        td_totalQuantity.classList.add('total-item-quantity');
+        td_totalQuantity.textContent = Math.ceil(m.quantity);
+
+        td_totalIcon.appendChild(img_totalIcon);
+
+        tr_total.appendChild(td_totalIcon);
+        tr_total.appendChild(td_totalItemname);
+        tr_total.appendChild(td_totalQuantity);
+
+        table_total.appendChild(tr_total);
+    });
+
+    document.querySelector("#total-materials").appendChild(table_total);
+}
+
+
 function getIndustryRelation(typeId){
 
     if(blueprintData[typeId]){
@@ -931,6 +991,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 
 
 }
+
 
 function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
     return (1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100));
