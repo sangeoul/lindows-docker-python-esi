@@ -2,7 +2,7 @@
 let buybackData = {};
 
 document.getElementById("calculateButton").addEventListener("click", function() {
-    const language = document.getElementById("language").value;
+    const language = 'en'//document.getElementById("language").value;
     const inputItems = document.getElementById("input_items").value;
 
     // Prepare request payload
