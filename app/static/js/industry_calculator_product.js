@@ -211,6 +211,8 @@ class Product {
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
+        this.pricetype=PRICETYPE_COST;
+        this.updatePanel;
         origin_product.calcCost();
         
 
