@@ -23,14 +23,14 @@ app.add_url_rule('/api/industry_relation_info', 'get_industry_relation_info', ge
 @app.route('/api/reaction_formulas', methods=['GET'])
 def get_reaction_formulas():
     # Send the JSON file from the static folder
-    filedir=os.path.join(base_dir, 'static')
-    return send_from_directory(filedir, 'json',  'reactions.json', as_attachment=False, mimetype='application/json')
+    filedir=os.path.join(base_dir, 'static','json')
+    return send_from_directory(filedir,  'reactions.json', as_attachment=False, mimetype='application/json')
 
 @app.route('/api/manufacturing_blueprints', methods=['GET'])
 def get_manufacturing_blueprints():
     # Send the JSON file from the static folder
-    filedir=os.path.join(base_dir, 'static')
-    return send_from_directory(filedir,  'json', 'manufacturings.json', as_attachment=False, mimetype='application/json')
+    filedir=os.path.join(base_dir, 'static','json')
+    return send_from_directory(filedir, 'manufacturings.json', as_attachment=False, mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8009)
