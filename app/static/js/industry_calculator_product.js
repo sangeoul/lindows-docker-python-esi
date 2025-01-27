@@ -711,7 +711,7 @@ async function runCalculate(){
 
 async function openFollowingTree(product){
     for( const node of product.materials){
-        let checkboxes;
+        let checkboxes={};
         checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
         checkboxes["component"]=document.querySelector("#component-checkbox:checked");
         checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
