@@ -492,7 +492,7 @@ async function addAllEventListener(){
     setTaxInputLink();
 
 
-    const calculatorDetailButton = document.querySelector("#calculator-detail-button");
+    const calculatorDetailButton = document.querySelector("#bonus-detail-button");
     const componentRow = document.querySelector("#component-setting-row");
     const reactionRow = document.querySelector("#reaction-setting-row");
     const fuelRow = document.querySelector("#fuel-setting-row");
