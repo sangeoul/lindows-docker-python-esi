@@ -166,7 +166,7 @@ def get_icon_by_typeid(type_id,icon_type="icon"):
     return ""
 
 
-def get_sell_buy(item_list):
+def get_affordable_price(item_list):
     
     try: 
         conn = connect_to_db()
@@ -189,7 +189,7 @@ def get_sell_buy(item_list):
             rows = cursor.fetchall()
                     
             if not rows:
-                return []
+                return {}
         
             prices={}
 
@@ -207,7 +207,7 @@ def get_sell_buy(item_list):
             
             return prices
         except: 
-            return []
+            return {}
         
     except Exception as e:
         print(f"DB connection error: {e}", flush=True)

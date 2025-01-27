@@ -6,7 +6,7 @@ import json
 import requests
 from flask import Flask,jsonify, render_template,render_template_string,redirect, request
 from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
-from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
+from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_affordable_price,get_itemname_by_typeid,get_groupid_by_typeid
 
 # Define the main structure for Buyback Items
 
@@ -113,7 +113,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
         # Check if the input_id or group_id is in the whitelist
         validitem = any(group["id"] == group_id for group in whitelist["group_id"]) or any(item["id"] == input_id for item in whitelist["type_id"])
         
-        # Query to get buy and sell prices using get_sell_buy function
+        # Query to get buy and sell prices using get_affordable_price function
         # input_sellprice, input_buyprice = input_price_data["sell"], input_price_data["buy"]
         
         # Get the icon for the input item using type_id
@@ -176,8 +176,8 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                     # Get output icon using type_id
                     output_icon = get_icon_by_typeid(output_id)
 
-                    # Fetch output prices using get_sell_buy function
-                    output_pricedata=get_sell_buy([output_id])
+                    # Fetch output prices using get_affordable_price function
+                    output_pricedata=get_affordable_price([output_id])
                     output_sellprice, output_buyprice = output_pricedata[output_id]["sell"], output_pricedata[output_id]["buy"]
 
                     stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
@@ -444,7 +444,8 @@ def buyback_calculate(parsed_items, language='en'):
     for item_data in type_id_list:
         requesting_item.append(item_data)
 
-    input_price_data=get_sell_buy(requesting_item)
+    print(f"!!DEBUG : type_id list: {requesting_item}",flush=True)
+    input_price_data=get_affordable_price(requesting_item)
 
 
     for item_data in parsed_items:
