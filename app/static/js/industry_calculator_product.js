@@ -553,11 +553,7 @@ class Product {
             await this.product_node.materials.forEach(material=>{
                 material.closeTree();
             });
-        }
-        if(this.materials.length==0){
-            return;
-        }
-        
+        }        
 
         this.opened=true;
         this.isEndNode=false;
