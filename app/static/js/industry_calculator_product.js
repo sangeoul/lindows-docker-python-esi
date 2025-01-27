@@ -337,7 +337,7 @@ class Product {
             buyRow.appendChild(buyRadioCell);
         }
         else{
-            
+            const buttonBuyMaterialsCell=document.createElement('td');
             const buttonBuyMaterials=document.createElement('button');
             buttonBuyMaterials.setAttribute('id','button-buy-materials');
             buttonBuyMaterials.classList.add('buy-materials');
@@ -346,6 +346,7 @@ class Product {
                 this.changeEndMaterialsPricetype(PRICETYPE_BUY);
             });
 
+            buttonBuyMaterialsCell.appendChild(buttonBuyMaterials);
             buyRow.appendChild(buttonBuyMaterials);
         }
 
@@ -380,7 +381,7 @@ class Product {
             sellRow.appendChild(sellRadioCell);
         }
         else{
-            
+            const buttonSellMaterialsCell=document.createElement('td');
             const buttonSellMaterials=document.createElement('button');
             buttonSellMaterials.setAttribute('id','button-sell-materials');
             buttonSellMaterials.classList.add('sell-materials');
@@ -388,7 +389,7 @@ class Product {
             buttonSellMaterials.addEventListener('click',()=>{
                 this.changeEndMaterialsPricetype(PRICETYPE_SELL);
             });
-
+            buttonSellMaterialsCell.appendChild(buttonSellMaterials);
             sellRow.appendChild(buttonSellMaterials);
         }
 
