@@ -868,7 +868,7 @@ async function calcTotalMaterials() {
     const material_list = [];
 
     function addMaterials(node) {
-        if (node.isEndNode || node.materials.length === 0) {
+        if ((node.isEndNode || node.materials.length === 0) && node.manufacturing_level>0) {
             let idx = material_list.findIndex(item => item.id === node.typeId);
             if (idx !== -1) {
                 material_list[idx].quantity += node.getQuantity();
