@@ -556,9 +556,6 @@ class Product {
         this.isEndNode=false;
         this.selectPanel();
 
-        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hidden-data");
-        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hidden-data");
-
         //console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
@@ -570,6 +567,8 @@ class Product {
             }
             
         }
+        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hidden-data");
+        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hidden-data");
         //await this.sortMaterials();
         await this.updatePanel();
         
@@ -581,13 +580,14 @@ class Product {
     async closeTree(closingMaterial=false){
         this.opened=false;
         
-        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hidden-data");
-        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hidden-data");
+
         this.materials.forEach(material=>{
             material.showPanel(false);
             material.opened=false;
             material.closeTree();
         });
+        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hidden-data");
+        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hidden-data");
         if(closingMaterial){
             this.isEndNode=true;
         }
