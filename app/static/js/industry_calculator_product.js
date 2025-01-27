@@ -333,7 +333,20 @@ class Product {
         buyRadioCell.appendChild(buyRadio);
         buyRow.appendChild(buyLabelCell);
         buyRow.appendChild(buyPriceCell);
-        if(this.manufacturing_level)buyRow.appendChild(buyRadioCell);
+        if(this.manufacturing_level){
+            buyRow.appendChild(buyRadioCell);
+        }
+        else{
+            
+            const buttonBuyMaterials=document.createElement('button');
+            buttonBuyMaterials.setAttribute('id','button-buy-materials');
+            buttonBuyMaterials.classList.add('buy-materials');
+            buttonBuyMaterials.addEventListener('click',()=>{
+                this.changeEndMaterialsPricetype(PRICETYPE_BUY);
+            });
+
+            buyRow.appendChild(buttonBuyMaterials);
+        }
 
         const sellRow = document.createElement('tr');
         sellRow.setAttribute('id','tr-sell-price');
@@ -362,7 +375,20 @@ class Product {
         sellRadioCell.appendChild(sellRadio);
         sellRow.appendChild(sellLabelCell);
         sellRow.appendChild(sellPriceCell);
-        if(this.manufacturing_level)sellRow.appendChild(sellRadioCell);
+        if(this.manufacturing_level){
+            sellRow.appendChild(sellRadioCell);
+        }
+        else{
+            
+            const buttonSellMaterials=document.createElement('button');
+            buttonSellMaterials.setAttribute('id','button-sell-materials');
+            buttonSellMaterials.classList.add('sell-materials');
+            buttonSellMaterials.addEventListener('click',()=>{
+                this.changeEndMaterialsPricetype(PRICETYPE_SELL);
+            });
+
+            sellRow.appendChild(buttonSellMaterials);
+        }
 
         const costRow = document.createElement('tr');
         costRow.setAttribute('id','tr-cost-price');
@@ -611,6 +637,18 @@ class Product {
             this.isEndNode=true;
         }
         this.updatePanel();
+    }
+    async changeEndMaterialsPricetype(pricetype){
+        
+        for( const material of this.materials){
+            if(material.isEndNode){
+                material.pricetype=pricetype;
+            }
+            else{
+                await material.changeEndMaterialsPricetype(pricetype);
+            }
+        }
+        this.calcCost();
     }
 
     async selectPanel(){
