@@ -4,6 +4,8 @@ import json
 from esi_library import connect_to_db
 from iteminfo import get_type_info
 
+REGION_THE_FORGE = 10000002
+STATION_JITA = 60003760
 
 def get_typeid_by_itemname(item_name, language='en'):
     conn = connect_to_db()
@@ -30,6 +32,30 @@ def get_typeid_by_itemname(item_name, language='en'):
     
     except:
         raise ValueError(f"Error fetching data")
+    
+def get_typeid_by_itemnamelist(item_name_list, language='en'):
+    conn = connect_to_db()
+    cursor = conn.cursor()
+
+    # Attempt to fetch the type_id from the database
+    if language == 'ko':
+        cursor.execute("SELECT type_id,name_ko as name FROM type_info WHERE name_ko =  ANY(%s)", (item_name_list,))
+    else:  # Default to 'en'
+        cursor.execute("SELECT type_id,name_en as name FROM type_info WHERE name_en = ANY(%s)", (item_name_list,))
+    rows = cursor.fetchall()
+
+    if not rows:
+        return []
+            
+    typeids={}
+
+    # Parse the results
+    for row in rows:
+        type_id, name = row
+        if type_id not in typeids:
+            typeids["name"]=type_id
+
+    return typeids
         
 
 
@@ -82,6 +108,9 @@ def get_groupid_by_typeid(type_id):
         raise ValueError(f"Error fetching data")
 
 def get_icon_by_typeid(type_id,icon_type="icon"):
+
+    return f"https://images.evetech.net/types/{type_id}/icon"
+
     conn = connect_to_db()
     cursor = conn.cursor()
 
@@ -137,7 +166,7 @@ def get_icon_by_typeid(type_id,icon_type="icon"):
     return ""
 
 
-def get_sell_buy(type_id):
+def get_sell_buy(item_list):
     
     try: 
         conn = connect_to_db()
@@ -145,29 +174,41 @@ def get_sell_buy(type_id):
 
         # Fetch sell price
         try: 
-            cursor.execute(""" 
-            SELECT price FROM market_price 
-            WHERE type_id = %s AND is_buy_order = false 
-            ORDER BY price ASC LIMIT 1 
-            """, (type_id,))
-            sellprice = cursor.fetchone()
-            sellprice = float(sellprice[0]) if sellprice else 0.0
-        except: 
-            sellprice = 0.0
+            query = f"""
+                    SELECT 
+                        type_id, is_buy_order, price 
+                    FROM 
+                        market_price
+                    WHERE 
+                        type_id = ANY(%s) AND region_id = %s AND location_id = %s
+                    ORDER BY 
+                        type_id ASC, price DESC
+                """
+            cursor.execute(query, (item_list, REGION_THE_FORGE, STATION_JITA))
 
-        # Fetch buy price
-        try: 
-            cursor.execute(""" 
-            SELECT price FROM market_price 
-            WHERE type_id = %s AND is_buy_order = true 
-            ORDER BY price DESC LIMIT 1 
-            """, (type_id,))
-            buyprice = cursor.fetchone()
-            buyprice = float(buyprice[0]) if buyprice else 0.0
-        except: 
-            buyprice = 0.0
-        return sellprice, buyprice
+            rows = cursor.fetchall()
+                    
+            if not rows:
+                return []
+        
+            prices={}
 
+            # Parse the results
+            for row in rows:
+                type_id, is_buy_order, price = row
+                if type_id not in prices:
+                    prices[type_id]={"buy":None, "sell":None}
+                if is_buy_order:
+                    if prices[type_id]["buy"] is None:
+                        prices[type_id]["buy"] = price
+                else:
+                    if prices[type_id]["sell"] is None:
+                        prices[type_id]["sell"] = price
+            
+            return prices
+        except: 
+            return []
+        
     except Exception as e:
         print(f"DB connection error: {e}", flush=True)
         return 0, 0

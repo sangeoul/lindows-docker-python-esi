@@ -3,9 +3,10 @@ import os
 import psycopg2
 import math
 import json
+import requests
 from flask import Flask,jsonify, render_template,render_template_string,redirect, request
 from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
-from industry_library import get_typeid_by_itemname, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
+from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_sell_buy,get_itemname_by_typeid,get_groupid_by_typeid
 
 # Define the main structure for Buyback Items
 
@@ -91,7 +92,7 @@ def get_stock_info(type_id):
         # Return default values if no data is found
         return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0
 
-def create_buyback_item(input_name, input_amount, language,whitelist=None):
+def create_buyback_item(input_id,input_name, input_amount,input_price_data, language,whitelist=None):
 
     if not whitelist:
         # Load the whitelist from the JSON file
@@ -104,10 +105,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         # Fetch type_id using the library function
         validitem = True
         try:
-            input_id = get_typeid_by_itemname(input_name, language)
             group_id = get_groupid_by_typeid(input_id)
         except:
-            input_id = 0
             group_id = 0
             validitem = False
         
@@ -115,10 +114,10 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         validitem = any(group["id"] == group_id for group in whitelist["group_id"]) or any(item["id"] == input_id for item in whitelist["type_id"])
         
         # Query to get buy and sell prices using get_sell_buy function
-        input_sellprice, input_buyprice = get_sell_buy(input_id)
+        # input_sellprice, input_buyprice = input_price_data["sell"], input_price_data["buy"]
         
         # Get the icon for the input item using type_id
-        input_icon = get_icon_by_typeid(input_id)  # Assuming this function exists
+        input_icon = get_icon_by_typeid(input_id)
         
         # Get buyback rates
         min_br,default_br,max_br=get_buyback_rate(input_id, group_id,whitelist)
@@ -130,8 +129,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
             input_name=input_name,
             input_amount=input_amount,
             input_icon=input_icon,  # Now we store the icon URL
-            input_buyprice=input_buyprice,
-            input_sellprice=input_sellprice,
+            input_buyprice=input_price_data["buy"],
+            input_sellprice=input_price_data["sell"],
             outputs=[]
         )
         
@@ -152,8 +151,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
             if not rows:  # If no records are found, create the output with the same details as input
                 # Calculate the output price based on input amount and dynamic buyback rate
                 stock_data = get_stock_info(input_id)
-                dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice,min_br,default_br,max_br)
-                output_price = math.floor(input_amount) * input_buyprice * dynamic_buyback_rate
+                dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
+                output_price = math.floor(input_amount) * input_price_data["buy"] * dynamic_buyback_rate
 
                 # Add the output item which is the same as input item
                 item.outputs.append(Output_Item(
@@ -161,8 +160,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
                     output_name=input_name,
                     output_amount=input_amount,
                     output_icon=input_icon,
-                    output_buyprice=input_buyprice,
-                    output_sellprice=input_sellprice,
+                    output_buyprice=input_price_data["buy"],
+                    output_sellprice=input_price_data["sell"],
                     output_price=output_price  # Same dynamic buyback logic for the output
                 ))
             else:
@@ -178,7 +177,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
                     output_icon = get_icon_by_typeid(output_id)
 
                     # Fetch output prices using get_sell_buy function
-                    output_sellprice, output_buyprice = get_sell_buy(output_id)
+                    output_pricedata=get_sell_buy([output_id])
+                    output_sellprice, output_buyprice = output_pricedata[output_id]["sell"], output_pricedata[output_id]["buy"]
 
                     stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
 
@@ -204,8 +204,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
         else:
             # Calculate the output price based on input amount and dynamic buyback rate
             stock_data = get_stock_info(input_id)
-            dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_buyprice, input_sellprice,min_br,default_br,max_br)
-            output_price = math.floor(input_amount) * input_buyprice * dynamic_buyback_rate
+            dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
+            output_price = math.floor(input_amount) * input_price_data["buy"] * dynamic_buyback_rate
 
             # Add the output item which is the same as input item
             item.outputs.append(Output_Item(
@@ -213,8 +213,8 @@ def create_buyback_item(input_name, input_amount, language,whitelist=None):
                 output_name=input_name,
                 output_amount=input_amount,
                 output_icon=input_icon,
-                output_buyprice=input_buyprice,
-                output_sellprice=input_sellprice,
+                output_buyprice=input_price_data["buy"],
+                output_sellprice=input_price_data["sell"],
                 output_price=output_price  # Same dynamic buyback logic for the output
             ))
 
@@ -434,12 +434,29 @@ def buyback_calculate(parsed_items, language='en'):
     with open(whitelist_path, 'r') as file:
         whitelist = json.load(file)
 
+    requesting_item = []
+    for item_data in parsed_items:
+        requesting_item.append(item_data['input_name'])
+
+    type_id_list = get_typeid_by_itemnamelist(requesting_item)
+
+    requesting_item = []
+    for item_data in type_id_list:
+        requesting_item.append(item_data["input_name"])
+
+    input_price_data=get_sell_buy(requesting_item)
+
+
     for item_data in parsed_items:
         input_name = item_data['input_name']
         input_amount = item_data['input_amount']
         
+        # Find the input_id based on input_name
+        input_id = next((item['type_id'] for item in type_id_list["inventory_type"] if item['name'] == input_name), None)
+        
         # Create the buyback item using the helper function
-        item = create_buyback_item(input_name, input_amount, language,whitelist)
+        item = create_buyback_item(input_id, input_name, input_amount,input_price_data[input_id], language, whitelist)
+
         
         if item is None:
             # Mark the item as invalid in the results

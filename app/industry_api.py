@@ -15,7 +15,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/api/iteminfo', 'iteminfo', get_type_info, methods=['GET'])
-app.add_url_rule('/api/jitaprice', 'jitaprice', get_prices, methods=['GET'])
+app.add_url_rule('/api/jitaprice', 'jitaprice', get_prices, methods=['GET','POST'])
 app.add_url_rule('/api/industry_relation_info', 'get_industry_relation_info', get_industry_relation_info, methods=['GET'])
 
 
