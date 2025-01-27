@@ -441,7 +441,7 @@ def buyback_calculate(parsed_items, language='en'):
     type_id_list = get_typeid_by_itemnamelist(requesting_item)
 
     requesting_item = []
-    for item_data in type_id_list:
+    for item_data in type_id_list.values():
         requesting_item.append(item_data)
 
     print(f"!!DEBUG : type_id list: {requesting_item}",flush=True)
