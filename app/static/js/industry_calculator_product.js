@@ -621,7 +621,7 @@ class Product {
         }
         this.selected=true;
         this.openPriceTable();
-        console.log("Panel " +this.itemname+" is selected.");
+        //console.log("Panel " +this.itemname+" is selected.");
         
 
     }
@@ -643,6 +643,7 @@ async function loadMarketDataWithCache(typeId){
     if(!market_price_cache[typeId.toString()]){
         const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
         market_price_cache[typeId.toString()] = await response.json();
+        console.log(`Market price has been loaded. typeId:${typeId}`)
         return market_price_cache[typeId.toString()];
     }
     else{
@@ -769,8 +770,9 @@ async function openFollowingTree(product){
                 await openFollowingTree(node);
             }else continue;    
         }
-        origin_product.calcCost()
+        
     }
+    origin_product.calcCost();
 }
 
 async function changeAllPriceType(typeId,pricetype){
