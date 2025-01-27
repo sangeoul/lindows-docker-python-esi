@@ -97,7 +97,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
     if not whitelist:
         # Load the whitelist from the JSON file
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+        whitelist_path = os.path.join(base_dir, 'static', 'json', 'buyback_whitelist.json')
         with open(whitelist_path, 'r') as file:
             whitelist = json.load(file)
 
@@ -430,7 +430,7 @@ def buyback_calculate(parsed_items, language='en'):
 
     # Load the whitelist from the JSON file
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    whitelist_path = os.path.join(base_dir, 'static', 'buyback_whitelist.json')
+    whitelist_path = os.path.join(base_dir, 'static', 'json', 'buyback_whitelist.json')
     with open(whitelist_path, 'r') as file:
         whitelist = json.load(file)
 

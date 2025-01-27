@@ -189,9 +189,8 @@ def save_to_db(data):
     except Exception as e:
         print(f"Error occurred: {e}", flush=True)
 
-
 if __name__ == "__main__":
     print_with_timestamp("Starting Market Updater")
     sys.stdout.flush()
     fetch_market_data()
-    print_with_timestamp("Update finished.")
+    print_with_timestamp("Market update finished.")
