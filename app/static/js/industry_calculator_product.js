@@ -355,8 +355,11 @@ class Product {
         sellRow.classList.add('sell-row');
 
         const sellLabelCell = document.createElement('td');
+        sellLabelCell.classList.add('sell-label');
         const sellPriceCell = document.createElement('td');
+        sellPriceCell.classList.add('sell-price');
         const sellRadioCell = document.createElement('td');
+        sellRadioCell.classList.add('sell-radio');
         sellLabelCell.textContent = 'Sell:';
         sellPriceCell.textContent = this.sellprice.toFixed(2);
         sellPriceCell.setAttribute('id','td-sell-price');
@@ -398,8 +401,11 @@ class Product {
         costRow.classList.add('cost-row');
 
         const costLabelCell = document.createElement('td');
+        costLabelCell.classList.add('cost-label');
         const costPriceCell = document.createElement('td');
+        costPriceCell.classList.add('cost-price');
         const costRadioCell = document.createElement('td');
+        costRadioCell.classList.add('cost-radio');
         costLabelCell.textContent = 'Cost:';
         costPriceCell.textContent = this.costprice.toFixed(2);
         costPriceCell.setAttribute('id','td-cost-price');
@@ -428,7 +434,9 @@ class Product {
         customRow.classList.add('custom-row');
 
         const customPriceInputCell = document.createElement('td');
+        customPriceInputCell.classList.add('custom-input-cell');
         const customRadioCell = document.createElement('td');
+        customRadioCell.classList.add('custom-radio');
         const customPriceInput = document.createElement('input');
         customPriceInput.type = 'number';
         customPriceInput.min = 0;
