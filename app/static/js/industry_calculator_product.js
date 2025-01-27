@@ -607,7 +607,6 @@ class Product {
             }
 
             this.isEndNode=this.materials.length==0;
-            
         }
         const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
         const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
@@ -620,6 +619,7 @@ class Product {
 
         //await this.sortMaterials();
         await this.updatePanel();
+        calcTotalMaterials()
         
         this.materials.forEach(material=>{
             material.showPanel(true);
