@@ -65,7 +65,7 @@ table.product-table-panel{
     width: var(--product-panel-width);
 }   
 
-table.product-table-panel img.product-icon, img.total-item-icon{
+table.product-table-panel img.product-icon{
     width: 30px;
 }
 table.product-table-panel td.product-icon{
@@ -118,7 +118,11 @@ input.custom-price-input{
 }
 
 td.total-item-icon{
-    width:30px;
+    width:25px;
+    height:25px;
+}
+img.total-item-icon{
+    width:24px;
 }
 td.total-item-itemname{
     width:100px;
@@ -126,7 +130,7 @@ td.total-item-itemname{
 }
 
 td.total-item-quantity{
-    width:62px;
+    width:67px;
     text-align:right;
 }
 
