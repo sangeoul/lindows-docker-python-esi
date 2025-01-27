@@ -21,12 +21,12 @@ async function fetchData() {
 }
 
 
-async function tryFetchWithAlternatives(primary_url, secondary_url = null, tertiary_url = null) {
+async function tryFetchWithAlternatives(request_information,primary_url, secondary_url = null, tertiary_url = null) {
     let response;
 
     try {
         // Attempt to fetch data from the primary API
-        response = await fetch(primary_url);
+        response = await fetch(primary_url,request_information);
         if (!response.ok) {
             throw new Error(`Primary API request failed with status ${response.status}. From ${primary_url}`);
         }
@@ -36,7 +36,7 @@ async function tryFetchWithAlternatives(primary_url, secondary_url = null, terti
         if (secondary_url) {
             try {
                 // Fallback to the secondary API
-                response = await fetch(secondary_url);
+                response = await fetch(secondary_url,request_information);
                 if (!response.ok) {
                     throw new Error(`Secondary API request failed with status ${response.status}. From ${secondary_url}`);
                 }
@@ -47,7 +47,7 @@ async function tryFetchWithAlternatives(primary_url, secondary_url = null, terti
                 if (tertiary_url) {
                     try {
                         // Fallback to the tertiary API
-                        response = await fetch(tertiary_url);
+                        response = await fetch(tertiary_url,request_information);
                         if (!response.ok) {
                             throw new Error(`Tertiary API request failed with status ${response.status}. From ${tertiary_url}`);
                         }
@@ -167,17 +167,18 @@ async function loadEivPriceData() {
 // Function to fetch system data and store it
 async function loadSystemData() {
     try {
-        const response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
+        const response = await tryFetchWithAlternatives(null,'https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
         const systems = await response.json();
         const systemIds = systems.map(system => system.solar_system_id);
 
         // Function to fetch names in batches
         async function fetchNames(ids) {
-            const response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/universe/names/?datasource=tranquility', {
+            const response = await tryFetchWithAlternatives({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(ids    )
-            });
+            },
+            'https://esi.evetech.net/latest/universe/names/?datasource=tranquility', );
             return response.json();
         }
 
@@ -381,7 +382,7 @@ async function calcStructureBonus(industry_type) {
         return;
     }
 
-    const response = await tryFetchWithAlternatives(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    const response = await tryFetchWithAlternatives(null,`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
     const jsonResult = await response.json();
 
     const systemSecurity = Math.round(parseFloat(jsonResult["security_status"])*10)/10;

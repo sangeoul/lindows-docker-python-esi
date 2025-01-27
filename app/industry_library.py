@@ -1,4 +1,5 @@
 import requests
+import os
 from datetime import datetime, timedelta
 import json
 from esi_library import connect_to_db
@@ -212,3 +213,26 @@ def get_affordable_price(item_list):
     except Exception as e:
         print(f"DB connection error: {e}", flush=True)
         return 0, 0
+
+def read_latest_json(filename):
+    # Find the latest JSON file based on timestamp in the file name
+    latest_file = None
+    latest_timestamp = None
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    for lfile in os.listdir(os.path.join(base_dir, 'static', 'json')):
+        if lfile.startswith(f"{filename}_") and lfile.endswith(".json"):
+            file_timestamp = lfile[len(f"{filename}_"):-len(".json")]
+            if latest_timestamp is None or file_timestamp > latest_timestamp:
+                latest_timestamp = file_timestamp
+                latest_file = lfile
+
+    if latest_file:
+        latest_file_path = os.path.join(base_dir, 'static', 'json', latest_file)
+        with open(latest_file_path, 'r', encoding='utf-8') as file:
+            json_data = json.load(file)
+        print(f"Latest data read from {latest_file_path}")
+        return json_data
+    else:
+        print("No JSON files found in the directory.")
+        return None
