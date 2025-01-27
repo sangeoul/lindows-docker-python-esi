@@ -135,7 +135,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
         )
         
 
-        if(get_reprocessing_or_not(input_id, group_id, whitelist)):
+        if get_reprocessing_or_not(input_id, group_id, whitelist):
 
             
             # Populate outputs
@@ -452,7 +452,16 @@ def buyback_calculate(parsed_items, language='en'):
         input_amount = item_data['input_amount']
         
         # Find the input_id based on input_name
-        input_id = next((item['type_id'] for item in type_id_list["inventory_type"] if item['name'] == input_name), None)
+        try:
+            input_id = type_id_list[input_name]
+        
+            
+        except Exception as e:
+            # Catch any other exceptions and display a generic error message
+            print(f"Unexpected error: {e}")
+
+
+        
         
         # Create the buyback item using the helper function
         item = create_buyback_item(input_id, input_name, input_amount,input_price_data[input_id], language, whitelist)
