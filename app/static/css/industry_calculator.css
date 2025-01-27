@@ -31,6 +31,10 @@ input.system-input{
     width:75px;
 }
 
+td.opentree-detail , td.bonus-detail{
+    width:34px;
+}
+
 input.reaction-efficiency-bonus-input{
     margin-right:107px;
 }
