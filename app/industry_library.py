@@ -200,10 +200,10 @@ def get_affordable_price(item_list):
                     prices[type_id]={"buy":None, "sell":None}
                 if is_buy_order:
                     if prices[type_id]["buy"] is None:
-                        prices[type_id]["buy"] = price
+                        prices[type_id]["buy"] = float(price)
                 else:
                     if prices[type_id]["sell"] is None:
-                        prices[type_id]["sell"] = price
+                        prices[type_id]["sell"] = float(price)
             
             return prices
         except: 

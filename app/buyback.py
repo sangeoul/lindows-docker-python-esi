@@ -444,7 +444,6 @@ def buyback_calculate(parsed_items, language='en'):
     for item_data in type_id_list.values():
         requesting_item.append(item_data)
 
-    print(f"!!DEBUG : type_id list: {requesting_item}",flush=True)
     input_price_data=get_affordable_price(requesting_item)
 
 
