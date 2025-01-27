@@ -20,6 +20,56 @@ async function fetchData() {
     }
 }
 
+
+async function tryFetchWithAlternatives(primary_url, secondary_url = null, tertiary_url = null) {
+    let response;
+    let data;
+
+    try {
+        // Attempt to fetch data from the primary API
+        response = await fetch(primary_url);
+        if (!response.ok) {
+            throw new Error(`Primary API request failed with status ${response.status}. From ${primary_url}`);
+        }
+        data = await response.json();
+    } catch (error) {
+        console.error('Error fetching from primary API:', error.message);
+
+        if (secondary_url) {
+            try {
+                // Fallback to the secondary API
+                response = await fetch(secondary_url);
+                if (!response.ok) {
+                    throw new Error(`Secondary API request failed with status ${response.status}. From ${secondary_url}`);
+                }
+                data = await response.json();
+            } catch (altError) {
+                console.error('Error fetching from secondary API:', altError.message);
+
+                if (tertiary_url) {
+                    try {
+                        // Fallback to the tertiary API
+                        response = await fetch(tertiary_url);
+                        if (!response.ok) {
+                            throw new Error(`Tertiary API request failed with status ${response.status}. From ${tertiary_url}`);
+                        }
+                        data = await response.json();
+                    } catch (terError) {
+                        console.error('Error fetching from tertiary API:', terError.message);
+                        data = null;
+                    }
+                } else {
+                    data = null;
+                }
+            }
+        } else {
+            data = null;
+        }
+    }
+
+    return data;
+}
+
 // Example options for Manufacturing Structure&Rig select element
 const manufacturingStructureRigOptions = [
     { structure_bonus: 1, rig_bonus: 2, cost_bonus:3 ,text: 'Raitaru I' },
@@ -93,11 +143,16 @@ function loadValueFromCookie(element) {
 }
 
 
+
 // Function to fetch data from the API and store it
 async function loadEivPriceData() {
     try {
-        const response = await fetch('https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
-        const data = await response.json();
+        
+        let response;
+        let data;
+
+        response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/markets/prices/?datasource=tranquility');
+        data = await response.json();
 
         // Store data in the eivData object
         data.forEach(item => {
@@ -119,13 +174,13 @@ async function loadEivPriceData() {
 // Function to fetch system data and store it
 async function loadSystemData() {
     try {
-        const response = await fetch('https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
+        const response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/industry/systems/?datasource=tranquility');
         const systems = await response.json();
         const systemIds = systems.map(system => system.solar_system_id);
 
         // Function to fetch names in batches
         async function fetchNames(ids) {
-            const response = await fetch('https://esi.evetech.net/latest/universe/names/?datasource=tranquility', {
+            const response = await tryFetchWithAlternatives('https://esi.evetech.net/latest/universe/names/?datasource=tranquility', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(ids    )
@@ -333,7 +388,7 @@ async function calcStructureBonus(industry_type) {
         return;
     }
 
-    const response = await fetch(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
+    const response = await tryFetchWithAlternatives(`https://esi.evetech.net/latest/universe/systems/${system_index_id}/?datasource=tranquility&language=en`);
     const jsonResult = await response.json();
 
     const systemSecurity = Math.round(parseFloat(jsonResult["security_status"])*10)/10;
