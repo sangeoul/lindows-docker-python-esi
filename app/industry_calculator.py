@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 @app.route('/industry_calculator')
 def industry_calculator():
-    if request.args.get('update') == '1':
+    update_param = request.args.get('update')
+    if update_param == '1' or update_param.lower() == 'true':
         asyncio.run(fetch_and_save_json("https://esi.evetech.net/latest/markets/prices/?datasource=tranquility", "market_eiv_prices"))
     return render_template("industry_calculator.html")
 
