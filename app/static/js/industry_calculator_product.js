@@ -869,12 +869,12 @@ async function calcTotalMaterials() {
 
     function addMaterials(node) {
         if (node.isEndNode || node.materials.length === 0) {
-            let idx = material_list.findIndex(item => item.id === node.typeId);
+            let idx = material_list.findIndex(item => item.id === node.typeid);
             if (idx !== -1) {
                 material_list[idx].quantity += node.getQuantity();
             } else {
                 material_list.push({
-                    id: node.typeId,
+                    id: node.typeid,
                     name: node.itemname,
                     icon: node.iconurl,
                     quantity: node.getQuantity()
