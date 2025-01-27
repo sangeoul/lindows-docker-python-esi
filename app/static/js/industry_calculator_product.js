@@ -908,7 +908,7 @@ async function calcTotalMaterials() {
 
         const td_totalQuantity = document.createElement('td');
         td_totalQuantity.classList.add('total-item-quantity');
-        td_totalQuantity.textContent = Math.ceil(m.quantity);
+        td_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
 
         td_totalIcon.appendChild(img_totalIcon);
 
@@ -919,7 +919,10 @@ async function calcTotalMaterials() {
         table_total.appendChild(tr_total);
     });
 
-    document.querySelector("#total-materials").appendChild(table_total);
+    const td_totalBoard=document.querySelector("#total-materials");
+    td_totalBoard.innerHTML="";
+
+    td_totalBoard.appendChild(table_total);
 }
 
 
