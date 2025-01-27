@@ -28,8 +28,8 @@ let origin_product=null;
 
 let product_index=1;
 
-let market_price_cache={};
-
+const market_price_cache={};
+const market_price_request_cache = {};
 
 
 class Product {
@@ -638,18 +638,37 @@ class Product {
 
 
 
-async function loadMarketDataWithCache(typeId){
+async function loadMarketDataWithCache(typeId) {
+    const int_typeId = parseInt(typeId);
 
-    if(!market_price_cache[typeId.toString()]){
-        const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
-        market_price_cache[typeId.toString()] = await response.json();
-        console.log(`Market price has been loaded. typeId:${typeId}`)
-        return market_price_cache[typeId.toString()];
+    // Check if the response is already cached
+    if (market_price_cache[int_typeId]) {
+        return market_price_cache[int_typeId];
     }
-    else{
-        return market_price_cache[typeId.toString()];
-    }    
+
+    // Check if there's an ongoing request for the same typeId
+    if (market_price_request_cache[int_typeId]) {
+        return await market_price_request_cache[int_typeId];
+    }
+
+    // Store the ongoing request in the request cache
+    market_price_request_cache[int_typeId] = (async () => {
+        try {
+            const response = await fetch(`https://lindows.kr:8009/api/jitaprice?type_id=${typeId}`);
+            const data = await response.json();
+            market_price_cache[int_typeId] = data;
+            console.log(`Market price has been loaded. typeId: ${typeId}`);
+            return data;
+        } finally {
+            // Remove the request from the request cache once completed
+            delete market_price_request_cache[int_typeId];
+        }
+    })();
+
+    // Await the ongoing request and return its result
+    return await market_price_request_cache[int_typeId];
 }
+
 
 function getEIV(type_id){
     data=getIndustryRelation(type_id);
