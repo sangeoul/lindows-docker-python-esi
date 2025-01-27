@@ -407,9 +407,10 @@ class Product {
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
 
-        customPriceInput.addEventListener('input',()=>{
+        customPriceInput.addEventListener('input', async()=>{
             this.pricetype=PRICETYPE_CUSTOM;
-            this.updatePanel();
+            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM);
+            origin_product.calcCost();
         });
 
         customPriceInputCell.colSpan = 2;
@@ -552,6 +553,9 @@ class Product {
             await this.product_node.materials.forEach(material=>{
                 material.closeTree();
             });
+        }
+        if(this.materials.length==0){
+            return;
         }
         
 
@@ -702,6 +706,44 @@ async function runCalculate(){
     await origin_product.openNextTree();
     origin_product.openPriceTable();
 
+    const openButton=document.querySelector("#open-button");
+    openButton.addEventListener("click",()=>{
+        openFollowingTree(origin_product);
+    });
+
+}
+s
+async function openFollowingTree(product){
+    for( const node of product.materials){
+        let checkboxes;
+        checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
+        checkboxes["component"]=document.querySelector("#component-checkbox:checked");
+        checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
+        checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
+        checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
+
+        if(CONSTRUCTION_COMPONENTS.includes(node.typeid)){
+            if(checkboxes["component"]){
+                await node.openNextTree();
+                await openFollowingTree(node);
+            }else continue;
+        }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
+            if(checkboxes["reaction"]){
+                await node.openNextTree();
+                await openFollowingTree(node);
+            }else continue;
+        }else if(FUEL_BLOCKS.includes(node.typeid)){
+            if(checkboxes["fuel"]){
+                await node.openNextTree();
+                await openFollowingTree(node);
+            }else continue;
+        } else{
+            if(checkboxes["basement"]){
+                await node.openNextTree();
+                await openFollowingTree(node);
+            }else continue;    
+        }
+    }
 }
 
 async function changeAllPriceType(typeId,pricetype){
