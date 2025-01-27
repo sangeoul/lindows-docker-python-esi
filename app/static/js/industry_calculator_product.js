@@ -567,9 +567,13 @@ class Product {
             }
             
         }
-        if(this.manufacturing_level){
-            this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hidden-data");
-            this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hidden-data");
+        const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
+        const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
+        if(openTreeButton){
+            openTreeButton.classList.add("hidden-data");
+        }
+        if(closeTreeButton){
+            closeTreeButton.classList.remove("hidden-data");
         }
 
         //await this.sortMaterials();
@@ -589,9 +593,14 @@ class Product {
             material.opened=false;
             material.closeTree();
         });
-        if(this.manufacturing_level){
-            this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hidden-data");
-            this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hidden-data");
+
+        const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
+        const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
+        if(openTreeButton){
+            openTreeButton.classList.remove("hidden-data");
+        }
+        if(closeTreeButton){
+            closeTreeButton.classList.add("hidden-data");
         }
 
         if(closingMaterial){
