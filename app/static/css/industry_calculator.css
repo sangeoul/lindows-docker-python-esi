@@ -50,7 +50,7 @@ input.tax-input{
     width:34px;
 }
 
-td.panel-tree-layer{
+td.panel-tree-layer, td.total-materials{
     vertical-align: top;
 }
 
