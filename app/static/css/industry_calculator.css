@@ -122,10 +122,12 @@ td.total-item-icon{
 }
 td.total-item-itemname{
     width:100px;
+    text-align:left;
 }
 
 td.total-item-quantity{
     width:62px;
+    text-align:right;
 }
 
 
