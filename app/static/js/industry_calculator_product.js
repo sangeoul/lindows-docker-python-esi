@@ -646,6 +646,7 @@ class Product {
         for( const material of this.materials){
             if(material.isEndNode){
                 material.pricetype=pricetype;
+                material.updatePanel();
             }
             else{
                 await material.changeEndMaterialsPricetype(pricetype);
