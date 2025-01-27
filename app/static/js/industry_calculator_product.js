@@ -567,8 +567,11 @@ class Product {
             }
             
         }
-        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hidden-data");
-        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hidden-data");
+        if(this.manufacturing_level){
+            this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hidden-data");
+            this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hidden-data");
+        }
+
         //await this.sortMaterials();
         await this.updatePanel();
         
@@ -586,8 +589,11 @@ class Product {
             material.opened=false;
             material.closeTree();
         });
-        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hidden-data");
-        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hidden-data");
+        if(this.manufacturing_level){
+            this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hidden-data");
+            this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hidden-data");
+        }
+
         if(closingMaterial){
             this.isEndNode=true;
         }
