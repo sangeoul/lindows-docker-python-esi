@@ -443,7 +443,8 @@ class Product {
         const nextTreeButton = document.createElement('button');
         const closeTreeButton = document.createElement('button');
         nextTreeButton.textContent = '>';
-        nextTreeButton.classList.add('next-tree-button');
+        nextTreeButton.classList.add('next-tree');
+        nextTreeButton.setAttribute('id',`button-open-tree-${this.product_index}`);
         nextTreeButton.addEventListener('click',()=>{
             this.pricetype=PRICETYPE_COST;
             this.openNextTree();
@@ -451,11 +452,11 @@ class Product {
             closeTreeButton.classList.remove('hidden-data');   
         });
         closeTreeButton.textContent = '<';
-        closeTreeButton.classList.add('close-tree-button');
+        closeTreeButton.classList.add('close-tree');
         closeTreeButton.classList.add('hidden-data');
+        closeTreeButton.setAttribute('id',`button-close-tree-${this.product_index}`);
         closeTreeButton.addEventListener('click',()=>{
-            this.isEndNode=true;
-            this.closeTree();
+            this.closeTree(true);
             nextTreeButton.classList.remove('hidden-data');
             closeTreeButton.classList.add('hidden-data'); 
         });
@@ -554,6 +555,10 @@ class Product {
         this.opened=true;
         this.isEndNode=false;
         this.selectPanel();
+
+        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.add("hiddein-data");
+        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.remove("hiddein-data");
+
         //console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
@@ -573,14 +578,19 @@ class Product {
         });
     }
 
-    async closeTree(){
+    async closeTree(closingMaterial=false){
         this.opened=false;
         
+        this.table_panel.querySelector(`#button-close-tree-${this.product_index}`).classList.add("hiddein-data");
+        this.table_panel.querySelector(`#button-open-tree-${this.product_index}`).classList.remove("hiddein-data");
         this.materials.forEach(material=>{
             material.showPanel(false);
             material.opened=false;
             material.closeTree();
         });
+        if(closingMaterial){
+            this.isEndNode=true;
+        }
         this.updatePanel();
     }
 
