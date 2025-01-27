@@ -594,7 +594,6 @@ class Product {
         }        
 
         this.opened=true;
-        this.isEndNode=false;
         this.selectPanel();
 
         //console.log("Opening "+this.itemname+"...");
@@ -606,6 +605,8 @@ class Product {
             if(calcCost){
                 this.loadAndCalcCost();
             }
+
+            this.isEndNode=this.materials.length==0;
             
         }
         const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
