@@ -23,7 +23,6 @@ async function fetchData() {
 
 async function tryFetchWithAlternatives(primary_url, secondary_url = null, tertiary_url = null) {
     let response;
-    let data;
 
     try {
         // Attempt to fetch data from the primary API
@@ -31,7 +30,6 @@ async function tryFetchWithAlternatives(primary_url, secondary_url = null, terti
         if (!response.ok) {
             throw new Error(`Primary API request failed with status ${response.status}. From ${primary_url}`);
         }
-        data = await response.json();
     } catch (error) {
         console.error('Error fetching from primary API:', error.message);
 
@@ -42,7 +40,7 @@ async function tryFetchWithAlternatives(primary_url, secondary_url = null, terti
                 if (!response.ok) {
                     throw new Error(`Secondary API request failed with status ${response.status}. From ${secondary_url}`);
                 }
-                data = await response.json();
+
             } catch (altError) {
                 console.error('Error fetching from secondary API:', altError.message);
 
@@ -53,21 +51,16 @@ async function tryFetchWithAlternatives(primary_url, secondary_url = null, terti
                         if (!response.ok) {
                             throw new Error(`Tertiary API request failed with status ${response.status}. From ${tertiary_url}`);
                         }
-                        data = await response.json();
+
                     } catch (terError) {
                         console.error('Error fetching from tertiary API:', terError.message);
-                        data = null;
                     }
-                } else {
-                    data = null;
-                }
+                } 
             }
-        } else {
-            data = null;
-        }
+        } 
     }
 
-    return data;
+    return response;
 }
 
 // Example options for Manufacturing Structure&Rig select element
