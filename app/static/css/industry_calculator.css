@@ -31,6 +31,15 @@ input.system-input{
     width:75px;
 }
 
+td.calculate-button{
+    width:160px;
+}
+button.calculate-button{
+    width:159px;
+    height:40px;
+    font-size:25px;
+}
+
 td.opentree-detail , td.bonus-detail{
     width:34px;
 }
