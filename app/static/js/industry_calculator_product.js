@@ -859,7 +859,7 @@ async function openFollowingTree(product){
 
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
-                await node.openNextTree(false);
+                node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -868,7 +868,7 @@ async function openFollowingTree(product){
                 
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
-                await node.openNextTree(false);
+                node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -876,7 +876,7 @@ async function openFollowingTree(product){
             }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
-                await node.openNextTree(false);
+                node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -884,7 +884,7 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                await node.openNextTree(false);
+                node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
