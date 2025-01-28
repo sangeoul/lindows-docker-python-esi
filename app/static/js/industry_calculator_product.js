@@ -1035,7 +1035,9 @@ async function calcTotalMaterials() {
             return sum;
         }
         function addToEndNode(node){
-            endNode_list.push(node.product_index);
+            if(!endNode_list.includes(parseInt(node.product_index))){
+                endNode_list.push(parseInt(node.product_index));
+            }
             node.materials.forEach(m=>{
                 addToEndNode(m);
             });
@@ -1048,7 +1050,7 @@ async function calcTotalMaterials() {
             }
         });
         product_array.forEach(p=>{
-            if(!endNode_list.includes(p.product_index)){
+            if(!endNode_list.includes(parseInt(p.product_index))){
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
