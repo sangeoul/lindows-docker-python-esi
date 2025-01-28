@@ -109,12 +109,6 @@ class Product {
                     let material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid);
                     let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
 
-                    if(this.manufacturing_level==0){
-                        let defined_me=parseInt(document.querySelector("#me-input").value);
-                        material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100);
-                        material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
-                    }
-
                     const material = new Product(
                         rel.n,
                         rel.i,
@@ -1210,14 +1204,16 @@ function get_iconurl(type_id) {
 }
 
 // Placeholder function for getBonusModifier - to be defined later
-function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
+function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     // Default bonus modifier for now, should be replaced with actual logic 
     
     let efficiency=10;
     type_id=parseInt(type_id);
+
     if(type_id==origin_product.typeid){
         efficiency = parseInt(document.querySelector("#me-input").value);
     }
+
     const savedBonus=localStorage.getItem(type_id);
     if(savedBonus){
         return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
