@@ -1004,6 +1004,7 @@ async function calcTotalMaterials() {
 
         product_array.forEach(p=>{
             if(!p.isEndNode){
+                console.log("!!DEBUG : "+p.itemname+" is raw Material");
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
