@@ -614,11 +614,10 @@ class Product {
             if(calcCost){
                 this.loadAndCalcCost();
             }
-            else if(!this.isEndNode){
-                this.pricetype=PRICETYPE_COST;
-            }
-
             this.isEndNode=(this.materials.length==0);
+        }
+        if(!this.isEndNode){
+            this.pricetype=PRICETYPE_COST;
         }
         const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
         const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
@@ -1081,8 +1080,7 @@ async function calcTotalMaterials() {
                             temporarySum+=material_list_for_unit_calculating[i][material_id][product_id][j].quantity;
                         }
                         for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
-                            material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;
-                            
+                            material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;    
                         }
                     }
                 }
