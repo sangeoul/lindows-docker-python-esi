@@ -66,6 +66,9 @@ input.tax-input{
 td.panel-tree-layer, td.total-materials{
     vertical-align: top;
 }
+td#product-panel-lv0{
+    height:100px;
+}
 
 table.product-panel-area{
     font-size:13px;
