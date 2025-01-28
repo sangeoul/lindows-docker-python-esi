@@ -1122,15 +1122,15 @@ async function calcTotalMaterials() {
         tr_total.appendChild(td_totalItemname);
         tr_total.appendChild(td_totalQuantity);
 
-        tr_total.addEventListener('mouseover', async ()=>{
+        tr_total.addEventListener('mouseover', ()=>{
+            console.log("!!DEBUG : finding type_id "+m.id);
             product_array.forEach(p=>{
                 if(p.includedMaterials.includes(m.id)){
-                    console.log("!!DEBUG : "+p.itemname+" includes typeid "+m.id);
                     p.table_panel.classList.add("has-material-highlighted");
                 }   
             });
         })
-        tr_total.addEventListener('mouseout', async ()=>{
+        tr_total.addEventListener('mouseout', ()=>{
             product_array.forEach(p=>{
                 if(p.includedMaterials.includes(m.id)){
                     p.table_panel.classList.remove("has-material-highlighted");
