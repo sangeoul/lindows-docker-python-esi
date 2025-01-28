@@ -1087,8 +1087,11 @@ async function calcTotalMaterials() {
                         }
                         for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
                             material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;
-                            console.log(`!!DEBUG : quantity of ${material_list_for_unit_calculating[i][material_id][product_id][j].itemname} \
-                                ((총합) ${sumOfQuantity} / (Quantity Sum) ${temporarySum}) * (기준량) ${material_list_for_unit_calculating[i][material_id][product_id][j].quantity}`);
+                            if(material_list_for_unit_calculating[i][material_id][product_id][j].quantity!=temporarySum){
+                                console.log(`!!DEBUG : quantity of ${material_list_for_unit_calculating[i][material_id][product_id][j].itemname} \
+                                    ((총합) ${sumOfQuantity} / (Quantity Sum) ${temporarySum}) * (기준량) ${material_list_for_unit_calculating[i][material_id][product_id][j].quantity}`);
+                            }
+                            
                         }
                     }
                 }
