@@ -166,7 +166,7 @@ class Product {
         } else {
             let total = 0;
             console.log(this.materials);
-            for(const material in this.materials){
+            for(const material of this.materials){
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
                     console.log(`!!DEBUG ${material.itemname} Buy price: ${material.buyprice} x ${material.getQuantity()}`);
