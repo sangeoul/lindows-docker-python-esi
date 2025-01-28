@@ -118,7 +118,7 @@ function saveValueToCookie(element) {
         value= element.checked;
     }else if(element.type === 'radio'){
         document.querySelectorAll(`input[name="${element.name}"`).forEach( r=>{
-            console.log("!!DEBUG : "+r.id+"("+r.type+") : "+r.checked);
+            console.log("!!DEBUG Save : "+r.id+"("+r.type+") : "+r.checked);
             setCookie(r.id, r.checked, 365);
         });
     } else{
@@ -137,7 +137,7 @@ function loadValueFromCookie(element) {
             element.checked = (value === 'true');
         } if(element.type === 'radio'){
             element.checked = (value === 'true');
-            console.log("!!DEBUG : "+element.id+" checked?:"+value +" -> "+element.checked);
+            console.log("!!DEBUG Load : "+element.id+" checked?:"+value +" -> "+element.checked);
         }
         else {
             element.value = value;
