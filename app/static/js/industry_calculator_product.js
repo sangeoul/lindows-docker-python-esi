@@ -165,25 +165,19 @@ class Product {
             this.costprice = 0;
         } else {
             let total = 0;
-            console.log(this.materials);
             for(const material of this.materials){
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
-                    console.log(`!!DEBUG ${material.itemname} Buy price: ${material.buyprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_SELL) {
                     total += material.sellprice * material.getQuantity();
-                    console.log(`!!DEBUG ${material.itemname} Sell price: ${material.sellprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_COST) {
                     await material.calcCost(); // Calculate the custom price for the material
                     total += material.costprice * material.getQuantity();
-                    console.log(`!!DEBUG ${material.itemname} Cost price: ${material.costprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_CUSTOM) {
                     total += material.customprice * material.getQuantity();
-                    console.log(`!!DEBUG ${material.itemname} Custom price: ${material.customprice} x ${material.getQuantity()}`);
                 }
 
             }
-            console.log(`!!DEBUG ${this.itemname} total: ${total}`);
             const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
@@ -1224,15 +1218,19 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 
     //me<0 : Origin product.
     if(CONSTRUCTION_COMPONENTS.includes(type_id)||CAPITAL_CONSTRUCTION_COMPONENTS.includes(type_id)){
+        
         const structureAndRigBonus=document.querySelector("#component-structure-efficiency-bonus").value;
         let efficiency=10;
         if(me<0){
             efficiency=me+100;
         }
+        console.log(`!!DEBUG: Component bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
+        
         const structureAndRigBonus=document.querySelector("#reaction-structure-efficiency-bonus").value;
+        console.log(`!!DEBUG: Reaction bonus ${calcBonusMultiplier(0,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
@@ -1241,6 +1239,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
             efficiency=me+100;
         }
         const structureAndRigBonus=document.querySelector("#fuel-structure-efficiency-bonus").value;
+        console.log(`!!DEBUG: Fuel block bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
@@ -1249,6 +1248,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     if(me<0){
         efficiency=me+100;
     }
+    console.log(`!!DEBUG: Manufacturing bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
     return calcBonusMultiplier(efficiency,structureAndRigBonus);
 
 
