@@ -165,20 +165,19 @@ class Product {
             this.costprice = 0;
         } else {
             let total = 0;
-            this.materials.forEach(material => {
+            for(material in this.materials){
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_SELL) {
                     total += material.sellprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_COST) {
-                    material.calcCost(); // Calculate the custom price for the material
+                    await material.calcCost(); // Calculate the custom price for the material
                     total += material.costprice * material.getQuantity();
                 } else if (material.pricetype === PRICETYPE_CUSTOM) {
-                    material.calcCost(); // Calculate the custom price for the material
                     total += material.customprice * material.getQuantity();
                 }
 
-            });
+            }
             const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
@@ -247,8 +246,8 @@ class Product {
     getQuantity(quantityOption=quantity_option){
         
         if(quantityOption===QUANTITY_OPTION_MATERIAL){
-            
-            return this.minimum_unit_quantity;
+            if(this.minimum_unit_quantity){return this.minimum_unit_quantity;}
+            else{return this.quantity;}
         }
         else if(quantityOption===QUANTITY_OPTION_PRICE){
            
