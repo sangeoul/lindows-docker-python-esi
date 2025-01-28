@@ -113,10 +113,11 @@ function getCookie(name) {
 function saveValueToCookie(element) {
     const id = element.id;
     let value;
-    if(element.type === 'checkbox' || element.type === 'radio'){
+    if(element.type === 'checkbox'){
         value= element.checked;
-    }
-    else{
+    }else if(element.type === 'radio'){
+        value=element.checked;
+    } else{
         value=element.value;
     }
     setCookie(id, value, 365);
@@ -129,7 +130,9 @@ function loadValueFromCookie(element) {
     if (value !== null) {
         if (element.type === 'checkbox') {
             element.checked = (value === 'true');
-        } else {
+        } else if(element.type === 'radio'){
+            element.checked = (value === 'true');
+        }else {
             element.value = value;
         }
     }
