@@ -40,6 +40,10 @@ button.calculate-button{
     font-size:25px;
 }
 
+button.detail-button{
+    width:38px;
+}
+
 td.opentree-detail , td.bonus-detail{
     width:34px;
 }
