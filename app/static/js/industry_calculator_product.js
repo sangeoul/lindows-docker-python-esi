@@ -666,6 +666,7 @@ class Product {
                 closeAllMaterialTree(this.typeid);
             }
             this.isEndNode=true;
+            calcTotalMaterials();
         }
         this.updatePanel();
     }
