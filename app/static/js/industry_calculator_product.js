@@ -614,7 +614,10 @@ class Product {
         }
         if(this.materials.length==0){
             await this.setMaterials();
-            this.pricetype=PRICETYPE_COST;
+
+            if(!this.isEndNode){
+                this.pricetype=PRICETYPE_COST;
+            }
             if(calcCost){
                 this.loadAndCalcCost();
             }
