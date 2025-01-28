@@ -399,14 +399,24 @@ async function calcStructureBonus(industry_type) {
         const systemSecurity = Math.round(parseFloat(jsonResult["security_status"]) * 10) / 10;
     
         let SYSTEM_BONUS_MULTIPLIER;
-        if (systemSecurity >= 0.5) {
-            SYSTEM_BONUS_MULTIPLIER = 1;
-        } else if (systemSecurity > 0) {
-            SYSTEM_BONUS_MULTIPLIER = 1.9;
-        } else {
-            SYSTEM_BONUS_MULTIPLIER = 2.1;
+        if(industry_type=='reaction'){
+            if (systemSecurity >= 0.5) {
+                SYSTEM_BONUS_MULTIPLIER = 0;
+            } else if (systemSecurity > 0) {
+                SYSTEM_BONUS_MULTIPLIER = 1.0;
+            } else {
+                SYSTEM_BONUS_MULTIPLIER = 1.1;
+            }
+        }else {
+            if (systemSecurity >= 0.5) {
+                SYSTEM_BONUS_MULTIPLIER = 1;
+            } else if (systemSecurity > 0) {
+                SYSTEM_BONUS_MULTIPLIER = 1.9;
+            } else {
+                SYSTEM_BONUS_MULTIPLIER = 2.1;
+            }
         }
-    
+
         const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100) * 100000) / 100000;
         structureBonusInput.value = structure_bonus;
         structureCostBonusInput.value = currentRigOption.cost_bonus;
