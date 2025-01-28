@@ -1,4 +1,6 @@
 
+const MAX_TREE_DEPTH=12;
+
 const BONUS_SETTING_ICON_URL=""
 
 const PRICETYPE_CUSTOM=0;
@@ -26,23 +28,24 @@ let quantity_option=1;
 
 let origin_product=null;
 
-let product_index=1;
+let product_index=0;
+let product_array=[];
 
 const market_price_cache={};
 const market_price_request_cache = {};
-const material_list = [];
-const material_list_accurate_price=[];
-const material_list_for_unit_calculating = [];
-const material_list_minimun_unit=[];
+
+let material_list = [];
+let material_list_for_unit_calculating = [];
+let material_list_minimum_unit=[];
 
 
 class Product {
-    constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node,explicit_product_index=-1) {
+    constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node) {
         
-        if(explicit_product_index==-1){
-            this.product_index=product_index;
-            product_index++;
-        }
+        this.product_index=product_index;
+        product_index++;
+        product_array[product_index]=this;
+    
 
         console.log("Creating "+itemname+" Panel.");
         this.itemname = itemname;
@@ -753,6 +756,8 @@ function getEIV(type_id){
 async function runCalculate(){
     
     origin_product=null;
+    product_index = 0;
+    product_array=[];
     
     document.querySelector("#product-panel-lv0").innerHTML="";
     document.querySelector("#total-materials").innerHTML="";
@@ -800,7 +805,7 @@ async function runCalculate(){
         industry_type,
         data.q,
         inputBlueprintRun.value*data.q,
-        0,
+        inputBlueprintRun.value*data.q,
         0,
         null,
         0
@@ -928,120 +933,145 @@ async function calcTotalMaterials() {
 
         material_list=[];
         material_list_for_unit_calculating=[];
+        let rawMaterials=[];
+        material_list_for_unit_calculating.push({
+            [origin_product.typeid]:{
+                "0":[origin_product.quantity,origin_product]
+            }
+        });
+        for(let i=1;i<MAX_TREE_DEPTH;i++){
+            material_list_for_unit_calculating.push({});
+        }
 
-
-        async function recalcMaterialTree(node,newQuantity){
-
-            if(material.isEndNode || node.materials.length === 0){
-                let idx = material_list.findIndex(item => item.id === node.typeid);
-                if (idx !== -1) {
-                    material_list[idx].quantity += newQuantity;
-                } else {
-                    material_list.push({
-                        id: node.typeid,
-                        name: node.itemname,
-                        icon: node.iconurl,
-                        quantity: newQuantity
-                    });
+        function queueMaterial(product,material){
+            let idx=null;
+            for(let i=11;i>=material.manufacturing_level;i--){
+                if(material_list_for_unit_calculating[i][material.typeid]!=undefined){
+                    idx=i
                 }
-            } else{
-                let idx = material_list_for_unit_calculating.findIndex(item => item.id === node.typeid);
-                if (idx !== -1) {
-                    material_list_for_unit_calculating[idx].quantity += Math.ceil(newQuantity);
-                } else {
-                    material_list_for_unit_calculating.push({
-                        id: node.typeid,
-                        name: node.itemname,
-                        quantity: Math.ceil(newQuantity)
-                    });
+            }
+            if(idx===null){
+                idx=material.manufacturing_level;
+                if(!material_list_for_unit_calculating[idx]){
+                    material_list_for_unit_calculating[idx]={};
                 }
-                const data = getIndustryRelation(tpyeid);
+                material_list_for_unit_calculating[idx][material.typeid]={
+                    [product.typeid]:[0,material]
+                }
+            }
+            else{
+                if(!material_list_for_unit_calculating[idx][material.typeid][product.typeid]){
+                    material_list_for_unit_calculating[idx][material.typeid][product.typeid]=[0,material];
+                }else{
+                    material_list_for_unit_calculating[idx][material.typeid][product.typeid].push(material);
+                }
+            }
+            for(let i=0;i<material.manufacturing_level;i++){
+                if(material_list_for_unit_calculating[i][material.typeid]){
+                    for(const key in material_list_for_unit_calculating[i][material.typeid]){
+                        if(material_list_for_unit_calculating[idx][material.typeid][key]){
+                            material_list_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                                material_list_for_unit_calculating[idx][material.typeid][key].push(m);
+                            });
+                            
+                        }else{
+                            material_list_for_unit_calculating[idx][material.typeid][key]=[0];
+                            material_list_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                                material_list_for_unit_calculating[idx][material.typeid][key].push(m);
+                            });
+                            
+                        }
+                    }
+                    delete material_list_for_unit_calculating[i][material.typeid]
 
-                //this.industry_type = data.industry_type; // Set the industry_type from the data
-                //const output_unit=data.q;
-    
-                //this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
-    
-                await data.m.map(async (rel, index) => {
-                    const material_material_data = getIndustryRelation(rel.i);
-                    let material_industry_type=INDUSTRY_TYPE_NO_DATA;
-                    if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
-                        material_industry_type=material_material_data.industry_type;
+                }
+            }
+        }
+        function getNeededQuantity(typeId){
+            let sum=0;
+            for(let i=0;i<MAX_TREE_DEPTH;i++){
+                for( const material_id in material_list_for_unit_calculating[i]){
+                    if(material_id==typeId){
+                        for(const prouct_id in material_list_for_unit_calculating[i][material_id]){
+                            sum+=material_list_for_unit_calculating[i][material_id][product_id][0];
+                        }
                     }
-                    
-                    let material_quantity=(rel.q*newQuantity / data.q) * getBonusModifier(this.typeid);
-                    let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
-    
-                    if(this.manufacturing_level==0){
-                        let defined_me=parseInt(document.querySelector("#me-input").value);
-                        material_quantity=(rel.q*newQuantity / data.q) * getBonusModifier(this.typeid,defined_me-100);
-                        material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
-                    }
-    
-                    const material = new Product(
-                        rel.n,
-                        rel.i,
-                        get_iconurl(rel.i),
-                        material_industry_type,
-                        data.q,
-                        material_quantity,
-                        material_minumun_unit,
-                        this.manufacturing_level + 1,
-                        index,
-                        this
-                    );
-                    this.materials.push(material); 
+                }
+            }
+            return sum;
+        }
+
+
+        product_array.forEach(p=>{
+            if(!p.isEndNode){
+                p.materials.forEach(m=>{
+                    queueMaterial(p,m);
+                })
+            }
+            else{
+                rawMaterials.push({
+                    id:p.typeid,
+                    name:p.itemname,
+                    icon:p.iconurl
                 });
-
-                for(m of node.materials){
-
-                    
-
-                    
-                    await recalcMaterialTree(m);
-                }         
+            }
+        });
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for(const material_id in material_list_for_unit_calculating[i]){
+                for(const product_id in material_list_for_unit_calculating[i][material_id]){
+                    if(product_id>0){
+                        let sumOfQuantity=0;
+                        const bpData= getIndustryRelation(product_id);
+                        let materialQuantity;
+                        bpData.m.forEach(info=>{
+                            if(info.i==material_id){
+                                materialQuantity=info.q;
+                            }
+                        });
+                        let neededQuantity=getNeededQuantity(product_id);
+                        sumOfQuantity=Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id);
+                        material_list_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
+    
+                        let temporarySum=0;
+                        for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
+                            temporarySum+=material_list_for_unit_calculating[i][material_id][product_id][j].quantity;
+                        }
+                        for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
+                            material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;
+                        }
+                    }
+                }
             }
         }
 
-        const data = getIndustryRelation(this.typeid);
-        if (data.industry_type!=INDUSTRY_TYPE_NO_DATA && data.m.length > 0) {
-            this.industry_type = data.industry_type; // Set the industry_type from the data
-            const output_unit=data.q;
-
-            this.minimum_unit_quantity=Math.ceil(this.minimum_unit_quantity/output_unit)*output_unit;
-
-            await data.m.map(async (rel, index) => {
-                const material_material_data = getIndustryRelation(rel.i);
-                let material_industry_type=INDUSTRY_TYPE_NO_DATA;
-                if(material_material_data.industry_type!=INDUSTRY_TYPE_NO_DATA && material_material_data.m.length>0){
-                    material_industry_type=material_material_data.industry_type;
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for( const material_id in material_list_for_unit_calculating[i]){
+                let rmidx=-1;
+                for(let j=0;j<rawMaterials.length;j++){
+                    if(rawMaterials[j].id==parseInt(material_id)){
+                        rmidx=j;
+                        break;
+                    }
                 }
-                
-                let material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid);
-                let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
+                if(rmidx!=-1){
+                    for( const product_id in material_list_for_unit_calculating[i][material_id]){
+                        let idx = material_list.findIndex(item => item.id === material_id);
+                        if (idx !== -1) {
+                            material_list[material_id].quantity += node.getQuantity();
+                        } else {
+                            material_list.push({
+                                id: material_id,
+                                name: rawMaterials[rmidx].name,
+                                icon: rawMaterials[rmidx].icon,
+                                quantity: material_list_for_unit_calculating[i][material_id][product_id][0]
+                            });
+                        }
 
-                if(this.manufacturing_level==0){
-                    let defined_me=parseInt(document.querySelector("#me-input").value);
-                    material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid,defined_me-100);
-                    material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid,defined_me-100));
+                    }
                 }
 
-                const material = new Product(
-                    rel.n,
-                    rel.i,
-                    get_iconurl(rel.i),
-                    material_industry_type,
-                    data.q,
-                    material_quantity,
-                    material_minumun_unit,
-                    this.manufacturing_level + 1,
-                    index,
-                    this
-                );
-                this.materials.push(material); 
-            });
+            }
         }
-
     }
 
     material_list.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
