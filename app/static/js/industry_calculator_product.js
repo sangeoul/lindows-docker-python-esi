@@ -64,6 +64,7 @@ class Product {
         this.buyprice = 0;
         this.sellprice = 0;
         this.costprice = 0;
+        this.customprice = 0;
 
         this.eiv=getEIV(this.typeid);
         this.includedMaterials=[];
@@ -464,6 +465,7 @@ class Product {
         customPriceInput.addEventListener('input', async()=>{
             this.pricetype=PRICETYPE_CUSTOM;
             await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,parseInt(customPriceInput.value));
+            this.customprice=parseFloat(customPriceInput.value);
             origin_product.calcCost();
         });
 
@@ -924,6 +926,7 @@ async function changeFollowingPriceType(typeId,pricetype,productNode,customPrice
             const customInput=productNode.table_panel.querySelector(`#input-custom-price-${productNode.product_index}`);
             if(customInput){
                 customInput.value=customPrice;
+                productNode.customprice=customPrice;
             }
         }
         productNode.updatePanel();
