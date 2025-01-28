@@ -1064,7 +1064,7 @@ async function calcTotalMaterials() {
                     for( const product_id in material_list_for_unit_calculating[i][material_id]){
                         let idx = material_list.findIndex(item => item.id === material_id);
                         if (idx !== -1) {
-                            material_list[idx].quantity += node.getQuantity();
+                            material_list[idx].quantity += material_list_for_unit_calculating[i][material_id][product_id][0];
                         } else {
                             material_list.push({
                                 id: material_id,
