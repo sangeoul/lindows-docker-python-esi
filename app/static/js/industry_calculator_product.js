@@ -763,8 +763,9 @@ function getEIV(type_id){
             eiv+=material.q*eivData[material.i].adjusted_price;
         });
     }
-
-
+    if(!eiv){
+        eiv=0;
+    }
     return eiv;
 }
 
