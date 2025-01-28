@@ -1127,9 +1127,9 @@ async function calcTotalMaterials() {
         tr_total.addEventListener('mouseover', ()=>{
             
             product_array.forEach(p=>{
-                
+                console.log("!!DEBUG : finding type_id "+m.id+" from "+p.itemname + " : "+p.includedMaterials);
                 if(p.includedMaterials.includes(m.id)){
-                    console.log("!!DEBUG : found type_id "+m.id+" from "+p.itemname);
+                    
                     p.table_panel.classList.add("has-material-highlighted");
                 }   
             });
