@@ -220,7 +220,7 @@ class Product {
         });
         // Wait for all prices to be fetched and calculate the custom price for the original product
         await Promise.all(promises);
-        if(!this.isEndNode){
+        if(!this.isEndNode && this.manufacturing_level>0){
             this.pricetype=PRICETYPE_COST;
             this.updatePanel;
         }
@@ -615,11 +615,12 @@ class Product {
         if(this.materials.length==0){
             await this.setMaterials();
 
-            if(!this.isEndNode){
-                this.pricetype=PRICETYPE_COST;
-            }
+
             if(calcCost){
                 this.loadAndCalcCost();
+            }
+            else if(!this.isEndNode){
+                this.pricetype=PRICETYPE_COST;
             }
 
             this.isEndNode=(this.materials.length==0);
