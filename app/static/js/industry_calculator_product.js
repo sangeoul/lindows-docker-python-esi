@@ -992,7 +992,7 @@ async function calcTotalMaterials() {
             for(let i=0;i<MAX_TREE_DEPTH;i++){
                 for( const material_id in material_list_for_unit_calculating[i]){
                     if(material_id==typeId){
-                        for(const prouct_id in material_list_for_unit_calculating[i][material_id]){
+                        for(const product_id in material_list_for_unit_calculating[i][material_id]){
                             sum+=material_list_for_unit_calculating[i][material_id][product_id][0];
                         }
                     }
