@@ -1210,7 +1210,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     // Default bonus modifier for now, should be replaced with actual logic 
     
 
-
+    type_id=parseInt(type_id);
     const savedBonus=localStorage.getItem(type_id);
     if(savedBonus){
         return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
