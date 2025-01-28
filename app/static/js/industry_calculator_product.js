@@ -178,6 +178,7 @@ class Product {
                 }
 
             }
+            console.log(`!!DEBUG total: ${total}`);
             const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
