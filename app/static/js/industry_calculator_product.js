@@ -60,6 +60,7 @@ class Product {
         this.costprice = 0;
 
         this.eiv=getEIV(this.typeid);
+        this.includedMaterials=[];
 
         // pricetype 0: custom, 1: buy, 2: sell. , 3: cost Default = 1 (buy)
         this.pricetype = PRICETYPE_BUY;
@@ -125,6 +126,7 @@ class Product {
                         this
                     );
                     this.materials.push(material); 
+                    material.includingMaterialTree(rel.i);
                 });
             } else {
                 // No data case
@@ -272,7 +274,7 @@ class Product {
             itemIconCell.textContent = 'No Icon';
         }
         itemIconCell.classList.add('product-icon');
-        itemIconCell.classList.add('mouseover-group');
+        itemIconCell.classList.add('color-group');
         itemIconCell.addEventListener("click",()=>{
             this.selectPanel();
         });
@@ -280,7 +282,7 @@ class Product {
         // Item Name Area
         itemNameCell.textContent = Math.ceil(this.getQuantity()).toString()+" x "+ this.itemname;
         itemNameCell.classList.add('product-name');
-        itemNameCell.classList.add('mouseover-group');
+        itemNameCell.classList.add('color-group');
         itemNameCell.addEventListener("click",()=>{
             this.selectPanel();
         });
@@ -288,7 +290,7 @@ class Product {
 
         // Setting Icon Area
         settingIconCell.classList.add('product-setting');
-        settingIconCell.classList.add('mouseover-group');
+        settingIconCell.classList.add('color-group');
         const settingIcon = document.createElement('img');
         settingIcon.src = BONUS_SETTING_ICON_URL; // Replace with actual setting icon URL
         settingIcon.alt = 'Settings';
@@ -536,6 +538,8 @@ class Product {
 
         this.table_panel.classList.toggle("hidden-data",!this.visibility);
 
+        
+
         const tdItemName=this.table_panel.querySelector(".product-name");
         const tdBuyPrice=this.table_panel.querySelector("#td-buy-price");
         const tdSellPrice=this.table_panel.querySelector("#td-sell-price");
@@ -549,6 +553,8 @@ class Product {
         tdCostPrice.textContent = parseFloat(this.costprice.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2,maximumFractionDigits: 2});
         
         this.table_panel.classList.toggle("opened-panel",this.opened);
+        this.table_panel.classList.toggle("selected-panel",this.selected);
+        this.table_panel.classList.toggle("endnode-panel",this.isEndNode);
 
 
         if(this.manufacturing_level){
@@ -613,7 +619,7 @@ class Product {
                 this.loadAndCalcCost();
             }
 
-            this.isEndNode=this.materials.length==0;
+            this.isEndNode=(this.materials.length==0);
         }
         const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
         const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
@@ -700,6 +706,14 @@ class Product {
         }
         this.updatePanel();
             
+    }
+    async includingMaterialTree(typeid){
+        if(!this.includedMaterials.includes(typeid)){       
+            this.includedMaterials.push(typeid);
+        }
+        if(this.manufacturing_level){
+            this.product_node.includingMaterialTree(typeid);
+        }
     }
 }
 
@@ -1108,6 +1122,21 @@ async function calcTotalMaterials() {
         tr_total.appendChild(td_totalIcon);
         tr_total.appendChild(td_totalItemname);
         tr_total.appendChild(td_totalQuantity);
+
+        tr_total.addEventListener('mouseover', async ()=>{
+            product_array.forEach(p=>{
+                if(p.includedMaterials.includes(m.id)){
+                    p.table_panel.classList.add("has-material-highlighted");
+                }   
+            });
+        })
+        tr_total.addEventListener('mouseout', async ()=>{
+            product_array.forEach(p=>{
+                if(p.includedMaterials.includes(m.id)){
+                    p.table_panel.classList.remove("has-material-highlighted");
+                }   
+            });
+        })
 
         table_total.appendChild(tr_total);
     });

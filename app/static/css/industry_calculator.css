@@ -79,18 +79,27 @@ table.product-table-panel td.product-setting{
     width:22px;
 }
 
-table.product-table-panel tr:hover .mouseover-group {
+
+table.product-table-panel.endnode-panel td.color-group{
+
+    background-color: rgb(173, 173, 173);
+}
+
+table.product-table-panel tr:hover td.color-group {
     background-color: rgb(201, 255, 214);
 }
 
-
-
-table.product-table-panel.selected-panel td.product-icon, table.product-table-panel.selected-panel td.product-name , table.product-table-panel.selected-panel td.product-setting {
+table.product-table-panel.selected-panel td.color-group {
     background-color:rgb(201, 255, 214);
 }
 
-table.product-table-panel.opened-panel td.product-icon, table.product-table-panel.opened-panel td.product-name , table.product-table-panel.opened-panel td.product-setting {
+table.product-table-panel.opened-panel td.color-group {
     background-color:rgb(178, 196, 255);
+}
+
+table.product-table-panel.has-material-highlighted td.color-group{
+
+    background-color: rgb(255, 246, 126);
 }
 
 table.price-table{
