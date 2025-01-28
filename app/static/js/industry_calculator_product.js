@@ -1076,11 +1076,7 @@ async function calcTotalMaterials() {
                         });
                         let neededQuantity=getNeededQuantity(product_id);
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
-                        if(product_id==17769){
-                            console.log(`!!DEBUG: Fluxed Condensates(17769) : ${sumOfQuantity} : \
-                                CEIL(${neededQuantity}/${bpData.q}) * ${materialQuantity} * ${getBonusModifier(product_id)}`);
-                        }
-                        
+
                         material_list_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
     
                         let temporarySum=0;
@@ -1089,6 +1085,8 @@ async function calcTotalMaterials() {
                         }
                         for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
                             material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;
+                            console.log(`!!DEBUG : quantity of ${material_list_for_unit_calculating[i][material_id][product_id][j].itemname} for ${material_list_for_unit_calculating[i][material_id][product_id][j].product_node.itemname}\
+                                ((총합) ${sumOfQuantity} / (Quantity Sum) ${temporarySum}) * (기준량) ${material_list_for_unit_calculating[i][material_id][product_id][j].quantity}`);
                         }
                     }
                 }
@@ -1224,13 +1222,11 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         if(me<0){
             efficiency=me+100;
         }
-        if(type_id==17769)console.log(`!!DEBUG: Component bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
-        return calcBonusMultiplier(efficiency,structureAndRigBonus);
+         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
         
         const structureAndRigBonus=document.querySelector("#reaction-structure-efficiency-bonus").value;
-        if(type_id==17769)console.log(`!!DEBUG: Reaction bonus ${calcBonusMultiplier(0,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
@@ -1239,8 +1235,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
             efficiency=me+100;
         }
         const structureAndRigBonus=document.querySelector("#fuel-structure-efficiency-bonus").value;
-        if(type_id==17769)console.log(`!!DEBUG: Fuel block bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
-        return calcBonusMultiplier(efficiency,structureAndRigBonus);
+       return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
     const structureAndRigBonus=document.querySelector("#manufacturing-structure-efficiency-bonus").value;
@@ -1248,7 +1243,6 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     if(me<0){
         efficiency=me+100;
     }
-    if(type_id==17769)console.log(`!!DEBUG: Manufacturing bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
     return calcBonusMultiplier(efficiency,structureAndRigBonus);
 
 
