@@ -821,7 +821,7 @@ async function runCalculate(){
     openButton.addEventListener("click",async ()=>{
 
         await openFollowingTree(origin_product);
-        await this.loadAndCalcCost();
+        await origin_product.loadAndCalcCost();
         await calcTotalMaterials();
     });
 
