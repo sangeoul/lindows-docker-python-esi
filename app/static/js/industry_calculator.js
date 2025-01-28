@@ -127,7 +127,7 @@ function loadValueFromCookie(element) {
     const id = element.id;
     const value = getCookie(id);
     if (value !== null) {
-        if (element.type === 'checkbox' || element.type === 'radio') {
+        if (element.type === 'checkbox') {
             element.checked = (value === 'true');
         } else {
             element.value = value;
