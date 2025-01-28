@@ -481,7 +481,7 @@ class Product {
         customRadio.addEventListener('click',async ()=>{
             const selectedRadio=this.table_panel.querySelector(`input[name="price-type-${this.product_index}"]:checked`);
             this.pricetype=parseInt(selectedRadio.value);
-            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM);
+            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,this.customprice);
             origin_product.calcCost();
         });
 
