@@ -18,6 +18,7 @@ const SCC_SUBCHARGE=4.00;
 
 const FUEL_BLOCKS=[4051,4246,4247,4312];
 const CONSTRUCTION_COMPONENTS=[11530,11531,11532,11533,11534,11535,11536,11537,11538,11539,11540,11541,11542,11543,11544,11545,11547,11548,11549,11550,11551,11552,11553,11554,11555,11556,11557,11558,11688,11689,11690,11691,11692,11693,11694,11695,33195,52310,52311,52312,52313,52314,53288,53289,53290,57470,57471,57472,57473,57478,57479,57480,57481,57482,57483,57484,57485,57486,81063,81064,81065,81066,81067,81068,81069,83467,83468,83469,83470,83471,83472,83473];
+const CAPITAL_CONSTRUCTION_COMPONENTS=[21009,21011,21013,21017,21019,21021,21023,21025,21027,21029,21035,21037,21039,21041,24545,24547,24556,24558,24560,53035,53036,53037,57487,57488,57489]
 const COMPOSITE=[16670,16671,16672,16673,16678,16679,16680,16681,16682,16683,17317,33359,33360,33361,33362,57456,57457];
 const INTERMEDIATE_MATERIALS=[16654,16655,16656,16657,16658,16659,16660,16661,16662,16663,16664,16665,16666,16667,16668,16669,17769,17959,17960,20431,29659,29660,29661,29662,29663,29664,32821,32822,32823,32824,32825,32826,32827,32828,32829,33336,33337,33338,33339,57453,57454,57455];
 
@@ -192,7 +193,7 @@ class Product {
                     index = document.querySelector("#reaction-system-index").value;
                     structureBonus = 0;
                     tax = document.querySelector("#reaction-tax").value;
-                }else if(CONSTRUCTION_COMPONENTS.includes(this.typeid)){
+                }else if(CONSTRUCTION_COMPONENTS.includes(this.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(this.typeid)){
                     index = document.querySelector("#component-system-index").value;
                     structureBonus = document.querySelector("#component-structure-cost-bonus").value;
                     tax = document.querySelector("#component-tax").value;
@@ -858,7 +859,7 @@ async function openFollowingTree(product){
         checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
         checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
-        if(CONSTRUCTION_COMPONENTS.includes(node.typeid)){
+        if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
                 await node.openNextTree(false);
                 await openFollowingTree(node);
@@ -1188,7 +1189,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     }
 
     //me<0 : Origin product.
-    if(CONSTRUCTION_COMPONENTS.includes(type_id)){
+    if(CONSTRUCTION_COMPONENTS.includes(type_id)||CAPITAL_CONSTRUCTION_COMPONENTS.includes(type_id)){
         const structureAndRigBonus=document.querySelector("#component-structure-efficiency-bonus").value;
         let efficiency=10;
         if(me<0){
