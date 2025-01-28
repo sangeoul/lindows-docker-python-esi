@@ -464,8 +464,8 @@ class Product {
 
         customPriceInput.addEventListener('input', async()=>{
             this.pricetype=PRICETYPE_CUSTOM;
-            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,parseInt(customPriceInput.value));
             this.customprice=parseFloat(customPriceInput.value);
+            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,parseInt(customPriceInput.value));
             origin_product.calcCost();
         });
 
@@ -925,8 +925,9 @@ async function changeFollowingPriceType(typeId,pricetype,productNode,customPrice
         if(pricetype==PRICETYPE_CUSTOM){
             const customInput=productNode.table_panel.querySelector(`#input-custom-price-${productNode.product_index}`);
             if(customInput){
-                customInput.value=customPrice;
                 productNode.customprice=customPrice;
+                customInput.value=customPrice;
+                
             }
         }
         productNode.updatePanel();
