@@ -921,7 +921,7 @@ async function changeFollowingPriceType(typeId,pricetype,productNode,customPrice
     if(productNode.typeid==typeId){
         productNode.pricetype=pricetype;
         if(pricetype==PRICETYPE_CUSTOM){
-            const customInput=productNode.table_panel.querySelector(`input-custom-price-${productNode.product_index}`);
+            const customInput=productNode.table_panel.querySelector(`#input-custom-price-${productNode.product_index}`);
             if(customInput){
                 customInput.value=customPrice;
             }
