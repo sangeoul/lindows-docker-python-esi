@@ -711,7 +711,6 @@ class Product {
         
         if(!this.includedMaterials.includes(typeid)){       
             this.includedMaterials.push(typeid);
-            console.log("!!DEBUG pushing "+typeid + " to "+this.itemname);
         }
         if(this.manufacturing_level){
             this.product_node.includingMaterialTree(typeid);
