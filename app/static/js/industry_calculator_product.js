@@ -1035,7 +1035,7 @@ async function calcTotalMaterials() {
             return sum;
         }
         function addToEndNode(node){
-            if(!endNode_list.includes(parseInt(node.product_index))){
+            if(node.isEndNode&&!endNode_list.includes(parseInt(node.product_index))){
                 endNode_list.push(parseInt(node.product_index));
             }
             node.materials.forEach(m=>{
