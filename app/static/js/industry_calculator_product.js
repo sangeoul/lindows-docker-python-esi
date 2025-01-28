@@ -459,10 +459,11 @@ class Product {
         customPriceInput.step = 0.01;
         customPriceInput.value = this.customprice;
         customPriceInput.classList.add('custom-price-input');
+        customPriceInput.setAttribute('id',`input-custom-price-${this.product_index}`);
 
         customPriceInput.addEventListener('input', async()=>{
             this.pricetype=PRICETYPE_CUSTOM;
-            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM);
+            await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,parseInt(customPriceInput.value));
             origin_product.calcCost();
         });
 
@@ -913,16 +914,22 @@ async function openFollowingTree(product){
     origin_product.calcCost();
 }
 
-async function changeAllPriceType(typeId,pricetype){
-    await changeFollowingPriceType(typeId,pricetype,origin_product);
+async function changeAllPriceType(typeId,pricetype,customPrice=0){
+    await changeFollowingPriceType(typeId,pricetype,origin_product,customPrice);
 }
-async function changeFollowingPriceType(typeId,pricetype,productNode){
+async function changeFollowingPriceType(typeId,pricetype,productNode,customPrice=0){
     if(productNode.typeid==typeId){
         productNode.pricetype=pricetype;
+        if(pricetype==PRICETYPE_CUSTOM){
+            const customInput=productNode.table_panel.querySelector(`input-custom-price-${productNode.product_index}`);
+            if(customInput){
+                customInput.value=customPrice;
+            }
+        }
         productNode.updatePanel();
     }
     for (const material of productNode.materials) {
-        await changeFollowingPriceType(typeId, pricetype, material);
+        await changeFollowingPriceType(typeId, pricetype, material,customPrice);
     }
 
 }
