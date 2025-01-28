@@ -91,11 +91,12 @@ const reactionStructureRigOptions = [
 
 // Function to set a cookie
 function setCookie(name, value, days) {
+    console.log("!!DEBUG : saving cookie : "+ name +" : "+value+ " : "+ days);
     const d = new Date();
     d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + d.toUTCString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    console.log("!!DEBUG : cookie saved");
+    
 }
 
 // Function to get a cookie
