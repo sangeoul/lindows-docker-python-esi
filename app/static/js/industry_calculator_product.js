@@ -40,6 +40,10 @@ let material_list_for_unit_calculating = [];
 let material_list_minimum_unit=[];
 
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class Product {
     constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node) {
         
@@ -833,16 +837,13 @@ async function runCalculate(){
     origin_product.openPriceTable();
 
     const openButton=document.querySelector("#open-button");
-        openButton.addEventListener("click",async ()=>{
-            try{
-                await openFollowingTree(origin_product);
-                await origin_product.loadAndCalcCost();
-                await calcTotalMaterials();
-            }catch(e){
-                console.error("Error is occured while opening tree.",e);
-            }
-            
-        });
+    openButton.addEventListener("click",async ()=>{
+
+        await openFollowingTree(origin_product);
+        await delay(5);
+        await origin_product.loadAndCalcCost();
+        calcTotalMaterials();
+    });
 
 }
 
@@ -864,9 +865,8 @@ async function openFollowingTree(product){
     for( const node of product.materials){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
-                node.openNextTree(false).then(()=>{
-                    return openFollowingTree(node);
-                });
+                await node.openNextTree(false);
+                await openFollowingTree(node);
             }else {
                 node.closeTree(true);
                 continue;
@@ -874,27 +874,24 @@ async function openFollowingTree(product){
                 
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
-                node.openNextTree(false).then(()=>{
-                    return openFollowingTree(node);
-                });
+                await node.openNextTree(false);
+                await openFollowingTree(node);
             }else {
                 node.closeTree(true);
                 continue;
             }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
-                node.openNextTree(false).then(()=>{
-                    return openFollowingTree(node);
-                });
+                await node.openNextTree(false);
+                await openFollowingTree(node);
             }else {
                 node.closeTree(true);
                 continue;
             }
         } else{
             if(checkboxes["basement"]){
-                node.openNextTree(false).then(()=>{
-                    return openFollowingTree(node);
-                });
+                await node.openNextTree(false);
+                await openFollowingTree(node);
             }else {
                 await node.closeTree(true);
                 continue;
