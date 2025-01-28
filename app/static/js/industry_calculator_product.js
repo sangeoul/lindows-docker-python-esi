@@ -833,33 +833,38 @@ async function runCalculate(){
     origin_product.openPriceTable();
 
     const openButton=document.querySelector("#open-button");
-    openButton.addEventListener("click",async ()=>{
-
-        await openFollowingTree(origin_product);
-        await origin_product.loadAndCalcCost();
-        await calcTotalMaterials();
-    });
+        openButton.addEventListener("click",async ()=>{
+            try{
+                await openFollowingTree(origin_product);
+                await origin_product.loadAndCalcCost();
+                await calcTotalMaterials();
+            }catch(e){
+                console.error("Error is occured while opening tree.",e);
+            }
+            
+        });
 
 }
 
 async function openFollowingTree(product){
-    for( const node of product.materials){
-        let checkboxes={
-            basement:null,
-            component:null,
-            reaction:null,
-            fuel:null,
-            pi:null
-        };
-        checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
-        checkboxes["component"]=document.querySelector("#component-checkbox:checked");
-        checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
-        checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
-        checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
+    let checkboxes={
+        basement:null,
+        component:null,
+        reaction:null,
+        fuel:null,
+        pi:null
+    };
+    checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
+    checkboxes["component"]=document.querySelector("#component-checkbox:checked");
+    checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
+    checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
+    checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
+
+    for( const node of product.materials){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
-                node.openNextTree(false);
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -868,7 +873,7 @@ async function openFollowingTree(product){
                 
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
-                node.openNextTree(false);
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -876,7 +881,7 @@ async function openFollowingTree(product){
             }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
-                node.openNextTree(false);
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -884,10 +889,10 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                node.openNextTree(false);
+                await node.openNextTree(false);
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                await node.closeTree(true);
                 continue;
             }   
         }
