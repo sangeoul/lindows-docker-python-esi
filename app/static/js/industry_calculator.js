@@ -137,7 +137,7 @@ function loadValueFromCookie(element) {
             element.checked = (value === 'true');
         } if(element.type === 'radio'){
             element.checked = (value === 'true');
-            console.log("!!DEBUG : "+element.id+" chcekd?:"+value +" -> "+element.checked);
+            console.log("!!DEBUG : "+element.id+" checked?:"+value +" -> "+element.checked);
         }
         else {
             element.value = value;
