@@ -50,7 +50,7 @@ class Product {
 
         //console.log("Creating "+itemname+" Panel.");
         this.itemname = itemname;
-        this.typeid = typeid;
+        this.typeid = parseInt(typeid);
         this.iconurl = iconurl;
         this.output_per_run = output_per_run;
         this.quantity = quantity;
