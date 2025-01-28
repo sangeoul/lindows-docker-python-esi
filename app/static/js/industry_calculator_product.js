@@ -150,8 +150,15 @@ class Product {
             const data = await loadMarketDataWithCache(this.typeid);
             
             // Set the buyprice and sellprice from the API response
-            this.buyprice = parseFloat(data.buy);
-            this.sellprice = parseFloat(data.sell);
+            if(this.manufacturing_level>0){
+                this.buyprice = parseFloat(data.buy);
+                this.sellprice = parseFloat(data.sell);
+            }
+            else{
+                this.buyprice = parseFloat(data.buy)*parseInt(this.quantity);
+                this.sellprice = parseFloat(data.sell)*parseInt(this.quantity);
+            }
+            
             this.updatePanel();
         } catch (error) {
             console.error('Error fetching prices:', error);
@@ -207,7 +214,8 @@ class Product {
             }
             const blueprintdata=getIndustryRelation(this.typeid);
             const jobcost=getJobCost(this.eiv,index,structureBonus,tax,(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?1:blueprintdata.q));
-            this.costprice = (total/this.getQuantity())+jobcost;
+            if(this.manufacturing_level) this.costprice = (total/this.getQuantity())+jobcost;
+            else this.costprice = total+(jobcost*(blueprintdata.industry_type==INDUSTRY_TYPE_NO_DATA?1:blueprintdata.q));
         }
         this.updatePanel();
     }
@@ -875,7 +883,7 @@ async function openFollowingTree(product){
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
                 await node.openNextTree(false);
-                await delay(5);
+                await delay(2);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -884,7 +892,7 @@ async function openFollowingTree(product){
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
                 await node.openNextTree(false);
-                await delay(5);
+                await delay(2);
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -893,7 +901,7 @@ async function openFollowingTree(product){
         } else{
             if(checkboxes["basement"]){
                 await node.openNextTree(false);
-                await delay(5);
+                await delay(2);
                 await openFollowingTree(node);
             }else {
                 await node.closeTree(true);
