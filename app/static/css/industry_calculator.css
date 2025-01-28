@@ -72,7 +72,7 @@ table.product-table-panel{
     display:block;
     font-size:13px;
     width: var(--product-panel-width);
-}   
+}
 
 table.product-table-panel img.product-icon{
     width: 30px;
@@ -111,6 +111,10 @@ table.product-table-panel.endnode-panel td.color-group{
 table.product-table-panel.has-material-highlighted td.color-group{
 
     background-color: rgb(255, 241, 179);
+}
+
+table.total-item{
+    display:block;
 }
 table.total-item tr:hover td{
     background-color: rgb(255, 241, 179);
