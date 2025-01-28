@@ -626,7 +626,10 @@ class Product {
 
         //await this.sortMaterials();
         await this.updatePanel();
-        calcTotalMaterials()
+        if(calcCost){
+            calcTotalMaterials();
+        }
+        
         
         this.materials.forEach(material=>{
             material.showPanel(true);
