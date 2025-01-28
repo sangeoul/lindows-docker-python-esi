@@ -497,7 +497,6 @@ class Product {
         nextTreeButton.classList.add('next-tree');
         nextTreeButton.setAttribute('id',`button-open-tree-${this.product_index}`);
         nextTreeButton.addEventListener('click',()=>{
-            this.pricetype=PRICETYPE_COST;
             this.openNextTree();
             nextTreeButton.classList.add('hidden-data');
             closeTreeButton.classList.remove('hidden-data');   
@@ -616,6 +615,7 @@ class Product {
         }
         if(this.materials.length==0){
             await this.setMaterials();
+            this.pricetype=PRICETYPE_COST;
             if(calcCost){
                 this.loadAndCalcCost();
             }
