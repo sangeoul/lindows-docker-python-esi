@@ -123,7 +123,9 @@ function saveValueToCookie(element) {
         value= element.checked;
     }else if(element.type === 'radio'){
         document.querySelectorAll(`input[name="${element.name}"`).forEach( r=>{
+            
             console.log("!!DEBUG Save : "+r.id+"("+r.type+") : "+r.checked);
+            console.log(r);
             setCookie(r.id, r.checked, 365);
         });
     } else{
