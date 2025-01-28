@@ -1052,7 +1052,7 @@ async function calcTotalMaterials() {
                             }
                         });
                         let neededQuantity=getNeededQuantity(product_id);
-                        sumOfQuantity=Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id);
+                        sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
                         material_list_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
     
                         let temporarySum=0;
