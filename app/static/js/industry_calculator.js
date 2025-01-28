@@ -91,7 +91,6 @@ const reactionStructureRigOptions = [
 
 // Function to set a cookie
 function setCookie(name, value, days) {
-    console.log("!!DEBUG : saving cookie : "+ name +" : "+value+ " : "+ days);
     const d = new Date();
     d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + d.toUTCString();
@@ -107,7 +106,6 @@ function getCookie(name) {
         let c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) == 0) {
-            console.log("!!DEBUG : cookie loaded : "+c);
             return c.substring(nameEQ.length, c.length);
         }
     }
@@ -118,15 +116,13 @@ function getCookie(name) {
 function saveValueToCookie(element) {
     const id = element.id;
     let value;
-    //console.log("!!DEBUG : "+element.id+"("+element.type+") : "+value);
     if(element.type === 'checkbox'){
         value= element.checked;
     }else if(element.type === 'radio'){
         document.querySelectorAll(`input[name="${element.name}"`).forEach( r=>{
             
-            console.log("!!DEBUG Save : "+r.id+"("+r.type+") : "+r.checked);
-            console.log(r);
             setCookie(r.id, r.checked, 365);
+            return;
         });
     } else{
         value=element.value;
@@ -138,13 +134,13 @@ function saveValueToCookie(element) {
 function loadValueFromCookie(element) {
     const id = element.id;
     const value = getCookie(id);
-    //console.log("!!DEBUG : "+element.id+"("+element.type+") : "+value);
+
     if (value !== null) {
         if (element.type === 'checkbox') {
             element.checked = (value === 'true');
         } if(element.type === 'radio'){
             element.checked = (value === 'true');
-            console.log("!!DEBUG Load : "+element.id+" checked?:"+value +" -> "+element.checked);
+
         }
         else {
             element.value = value;
