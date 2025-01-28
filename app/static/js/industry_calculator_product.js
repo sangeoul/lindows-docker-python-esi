@@ -47,7 +47,7 @@ class Product {
         product_array[product_index]=this;
     
 
-        console.log("Creating "+itemname+" Panel.");
+        //console.log("Creating "+itemname+" Panel.");
         this.itemname = itemname;
         this.typeid = typeid;
         this.iconurl = iconurl;
@@ -126,7 +126,7 @@ class Product {
                         this
                     );
                     this.materials.push(material); 
-                    material.includingMaterialTree(rel.i);
+                    material.includingMaterialTree(parseInt(rel.i));
                 });
             } else {
                 // No data case
@@ -709,8 +709,8 @@ class Product {
     }
     async includingMaterialTree(typeid){
         
-        if(!this.includedMaterials.includes(typeid)){       
-            this.includedMaterials.push(typeid);
+        if(!this.includedMaterials.includes(parseInt(typeid))){       
+            this.includedMaterials.push(parseInt(typeid));
         }
         if(this.manufacturing_level){
             this.product_node.includingMaterialTree(typeid);
@@ -1126,16 +1126,14 @@ async function calcTotalMaterials() {
         tr_total.addEventListener('mouseover', ()=>{
             
             product_array.forEach(p=>{
-                console.log("!!DEBUG : finding type_id "+m.id+" from "+p.itemname + " : "+p.includedMaterials);
-                if(p.includedMaterials.includes(m.id)){
-                    
+                if(p.includedMaterials.includes(parseInt(m.id))){
                     p.table_panel.classList.add("has-material-highlighted");
                 }   
             });
         })
         tr_total.addEventListener('mouseout', ()=>{
             product_array.forEach(p=>{
-                if(p.includedMaterials.includes(m.id)){
+                if(p.includedMaterials.includes(parseInt(m.id))){
                     p.table_panel.classList.remove("has-material-highlighted");
                 }   
             });
