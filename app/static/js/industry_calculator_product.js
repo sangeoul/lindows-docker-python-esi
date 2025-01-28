@@ -44,8 +44,9 @@ class Product {
     constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node) {
         
         this.product_index=product_index;
-        product_index++;
         product_array[product_index]=this;
+        product_index++;
+        
     
 
         //console.log("Creating "+itemname+" Panel.");
