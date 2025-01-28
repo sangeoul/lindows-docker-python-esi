@@ -101,10 +101,10 @@ table.product-table-panel.endnode-panel td.color-group{
 
 table.product-table-panel.has-material-highlighted td.color-group{
 
-    background-color: rgb(255, 251, 200);
+    background-color: rgb(255, 241, 179);
 }
 table.total-item tr:hover td{
-    background-color: rgb(255, 251, 190);
+    background-color: rgb(255, 241, 179);
 }
 
 table.price-table{
@@ -132,11 +132,11 @@ input.custom-price-input{
 }
 
 td.total-item-icon{
-    width:25px;
-    height:25px;
+    width:21px;
+    height:21px;
 }
 img.total-item-icon{
-    width:24px;
+    width:20px;
 }
 td.total-item-itemname{
     width:100px;
