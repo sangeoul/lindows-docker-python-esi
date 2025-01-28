@@ -103,7 +103,7 @@ table.product-table-panel.has-material-highlighted td.color-group{
 
     background-color: rgb(255, 251, 200);
 }
-table.total-item tr td:hover{
+table.total-item tr:hover td{
     background-color: rgb(255, 251, 190);
 }
 
