@@ -1077,7 +1077,7 @@ async function calcTotalMaterials() {
                         let neededQuantity=getNeededQuantity(product_id);
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
                         if(product_id==17769){
-                            console.log(`!!DEBUG: Fluxed Condensates : ${sumOfQuantity} : \
+                            console.log(`!!DEBUG: Fluxed Condensates(17769) : ${sumOfQuantity} : \
                                 CEIL(${neededQuantity}/${bpData.q}) * ${materialQuantity} * ${getBonusModifier(product_id)}`);
                         }
                         
