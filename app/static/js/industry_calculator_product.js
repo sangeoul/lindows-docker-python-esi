@@ -1224,13 +1224,13 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         if(me<0){
             efficiency=me+100;
         }
-        console.log(`!!DEBUG: Component bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
+        if(type_id==17769)console.log(`!!DEBUG: Component bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id)){
         
         const structureAndRigBonus=document.querySelector("#reaction-structure-efficiency-bonus").value;
-        console.log(`!!DEBUG: Reaction bonus ${calcBonusMultiplier(0,structureAndRigBonus)} for ${type_id} `)
+        if(type_id==17769)console.log(`!!DEBUG: Reaction bonus ${calcBonusMultiplier(0,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
@@ -1239,7 +1239,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
             efficiency=me+100;
         }
         const structureAndRigBonus=document.querySelector("#fuel-structure-efficiency-bonus").value;
-        console.log(`!!DEBUG: Fuel block bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
+        if(type_id==17769)console.log(`!!DEBUG: Fuel block bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
@@ -1248,7 +1248,7 @@ function getBonusModifier(type_id,me=10,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     if(me<0){
         efficiency=me+100;
     }
-    console.log(`!!DEBUG: Manufacturing bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
+    if(type_id==17769)console.log(`!!DEBUG: Manufacturing bonus ${calcBonusMultiplier(efficiency,structureAndRigBonus)} for ${type_id} `)
     return calcBonusMultiplier(efficiency,structureAndRigBonus);
 
 
