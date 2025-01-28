@@ -955,8 +955,13 @@ async function calcTotalMaterials() {
     }else if (quantity_option===QUANTITY_OPTION_MATERIAL){
 
         material_list=[];
+        endNode_list=[];
+
         material_list_for_unit_calculating=[];
+
         let rawMaterials=[];
+
+        //initialise
         material_list_for_unit_calculating.push({
             [origin_product.typeid]:{
                 "0":[origin_product.quantity,origin_product]
@@ -965,6 +970,7 @@ async function calcTotalMaterials() {
         for(let i=1;i<MAX_TREE_DEPTH;i++){
             material_list_for_unit_calculating.push({});
         }
+
 
         function queueMaterial(product,material){
             let idx=null;
@@ -1010,6 +1016,7 @@ async function calcTotalMaterials() {
                 }
             }
         }
+
         function getNeededQuantity(typeId){
             let sum=0;
             for(let i=0;i<MAX_TREE_DEPTH;i++){
@@ -1023,10 +1030,21 @@ async function calcTotalMaterials() {
             }
             return sum;
         }
+        function addToEndNode(node){
+            endNode_list.push(node.product_index);
+            node.materials.forEach(m=>{
+                addToEndNode(m);
+            });
+        }
 
 
         product_array.forEach(p=>{
-            if(!p.isEndNode){
+            if(p.isEndNode){
+                addToEndNode(p);
+            }
+        });
+        product_array.forEach(p=>{
+            if(!endNode_list.includes(p.product_index)){
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
@@ -1039,6 +1057,7 @@ async function calcTotalMaterials() {
                 });
             }
         });
+
         for(let i=0;i<MAX_TREE_DEPTH;i++){
             for(const material_id in material_list_for_unit_calculating[i]){
                 for(const product_id in material_list_for_unit_calculating[i][material_id]){
