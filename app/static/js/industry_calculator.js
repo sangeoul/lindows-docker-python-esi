@@ -383,7 +383,7 @@ async function calcStructureBonus(industry_type) {
     }
     const selectedStructure = selectedStructureOption.textContent;
 
-    const currentRigOption = industry_type === "reaction"
+    const currentRigOption = (industry_type === "reaction")
         ? reactionStructureRigOptions.find(option => option.text === selectedStructure)
         : manufacturingStructureRigOptions.find(option => option.text === selectedStructure);
     if (!currentRigOption) {
@@ -398,10 +398,10 @@ async function calcStructureBonus(industry_type) {
         
         const systemSecurity = Math.round(parseFloat(jsonResult["security_status"]) * 10) / 10;
     
-        let SYSTEM_BONUS_MULTIPLIER;
+        let SYSTEM_BONUS_MULTIPLIER=0;
         if(industry_type=='reaction'){
             if (systemSecurity >= 0.5) {
-                SYSTEM_BONUS_MULTIPLIER = 0;
+                SYSTEM_BONUS_MULTIPLIER = 1;
             } else if (systemSecurity > 0) {
                 SYSTEM_BONUS_MULTIPLIER = 1.0;
             } else {
