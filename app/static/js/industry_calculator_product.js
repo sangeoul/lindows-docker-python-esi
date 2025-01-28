@@ -168,17 +168,21 @@ class Product {
             for(const material in this.materials){
                 if (material.pricetype === PRICETYPE_BUY) {
                     total += material.buyprice * material.getQuantity();
+                    console.log(`!!DEBUG ${material.itemname} Buy price: ${material.buyprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_SELL) {
                     total += material.sellprice * material.getQuantity();
+                    console.log(`!!DEBUG ${material.itemname} Sell price: ${material.sellprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_COST) {
                     await material.calcCost(); // Calculate the custom price for the material
                     total += material.costprice * material.getQuantity();
+                    console.log(`!!DEBUG ${material.itemname} Cost price: ${material.costprice} x ${material.getQuantity()}`);
                 } else if (material.pricetype === PRICETYPE_CUSTOM) {
                     total += material.customprice * material.getQuantity();
+                    console.log(`!!DEBUG ${material.itemname} Custom price: ${material.customprice} x ${material.getQuantity()}`);
                 }
 
             }
-            console.log(`!!DEBUG total: ${total}`);
+            console.log(`!!DEBUG ${this.itemname} total: ${total}`);
             const savedBonus=localStorage.getItem(this.typeid);
             let index;
             let structureBonus;
