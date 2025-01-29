@@ -868,8 +868,42 @@ def accept_buyback():
         cursor.close()
         conn.close()
         
-        return "Buyback accepted and updated."
-
+        return "Buyback is accepted and updated."
+    
+def delete_buyback():
+    if not is_logged_in(ADMIN_ID):
+        return render_template_string('''
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Alert Page</title>
+            </head>
+            <body>
+                <h1>Alert Example</h1>
+                <script type="text/javascript">
+                    alert("No permission.");
+                </script>
+            </body>
+            </html>
+        ''')
+    else:
+        contract_id = request.args.get("contract_id")
+        
+        # Update the DB table to set is_completed=True where contract_id=contract_id
+        conn = connect_to_db()
+        cursor = conn.cursor()
+        delete_query = """
+        DELETE FROM buyback_contract_log WHERE contract_id = %s
+        """
+        cursor.execute(delete_query, (contract_id,))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        
+        return "Buyback is deleted."
 def show_contracts_list():
 
     if not is_logged_in(ADMIN_ID):
