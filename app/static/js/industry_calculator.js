@@ -613,8 +613,7 @@ function showNotification(message, position = 'right-bottom') {
     const notification = document.createElement('div');
     notification.setAttribute('id', 'notification');
     notification.classList.add('notification');
-    document.body.appendChild(notification);
-
+    
     // Set the position class
     position=position.toLowerCase();
     const positionClass = `notification-${position}`;
@@ -623,6 +622,7 @@ function showNotification(message, position = 'right-bottom') {
 
     notification.innerText = message;
     notification.style.display = 'block';
+    document.body.appendChild(notification);
     setTimeout(() => {
         notification.style.opacity = 1;
     }, 10); // slight delay to ensure transition
@@ -632,6 +632,6 @@ function showNotification(message, position = 'right-bottom') {
         setTimeout(() => {
             notification.remove(); // Remove element after animation
         }, 500); // match this duration to CSS transition
-    }, 3000); // duration for which the notification stays visible
+    }, 2000); // duration for which the notification stays visible
 }
 
