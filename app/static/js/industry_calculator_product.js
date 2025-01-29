@@ -31,6 +31,7 @@ let origin_product=null;
 
 let product_index=0;
 let product_array=[];
+let tracking_item_list=new LinkedList();
 
 const market_price_cache={};
 const market_price_request_cache = {};
@@ -42,6 +43,84 @@ let material_list_minimum_unit=[];
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+class LinkedListNode{
+    constructor(value,previous=null,next=null){
+        this.value=value;
+        this.prev=previous;
+        this.next=next;
+    }
+}
+class LinkedList{
+    constructor(){
+        this.head=null;
+        this.tail=null;
+        this.size=0;
+    }
+
+    add(value){
+        
+        if(!this.head){
+            this.head=new LinkedListNode(value);
+            this.tail=this.head;
+        }else{
+            let c= this.head;
+            while(c.next){
+                c=c.next;
+            }
+            c.next=new LinkedListNode(value,c);
+            this.tail=c.next;
+        }
+        this.size++;
+    }
+    get(idx){
+        if(idx>=this.size){
+            return null;
+        }
+        let i=0;
+        let c=this.head;
+        for(;i<idx;i++){
+            c=c.next;
+        }
+        return c.value;
+    }
+    find(value){
+        let i=0;
+        let c=this.head;
+        for(;i<this.size;i++){
+            if(c.value==value){
+                return i;
+            }
+        }
+        return -1;
+    }
+    delete(idx){
+        if(idx>=this.size){
+            return null;
+        }
+        let i=0;
+        let c=this.head;
+        for(;i<idx;i++){
+            c=c.next;
+        }
+        if(c.prev){
+            c.prev.next=c.next;
+        }else{
+            this.head=c.next;
+        }
+        if(c.next){
+            c.next.prev=c.prev;
+        }else{
+            this.tail=c.prev;
+        }
+        this.size--;
+    }
+    clear(){
+        this.head=null;
+        this.tail=null;
+        this.size=0;
+    }
 }
 
 class Product {
@@ -1188,6 +1267,9 @@ async function calcTotalMaterials() {
                 }   
             });
         })
+        tr_total.addEventListener('click', ()=>{
+            toggleTracking(m.id);
+        })
 
         table_total.appendChild(tr_total);
     });
@@ -1196,6 +1278,16 @@ async function calcTotalMaterials() {
     td_totalBoard.innerHTML="";
 
     td_totalBoard.appendChild(table_total);
+}
+
+async function toggleTracking(typeId){
+    typeId=parseInt(typeId);
+    let idx=tracking_item_list.find(typeId)
+    if(idx==-1){
+        tracking_item_list.add(typeId); 
+    }else{
+        tracking_item_list.(typeId);
+    }
 }
 
 
