@@ -614,7 +614,7 @@ function showNotification(message) {
     notification.setAttribute('id','notification');
     notification.classList.add('notification');
     document.body.appendChild(notification);
-    
+
     notification.innerText = message;
     notification.style.display = 'block';
     setTimeout(() => {
@@ -628,8 +628,3 @@ function showNotification(message) {
         }, 500); // match this duration to CSS transition
     }, 3000); // duration for which the notification stays visible
 }
-
-// Example usage:
-document.addEventListener('DOMContentLoaded', () => {
-    showNotification('This is a notification message!');
-});
