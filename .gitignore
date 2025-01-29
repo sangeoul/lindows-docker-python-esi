@@ -30,3 +30,4 @@ app/static/input.txt
 *.pem
 Dockerfile.crawler
 Dockerfile
+Dockerfile.postgresql

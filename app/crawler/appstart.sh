@@ -1,5 +1,4 @@
 # Start cron in the background
-# python3 crawler.py
 
 cron &
 echo "Cron daemon started at $(date)"

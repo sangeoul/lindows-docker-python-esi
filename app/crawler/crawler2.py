@@ -33,8 +33,7 @@ def fetch_market_data():
             if response.status_code == 404:
                 print(f"Cannot find page. It may reached the last page({page}), stopping.", flush=True)
                 break    
-            if
-                        if response.status_code != 200:
+            if response.status_code != 200:
                 print(f"FAILED TO FETCH DATA : {response.status_code}", flush=True)
                 break
             try: 
