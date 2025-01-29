@@ -1,177 +1,269 @@
+/* Improved CSS for Industry Calculator */
 
-
-
-table{
-    border-collapse:collapse;
-}
-
-td,th{
-    border:1px solid black;
-    border:none;
-    border-collapse:collapse;
-    margin:0;
-    padding:0.5px;
-    background-color:white;
-}
-table.control-panel td,table.control-panel th, table.control-panel tr{
-    border: 1px solid black;
-}
-img{
-    padding:0;
-    margin:0;
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
 }
 
-input.blueprint-run-input{
-    width:60px;
-}
-input.me-input{
-    width:34px;
-}
-input.system-input{
-    width:75px;
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-td.calculate-button{
-    width:160px;
-}
-button.calculate-button{
-    width:159px;
-    height:40px;
-    font-size:25px;
+th, td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border: 1px solid #ddd;
 }
 
-button.detail-button{
-    width:38px;
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
 }
 
-td.opentree-detail , td.bonus-detail{
-    width:34px;
+img {
+    padding: 0;
+    margin: 0;
 }
 
-input.reaction-efficiency-bonus-input{
-    margin-right:107px;
+input {
+    padding: 5px;
+    margin: 0 5px;
+    font-size: 14px;
 }
 
-select.structure-input{
-    width:120px;
-}
-input.structure-efficiency-bonus-input{
-    width:72px;
-}
-
-input.tax-input{
-    width:34px;
+select, input[type="number"], input[type="text"], input[type="radio"], input[type="checkbox"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
-td.panel-tree-layer, td.total-materials{
-    vertical-align: top;
-}
-td#product-panel-lv0{
-    height:100px;
+input[type="number"], input[type="text"], select {
+    width: auto;
+    min-width: 60px;
 }
 
-table.product-panel-area{
-    font-size:13px;
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-table.product-table-panel{
-    border: 1px solid black;
-    display:block;
-    font-size:13px;
-    width: var(--product-panel-width);
+/* Control panel styles */
+table.control-panel {
+    max-width: 1200px;
 }
 
-table.product-table-panel img.product-icon{
+.calculate-button {
+    text-align: center;
+}
+
+.calculate-button button {
+    width: 100%;
+    background-color: #0078d7;
+    color: #fff;
+}
+
+table.calculate-button button:hover {
+    background-color: #005fa3;
+}
+
+.detail-button {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.detail-button:hover {
+    color: #0078d7;
+}
+
+#opentree-checkboxs-area {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+#opentree-checkboxs-area input[type="checkbox"] {
+    margin-left: 5px;
+}
+
+#open-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: #fff;
+}
+
+#open-button:hover {
+    background-color: #218838;
+}
+
+/* Product panel styles */
+.product-panel-area {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 13px;
+}
+
+.panel-tree-layer {
+    flex: 1;
+    min-width: 250px;
+    margin: 10px;
+}
+
+.product-table-panel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-table-panel img.product-icon {
     width: 30px;
 }
-table.product-table-panel td.product-icon{
+
+.product-table-panel .product-icon {
     width: 30px;
-    height:30px;
+    height: 30px;
 }
-table.product-table-panel td.product-name{
+
+.product-table-panel .product-name {
     width: 140px;
 }
-table.product-table-panel td.product-setting{
-    width:22px;
+
+.product-table-panel .product-setting {
+    width: 22px;
 }
-
-
-
 
 table.product-table-panel tr:hover td.color-group {
     background-color: rgb(201, 255, 214);
 }
 
-table.product-table-panel.selected-panel td.color-group {
-    background-color:rgb(201, 255, 214);
+.product-table-panel.selected-panel td.color-group {
+    background-color: rgb(201, 255, 214);
 }
 
-table.product-table-panel.opened-panel td.color-group {
-    background-color:rgb(178, 196, 255);
+.product-table-panel.opened-panel td.color-group {
+    background-color: rgb(178, 196, 255);
 }
 
-table.product-table-panel.endnode-panel td.color-group{
-
+.product-table-panel.endnode-panel td.color-group {
     background-color: rgb(224, 224, 224);
 }
 
-table.product-table-panel.has-material-highlighted td.color-group{
-
+table.product-table-panel.has-material-highlighted td.color-group {
     background-color: rgb(255, 241, 179);
 }
 
-table.total-item{
-    display:block;
+/* Price table styles */
+.price-table {
+    font-size: 11px;
+    width: 100%;
 }
-table.total-item tr:hover td{
+
+.price-table tr {
+    height: 15px;
+}
+
+.price-table td {
+    padding: 5px;
+}
+
+.price-table td.buy-label, .price-table td.sell-label, .price-table td.cost-label {
+    width: 32px;
+}
+
+.price-table td.buy-price, .price-table td.sell-price, .price-table td.cost-price {
+    width: 150px;
+}
+
+.price-table td.buy-radio, .price-table td.sell-radio, .price-table td.cost-radio {
+    width: 15px;
+}
+
+input.custom-price-input {
+    width: 100px;
+    font-size: 12px;
+}
+
+/* Total materials styles */
+td.total-materials {
+    vertical-align: top;
+    padding: 10px;
+}
+
+table.total-item {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table.total-item tr.has-material-highlighted td {
     background-color: rgb(255, 241, 179);
 }
 
-table.price-table{
-    font-size:11px;
+.total-item-icon {
+    width: 19px;
+    height: 19px;
 }
 
-table.price-table tr{
-    height:15px;
+.total-item-icon img {
+    width: 18px;
 }
 
-table.price-table td.buy-label, table.price-table td.sell-label, table.price-table td.cost-label{
-    width:32px;
-}
-table.price-table td.buy-price , table.price-table td.sell-price, table.price-table td.cost-price{
-    width:150px;
-}
-table.price-table td.buy-radio , table.price-table td.sell-radio, table.price-table td.cost-radio{
-    width:15px;
+.total-item-itemname {
+    width: 110px;
+    text-align: left;
+    font-size: 11px;
 }
 
-
-input.custom-price-input{
-    width:100px;
-    font-size:12px;
+.total-item-quantity {
+    width: 67px;
+    text-align: right;
+    font-size: 11px;
 }
 
-td.total-item-icon{
-    width:19px;
-    height:19px;
-}
-img.total-item-icon{
-    width:18px;
-}
-td.total-item-itemname{
-    width:110px;
-    text-align:left;
-    font-size:11px;
-}
-
-td.total-item-quantity{
-    width:67px;
-    text-align:right;
-    font-size:11px;
-}
-
-
-
-.hidden-data{
+/* Hidden data */
+.hidden-data {
     display: none !important;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .control-panel, .product-panel-area {
+        width: 100%;
+    }
+
+    .panel-tree-layer, .total-materials {
+        width: 100%;
+    }
+
+    .calculate-button {
+        text-align: center;
+    }
+
+    th, td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
 }
