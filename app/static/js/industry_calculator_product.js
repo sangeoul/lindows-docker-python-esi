@@ -1258,7 +1258,7 @@ async function calcTotalMaterials() {
 
         tr_total.addEventListener('mouseover', ()=>{
             
-            tr_total.add("has-material-highlighted");
+            tr_total.classList.add("has-material-highlighted");
             product_array.forEach(p=>{
                 if(p.includedMaterials.includes(parseInt(m.id))){
                     p.table_panel.classList.add("has-material-highlighted");
