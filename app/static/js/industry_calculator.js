@@ -609,10 +609,15 @@ document.addEventListener("input", function(event) {
 });
 
 
-function showNotification(message) {
+function showNotification(message, position = 'right-bottom') {
     const notification = document.createElement('div');
-    notification.setAttribute('id','notification');
+    notification.setAttribute('id', 'notification');
     notification.classList.add('notification');
+
+    // Set the position class
+    const positionClass = `notification-${position}`;
+    notification.classList.add(positionClass);
+
     document.body.appendChild(notification);
 
     notification.innerText = message;
@@ -624,7 +629,8 @@ function showNotification(message) {
     setTimeout(() => {
         notification.style.opacity = 0;
         setTimeout(() => {
-            notification.style.display = 'none';
+            notification.remove(); // Remove element after animation
         }, 500); // match this duration to CSS transition
     }, 3000); // duration for which the notification stays visible
 }
+
