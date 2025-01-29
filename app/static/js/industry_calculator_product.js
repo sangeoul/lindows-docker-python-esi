@@ -1346,9 +1346,11 @@ function copyMaterialsToClipboard(){
         copyText+=`${m.id}\t${m.name}\t${Math.ceil(m.quantity)}\n`;
     });
     navigator.clipboard.writeText(copyText).then(function() { 
-        console.log("Materials are copied into clipboard.");
+        console.log("Materials are copied to clipboard.");
+        alert("Materials are copied to clipboard.");
     }).catch(function(e){
         console.error(`Failed to copy : ${e}`);
+        alert("Error: Failed to copy.");
     });
 }
 
