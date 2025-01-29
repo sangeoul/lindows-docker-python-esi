@@ -128,7 +128,7 @@ def parsingManufacturing(input_text):
     print(f"Product item type_id:{output_id}", flush=True)
 
     # Extract input information
-    records = []
+    records = {}
     for line in input_lines:
         input_match = re.match(r"^(\d+(,\d{3})*) x (.+)", line)
         if not input_match:
@@ -147,7 +147,7 @@ def parsingManufacturing(input_text):
         print(f"Material item type_id:{input_id}", flush=True)
 
         # Construct the record
-        records.append((output_id, output_amount, input_id, input_amount, INDUSTRY_MANUFACTURING, output_id))
+        
 
     # Close the connection after processing
     cursor.close()
@@ -236,7 +236,8 @@ def register_industry():
                 return redirect(url_for("register_industry"))
 
             # Store parsed records in the database
-            storeToDB(records)
+            if industry_type == INDUSTRY_REPROCESSING:
+                storeToDB(records)
 
             print("Data successfully parsed and stored!",flush=True)
         except Exception as e:
