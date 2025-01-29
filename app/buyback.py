@@ -410,7 +410,7 @@ def buyback():
         })
     
     character_id=is_logged_in()
-    
+
     if character_id:
         character_name=get_charactername_by_characterid(character_id)
     else:
@@ -622,8 +622,8 @@ def buyback_submit():
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     new_contract_id,
-                    0,  # Default value for character_id
-                    "",  # Default empty character_name
+                    character_id,  # Default value for character_id
+                    character_name,  # Default empty character_name
                     type_id,
                     output['item_name'],
                     amount,
