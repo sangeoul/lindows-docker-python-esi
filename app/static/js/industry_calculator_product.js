@@ -1347,7 +1347,7 @@ function copyMaterialsToClipboard(){
     });
     navigator.clipboard.writeText(copyText).then(function() { 
         console.log("Materials are copied to clipboard.");
-        showNotification("Materials are copied to clipboard.");
+        showNotification("Materials are copied to clipboard.",'center');
     }).catch(function(e){
         console.error(`Failed to copy : ${e}`);
         showNotification("Error: Failed to copy.");

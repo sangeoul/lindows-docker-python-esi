@@ -613,12 +613,13 @@ function showNotification(message, position = 'right-bottom') {
     const notification = document.createElement('div');
     notification.setAttribute('id', 'notification');
     notification.classList.add('notification');
+    document.body.appendChild(notification);
 
     // Set the position class
+    position=position.toLowerCase();
     const positionClass = `notification-${position}`;
     notification.classList.add(positionClass);
 
-    document.body.appendChild(notification);
 
     notification.innerText = message;
     notification.style.display = 'block';
