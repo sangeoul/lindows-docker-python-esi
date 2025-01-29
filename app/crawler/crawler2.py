@@ -1,5 +1,4 @@
 import requests
-import psycopg2 
 from psycopg2.extras import execute_values
 import time
 import sys
@@ -25,7 +24,7 @@ def fetch_market_data():
         batch_orders = []
         for _ in range(PAGE_BATCH_SIZE):
             if page % FETCHING_PAGE_BATCH == 0:
-                print(f"Fetching page {page}...", flush=True)
+                print(f"Fetching page {page} by crawler2", flush=True)
             response = fetch_with_retries(f"{API_URL}?datasource=tranquility&order_type=all&page={page}", 5, 3, page)
             if response is None:
                 print(f"Failed to fetch data for page {page} after retries", flush=True)
@@ -190,7 +189,7 @@ def save_to_db(data):
         print(f"Error occurred: {e}", flush=True)
 
 if __name__ == "__main__":
-    print_with_timestamp("Starting Market Updater for pages 201 to last")
+    print_with_timestamp("Starting Market Updater for pages 201 to last by crawler2")
     sys.stdout.flush()
     fetch_market_data()
-    print_with_timestamp("Market update finished for pages 201 to last.")
+    print_with_timestamp("Market update finished for pages 201 to last by crawler2.")
