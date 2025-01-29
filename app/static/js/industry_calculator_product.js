@@ -1343,7 +1343,7 @@ function copyMaterialsToClipboard(){
     material_list;
     let copyText="";
     material_list.forEach(m=>{
-        copyText+=`${m.id}\t${m.name}\t${m.quantity}\n`;
+        copyText+=`${m.id}\t${m.name}\t${Math.ceil(m.quantity)}\n`;
     });
     navigator.clipboard.writeText(copyText).then(function() { 
         console.log("Materials are copied into clipboard.");
