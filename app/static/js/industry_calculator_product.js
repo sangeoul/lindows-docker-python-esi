@@ -1266,7 +1266,7 @@ async function calcTotalMaterials() {
             });
         })
         tr_total.addEventListener('mouseout', ()=>{
-            if(tracking_item_list.find(parseInt(typeId))==-1){
+            if(tracking_item_list.find(parseInt(m.id))==-1){
                 tr_total.classList.remove("has-material-highlighted");
                 product_array.forEach(p=>{
                     if(p.includedMaterials.includes(parseInt(m.id))){
