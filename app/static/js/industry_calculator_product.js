@@ -1254,6 +1254,7 @@ async function calcTotalMaterials() {
 
         tr_total.addEventListener('mouseover', ()=>{
             
+            tr_total.add("has-material-highlighted");
             product_array.forEach(p=>{
                 if(p.includedMaterials.includes(parseInt(m.id))){
                     p.table_panel.classList.add("has-material-highlighted");
@@ -1261,11 +1262,14 @@ async function calcTotalMaterials() {
             });
         })
         tr_total.addEventListener('mouseout', ()=>{
-            product_array.forEach(p=>{
-                if(p.includedMaterials.includes(parseInt(m.id))){
-                    p.table_panel.classList.remove("has-material-highlighted");
-                }   
-            });
+            if(tracking_item_list.find(parseInt(typeId))==-1){
+                tr_total.classList.remove("has-material-highlighted");
+                product_array.forEach(p=>{
+                    if(p.includedMaterials.includes(parseInt(m.id))){
+                        p.table_panel.classList.remove("has-material-highlighted");
+                    }   
+                });
+            }
         })
         tr_total.addEventListener('click', ()=>{
             toggleTracking(m.id);
@@ -1286,7 +1290,7 @@ async function toggleTracking(typeId){
     if(idx==-1){
         tracking_item_list.add(typeId); 
     }else{
-        tracking_item_list.(typeId);
+        tracking_item_list.delete(idx);
     }
 }
 
