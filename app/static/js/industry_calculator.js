@@ -609,3 +609,27 @@ document.addEventListener("input", function(event) {
 });
 
 
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.setAttribute('id','notification');
+    notification.classList.add('notification');
+    document.body.appendChild(notification);
+    
+    notification.innerText = message;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.opacity = 1;
+    }, 10); // slight delay to ensure transition
+
+    setTimeout(() => {
+        notification.style.opacity = 0;
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 500); // match this duration to CSS transition
+    }, 3000); // duration for which the notification stays visible
+}
+
+// Example usage:
+document.addEventListener('DOMContentLoaded', () => {
+    showNotification('This is a notification message!');
+});
