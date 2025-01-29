@@ -73,6 +73,7 @@ class LinkedList{
             if(c.value==value){
                 return i;
             }
+            c=c.next;
         }
         return -1;
     }
@@ -101,6 +102,22 @@ class LinkedList{
         this.head=null;
         this.tail=null;
         this.size=0;
+    }
+    print(){
+        if(this.size==0){
+            return "[]";
+        }
+        let prtStr="[";
+        let i=0;
+        let c=this.head;
+        for(;i<this.size-1;i++){
+            prtStr+=c.value;
+            prtStr+=",";
+            c=c.next;
+        }
+        prtStr+=c.value;
+        prtStr+="]";
+        return prtStr;  
     }
 }
 
