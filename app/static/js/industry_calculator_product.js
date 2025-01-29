@@ -955,6 +955,20 @@ async function runCalculate(){
         calcTotalMaterials();
     });
 
+    const button_copyMaterials=document.createElement("button");
+    button_copyMaterials.textContent="📋Copy";
+
+    button_copyMaterials.addEventListener("click",()=>{
+        copyMaterialsToClipboard();
+    });
+    
+    const td_buttonArea=document.querySelector("#td-export-button");
+    td_buttonArea.appendChild(button_copyMaterials);
+
+
+    const button_copyBreakdownMaterials=document.createElement("button");
+    button_copyBreakdownMaterials.textContent="Sheet";
+
 }
 
 async function openFollowingTree(product){
@@ -1325,6 +1339,19 @@ async function toggleTracking(typeId){
     }
 }
 
+function copyMaterialsToClipboard(){
+    material_list;
+    let copyText="";
+    material_list.forEach(m=>{
+        copyText+=`${m.id}\t${m.name}\t${m.quantity}\n`;
+    });
+    navigator.clipboard.writeText(copyText).then(function() { 
+        console.log("Materials are copied into clipboard.");
+    }).catch(function(e){
+        console.error(`Failed to copy : ${e}`);
+    });
+}
+
 
 function getIndustryRelation(typeId){
 
@@ -1392,3 +1419,5 @@ function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
 function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
     return (1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100));
 }
+
+
