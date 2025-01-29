@@ -1287,7 +1287,17 @@ async function calcTotalMaterials() {
                 tr_total.classList.remove("has-material-highlighted");
                 product_array.forEach(p=>{
                     if(p.includedMaterials.includes(parseInt(m.id))){
-                        p.table_panel.classList.remove("has-material-highlighted");
+                        let offHighlight=true;
+                        for(let i=0;i<tracking_item_list.size;i++){
+                            if(p.includedMaterials.includes(tracking_item_list.get(i))){
+                                offHighlight=false;
+                                break;
+                            }        
+                        }
+                        if(offHighlight){
+                            p.table_panel.classList.remove("has-material-highlighted");
+                        }
+                        
                     }   
                 });
             }
