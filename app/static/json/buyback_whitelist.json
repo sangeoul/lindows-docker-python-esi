@@ -51,7 +51,9 @@
         {"id": 732, "name": "Sleeper Technical Schematics"},
         {"id": 1304, "name": "Generic Decryptor"},
         {"id": 332, "name": "R.Db - Boundless Creations"},
-        {"id": 333, "name": "Datacores"}
+        {"id": 333, "name": "Datacores"},
+        {"id": 1136, "name": "Fuel Block"},
+        {"id": 4086, "name": "Quantum Cores"}
     ],
     "type_id": [
         {"id": 22, "name": "Arkonor"},
