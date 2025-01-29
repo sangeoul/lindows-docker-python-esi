@@ -25,25 +25,6 @@ const INTERMEDIATE_MATERIALS=[16654,16655,16656,16657,16658,16659,16660,16661,16
 const QUANTITY_OPTION_PRICE=1;
 const QUANTITY_OPTION_MATERIAL=2;
 
-let quantity_option=1;
-
-let origin_product=null;
-
-let product_index=0;
-let product_array=[];
-let tracking_item_list=new LinkedList();
-
-const market_price_cache={};
-const market_price_request_cache = {};
-
-let material_list = [];
-let material_list_for_unit_calculating = [];
-let material_list_minimum_unit=[];
-
-
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 class LinkedListNode{
     constructor(value,previous=null,next=null){
@@ -122,6 +103,29 @@ class LinkedList{
         this.size=0;
     }
 }
+
+
+let quantity_option=1;
+
+let origin_product=null;
+
+let product_index=0;
+let product_array=[];
+let tracking_item_list=new LinkedList();
+
+const market_price_cache={};
+const market_price_request_cache = {};
+
+let material_list = [];
+let material_list_for_unit_calculating = [];
+let material_list_minimum_unit=[];
+
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 
 class Product {
     constructor(itemname, typeid, iconurl,industry_type, output_per_run, quantity,minimum_quantity, level, row, product_node) {
