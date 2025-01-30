@@ -1205,11 +1205,19 @@ async function calcTotalMaterials(saveGlobal=true) {
             }
             
             else{
-                rawMaterials.push({
-                    id:p.typeid,
-                    name:p.itemname,
-                    icon:p.iconurl
+                let notIncluded=true;
+                rawMaterials.forEach(m=>{
+                    if(m.id==p.typeid){
+                        notIncluded=false;
+                    }
                 });
+                if(notIncluded){
+                    rawMaterials.push({
+                        id:p.typeid,
+                        name:p.itemname,
+                        icon:p.iconurl
+                    });
+                }
             }
         });
 
@@ -1469,11 +1477,19 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 })
             }
             else{
-                rawMaterials.push({
-                    id:p.typeid,
-                    name:p.itemname,
-                    icon:p.iconurl
+                let notIncluded=true;
+                rawMaterials.forEach(m=>{
+                    if(m.id==p.typeid){
+                        notIncluded=false;
+                    }
                 });
+                if(notIncluded){
+                    rawMaterials.push({
+                        id:p.typeid,
+                        name:p.itemname,
+                        icon:p.iconurl
+                    });
+                }
             }
         });
         
