@@ -970,7 +970,7 @@ async function runCalculate(){
     
     const td_buttonArea=document.querySelector("#td-export-button");
     td_buttonArea.appendChild(button_copyMaterials);
-    td_buttonArea.appendChild(button_copyBreakdownMaterials);
+    //td_buttonArea.appendChild(button_copyBreakdownMaterials);
 
 
 
@@ -1493,14 +1493,6 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
 
                         materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
-
-                        let temporarySum=0;
-                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
-                            temporarySum+=materialList_for_unit_calculating[i][material_id][product_id][j].quantity;
-                        }
-                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
-                            materialList_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*materialList_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;    
-                        }
                     }
                 }
             }
