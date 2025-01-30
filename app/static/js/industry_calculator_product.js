@@ -1121,7 +1121,7 @@ async function calcTotalMaterials(saveGlobal=true) {
 
         function queueMaterial(product,material){
             let idx=null;
-            for(let i=11;i>=material.manufacturing_level;i--){
+            for(let i=MAX_TREE_DEPTH-1;i>=material.manufacturing_level;i--){
                 if(materialList_for_unit_calculating[i][material.typeid]!=undefined){
                     idx=i
                 }
@@ -1369,7 +1369,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
     function queueMaterial(product,material){
         let idx=null;
-        for(let i=11;i>=material.manufacturing_level;i--){
+        for(let i=MAX_TREE_DEPTH-1;i>=material.manufacturing_level;i--){
             if(materialList_for_unit_calculating[i][material.typeid]!=undefined){
                 idx=i
             }
@@ -1483,7 +1483,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 logtext+=product_array[idx].itemname+",";
             });
             console.log(`!!DEBUG:breakdown line ${counti} :${logtext}`);
-            console.log(materialList_for_unit_calculating)
+            console.log(rawMaterials);
+            console.log(materialList_for_unit_calculating);
             
         }
         
