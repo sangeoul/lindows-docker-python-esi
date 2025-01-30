@@ -1434,7 +1434,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     }
 
     product_array.forEach(p=>{
-        if( p.materials.length==0 || (!breakdownFuelblocks && FUEL_BLOCKS.includes(node.typeid))){
+        if( p.materials.length==0 || (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid))){
             addToEndNode(p);
         }
         else if(p.manufacturing_level>=maxDepth){// Record the depth
