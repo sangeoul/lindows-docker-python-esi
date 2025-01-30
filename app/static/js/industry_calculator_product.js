@@ -1482,7 +1482,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             endNode_list.forEach(idx=>{
                 logtext+=product_array[idx].itemname+",";
             });
-            console.log(`!!DEBUG:breakdown line ${counti} :`);
+            console.log(`!!DEBUG:breakdown line ${counti} :${logtext}`);
             console.log(materialList_for_unit_calculating)
             
         }
