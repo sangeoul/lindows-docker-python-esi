@@ -1434,7 +1434,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     }
 
     product_array.forEach(p=>{
-        if( p.materials.length==0 || p.manufacturing_level>=breakdownDepth || (!breakdownFuelblocks && FUEL_BLOCKS.includes(node.typeid))){
+        if( p.materials.length==0 || (!breakdownFuelblocks && FUEL_BLOCKS.includes(node.typeid))){
             addToEndNode(p);
         }
         else if(p.manufacturing_level>=maxDepth){// Record the depth
@@ -1674,6 +1674,7 @@ async function showBreakdownPopup() {
 
 
     const button_copyButton=document.createElement('button');
+    const div_anounceText=document.createElement('div');
     const table_materials=document.createElement('table');
     const copyText="";
     
@@ -1688,6 +1689,8 @@ async function showBreakdownPopup() {
             showNotification("Error: Failed to copy.");
         });
     });
+
+    div_anounceText.innerHTML="Excute this after <b>open whole tree</b> to work properly."
 
 
     let maxheight=0;
@@ -1749,6 +1752,7 @@ async function showBreakdownPopup() {
 
     // Append content and close button to popup
     popup.appendChild(button_copyButton);
+    pooup.appendChild(div_anounceText);
     popup.appendChild(table_materials);
 
     // Append popup and overlay to the document body
