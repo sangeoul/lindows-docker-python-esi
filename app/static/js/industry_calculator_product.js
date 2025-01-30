@@ -893,6 +893,7 @@ async function runCalculate(){
     
     document.querySelector("#product-panel-lv0").innerHTML="";
     document.querySelector("#total-materials").innerHTML="";
+    document.querySelector("#td-export-button").innerHTML="";
     document.querySelector("#product-panel-lv1").innerHTML="";
     document.querySelector("#product-panel-lv2").innerHTML="";
     document.querySelector("#product-panel-lv3").innerHTML="";
