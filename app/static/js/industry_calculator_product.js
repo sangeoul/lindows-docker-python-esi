@@ -1476,6 +1476,18 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 });
             }
         });
+        
+        if(counti==0){
+            let logtext="";
+            endNode_list.forEach(idx=>{
+                logtext+=product_array[idx].itemname+",";
+            });
+            console.log(`!!DEBUG:breakdown line ${counti} :`);
+            console.log(materialList_for_unit_calculating)
+            
+        }
+        
+
 
         for(let i=0;i<MAX_TREE_DEPTH;i++){
             for(const material_id in materialList_for_unit_calculating[i]){
@@ -1497,6 +1509,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 }
             }
         }
+
+
 
         for(let i=0;i<MAX_TREE_DEPTH;i++){
             for( const material_id in materialList_for_unit_calculating[i]){
@@ -1528,6 +1542,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         }
         materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
 
+
+
+
         const nextEndNode_list=[];
         product_array.forEach( p=>{
             if(!endNode_list.includes(parseInt(p.product_index))){
@@ -1542,17 +1559,6 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 }
             }
         });
-
-        if(counti==0){
-            let logtext="";
-            endNode_list.forEach(idx=>{
-                logtext+=product_array[idx].itemname+",";
-            });
-            console.log(`!!DEBUG:breakdown line ${counti} :`);
-            console.log(materialList);
-            
-        }
-
         endNode_list.push(...nextEndNode_list);
 
         materialBreakdownList.push(materialList);
