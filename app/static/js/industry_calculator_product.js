@@ -1542,9 +1542,21 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 }
             }
         });
+
+        if(counti==0){
+            let logtext="";
+            endNode_list.forEach(idx=>{
+                logtext+=product_array[idx].itemname+",";
+            });
+            console.log(`!!DEBUG:breakdown line ${counti} : ${logtext}`);
+            
+        }
+
         endNode_list.push(...nextEndNode_list);
 
         materialBreakdownList.push(materialList);
+
+
 
     }
 
