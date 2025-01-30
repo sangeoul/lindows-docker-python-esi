@@ -1550,7 +1550,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 }
             }
         });
-        endNode_list = endNode_list.concat(nextEndNode_list);
+        endNode_list.push(...nextEndNode_list);
 
         materialBreakdownList.push(materialList);
 
