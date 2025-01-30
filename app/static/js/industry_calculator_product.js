@@ -1753,7 +1753,7 @@ async function showBreakdownPopup() {
 
     // Append content and close button to popup
     popup.appendChild(button_copyButton);
-    pooup.appendChild(div_anounceText);
+    popup.appendChild(div_anounceText);
     popup.appendChild(table_materials);
 
     // Append popup and overlay to the document body
