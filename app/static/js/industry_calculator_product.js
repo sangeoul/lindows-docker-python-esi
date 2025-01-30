@@ -1677,7 +1677,7 @@ async function showBreakdownPopup() {
     const button_copyButton=document.createElement('button');
     const div_anounceText=document.createElement('div');
     const table_materials=document.createElement('table');
-    const copyText="";
+    let copyText="";
     
 
     button_copyButton.textContent='📋copy process'
