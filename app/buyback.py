@@ -171,7 +171,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                     possible_conversions = input_amount // required_input_amount
 
                     # Calculate the resulting output amount by considering refining rate
-                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(group_id,whitelist)
+                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist)
 
                     # Get output icon using type_id
                     output_icon = get_icon_by_typeid(output_id)
@@ -257,12 +257,17 @@ def get_buyback_rate(input_id, group_id, whitelist):
     # Default to False if not found or no reprocessing value
     return MINIMUM_BUYBACK_RATE, DEFAULT_BUYBACK_RATE, MAX_BUYBACK_RATE
 
-def get_refining_rate_for_item(group_id,whitelist):
+def get_refining_rate_for_item(input_id,group_id,whitelist):
 
+    # Check in type_id list first (priority)
+    for item in whitelist['type_id']:
+        if item['id'] == input_id and 'refining_rate' in item:
+            return item['refining_rate']
+        
     # Loop through the groups to find the group that contains the item
     for group in whitelist['group_id']:
         # Check each item in the group's item list
-        if group['id'] == group_id:
+        if group['id'] == group_id and 'refining_rate' in group:
             return group['refining_rate']
     
     # Return None if the item is not found
