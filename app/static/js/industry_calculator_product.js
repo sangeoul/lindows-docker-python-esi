@@ -135,8 +135,6 @@ const market_price_cache={};
 const market_price_request_cache = {};
 
 let material_list = [];
-let material_list_for_unit_calculating = [];
-let material_list_minimum_unit=[];
 
 
 function delay(ms) {
@@ -747,7 +745,7 @@ class Product {
         //await this.sortMaterials();
         await this.updatePanel();
         if(calcCost){
-            calcTotalMaterials();
+            displayTotalMaterials();
         }
         
         
@@ -780,7 +778,7 @@ class Product {
                 closeAllMaterialTree(this.typeid);
             }
             this.isEndNode=true;
-            calcTotalMaterials();
+            displayTotalMaterials();
         }
         this.updatePanel();
     }
@@ -953,22 +951,29 @@ async function runCalculate(){
 
         await openFollowingTree(origin_product);
         await origin_product.loadAndCalcCost();
-        calcTotalMaterials();
+        displayTotalMaterials();
     });
 
     const button_copyMaterials=document.createElement("button");
     button_copyMaterials.textContent="📋Copy";
 
     button_copyMaterials.addEventListener("click",()=>{
-        copyMaterialsToClipboard();
+        copyMaterialsToClipboard("materials");
+    });
+
+    const button_copyBreakdownMaterials=document.createElement("button");
+    button_copyBreakdownMaterials.textContent="Sheet";
+    button_copyBreakdownMaterials.addEventListener("click",()=>{
+        showBreakdownPopup();
     });
     
     const td_buttonArea=document.querySelector("#td-export-button");
     td_buttonArea.appendChild(button_copyMaterials);
+    td_buttonArea.appendChild(button_copyBreakdownMaterials);
 
 
-    const button_copyBreakdownMaterials=document.createElement("button");
-    button_copyBreakdownMaterials.textContent="Sheet";
+
+    
 
 }
 
@@ -1067,18 +1072,19 @@ async function closeFollowingMaterialTree(typeId,productNode){
 
 }
 
-async function calcTotalMaterials() {
 
+async function calcTotalMaterials(saveGlobal=true) {
+
+    const materialList=[];
     if(quantity_option===QUANTITY_OPTION_PRICE){
-        material_list=[];
 
         function addMaterials(node) {
             if (node.isEndNode || node.materials.length === 0) {
-                let idx = material_list.findIndex(item => item.id === node.typeid);
+                let idx = materialList.findIndex(item => item.id === node.typeid);
                 if (idx !== -1) {
-                    material_list[idx].quantity += node.getQuantity();
+                    materialList[idx].quantity += node.getQuantity();
                 } else {
-                    material_list.push({
+                    materialList.push({
                         id: node.typeid,
                         name: node.itemname,
                         icon: node.iconurl,
@@ -1095,64 +1101,63 @@ async function calcTotalMaterials() {
         addMaterials(origin_product);
     }else if (quantity_option===QUANTITY_OPTION_MATERIAL){
 
-        material_list=[];
-        endNode_list=[];
+        const endNode_list=[];
 
-        material_list_for_unit_calculating=[];
+        const materialList_for_unit_calculating=[];
 
-        let rawMaterials=[];
+        const rawMaterials=[];
 
         //initialise
-        material_list_for_unit_calculating.push({
+        materialList_for_unit_calculating.push({
             [origin_product.typeid]:{
                 "0":[origin_product.quantity,origin_product]
             }
         });
         for(let i=1;i<MAX_TREE_DEPTH;i++){
-            material_list_for_unit_calculating.push({});
+            materialList_for_unit_calculating.push({});
         }
 
 
         function queueMaterial(product,material){
             let idx=null;
             for(let i=11;i>=material.manufacturing_level;i--){
-                if(material_list_for_unit_calculating[i][material.typeid]!=undefined){
+                if(materialList_for_unit_calculating[i][material.typeid]!=undefined){
                     idx=i
                 }
             }
             if(idx===null){
                 idx=material.manufacturing_level;
-                if(!material_list_for_unit_calculating[idx]){
-                    material_list_for_unit_calculating[idx]={};
+                if(!materialList_for_unit_calculating[idx]){
+                    materialList_for_unit_calculating[idx]={};
                 }
-                material_list_for_unit_calculating[idx][material.typeid]={
+                materialList_for_unit_calculating[idx][material.typeid]={
                     [product.typeid]:[0,material]
                 }
             }
             else{
-                if(!material_list_for_unit_calculating[idx][material.typeid][product.typeid]){
-                    material_list_for_unit_calculating[idx][material.typeid][product.typeid]=[0,material];
+                if(!materialList_for_unit_calculating[idx][material.typeid][product.typeid]){
+                    materialList_for_unit_calculating[idx][material.typeid][product.typeid]=[0,material];
                 }else{
-                    material_list_for_unit_calculating[idx][material.typeid][product.typeid].push(material);
+                    materialList_for_unit_calculating[idx][material.typeid][product.typeid].push(material);
                 }
             }
             for(let i=0;i<material.manufacturing_level;i++){
-                if(material_list_for_unit_calculating[i][material.typeid]){
-                    for(const key in material_list_for_unit_calculating[i][material.typeid]){
-                        if(material_list_for_unit_calculating[idx][material.typeid][key]){
-                            material_list_for_unit_calculating[i][material.typeid][key].forEach(m=>{
-                                material_list_for_unit_calculating[idx][material.typeid][key].push(m);
+                if(materialList_for_unit_calculating[i][material.typeid]){
+                    for(const key in materialList_for_unit_calculating[i][material.typeid]){
+                        if(materialList_for_unit_calculating[idx][material.typeid][key]){
+                            materialList_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                                materialList_for_unit_calculating[idx][material.typeid][key].push(m);
                             });
                             
                         }else{
-                            material_list_for_unit_calculating[idx][material.typeid][key]=[0];
-                            material_list_for_unit_calculating[i][material.typeid][key].forEach(m=>{
-                                material_list_for_unit_calculating[idx][material.typeid][key].push(m);
+                            materialList_for_unit_calculating[idx][material.typeid][key]=[0];
+                            materialList_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                                materialList_for_unit_calculating[idx][material.typeid][key].push(m);
                             });
                             
                         }
                     }
-                    delete material_list_for_unit_calculating[i][material.typeid]
+                    delete materialList_for_unit_calculating[i][material.typeid]
 
                 }
             }
@@ -1161,10 +1166,10 @@ async function calcTotalMaterials() {
         function getNeededQuantity(typeId){
             let sum=0;
             for(let i=0;i<MAX_TREE_DEPTH;i++){
-                for( const material_id in material_list_for_unit_calculating[i]){
+                for( const material_id in materialList_for_unit_calculating[i]){
                     if(material_id==typeId){
-                        for(const product_id in material_list_for_unit_calculating[i][material_id]){
-                            sum+=material_list_for_unit_calculating[i][material_id][product_id][0];
+                        for(const product_id in materialList_for_unit_calculating[i][material_id]){
+                            sum+=materialList_for_unit_calculating[i][material_id][product_id][0];
                         }
                     }
                 }
@@ -1172,8 +1177,13 @@ async function calcTotalMaterials() {
             return sum;
         }
         function addToEndNode(node){
+
+            
+
             if(node.isEndNode&&!endNode_list.includes(parseInt(node.product_index))){
+
                 endNode_list.push(parseInt(node.product_index));
+                
             }
             node.materials.forEach(m=>{
                 addToEndNode(m);
@@ -1192,6 +1202,7 @@ async function calcTotalMaterials() {
                     queueMaterial(p,m);
                 })
             }
+            
             else{
                 rawMaterials.push({
                     id:p.typeid,
@@ -1202,8 +1213,8 @@ async function calcTotalMaterials() {
         });
 
         for(let i=0;i<MAX_TREE_DEPTH;i++){
-            for(const material_id in material_list_for_unit_calculating[i]){
-                for(const product_id in material_list_for_unit_calculating[i][material_id]){
+            for(const material_id in materialList_for_unit_calculating[i]){
+                for(const product_id in materialList_for_unit_calculating[i][material_id]){
                     if(product_id>0){
                         let sumOfQuantity=0;
                         const bpData= getIndustryRelation(product_id);
@@ -1216,14 +1227,14 @@ async function calcTotalMaterials() {
                         let neededQuantity=getNeededQuantity(product_id);
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
 
-                        material_list_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
+                        materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
     
                         let temporarySum=0;
-                        for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
-                            temporarySum+=material_list_for_unit_calculating[i][material_id][product_id][j].quantity;
+                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
+                            temporarySum+=materialList_for_unit_calculating[i][material_id][product_id][j].quantity;
                         }
-                        for(let j=1;j<material_list_for_unit_calculating[i][material_id][product_id].length;j++){
-                            material_list_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*material_list_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;    
+                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
+                            materialList_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*materialList_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;    
                         }
                     }
                 }
@@ -1231,7 +1242,7 @@ async function calcTotalMaterials() {
         }
 
         for(let i=0;i<MAX_TREE_DEPTH;i++){
-            for( const material_id in material_list_for_unit_calculating[i]){
+            for( const material_id in materialList_for_unit_calculating[i]){
                 let rmidx=-1;
                 for(let j=0;j<rawMaterials.length;j++){
                     if(rawMaterials[j].id==parseInt(material_id)){
@@ -1240,16 +1251,16 @@ async function calcTotalMaterials() {
                     }
                 }
                 if(rmidx!=-1){
-                    for( const product_id in material_list_for_unit_calculating[i][material_id]){
-                        let idx = material_list.findIndex(item => item.id === material_id);
+                    for( const product_id in materialList_for_unit_calculating[i][material_id]){
+                        let idx = materialList.findIndex(item => item.id === material_id);
                         if (idx !== -1) {
-                            material_list[idx].quantity += material_list_for_unit_calculating[i][material_id][product_id][0];
+                            materialList[idx].quantity += materialList_for_unit_calculating[i][material_id][product_id][0];
                         } else {
-                            material_list.push({
+                            materialList.push({
                                 id: material_id,
                                 name: rawMaterials[rmidx].name,
                                 icon: rawMaterials[rmidx].icon,
-                                quantity: material_list_for_unit_calculating[i][material_id][product_id][0]
+                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0]
                             });
                         }
 
@@ -1260,11 +1271,22 @@ async function calcTotalMaterials() {
         }
     }
 
-    material_list.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
+    materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
+
+    if(saveGlobal){
+        material_list=materialList;
+    }
+
+    return materialList;
+}
+
+async function displayTotalMaterials(){
+    
+    const materialList=calcTotalMaterials();
 
     const table_total = document.createElement('table');
     table_total.classList.add('total-item');
-    material_list.forEach(m => {
+    materialList.forEach(m => {
         const tr_total = document.createElement('tr');
 
         const td_totalIcon = document.createElement('td');
@@ -1330,6 +1352,217 @@ async function calcTotalMaterials() {
     td_totalBoard.appendChild(table_total);
 }
 
+async function calcMaterialBreakdown(breakdownFuelblocks=false) {
+
+    const materialBreakdownList=[];
+
+    const materialList=[];
+
+    const endNode_list=[];
+
+    const materialList_for_unit_calculating=[];
+
+    const rawMaterials=[];
+
+    let maxDepth=0;
+
+    function queueMaterial(product,material){
+        let idx=null;
+        for(let i=11;i>=material.manufacturing_level;i--){
+            if(materialList_for_unit_calculating[i][material.typeid]!=undefined){
+                idx=i
+            }
+        }
+        if(idx===null){
+            idx=material.manufacturing_level;
+            if(!materialList_for_unit_calculating[idx]){
+                materialList_for_unit_calculating[idx]={};
+            }
+            materialList_for_unit_calculating[idx][material.typeid]={
+                [product.typeid]:[0,material]
+            }
+        }
+        else{
+            if(!materialList_for_unit_calculating[idx][material.typeid][product.typeid]){
+                materialList_for_unit_calculating[idx][material.typeid][product.typeid]=[0,material];
+            }else{
+                materialList_for_unit_calculating[idx][material.typeid][product.typeid].push(material);
+            }
+        }
+        for(let i=0;i<material.manufacturing_level;i++){
+            if(materialList_for_unit_calculating[i][material.typeid]){
+                for(const key in materialList_for_unit_calculating[i][material.typeid]){
+                    if(materialList_for_unit_calculating[idx][material.typeid][key]){
+                        materialList_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                            materialList_for_unit_calculating[idx][material.typeid][key].push(m);
+                        });
+                        
+                    }else{
+                        materialList_for_unit_calculating[idx][material.typeid][key]=[0];
+                        materialList_for_unit_calculating[i][material.typeid][key].forEach(m=>{
+                            materialList_for_unit_calculating[idx][material.typeid][key].push(m);
+                        });
+                        
+                    }
+                }
+                delete materialList_for_unit_calculating[i][material.typeid]
+
+            }
+        }
+    }
+
+    function getNeededQuantity(typeId){
+        let sum=0;
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for( const material_id in materialList_for_unit_calculating[i]){
+                if(material_id==typeId){
+                    for(const product_id in materialList_for_unit_calculating[i][material_id]){
+                        sum+=materialList_for_unit_calculating[i][material_id][product_id][0];
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+    function addToEndNode(node){
+        if(!endNode_list.includes(parseInt(node.product_index))){
+            endNode_list.push(parseInt(node.product_index));
+        }
+        node.materials.forEach(m=>{
+            addToEndNode(m);
+        });
+    }
+
+    product_array.forEach(p=>{
+        if( p.materials.length==0 || p.manufacturing_level>=breakdownDepth || (!breakdownFuelblocks && FUEL_BLOCKS.includes(node.typeid))){
+            addToEndNode(p);
+        }
+        else if(p.manufacturing_level>=maxDepth){// Record the depth
+            maxDepth=p.manufacturing_level+1; 
+        }
+    });
+
+    for(let counti=0;counti < maxDepth;counti++){
+
+        materialList.length=0;
+
+        materialList_for_unit_calculating.length=0;
+
+        rawMaterials.length=0;
+
+        //initialise
+        materialList_for_unit_calculating.push({
+            [origin_product.typeid]:{
+                "0":[origin_product.quantity,origin_product]
+            }
+        });
+        for(let i=1;i<MAX_TREE_DEPTH;i++){
+            materialList_for_unit_calculating.push({});
+        }
+
+
+        product_array.forEach(p=>{
+            if(!endNode_list.includes(parseInt(p.product_index))){
+                p.materials.forEach(m=>{
+                    queueMaterial(p,m);
+                })
+            }
+            else{
+                rawMaterials.push({
+                    id:p.typeid,
+                    name:p.itemname,
+                    icon:p.iconurl
+                });
+            }
+        });
+
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for(const material_id in materialList_for_unit_calculating[i]){
+                for(const product_id in materialList_for_unit_calculating[i][material_id]){
+                    if(product_id>0){
+                        let sumOfQuantity=0;
+                        const bpData= getIndustryRelation(product_id);
+                        let materialQuantity;
+                        bpData.m.forEach(info=>{
+                            if(info.i==material_id){
+                                materialQuantity=info.q;
+                            }
+                        });
+                        let neededQuantity=getNeededQuantity(product_id);
+                        sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
+
+                        materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
+
+                        let temporarySum=0;
+                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
+                            temporarySum+=materialList_for_unit_calculating[i][material_id][product_id][j].quantity;
+                        }
+                        for(let j=1;j<materialList_for_unit_calculating[i][material_id][product_id].length;j++){
+                            materialList_for_unit_calculating[i][material_id][product_id][j].minimum_unit_quantity=sumOfQuantity*materialList_for_unit_calculating[i][material_id][product_id][j].quantity/temporarySum;    
+                        }
+                    }
+                }
+            }
+        }
+
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for( const material_id in materialList_for_unit_calculating[i]){
+                let rmidx=-1;
+                for(let j=0;j<rawMaterials.length;j++){
+                    if(rawMaterials[j].id==parseInt(material_id)){
+                        rmidx=j;
+                        break;
+                    }
+                }
+                if(rmidx!=-1){
+                    for( const product_id in materialList_for_unit_calculating[i][material_id]){
+                        let idx = materialList.findIndex(item => item.id === material_id);
+                        if (idx !== -1) {
+                            materialList[idx].quantity += materialList_for_unit_calculating[i][material_id][product_id][0];
+                        } else {
+                            materialList.push({
+                                id: material_id,
+                                name: rawMaterials[rmidx].name,
+                                icon: rawMaterials[rmidx].icon,
+                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0]
+                            });
+                        }
+
+                    }
+                }
+
+            }
+        }
+        materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
+
+        const nextEndNode_list=[];
+        product_array.forEach( p=>{
+            if(!endNode_list.includes(parseInt(p.product_index))){
+                let isNextEndNode=true;
+                p.materials.forEach(m=>{
+                    if(!endNode_list.includes(parseInt(m.product_index))){
+                        isNextEndNode=false;
+                    }
+                });
+                if(isNextEndNode){
+                    nextEndNode_list.push(parseInt(p.product_index));
+                }
+            }
+        });
+        endNode_list = endNode_list.concat(nextEndNode_list);
+
+        materialBreakdownList.push(materialList);
+
+    }
+
+    return materialBreakdownList;
+}
+
+
+
+
+
+
 async function toggleTracking(typeId){
     typeId=parseInt(typeId);
     let idx=tracking_item_list.find(typeId)
@@ -1340,19 +1573,27 @@ async function toggleTracking(typeId){
     }
 }
 
-function copyMaterialsToClipboard(){
-    material_list;
-    let copyText="";
-    material_list.forEach(m=>{
-        copyText+=`${m.id}\t${m.name}\t${Math.ceil(m.quantity)}\n`;
-    });
-    navigator.clipboard.writeText(copyText).then(function() { 
-        console.log("Materials are copied to clipboard.");
-        showNotification("Materials are copied to clipboard.",'center');
-    }).catch(function(e){
-        console.error(`Failed to copy : ${e}`);
-        showNotification("Error: Failed to copy.");
-    });
+function copyMaterialsToClipboard(copyType='materials'){
+
+    const allowedCopyType=['materials'];
+    if(!allowedCopyType.includes(copyType)){
+        copyType='materials';
+    }
+
+    if(copyType=="materials"){
+        let copyText="";
+        material_list.forEach(m=>{
+            copyText+=`${m.id}\t${m.name}\t${Math.ceil(m.quantity)}\n`;
+        });
+        navigator.clipboard.writeText(copyText).then(function() { 
+            console.log("Materials are copied to clipboard.");
+            showNotification("Materials are copied to clipboard.",'center');
+        }).catch(function(e){
+            console.error(`Failed to copy : ${e}`);
+            showNotification("Error: Failed to copy.");
+        });
+    }
+
 }
 
 
@@ -1424,3 +1665,101 @@ function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
 }
 
 
+
+// Function to create and show the popup
+async function showBreakdownPopup() {
+
+    const materialBreakdownList=await calcMaterialBreakdown();
+
+
+
+    const button_copyButton=document.createElement('button');
+    const table_materials=document.createElement('table');
+    const copyText="";
+    
+
+    button_copyButton.textContent='📋copy process'
+    button_copyButton.addEventListener('click',()=>{
+        navigator.clipboard.writeText(copyText).then(function() { 
+            console.log("Manufacturing process is copied to clipboard.");
+            showNotification("Manufacturing process is copied to clipboard.",'center');
+        }).catch(function(e){
+            console.error(`Failed to copy : ${e}`);
+            showNotification("Error: Failed to copy.");
+        });
+    });
+
+
+    let maxheight=0;
+    for(let i=0;i<materialBreakdownList.length;i++){
+        if(materialBreakdownList[i].length>maxheight){
+            maxheight=materialBreakdownList[i].length;
+        }
+    }
+    for(let j=0;j<maxheight;j++){
+        const tr_m=document.createElement('tr');
+        tr_m.setAttribute('id',`tr-breakdown-${j}`);
+        for(let i=0;i<materialBreakdownList.length;i++){
+            const td_typeid=document.createElement('td');
+            const td_itemname=document.createElement('td');
+            const td_quantity=document.createElement('td');
+            const td_m=document.createElement('td');
+
+            td_typeid.setAttribute('id',`td-breakdown-${j}-${i}-typeid`);
+            td_itemname.setAttribute('id',`td-breakdown-${j}-${i}-itemname`);
+            td_quantity.setAttribute('id',`td-breakdown-${j}-${i}-quantity`);
+
+            tr_m.appendChild(td_typeid);
+            tr_m.appendChild(td_itemname);
+            tr_m.appendChild(td_quantity);
+            tr_m.appendChild(td_m);
+
+            if(materialBreakdownList[i][j]){
+                copyText+=`${materialBreakdownList[i][j].id}\t${materialBreakdownList[i][j].name}\t${materialBreakdownList[i][j].quantity}\t \t`;
+            }
+            else{
+                copyText+=' \t \t \t \t';
+            }
+        }
+        table_materials.appendChild(tr_m);
+        copyText+='\n';
+    }
+    for(let i=0;i<materialBreakdownList.length;i++){
+        for(let j=0;j<materialBreakdownList[i].length;j++){
+            const td_typeid=table_materials.querySelector(`#td-breakdown-${j}-${i}-typeid`);
+            const td_itemname=table_materials.querySelector(`#td-breakdown-${j}-${i}-itemname`);
+            const td_quantity=table_materials.querySelector(`#td-breakdown-${j}-${i}-quantity`);
+
+            td_typeid.textContent=materialBreakdownList[i][j].id;
+            td_itemname.textContent=materialBreakdownList[i][j].name;
+            td_quantity.textContent=materialBreakdownList[i][j].quantity;
+        }
+    }
+    
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.setAttribute('id','div-popup-closing-overlay');
+    overlay.className = 'popup-closing-overlay';
+    overlay.addEventListener('click', closePopup);
+
+    // Create popup container
+    const popup = document.createElement('div');
+    popup.setAttribute('id','div-breakdown-popup');
+    popup.className = 'breakdown-popup';
+
+    // Append content and close button to popup
+    popup.appendChild(button_copyButton);
+    popup.appendChild(table_materials);
+
+    // Append popup and overlay to the document body
+    document.body.appendChild(overlay);
+    document.body.appendChild(popup);
+
+    // Function to close the popup
+    function closePopup() {
+        const closingPopup = document.querySelector('#div-popup-closing-overlay');
+        const closingOverlay = document.querySelector('#div-breakdown-popup');
+        if (closingPopup) closingPopup.remove();
+        if (closingOverlay) closingOverlay.remove();
+    }
+}

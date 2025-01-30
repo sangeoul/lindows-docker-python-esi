@@ -610,6 +610,13 @@ document.addEventListener("input", function(event) {
 
 
 function showNotification(message, position = 'right-bottom') {
+
+    const allowedPosition=['right-bottom','top-right','bottom-left','top-left','center'];
+    if(!allowedPosition.includes(position)){
+        position='right-bottom';
+    }
+
+
     const notification = document.createElement('div');
     notification.setAttribute('id', 'notification');
     notification.classList.add('notification');
