@@ -1282,7 +1282,7 @@ async function calcTotalMaterials(saveGlobal=true) {
 
 async function displayTotalMaterials(){
     
-    const materialList=calcTotalMaterials();
+    const materialList=await calcTotalMaterials();
 
     const table_total = document.createElement('table');
     table_total.classList.add('total-item');
