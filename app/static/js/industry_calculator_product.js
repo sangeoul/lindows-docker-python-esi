@@ -1472,6 +1472,10 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
         product_array.forEach(p=>{
             if(!endNode_list.includes(parseInt(p.product_index))){
+
+                if(counti==0){
+                    console.log(`!!DEBUG : ${p.itemname}`);
+                }
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
