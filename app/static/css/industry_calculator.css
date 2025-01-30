@@ -227,7 +227,7 @@ td.total-item-quantity{
 
 
 /* Basic styles for the popup */
-.div-breakdown-popup {
+.breakdown-popup {
     position: fixed;
     top: 50%;
     left: 50%;
