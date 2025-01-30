@@ -1474,13 +1474,16 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             if(!endNode_list.includes(parseInt(p.product_index))){
 
                 if(counti==0){
-                    console.log(`!!DEBUG : ${p.itemname}`);
+                    console.log(`!!DEBUG idx: ${p.product_index} : ${p.itemname}`);
                 }
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
             }
             else{
+                if(counti==0){
+                    console.log(`!!DEBUG idx: ${p.product_index} : ${p.itemname}`);
+                }
                 let notIncluded=true;
                 rawMaterials.forEach(m=>{
                     if(m.id==p.typeid){
@@ -1504,7 +1507,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             });
             console.log(`!!DEBUG:breakdown line ${counti} :${logtext}`);
             console.log(rawMaterials);
-            console.log(materialList_for_unit_calculating);
+            //console.log(materialList_for_unit_calculating);
             
         }
         
