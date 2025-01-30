@@ -1474,7 +1474,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             if(!endNode_list.includes(parseInt(p.product_index))){
 
                 if(counti==0){
-                    console.log(`!!DEBUG idx: ${p.product_index} : ${p.itemname}`);
+                    console.log(`!!DEBUG med idx: ${p.product_index} : ${p.itemname}`);
                 }
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
@@ -1482,7 +1482,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             }
             else{
                 if(counti==0){
-                    console.log(`!!DEBUG idx: ${p.product_index} : ${p.itemname}`);
+                    console.log(`!!DEBUG raw idx: ${p.product_index} : ${p.itemname}`);
                 }
                 let notIncluded=true;
                 rawMaterials.forEach(m=>{
