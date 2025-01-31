@@ -12,7 +12,7 @@
         <p>Character Name : {{character_name}}</p><br>
         <p>Access token : <span class='access-token'>{{access_token}}</span><button id='button-copy-access-token' class="copy"> </p><br>
     {% else %}
-
+        <p>Login.</p>
     {% endif %}
     {% if refresh_token %}
         <p>Refresh token : Take care of security <span class='refresh-token'>{{refresh_token[:4]}}*****************</span><button id='button-copy-refresh-token' class="copy"></button></p>
