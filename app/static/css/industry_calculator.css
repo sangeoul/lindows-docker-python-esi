@@ -245,8 +245,13 @@ div.breakdown-popup {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 999;
 }
+button.breakdown-copy-button{
+    width:120px;
+    height:32px;
+    font-size:18px;    
+}
 div.popup-announce{
-    font-size:15px;
+    font-size:22px;
 }
 table.breakdown-popup{
     font-size:9px;

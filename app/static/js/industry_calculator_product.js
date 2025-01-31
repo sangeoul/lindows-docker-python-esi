@@ -1686,6 +1686,7 @@ async function showBreakdownPopup() {
     
 
     button_copyButton.textContent='📋copy process'
+    button_copyButton.classList.add('breakdown-copy-button');
     button_copyButton.addEventListener('click',()=>{
         navigator.clipboard.writeText(copyText).then(function() { 
             console.log("Manufacturing process is copied to clipboard.");
