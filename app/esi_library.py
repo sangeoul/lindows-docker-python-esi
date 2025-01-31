@@ -233,6 +233,7 @@ def get_access_token(character_id, service_type,refresh_access_token=False):
         # Call the refresh_access_token function to update the access token
         try:
             new_access_token, _ = refresh_access_token(character_id, service_type)
+            print("Refreshed access token :"+str(new_access_token),flush=True)
         except Exception as e:
             raise Exception(f"Error refreshing token: {e}")
 
