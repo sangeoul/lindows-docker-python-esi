@@ -113,7 +113,7 @@ table.product-panel-area{
 }
 
 table.product-table-panel{
-    border: 1px solid black;
+    border: 1px solid rgb(192, 192, 192);
     display:block;
     font-size:13px;
     width: var(--product-panel-width);
@@ -277,6 +277,7 @@ div.breakdown-popup {
     overflow:hidden;
     background-color: white;
     border: 1px solid black;
+    border-radius:16px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 999;
