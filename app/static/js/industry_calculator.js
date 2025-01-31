@@ -466,6 +466,14 @@ async function loadPanelVisibility() {
     reactionRow.classList.toggle('hidden-data', !reactionVisible);
     fuelRow.classList.toggle('hidden-data', !fuelVisible);
     opentree.classList.toggle('hidden-data',!opentreeVisible);
+
+    const isInvisible = componentRow.classList.contains('hidden-data');
+    if(isInvisible){
+        calculatorDetailButton.innerHTML="▤▼";
+    }
+    else{
+        calculatorDetailButton.innerHTML="▤▶";
+    }
 }
 
 
