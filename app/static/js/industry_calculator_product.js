@@ -1462,7 +1462,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         }
     });
 
-    for(let counti=0;counti < maxDepth;counti++){
+    for(let counti=maxDepth;counti >0;counti--){
 
         materialList.length=0;
 
@@ -1571,7 +1571,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         });
         endNode_list.push(...nextEndNode_list);
 
-        materialBreakdownList.push(JSON.parse(JSON.stringify(materialList)));
+        materialBreakdownList[counti]=(JSON.parse(JSON.stringify(materialList)));
     }
     return materialBreakdownList;
 }
