@@ -32,5 +32,19 @@ def get_manufacturing_blueprints():
     filedir=os.path.join(base_dir, 'static','json')
     return send_from_directory(filedir, 'manufacturings.json', as_attachment=False, mimetype='application/json')
 
+from flask import Flask, send_file
+
+app = Flask(__name__)
+
+@app.route('/bONOBONO')
+def bONOBONO():
+    try:
+        # Path to the image file
+        filedir=os.path.join(base_dir, 'static','img','bonobono.webp')
+        # Send the image file
+        return send_file(filedir, mimetype='image/png')
+    except Exception as e:
+        return str(e)
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8009)
