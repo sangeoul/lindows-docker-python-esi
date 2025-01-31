@@ -1322,6 +1322,10 @@ async function displayTotalMaterials(){
         tr_total.appendChild(td_totalItemname);
         tr_total.appendChild(td_totalQuantity);
 
+        if(tracking_item_list.find(parseInt(m.id))!=-1){
+            tr_total.classList.add('has-material-highlighted');
+        }
+
         tr_total.addEventListener('mouseover', ()=>{
             
             tr_total.classList.add("has-material-highlighted");
