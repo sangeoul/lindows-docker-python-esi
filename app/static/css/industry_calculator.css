@@ -35,6 +35,18 @@ input.blueprint-input,input.blueprint-run-input,input.me-input,input.system-inpu
 input.structure-cost-bonus-input{
     background-color:rgb(199, 199, 199);
 }
+button{
+
+    border:0px;
+    background-color:rgb(30, 53, 56);
+    color:rgb(202, 202, 202);
+    transition:0.5s;
+}
+button:hover{
+    background-color:rgb(99, 143, 152);
+    color:white;
+    transition:0.1s;
+}
 img{
     padding:0;
     margin:0;
@@ -57,16 +69,7 @@ button.calculate-button{
     width:159px;
     height:40px;
     font-size:25px;
-    border:0px;
     border-radius:8px;
-    background-color:rgb(148, 255, 148);
-    color:rgb(0, 65, 0);
-    transition:0.5s;
-}
-button.calculate-button:hover{
-    background-color:rgb(23, 163, 23);
-    color:white;
-    transition:0.2s;
 }
 
 button.detail-button{
