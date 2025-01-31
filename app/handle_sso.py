@@ -33,8 +33,9 @@ def oauth_redirect():
 
     if client:
         # Extract client details from the database
-        client_id, client_secret, client_type,client_scope = client[0], client[1], client[2],client[3]  # Adjust according to your schema
+        client_id, client_secret, client_type,client_scope_string = client[0], client[1], client[2],client[3]  # Adjust according to your schema
 
+        client_scope=" ".join(json.loads(client_scope_string))
         # Define the common parameters for the OAuth URL
         redirect_uri = ESI_CALLBACK_URI  # Replace with your actual callback URL
 
