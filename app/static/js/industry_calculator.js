@@ -467,13 +467,24 @@ async function loadPanelVisibility() {
     fuelRow.classList.toggle('hidden-data', !fuelVisible);
     opentree.classList.toggle('hidden-data',!opentreeVisible);
 
-    const isInvisible = componentRow.classList.contains('hidden-data');
-    if(isInvisible){
+    const calculatorDetailButton = document.querySelector("#bonus-detail-button");
+    if(componentRow.classList.contains('hidden-data')){
         calculatorDetailButton.innerHTML="▤▼";
     }
     else{
         calculatorDetailButton.innerHTML="▤▶";
     }
+
+    const opentreeDetailButton = document.querySelector("#opentree-detail-button");
+    if(opentree.classList.contains('hidden-data')){
+        opentreeDetailButton.innerHTML="▤◀";
+    }
+    else{
+        opentreeDetailButton.innerHTML="▤▶";
+    }
+
+
+    
 }
 
 
