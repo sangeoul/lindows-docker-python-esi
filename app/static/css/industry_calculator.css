@@ -38,12 +38,13 @@ input.structure-cost-bonus-input{
 button{
 
     border:0px;
-    background-color:rgb(30, 53, 56);
+    border-radius:3px;
+    background-color:rgb(99, 14, 156);
     color:rgb(202, 202, 202);
     transition:0.5s;
 }
 button:hover{
-    background-color:rgb(99, 143, 152);
+    background-color:rgb(30, 53, 56);
     color:white;
     transition:0.1s;
 }
