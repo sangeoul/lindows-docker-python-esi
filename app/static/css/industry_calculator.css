@@ -67,8 +67,9 @@ td.export-button{
     height:24px;
 }
 button.copy-button{
-    width:60px;
+    width:70px;
     height:23px;
+    font-size:14px;
 }
 
 td.panel-tree-layer, td.total-materials{
