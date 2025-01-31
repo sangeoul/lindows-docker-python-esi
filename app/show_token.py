@@ -56,7 +56,7 @@ def show_manufacturing_token():
         'default-src': "'self'",
         'img-src': ["'self'", "https://images.evetech.net", "https://lindows.kr:8009"],
         'connect-src': ["'self'", "https://esi.evetech.net", "https://lindows.kr:8009"],
-        'style-src': ["'self'", "https://fonts.googleapis.com"],
+        'style-src': ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
         'font-src': ["'self'", "https://fonts.gstatic.com"],
         'script-src': ["'self'", "'unsafe-inline'"]  # Allow inline scripts for this route
     }
