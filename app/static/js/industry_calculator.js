@@ -368,10 +368,6 @@ async function calcStructureBonus(industry_type) {
     const structureSelectInput = document.querySelector(`#${industry_type}-structure-select`);
     const structureBonusInput = document.querySelector(`#${industry_type}-structure-efficiency-bonus`);
     const structureCostBonusInput = document.querySelector(`#${industry_type}-structure-cost-bonus`);
-    if(!structureCostBonusInput){
-        console.log(`!!DEBUG : ${industry_type}`);
-        console.log(structureCostBonusInput);
-    }
 
 
     const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === industrySystemInput.value);
@@ -424,9 +420,14 @@ async function calcStructureBonus(industry_type) {
 
         const structure_bonus = Math.round(((1 - (1 - (currentRigOption.rig_bonus * SYSTEM_BONUS_MULTIPLIER / 100)) * (1 - currentRigOption.structure_bonus / 100)) * 100) * 100000) / 100000;
         structureBonusInput.value = structure_bonus;
-        structureCostBonusInput.value = currentRigOption.cost_bonus;
+        
         saveValueToCookie(structureBonusInput);
-        saveValueToCookie(structureCostBonusInput);
+
+        if(industry_type!='reaction'){
+            structureCostBonusInput.value = currentRigOption.cost_bonus;
+            saveValueToCookie(structureCostBonusInput);
+        }
+
     } else {
         console.error('Failed to fetch valid response from API.');
     }
