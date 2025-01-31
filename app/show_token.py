@@ -19,7 +19,7 @@ def show_manufacturing_token():
         except:
             access_token=None
 
-        print("!!DEBUG: Access : "+access_token,flush=True)
+        print("!!DEBUG: Access : "+str(access_token),flush=True)
         if refresh_token_requested==1:
             conn = connect_to_db()
             cursor = conn.cursor()
