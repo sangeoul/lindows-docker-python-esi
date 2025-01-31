@@ -554,6 +554,20 @@ async function addAllEventListener(){
     calculateButton.addEventListener('click',function(){
         runCalculate();
     });
+
+    const inputs_openTreeCheckboxes=[
+        [document.querySelector('#basement-lable'),document.querySelector('#basement-checkbox')],
+        [document.querySelector('#component-lable'),document.querySelector('#component-checkbox')],
+        [document.querySelector('#reaction-lable'),document.querySelector('#reaction-checkbox')],
+        [document.querySelector('#fuel-lable'),document.querySelector('#fuel-checkbox')]
+    ];
+
+    for(let i=0;i<4;i++){
+        inputs_openTreeCheckboxes[i][1].addEventListener('click',()=>{
+            inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
+        });
+    }
+
 }
 
 async function setTaxInputLink(){
