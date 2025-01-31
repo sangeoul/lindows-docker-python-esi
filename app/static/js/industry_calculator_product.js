@@ -1373,6 +1373,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
     const rawMaterials=[];
 
+    console.log(`!!DEBUG : rawMaterials declared`);
+    console.log(rawMaterials);
+
     let maxDepth=0;
 
     function queueMaterial(product,material){
@@ -1456,6 +1459,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         materialList.length=0;
 
         materialList_for_unit_calculating.length=0;
+
+        console.log(`!!DEBUG : before reseting rawMaterials`);
+        console.log(rawMaterials);
 
         rawMaterials.length=0;
         console.log(`!!DEBUG : rawMaterials before at line ${counti}`);
