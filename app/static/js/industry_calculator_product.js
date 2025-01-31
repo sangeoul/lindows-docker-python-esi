@@ -1551,8 +1551,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         }
         materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
 
-        console.log("!!DEBIG materialList : ");
+        console.log("!!DEBUG materialList : ");
         console.log(materialList);
+        if(counti==0)console.log(materialList[15]);
 
 
         const nextEndNode_list=[];
