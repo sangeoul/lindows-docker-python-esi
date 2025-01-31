@@ -371,7 +371,7 @@ async function calcStructureBonus(industry_type) {
 
     const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === industrySystemInput.value);
     if (!selectedSystemOption) {
-        console.error('Selected system not found in datalist.');
+        //console.error('Selected system not found in datalist.');
         return;
     }
     const system_index_id = selectedSystemOption.getAttribute("data-solar_system_id");
