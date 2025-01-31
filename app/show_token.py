@@ -10,7 +10,7 @@ def show_manufacturing_token():
 
         if refresh_token_requested:
             refresh_token_requested=int(refresh_token_requested)
-        else
+        else:
             refresh_token_requested=0
         
         character_name=get_charactername_by_characterid(character_id)
