@@ -924,7 +924,8 @@ async function runCalculate(){
         typeId=selectedOption.getAttribute("data-type_id");
     }
     else{
-        console.error("No matching option found with the blueprint");
+        console.error("Cannot found matching blueprint.");
+        showNotification("Cannot found matching blueprint.");
         return;
     }
     
