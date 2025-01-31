@@ -81,6 +81,17 @@ td.opentree-detail , td.bonus-detail{
     width:34px;
 }
 
+input.index-input{
+    width:40px;
+}
+input.index-input{
+    width:40px;
+}
+
+input.structure-efficiency-bonus-input{
+    width:70px;
+}
+
 input.reaction-efficiency-bonus-input{
     margin-right:105px;
 }
