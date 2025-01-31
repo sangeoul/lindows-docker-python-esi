@@ -4,23 +4,20 @@ from esi_library import get_access_token,get_charactername_by_characterid,connec
 def show_manufacturing_token():
 
     character_id=is_logged_in()
-    print("!!DEBUG : Character id : "+str(character_id),flush=True)
     if character_id:
+
         refresh_token_requested = request.args.get("refresh_token_requested")
 
         character_name=get_charactername_by_characterid(character_id)
 
-        print("!!DEBUG : Character Name : "+str(character_name),flush=True)
-        if refresh_token_requested!=1:
+        if int(refresh_token_requested)!=1:
             refresh_token_requested=0
-
         try:
             access_token=get_access_token(character_id, "manufacturing",True)
         except Exception as e:
             print("Error is occured : " + str(e) )
             access_token=None
 
-        print("!!DEBUG: Access : "+str(access_token),flush=True)
         if refresh_token_requested==1:
             conn = connect_to_db()
             cursor = conn.cursor()
