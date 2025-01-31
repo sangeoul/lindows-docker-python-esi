@@ -6,24 +6,24 @@ def show_manufacturing_token():
     character_id=is_logged_in()
     if character_id:
 
-        refresh_token_requested = request.args.get("refresh_token_requested")
+        request_refresh_token = request.args.get("request_refresh_token")
 
-        if refresh_token_requested:
-            refresh_token_requested=int(refresh_token_requested)
+        if request_refresh_token:
+            request_refresh_token=int(request_refresh_token)
         else:
-            refresh_token_requested=0
+            request_refresh_token=0
         
         character_name=get_charactername_by_characterid(character_id)
 
-        if refresh_token_requested!=1:
-            refresh_token_requested=0
+        if request_refresh_token!=1:
+            request_refresh_token=0
         try:
             access_token=get_access_token(character_id, "manufacturing",True)
         except Exception as e:
             print("Error is occured : " + str(e) )
             access_token=None
 
-        if refresh_token_requested==1:
+        if request_refresh_token==1:
             conn = connect_to_db()
             cursor = conn.cursor()
             
