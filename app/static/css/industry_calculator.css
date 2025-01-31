@@ -3,10 +3,10 @@
 
 table{
     border-collapse:collapse;
+    border:0px;
 }
 
 td,th{
-    border:1px solid black;
     border:none;
     border-collapse:collapse;
     margin:0;
@@ -14,7 +14,26 @@ td,th{
     background-color:white;
 }
 table.control-panel td,table.control-panel th, table.control-panel tr{
-    border: 1px solid black;
+    border: 1px solid rgb(192, 192, 192);
+    border-left:0px;
+    border-right:0px;
+
+    padding-top:2px;
+    padding-bottom:2px;
+    padding-left:4px;
+    padding-right:4px;
+}
+input , select{
+    border: 1px solid rgb(192, 192, 192);
+    background-color:rgb(205, 255, 209);
+    border-radius:4px;
+}
+
+input.blueprint-input,input.blueprint-run-input,input.me-input,input.system-input,select.structure-input{
+    background-color:rgb(236, 236, 236);
+}
+input.structure-cost-bonus-input{
+    background-color:rgb(199, 199, 199);
 }
 img{
     padding:0;
@@ -38,6 +57,16 @@ button.calculate-button{
     width:159px;
     height:40px;
     font-size:25px;
+    border:0px;
+    border-radius:8px;
+    background-color:rgb(148, 255, 148);
+    color:rgb(0, 65, 0);
+    transition:0.5s;
+}
+button.calculate-button:hover{
+    background-color:rgb(23, 163, 23);
+    color:white;
+    transition:0.2s;
 }
 
 button.detail-button{
@@ -49,7 +78,7 @@ td.opentree-detail , td.bonus-detail{
 }
 
 input.reaction-efficiency-bonus-input{
-    margin-right:107px;
+    margin-right:105px;
 }
 
 select.structure-input{
@@ -186,6 +215,10 @@ td.total-item-quantity{
 }
 
 
+
+
+/* Notification Message==============================================*/
+
 .notification {
     display: none;
     position: fixed;
@@ -230,6 +263,7 @@ td.total-item-quantity{
     left: 20px;
 }
 
+/* End of Notification Message==============================================*/
 
 
 /* Basic styles for the popup */
@@ -337,5 +371,5 @@ div.popup-closing-overlay {
     color:rgb(0, 0, 0);
 }
 
-/*===================================================================*/
+/*End of Checkbox to Switch===================================================================*/
 
