@@ -1470,9 +1470,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         }
 
 
-        console.log(`!!DEBUG : rawMaterials before`);
+        console.log(`!!DEBUG : rawMaterials before at line ${counti}`);
         console.log(rawMaterals);
-        
+
         product_array.forEach(p=>{
             if(!endNode_list.includes(parseInt(p.product_index))){
 
