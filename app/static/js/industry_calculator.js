@@ -367,7 +367,9 @@ async function calcStructureBonus(industry_type) {
     const industrySystemDataList = document.querySelector('#industry-system-options');
     const structureSelectInput = document.querySelector(`#${industry_type}-structure-select`);
     const structureBonusInput = document.querySelector(`#${industry_type}-structure-efficiency-bonus`);
-    const structureCostBonusInput= document.querySelector(`#${industry_type}-structure-cost-bonus`);
+    const structureCostBonusInput = document.querySelector(`#${industry_type}-structure-cost-bonus`);
+    console.log(`!!DEBUG:`);
+    console.log(structureCostBonusInput);
 
     const selectedSystemOption = Array.from(industrySystemDataList.options).find(option => option.value === industrySystemInput.value);
     if (!selectedSystemOption) {
