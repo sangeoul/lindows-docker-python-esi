@@ -16,7 +16,8 @@ def show_manufacturing_token():
 
         try:
             access_token=get_access_token(character_id, "manufacturing",True)
-        except:
+        except Exception as e:
+            print("Error is occured : " + str(e) )
             access_token=None
 
         print("!!DEBUG: Access : "+str(access_token),flush=True)
