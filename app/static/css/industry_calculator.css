@@ -40,7 +40,7 @@ button{
     border:0px;
     border-radius:3px;
     background-color:rgb(99, 140, 156);
-    color:rgb(202, 202, 202);
+    color:rgb(238, 238, 238);
     transition:0.5s;
 }
 button:hover{
