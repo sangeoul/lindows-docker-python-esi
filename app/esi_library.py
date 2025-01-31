@@ -32,7 +32,6 @@ def refresh_access_token(character_id, service_type):
     Fetches a new access token using the refresh token from the database, with client_id and client_secret
     fetched dynamically from the sso_client table. Updates the access token and refresh token in the database.
     """
-
     # Step 1: Fetch the client_id and client_secret from the database
     conn = connect_to_db()
     cursor = conn.cursor()
@@ -52,14 +51,12 @@ def refresh_access_token(character_id, service_type):
     # Generate the Authorization header value
     auth_value = f"{client_id}:{client_secret}"
     auth_header = base64.b64encode(auth_value.encode()).decode()
-    print("!!DEBUG ::: DEBUT1",flush=True)
     # Step 2: Fetch the refresh_token from the database
     cursor.execute("""
         SELECT refresh_token FROM user_oauth
         WHERE character_id = %s AND client_service = %s
     """, (character_id, service_type))
     oauth_result = cursor.fetchone()
-    print("!!DEBUG ::: DEBUT2",flush=True)
     if not oauth_result:
         raise ValueError(f"Refresh token not found for character_id {character_id} and service_type {service_type}")
 
@@ -77,7 +74,6 @@ def refresh_access_token(character_id, service_type):
         "refresh_token": refresh_token,
         "redirect_uri": "http://localhost:8001/callback"  # Adjust to your callback URL
     }
-    print("!!DEBUG ::: DEBUT3",flush=True)
     oauth_url = ESI_TOKEN_ENDPOINT
 
     # Sending the POST request to the OAuth server
@@ -85,7 +81,6 @@ def refresh_access_token(character_id, service_type):
     
     if response.status_code == 200:
         token_data = response.json()
-        print("!!DEBUG ::: DEBUT4",flush=True)
         # Step 4: Get new access_token and refresh_token from the response
         new_access_token = token_data.get("access_token")
         new_refresh_token = token_data.get("refresh_token")
@@ -193,7 +188,7 @@ def get_character_from_access_token(access_token):
 
 
 
-def get_access_token(character_id, service_type,refresh_access_token=False):
+def get_access_token(character_id, service_type,refresh_requested=False):
     """
     This function fetches the access_token from the user_oauth table for the given character_id and service_type.
     If the 'updated' timestamp is more than 15 minutes old, it will refresh the access token using refresh_access_token.
@@ -224,9 +219,9 @@ def get_access_token(character_id, service_type,refresh_access_token=False):
     access_token, updated = result
     
     # Step 4: Check if the 'updated' timestamp is older than 15 minutes
-    if (datetime.now() - updated > timedelta(minutes=15)) or refresh_access_token:
+    if (datetime.now() - updated > timedelta(minutes=15)) or refresh_requested:
         # If the access token is older than 15 minutes, refresh the token
-        if refresh_access_token :
+        if refresh_requested :
             print("Refreshing access token is forced.")
         else:
             print("Refreshing access token due to time expiration.")
