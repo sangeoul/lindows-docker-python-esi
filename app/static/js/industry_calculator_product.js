@@ -957,6 +957,7 @@ async function runCalculate(){
 
     const button_copyMaterials=document.createElement("button");
     button_copyMaterials.textContent="📋Copy";
+    button_copyMaterials.classList.add('copy-button');
 
     button_copyMaterials.addEventListener("click",()=>{
         copyMaterialsToClipboard("materials");
@@ -964,6 +965,7 @@ async function runCalculate(){
 
     const button_copyBreakdownMaterials=document.createElement("button");
     button_copyBreakdownMaterials.textContent="Sheet";
+    button_copyBreakdownMaterials.classList.add('copy-button');
     button_copyBreakdownMaterials.addEventListener("click",()=>{
         showBreakdownPopup();
     });

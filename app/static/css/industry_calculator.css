@@ -66,6 +66,10 @@ input.tax-input{
 td.export-button{
     height:24px;
 }
+button.copy-button{
+    width:60px;
+    height:23px;
+}
 
 td.panel-tree-layer, td.total-materials{
     vertical-align: top;
