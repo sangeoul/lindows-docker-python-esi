@@ -16,7 +16,8 @@ app = Flask(__name__)
 csp = {
     'default-src': "'self'",
     'img-src': ["'self'", "https://images.evetech.net","https://lindows.kr:8009"],
-    'connect-src': ["'self'", "https://esi.evetech.net","https://lindows.kr:8009"]
+    'connect-src': ["'self'", "https://esi.evetech.net","https://lindows.kr:8009"],
+    'style-src': ["'self'", "https://fonts.googleapis.com"]  # Add Google Fonts here
 }
 # Apply Talisman with the CSP policy
 Talisman(app,content_security_policy=csp)
