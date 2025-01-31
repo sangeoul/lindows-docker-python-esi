@@ -1372,18 +1372,6 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     const materialList_for_unit_calculating=[];
 
     const rawMaterials=[];
-    console.log(`!!DEBUG : rawMaterials declared / length`);
-    console.log(rawMaterials.length);
-    rawMaterials.forEach(e=>{
-        console.log(`!!DEBUG name : ${e.name}`);
-    });
-
-    rawMaterials.length=10;
-    rawMaterials.forEach(e=>{
-        console.log(`!!DEBUG length10 name : ${e.name}`);
-    });
-
-    console.log(rawMaterials);
     
     let maxDepth=0;
 
@@ -1469,12 +1457,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
         materialList_for_unit_calculating.length=0;
 
-        console.log(`!!DEBUG : before reseting rawMaterials`);
-        console.log(rawMaterials);
-
         rawMaterials.length=0;
-        console.log(`!!DEBUG : rawMaterials before at line ${counti}`);
-        console.log(rawMaterials);
 
         //initialise
         materialList_for_unit_calculating.push({
@@ -1492,17 +1475,17 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         product_array.forEach(p=>{
             if(!endNode_list.includes(parseInt(p.product_index))){
 
-                if(counti==0){
-                    console.log(`!!DEBUG med idx: ${p.product_index} : ${p.itemname}`);
-                }
+
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
+                if(counti==0){
+                    console.log(`!!DEBUG med idx: ${p.product_index} : ${p.itemname}`);
+                    console.log(materialList_for_unit_calculating);
+                }
             }
             else{
-                if(counti==0){
-                    console.log(`!!DEBUG raw idx: ${p.product_index} : ${p.itemname}`);
-                }
+
                 let notIncluded=true;
                 rawMaterials.forEach(m=>{
                     if(m.id==p.typeid){
@@ -1516,19 +1499,14 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                         icon:p.iconurl
                     });
                 }
+
+                if(counti==0){
+                    console.log(`!!DEBUG raw idx: ${p.product_index} : ${p.itemname}`);
+                    console.log(rawMaterials);
+                }
             }
         });
         
-        if(counti==0){
-            let logtext="";
-            endNode_list.forEach(idx=>{
-                logtext+=product_array[idx].itemname+",";
-            });
-            console.log(`!!DEBUG:breakdown line ${counti} :${logtext}`);
-            console.log(rawMaterials);
-            //console.log(materialList_for_unit_calculating);
-            
-        }
         
 
 
