@@ -1364,13 +1364,9 @@ async function displayTotalMaterials(){
 async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
     const materialBreakdownList=[];
-
     const materialList=[];
-
     const endNode_list=[];
-
     const materialList_for_unit_calculating=[];
-
     const rawMaterials=[];
     
     let maxDepth=0;
@@ -1475,10 +1471,6 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 p.materials.forEach(m=>{
                     queueMaterial(p,m);
                 })
-                if(counti==0){
-                    console.log(`!!DEBUG med idx: ${p.product_index} : ${p.itemname}`);
-                    console.log(materialList_for_unit_calculating);
-                }
             }
             else{
 
@@ -1518,9 +1510,6 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 }
             }
         }
-
-
-
         for(let i=0;i<MAX_TREE_DEPTH;i++){
             for( const material_id in materialList_for_unit_calculating[i]){
                 let rmidx=-1;
@@ -1567,15 +1556,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         });
         endNode_list.push(...nextEndNode_list);
 
-        materialBreakdownList.push(materialList);
-        
-        console.log("!!DEBUG : materialBreakdownList");
-        console.log(materialBreakdownList[counti]);
-        console.log(materialBreakdownList);
-        
+        materialBreakdownList.push(JSON.parse(JSON.stringify(materialList)));
     }
-
-
     return materialBreakdownList;
 }
 
