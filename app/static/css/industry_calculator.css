@@ -248,9 +248,9 @@ div.breakdown-popup {
     z-index: 999;
 }
 button.breakdown-copy-button{
-    width:120px;
+    width:140px;
     height:32px;
-    font-size:18px;    
+    font-size:17px;    
 }
 div.popup-announce{
     font-size:22px;
