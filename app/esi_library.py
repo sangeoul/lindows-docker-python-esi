@@ -82,7 +82,7 @@ def refresh_access_token(character_id, service_type):
 
     # Sending the POST request to the OAuth server
     response = requests.post(oauth_url, headers=headers, data=data)
-
+    print("!!DEBUG ::: DEBUT1",flush=True)
     if response.status_code == 200:
         token_data = response.json()
 
