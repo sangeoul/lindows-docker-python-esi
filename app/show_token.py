@@ -4,13 +4,13 @@ from esi_library import get_access_token,get_charactername_by_characterid,connec
 def show_manufacturing_token():
 
     character_id=is_logged_in()
-    print("!!DEBUG : Character id : "+character_id,flush=True)
+    print("!!DEBUG : Character id : "+str(character_id),flush=True)
     if character_id:
         refresh_token_requested = request.args.get("refresh_token_requested")
 
         character_name=get_charactername_by_characterid(character_id)
 
-        print("!!DEBUG : Character Name : "+character_name,flush=True)
+        print("!!DEBUG : Character Name : "+str(character_name),flush=True)
         if refresh_token_requested!=1:
             refresh_token_requested=0
 
