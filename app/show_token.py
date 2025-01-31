@@ -1,8 +1,5 @@
 from flask import render_template,make_response,request
 from esi_library import get_access_token,get_charactername_by_characterid,connect_to_db,is_logged_in
-from flask_talisman import Talisman
-
-talisman = Talisman(app)
 
 def show_manufacturing_token():
 
@@ -45,18 +42,6 @@ def show_manufacturing_token():
         access_token=None
         refresh_token=None
         
-    response=make_response(render_template('buyback_history.html', access_token=access_token, refresh_token=refresh_token,character_name=character_name))
-        # Create a response object
-
+    # Create a response object
     
-    # Define CSP with unsafe-inline for this specific response
-    csp = {
-        'default-src': "'self'",
-        'script-src': ["'self'", "'unsafe-inline'"]
-    }
-    
-    # Apply CSP header to the response
-    talisman.content_security_policy = csp
-    talisman.set_response_headers(response)
-    
-    return response    
+    return render_template('buyback_history.html', access_token=access_token, refresh_token=refresh_token,character_name=character_name)  
