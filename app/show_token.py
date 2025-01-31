@@ -44,4 +44,4 @@ def show_manufacturing_token():
         
     # Create a response object
     
-    return render_template('manufacturnig_token.html', access_token=access_token, refresh_token=refresh_token,character_name=character_name)  
+    return render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token,character_name=character_name)  
