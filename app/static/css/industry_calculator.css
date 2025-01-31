@@ -276,7 +276,7 @@ div.breakdown-popup {
     height:54%;
     overflow:hidden;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius:16px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
