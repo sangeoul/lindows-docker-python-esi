@@ -97,15 +97,15 @@
             <td class="opentree-detail"><button id="opentree-detail-button" class="opentree-detail detail-button">▤</button></td>
             <td colspan="3">
                 <button id="open-button">Open Tree</button> 
-                <a id="opentree-checkboxs-area" class="hidden-data">
-                Basement <input type="checkbox" id="basement-checkbox" checked>
-                 | Component <input type="checkbox" id="component-checkbox" checked>
-                 | Reaction <input type="checkbox" id="reaction-checkbox" checked>
-                 | Fuel <input type="checkbox" id="fuel-checkbox">
-                 <!--| PI <input type="checkbox" id="pi-checkbox">-->
-                </a>
-                
+                <div id="opentree-checkboxs-area" class="hidden-data">
+                    Basement <label class="switch"><input type="checkbox" id="basement-checkbox" checked><span class="slider"></span></label>
+                     | Component <label class="switch"><input type="checkbox" id="component-checkbox" checked><span class="slider"></span></label>
+                     | Reaction <label class="switch"><input type="checkbox" id="reaction-checkbox" checked><span class="slider"></span></label>
+                     | Fuel <label class="switch"><input type="checkbox" id="fuel-checkbox"><span class="slider"></span></label>
+                     <!--| PI <label class="switch"><input type="checkbox" id="pi-checkbox"><span class="slider"></span></label>-->
+                </div>
             </td>
+            
         </tr>
     </table>
 
