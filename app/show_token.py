@@ -8,7 +8,11 @@ def show_manufacturing_token():
 
         refresh_token_requested = request.args.get("refresh_token_requested")
 
-        refresh_token_requested=int(refresh_token_requested)
+        if refresh_token_requested:
+            refresh_token_requested=int(refresh_token_requested)
+        else
+            refresh_token_requested=0
+        
         character_name=get_charactername_by_characterid(character_id)
 
         if refresh_token_requested!=1:
