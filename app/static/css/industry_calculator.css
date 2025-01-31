@@ -26,7 +26,7 @@ td,th{
 
 input , select{
     border: 1px solid rgb(192, 192, 192);
-    background-color:rgb(205, 255, 209);
+    background-color: rgb(236, 236, 236);
     border-radius:4px;
 }
 
@@ -60,6 +60,9 @@ table.control-panel button:hover{
 
 input.blueprint-input,input.blueprint-run-input,input.me-input,input.system-input,select.structure-input{
     background-color:rgb(236, 236, 236);
+}
+input.index-input ,input.structure-efficiency-bonus-input, input.tax-input{
+    background-color:rgb(205, 255, 209);
 }
 input.structure-cost-bonus-input{
     background-color:rgb(199, 199, 199);
@@ -100,7 +103,7 @@ td.opentree-detail , td.bonus-detail{
 
 button.open-tree{
     width:80px;
-    padding:2px;
+    padding:3px;
 }
 
 input.index-input{
