@@ -1568,12 +1568,14 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         endNode_list.push(...nextEndNode_list);
 
         materialBreakdownList.push(materialList);
-
+        
+        console.log("!!DEBUG : materialBreakdownList");
+        console.log(materialBreakdownList[counti]);
+        console.log(materialBreakdownList);
+        
     }
 
-    console.log("!!DEBUG : materialBreakdownList");
-    console.log(materialBreakdownList);
-    console.log(materialBreakdownList[0]);
+
     return materialBreakdownList;
 }
 
