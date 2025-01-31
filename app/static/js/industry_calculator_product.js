@@ -1374,6 +1374,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     const rawMaterials=[];
     console.log(`!!DEBUG : rawMaterials declared / length`);
     console.log(rawMaterials.length);
+    console.log(rawMaterials);
 
     let maxDepth=0;
 
