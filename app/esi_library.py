@@ -193,7 +193,7 @@ def get_character_from_access_token(access_token):
 
 
 
-def get_access_token(character_id, service_type):
+def get_access_token(character_id, service_type,refresh_access_token=False):
     """
     This function fetches the access_token from the user_oauth table for the given character_id and service_type.
     If the 'updated' timestamp is more than 15 minutes old, it will refresh the access token using refresh_access_token.
@@ -224,9 +224,12 @@ def get_access_token(character_id, service_type):
     access_token, updated = result
     
     # Step 4: Check if the 'updated' timestamp is older than 15 minutes
-    if datetime.now() - updated > timedelta(minutes=15):
+    if (datetime.now() - updated > timedelta(minutes=15)) or refresh_access_token:
         # If the access token is older than 15 minutes, refresh the token
-        print("Refreshing access token due to time expiration.")
+        if refresh_access_token :
+            print("Refreshing access token is forced.")
+        else:
+            print("Refreshing access token due to time expiration.")
         # Call the refresh_access_token function to update the access token
         try:
             new_access_token, _ = refresh_access_token(character_id, service_type)
