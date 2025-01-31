@@ -238,6 +238,8 @@ div.breakdown-popup {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width:60%;
+    height:70%;
     overflow:hidden;
     background-color: white;
     border: 1px solid black;
