@@ -1471,6 +1471,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
         console.log("!!DEBUG materialList_for_unit_calculating[1]");
         console.log(materialList_for_unit_calculating[1]);
+        console.log("!!DEBUG materialList_for_unit_calculating[1][11295][20347][0]");
+        console.log(materialList_for_unit_calculating[1][11295][20347][0]);       
 
 
         product_array.forEach(p=>{
