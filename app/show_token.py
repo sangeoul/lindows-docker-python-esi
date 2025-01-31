@@ -26,7 +26,7 @@ def show_manufacturing_token():
             # Step 2: Fetch the access_token and updated timestamp from the user_oauth table
             cursor.execute("""
                 SELECT refresh_token FROM user_oauth
-                WHERE character_id = %s AND client_service = "manufacturing"
+                WHERE character_id = %s AND client_service = 'manufacturing'
             """, (character_id, ))
             
             result = cursor.fetchone()
