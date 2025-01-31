@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/manufacturing_token.css') }}">
     <title>Get access token for manufacturing management</title>
+    <style>
+
+        span.access-token{
+            width:240px;
+            overflow:hidden;
+        }
+        button.copy{
+            width:80px;
+            height:20px;
+            border:0px;
+            background-color:rgba(0,0,0,0);
+        }
+    </style>
 </head>
 <body>
     
     {% if access_token %}
         <p>Character Name : {{character_name}}</p><br>
-        <p>Access token : <span class='access-token'>{{access_token}}</span><button id='button-copy-access-token' class="copy"> </button></p><br>
+        <p>Access token : <span class='access-token'>{{access_token}}</span><button id='button-copy-access-token' class="copy">📋</button></p><br>
     {% else %}
         <p>Login.</p>
     {% endif %}
     {% if refresh_token %}
-        <p>Refresh token : Take care of security <span class='refresh-token'>{{refresh_token[:4]}}*****************</span><button id='button-copy-refresh-token' class="copy"></button></p>
-        <input type="hidden" value="{{refresh_token}}">
+        <p>Refresh token : Take care of security <span class='refresh-token'>{{refresh_token[:4]}}*****************</span><button id='button-copy-refresh-token' class="copy">📋</button></p>
+        <input type="hidden" id='hidden_refreseh_token' value="{{refresh_token}}">
     {% endif %}
 
 </body>
