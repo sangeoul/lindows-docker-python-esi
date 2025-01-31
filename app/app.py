@@ -67,27 +67,8 @@ app.add_url_rule('/register_industry', 'register_industry', register_industry, m
 app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
 app.add_url_rule('/stock_update', 'stock_update', stock_update, methods=["GET", "POST"])
 
-# Add the route for show_manufacturing_token with dynamic CSP
-@app.route('/manufacturing_token')
-def manufacturing_token_route():
-    # Generate the response using the function from show_token.py
-    response = make_response(show_manufacturing_token())
-    
-    # Define CSP with unsafe-inline for this specific response
-    csp_inline = {
-        'default-src': "'self'",
-        'img-src': ["'self'", "https://images.evetech.net", "https://lindows.kr:8009"],
-        'connect-src': ["'self'", "https://esi.evetech.net", "https://lindows.kr:8009"],
-        'style-src': ["'self'", "https://fonts.googleapis.com"],
-        'font-src': ["'self'", "https://fonts.gstatic.com"],
-        'script-src': ["'self'", "'unsafe-inline'"]  # Allow inline scripts for this route
-    }
-    
-    # Apply the dynamic CSP to the response
-    talisman.content_security_policy = csp_inline
-    talisman.set_response_headers(response)
-    
-    return response
+app.add_url_rule('/manufacturing_token', 'manufacturing_token', show_manufacturing_token, methods=["GET"])
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8001)

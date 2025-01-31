@@ -236,3 +236,5 @@ def read_latest_json(filename):
     else:
         print("No JSON files found in the directory.")
         return None
+
+
