@@ -469,18 +469,18 @@ async function loadPanelVisibility() {
 
     const calculatorDetailButton = document.querySelector("#bonus-detail-button");
     if(componentRow.classList.contains('hidden-data')){
-        calculatorDetailButton.innerHTML="▤▼";
+        calculatorDetailButton.innerHTML="▤▶";
     }
     else{
-        calculatorDetailButton.innerHTML="▤▶";
+        calculatorDetailButton.innerHTML="▤▼";
     }
 
     const opentreeDetailButton = document.querySelector("#opentree-detail-button");
     if(opentree.classList.contains('hidden-data')){
-        opentreeDetailButton.innerHTML="▤◀";
+        opentreeDetailButton.innerHTML="▤▶";
     }
     else{
-        opentreeDetailButton.innerHTML="▤▶";
+        opentreeDetailButton.innerHTML="▤◀";
     }
 
 
