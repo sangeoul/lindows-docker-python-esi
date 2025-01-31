@@ -228,20 +228,27 @@ td.total-item-quantity{
 
 
 /* Basic styles for the popup */
-.breakdown-popup {
+div.breakdown-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow:hidden;
     background-color: white;
     border: 1px solid black;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 999;
 }
+div.popup-announce{
+    font-size:15px;
+}
+table.breakdown-popup{
+    font-size:9px;
+}
 
 /* Overlay styles */
-.popup-closing-overlay {
+div.popup-closing-overlay {
     position: fixed;
     top: 0;
     left: 0;

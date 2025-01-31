@@ -1679,6 +1679,7 @@ async function showBreakdownPopup() {
     const button_copyButton=document.createElement('button');
     const div_anounceText=document.createElement('div');
     const table_materials=document.createElement('table');
+    table_materials.classList.add('breakdown-popup')
     let copyText="";
     
 
@@ -1694,7 +1695,7 @@ async function showBreakdownPopup() {
     });
 
     div_anounceText.innerHTML="Excute this after <b>open whole tree</b> to work properly."
-
+    div_anounceText.classList.add('popup-announce');
 
     let maxheight=0;
     for(let i=0;i<materialBreakdownList.length;i++){
