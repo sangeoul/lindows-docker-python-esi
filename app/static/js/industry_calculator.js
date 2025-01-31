@@ -566,6 +566,7 @@ async function addAllEventListener(){
         inputs_openTreeCheckboxes[i][1].addEventListener('click',()=>{
             inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
         });
+        inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
     }
 
 }
