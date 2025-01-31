@@ -1000,7 +1000,9 @@ async function openFollowingTree(product){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
                 await node.openNextTree(false);
-                await delay(5);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -1010,7 +1012,9 @@ async function openFollowingTree(product){
         }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid) || BIOCHEMICAL_MATERIAL.includes(node.typeid) || MOLECULAR_FORGED_MATERIALS.includes(node.typeid)){
             if(checkboxes["reaction"]){
                 await node.openNextTree(false);
-                await delay(2);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -1019,7 +1023,9 @@ async function openFollowingTree(product){
         }else if(FUEL_BLOCKS.includes(node.typeid)){
             if(checkboxes["fuel"]){
                 await node.openNextTree(false);
-                await delay(2);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
                 await openFollowingTree(node);
             }else {
                 node.closeTree(true);
@@ -1028,7 +1034,9 @@ async function openFollowingTree(product){
         } else{
             if(checkboxes["basement"]){
                 await node.openNextTree(false);
-                await delay(2);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
                 await openFollowingTree(node);
             }else {
                 await node.closeTree(true);
