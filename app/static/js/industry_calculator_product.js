@@ -1571,7 +1571,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         });
         endNode_list.push(...nextEndNode_list);
 
-        materialBreakdownList[counti]=(JSON.parse(JSON.stringify(materialList)));
+        materialBreakdownList[counti-1]=(JSON.parse(JSON.stringify(materialList)));
     }
     return materialBreakdownList;
 }
