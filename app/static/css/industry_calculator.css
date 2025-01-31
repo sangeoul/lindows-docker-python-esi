@@ -98,6 +98,11 @@ td.opentree-detail , td.bonus-detail{
     width:34px;
 }
 
+button.open-tree{
+    width:80px;
+    padding:2px;
+}
+
 input.index-input{
     width:40px;
 }
