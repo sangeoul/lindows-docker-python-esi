@@ -972,7 +972,7 @@ async function runCalculate(){
     
     const td_buttonArea=document.querySelector("#td-export-button");
     td_buttonArea.appendChild(button_copyMaterials);
-    //td_buttonArea.appendChild(button_copyBreakdownMaterials);
+    td_buttonArea.appendChild(button_copyBreakdownMaterials);
 
 
 
