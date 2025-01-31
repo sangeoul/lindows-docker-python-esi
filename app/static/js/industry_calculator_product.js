@@ -1499,16 +1499,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                         icon:p.iconurl
                     });
                 }
-
-                if(counti==0){
-                    console.log(`!!DEBUG raw idx: ${p.product_index} : ${p.itemname}`);
-                    console.log(rawMaterials);
-                }
             }
         });
-        
-        
-
 
         for(let i=0;i<MAX_TREE_DEPTH;i++){
             for(const material_id in materialList_for_unit_calculating[i]){
@@ -1563,7 +1555,8 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         }
         materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
 
-
+        console.log("!!DEBIG materialList : ");
+        console.log(materialList);
 
 
         const nextEndNode_list=[];
