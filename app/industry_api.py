@@ -32,10 +32,6 @@ def get_manufacturing_blueprints():
     filedir=os.path.join(base_dir, 'static','json')
     return send_from_directory(filedir, 'manufacturings.json', as_attachment=False, mimetype='application/json')
 
-from flask import Flask, send_file
-
-app = Flask(__name__)
-
 @app.route('/bONOBONO')
 def bONOBONO():
     try:
