@@ -52,14 +52,14 @@ def refresh_access_token(character_id, service_type):
     # Generate the Authorization header value
     auth_value = f"{client_id}:{client_secret}"
     auth_header = base64.b64encode(auth_value.encode()).decode()
-
+    print("!!DEBUG ::: DEBUT1",flush=True)
     # Step 2: Fetch the refresh_token from the database
     cursor.execute("""
         SELECT refresh_token FROM user_oauth
         WHERE character_id = %s AND client_service = %s
     """, (character_id, service_type))
     oauth_result = cursor.fetchone()
-
+    print("!!DEBUG ::: DEBUT2",flush=True)
     if not oauth_result:
         raise ValueError(f"Refresh token not found for character_id {character_id} and service_type {service_type}")
 
@@ -77,15 +77,15 @@ def refresh_access_token(character_id, service_type):
         "refresh_token": refresh_token,
         "redirect_uri": "http://localhost:8001/callback"  # Adjust to your callback URL
     }
-
+    print("!!DEBUG ::: DEBUT3",flush=True)
     oauth_url = ESI_TOKEN_ENDPOINT
 
     # Sending the POST request to the OAuth server
     response = requests.post(oauth_url, headers=headers, data=data)
-    print("!!DEBUG ::: DEBUT1",flush=True)
+    
     if response.status_code == 200:
         token_data = response.json()
-
+        print("!!DEBUG ::: DEBUT4",flush=True)
         # Step 4: Get new access_token and refresh_token from the response
         new_access_token = token_data.get("access_token")
         new_refresh_token = token_data.get("refresh_token")
