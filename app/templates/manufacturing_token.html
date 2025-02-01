@@ -11,14 +11,14 @@
         <p>Character Name : {{ character_name }}</p><br>
         <p>Access token : <div class='access-token'>{{ access_token }}</div>
             <input type="hidden" id='hidden-active-token' value="{{active_token}}">
-            <button id='button-copy-access-token' class="copy" action="copyActiveToken()">📋</button></p><br>
+            <button id='button-copy-access-token' class="copy" onclick="copyActiveToken()">📋</button></p><br>
     {% else %}
             <p> No token is found. <a href='https://lindows.kr:8001/login' target="_blank">Please log in again with <b>'manufacturing'</b> option.</a></p>
     {% endif %}
     <br><br><br>
     {% if refresh_token %}
     <p>Refresh token : Take care of security <div class='refresh-token'>{{ refresh_token[:5] }}</div>
-        <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}" action="copyRefreshToken()"><button id='button-copy-refresh-token' class="copy">📋</button></p>
+        <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}" onclick="copyRefreshToken()"><button id='button-copy-refresh-token' class="copy">📋</button></p>
     {% endif %}
 </body>
 <script src="{{ url_for('static', filename='js/manufacturing_token.js') }}"></script>
