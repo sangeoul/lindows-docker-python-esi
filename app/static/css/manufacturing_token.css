@@ -17,8 +17,8 @@ button.copy {
 }
 
 button.copy:hover {
-    width: 80px;
-    height: 20px;
+    width: 50px;
+    height: 30px;
     border: 1px black;
     background-color: rgb(202, 202, 202);
     font-size: 18px;
