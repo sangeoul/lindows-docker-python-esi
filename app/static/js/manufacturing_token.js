@@ -16,3 +16,20 @@ function copyRefreshToken(){
         console.error(`Failed to copy : ${e}`);
     });
 }
+
+// Call the function to fetch and store data
+document.addEventListener("DOMContentLoaded", async function() {
+    activeButton=document.querySelector('#button-copy-access-token');
+    refreshButton=document.querySelector('#button-copy-refresh-token');
+
+    if(activeButton){
+        activeButton.addEventListener('click',()=>{
+            copyActiveToken();
+        });
+    }
+    if(refreshButton){
+        refreshButton.addEventListener('click',()=>{
+            copyRefreshToken();
+        });
+    }
+});
