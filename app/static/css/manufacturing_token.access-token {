@@ -1,11 +1,11 @@
-span.access-token {
+div.access-token {
     width: 240px;
     height: 20px;
     overflow: hidden;
     color: rgba(0,0,0,0);
     background-color:rgba(0,0,0,1);
 }
-span.access-token:hover{
+div.access-token:hover{
     color:rgba(255, 255, 255, 0.3);
 }
 button.copy {
