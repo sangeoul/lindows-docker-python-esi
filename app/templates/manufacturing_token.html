@@ -13,6 +13,7 @@
             <input type="hidden" id='hidden-active-token' value="{{active_token}}">
             <button id='button-copy-access-token' class="copy">📋</button></p><br>
     {% else %}
+            <p> No token is found. <a href='https://lindows.kr:8001/login' target="_blank">Please log in again with <b>'manufacturing'</b> option.</a></p>
     {% endif %}
     <br><br><br>
     {% if refresh_token %}
