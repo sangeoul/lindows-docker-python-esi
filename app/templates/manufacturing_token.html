@@ -10,7 +10,7 @@
     {% if access_token %}
         <p>Character Name : {{ character_name }}</p><br>
         <p>Access token : <div class='access-token'>{{ access_token }}</div>
-            <input type="hidden" id='hidden-active-token' value="{{active_token}}">
+            <input type="hidden" id='hidden-access-token' value="{{access_token}}">
             <button id='button-copy-access-token' class="copy">📋</button></p><br>
     {% else %}
             <p> No token is found. <a href='https://lindows.kr:8001/login' target="_blank">Please log in again with <b>'manufacturing'</b> option.</a></p>

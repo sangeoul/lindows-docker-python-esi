@@ -1,6 +1,6 @@
-function copyActiveToken(){
-    const active_token=document.querySelector('#hidden-active-token').value;
-    navigator.clipboard.writeText(active_token).then(function() { 
+function copyAccessToken(){
+    const access_token=document.querySelector('#hidden-access-token').value;
+    navigator.clipboard.writeText(access_token).then(function() { 
         console.log("Copied.");
     }).catch(function(e){
         console.error(`Failed to copy : ${e}`);
@@ -19,12 +19,12 @@ function copyRefreshToken(){
 
 // Call the function to fetch and store data
 document.addEventListener("DOMContentLoaded", async function() {
-    activeButton=document.querySelector('#button-copy-access-token');
+    accessButton=document.querySelector('#button-copy-access-token');
     refreshButton=document.querySelector('#button-copy-refresh-token');
 
-    if(activeButton){
-        activeButton.addEventListener('click',()=>{
-            copyActiveToken();
+    if(accessButton){
+        accessButton.addEventListener('click',()=>{
+            copyAccessToken();
         });
     }
     if(refreshButton){
