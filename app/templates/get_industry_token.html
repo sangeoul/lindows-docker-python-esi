@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/manufacturing_token.css') }}">
+    <title>Manufacturing Token</title>
+</head>
+<body>
+    <form action="https://lindows.kr:8001/getTokenRedirect" method="POST">
+        Client ID : <input type="text" id="client_id" name="client_id"><br>
+        Client Secret : <input type="password" id="client_secret" name="client_secret"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    {% if access_token and refresh_token%}
+        <p>Access token : <div class='access-token'>{{ access_token }}</div>
+            <input type="hidden" id='hidden-access-token' value="{{access_token}}">
+            <button id='button-copy-access-token' class="copy">📋</button></p><br>
+        <p>Refresh token : Take care of security <div class='refresh-token'>{{ refresh_token[:4] }}******************</div>
+            <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
+    {% endif %}
+    <br><br><br>
+    {% if refresh_token %}
+    
+    {% endif %}
+</body>
+<script src="{{ url_for('static', filename='js/manufacturing_token.js') }}"></script>
+</html>
