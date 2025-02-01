@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, url_for, session, make_respo
 from flask_talisman import Talisman
 from datetime import timedelta
 
-from handle_sso import oauth_redirect, callback  # Import OAuth routes from handle_sso.py
+from handle_sso import oauth_redirect, callback,getTokenRedirect,getTokenCallback  # Import OAuth routes from handle_sso.py
 from buyback import buyback, buyback_submit, buyback_history, accept_buyback, delete_buyback, show_contracts_list, buyback_notice
 from industry_tools import register_industry, input_item_to_DB, stock_update
 from ore_price_calculator import ore_price_calculate
@@ -50,6 +50,8 @@ def logout():
 # Use the imported routes from handle_sso.py
 app.add_url_rule('/oauth_redirect', 'oauth_redirect', oauth_redirect, methods=['POST'])
 app.add_url_rule('/callback', 'callback', callback, methods=['GET'])
+app.add_url_rule('/getTokenRedirect', 'getTokenRedirect', getTokenRedirect, methods=['POST'])
+app.add_url_rule('/getTokens', 'getTokens', getTokenCallback, methods=['GET'])
 
 # Use the imported routes from buyback.py
 app.add_url_rule('/industry/buyback', 'buyback', buyback, methods=["GET", "POST"])

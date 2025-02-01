@@ -21,8 +21,8 @@
             <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
     {% endif %}
     <br><br><br>
-    {% if refresh_token %}
-    
+    {% if error %}
+            <p>Error : {{error}}</p>
     {% endif %}
 </body>
 <script src="{{ url_for('static', filename='js/manufacturing_token.js') }}"></script>
