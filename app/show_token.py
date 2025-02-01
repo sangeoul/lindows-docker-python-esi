@@ -46,23 +46,5 @@ def show_manufacturing_token():
         access_token = None
         refresh_token = None
 
-    # Generate a nonce
-    nonce = secrets.token_hex(16)
-
-    # Create a response object
-    response = make_response(render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token, character_name=character_name, nonce=nonce))
     
-    # Define CSP with nonce for this specific response
-    csp_inline = (
-        "default-src 'self'; "
-        "img-src 'self' https://images.evetech.net https://lindows.kr:8009; "
-        "connect-src 'self' https://esi.evetech.net https://lindows.kr:8009; "
-        "style-src 'self' https://fonts.googleapis.com 'nonce-{nonce}'; "
-        "font-src 'self' https://fonts.gstatic.com; "
-        "script-src 'self' 'nonce-{nonce}'"
-    ).format(nonce=nonce)
-    
-    # Apply the dynamic CSP to the response
-    response.headers['Content-Security-Policy'] = csp_inline
-    
-    return response
+    return render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token, character_name=character_name)
