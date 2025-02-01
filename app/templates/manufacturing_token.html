@@ -17,7 +17,7 @@
     {% endif %}
     <br><br><br>
     {% if refresh_token %}
-    <p>Refresh token : Take care of security <div class='refresh-token'>{{ refresh_token[:5] }}</div>
+    <p>Refresh token : Take care of security <div class='refresh-token'>{{ refresh_token[:4] }}******************</div>
         <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
     {% endif %}
 </body>
