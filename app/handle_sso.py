@@ -166,6 +166,9 @@ def getTokenCallback():
     # Capture the authorization code and state
     code = request.args.get('code')
     state_string = request.args.get('state')
+    if not code or not state_string:
+        return render_template('manufacturing_token.html', access_token=None, refresh_token=None,error=None)
+    
     state=json.loads(state_string)
     # Get the selected client index from the form
     client_id = state[0]
@@ -212,7 +215,7 @@ def getTokenCallback():
         token_data = response.json()
         access_token = token_data.get("access_token")
         refresh_token = token_data.get("refresh_token")
-        return render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token)
+        return render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token,error=None)
 
     else:
         try:
