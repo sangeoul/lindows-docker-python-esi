@@ -167,7 +167,7 @@ def getTokenCallback():
     code = request.args.get('code')
     state_string = request.args.get('state')
     if not code or not state_string:
-        return render_template('manufacturing_token.html', access_token=None, refresh_token=None,error=None)
+        return render_template('get_industry_token', access_token=None, refresh_token=None,error=None)
     
     state=json.loads(state_string)
     # Get the selected client index from the form
@@ -215,7 +215,7 @@ def getTokenCallback():
         token_data = response.json()
         access_token = token_data.get("access_token")
         refresh_token = token_data.get("refresh_token")
-        return render_template('manufacturing_token.html', access_token=access_token, refresh_token=refresh_token,error=None)
+        return render_template('get_industry_token.html', access_token=access_token, refresh_token=refresh_token,error=None)
 
     else:
         try:
@@ -226,7 +226,7 @@ def getTokenCallback():
             # If response is not in JSON format
             print("Error Details:", response.text)
             errormessage = response.text
-        return render_template('manufacturing_token.html', access_token=None, refresh_token=None,error=errormessage)
+        return render_template('get_industry_token.html', access_token=None, refresh_token=None,error=errormessage)
         
 #if __name__ == '__main__':
 #    app.run(debug=True)
