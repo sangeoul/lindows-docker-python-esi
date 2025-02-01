@@ -13,8 +13,11 @@
             <input type="hidden" id='hidden-active-token' value="{{active_token}}">
             <button id='button-copy-access-token' class="copy">📋</button></p><br>
     {% else %}
-        <p>Refresh token : Take care of security <span class='refresh-token'>{{ refresh_token[:5] }}</span>
-            <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
+    {% endif %}
+    <br><br><br>
+    {% if refresh_token %}
+    <p>Refresh token : Take care of security <span class='refresh-token'>{{ refresh_token[:5] }}</span>
+        <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
     {% endif %}
 </body>
 <script src="{{ url_for('static', filename='js/manufacturing_token.js') }}"></script>
