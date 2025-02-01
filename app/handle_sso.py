@@ -167,7 +167,7 @@ def getTokenCallback():
     code = request.args.get('code')
     state_string = request.args.get('state')
     if not code or not state_string:
-        return render_template('get_industry_token', access_token=None, refresh_token=None,error=None)
+        return render_template('get_industry_token.html', access_token=None, refresh_token=None,error=None)
     
     state=json.loads(state_string)
     # Get the selected client index from the form
