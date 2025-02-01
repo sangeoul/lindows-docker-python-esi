@@ -3,31 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/manufacturing_token.css') }}">
     <title>Manufacturing Token</title>
-    <style nonce="{{ nonce }}">
-        div.access-token {
-            width: 240px;
-            height: 20px;
-            overflow: hidden;
-        }
-        button.copy {
-            width: 80px;
-            height: 20px;
-            border: 0;
-            background-color: rgba(0, 0, 0, 0);
-            font-size: 18px;
-        }
-    </style>
 </head>
 <body>
     {% if access_token %}
         <p>Character Name : {{ character_name }}</p><br>
-        <p>Access token : <span class='access-token'>{{ access_token }}</span><button id='button-copy-access-token' class="copy">Copy</button></p><br>
+        <p>Access token : <span class='access-token'>{{ access_token }}</span>
+            <input type="hidden" id='hidden-active-token' value="{{active_token}}">
+            <button id='button-copy-access-token' class="copy">📋</button></p><br>
     {% else %}
-        <p>Refresh token : Take care of security <span class='refresh-token'>{{ refresh_token[:5] }}</span></p>
+        <p>Refresh token : Take care of security <span class='refresh-token'>{{ refresh_token[:5] }}</span>
+            <input type="hidden" id='hidden-refresh-token' value="{{refresh_token}}"><button id='button-copy-refresh-token' class="copy">📋</button></p>
     {% endif %}
-    <script nonce="{{ nonce }}">
-        // Your inline scripts here
-    </script>
 </body>
+<script src="{{ url_for('static', filename='js/manufacturing_token.js') }}"></script>
 </html>
