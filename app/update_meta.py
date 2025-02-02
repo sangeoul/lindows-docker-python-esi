@@ -20,9 +20,9 @@ def fetch_meta_level(input_id):
 
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if meta_level==None:
-            print(f"[{timestamp}]{json_data['name']} has no meta level")
+            print(f"[{timestamp}]{json_data['name']} has no meta level",flush=True)
         else:
-            print(f"[{timestamp}]{json_data['name']} has meta level {meta_level}")
+            print(f"[{timestamp}]{json_data['name']} has meta level {meta_level}",flush=True)
         
 
 
