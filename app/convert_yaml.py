@@ -11,14 +11,19 @@ def read_yaml(file_path):
     
 # Function to save data to database
 def save_to_db(data, conn, cursor):
-    query = """
-    INSERT INTO industry_relation (output_id, output_amount, input_id, input_amount, industry_type, recipe_id)
-    VALUES %s
-    ON CONFLICT (output_id, input_id, industry_type) 
-    DO UPDATE SET output_amount = excluded.output_amount
-    """
-    execute_values(cursor, query, data)
-    conn.commit()
+    try:
+        query = """
+        INSERT INTO industry_relation (output_id, output_amount, input_id, input_amount, industry_type, recipe_id)
+        VALUES %s
+        ON CONFLICT (output_id, input_id, industry_type) 
+        DO UPDATE SET output_amount = excluded.output_amount
+        """
+        execute_values(cursor, query, data)
+        conn.commit()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        conn.rollback()  # Rollback the transaction in case of error
+
 
 # Main function
 def main(yaml_file, modules_group, conn):
