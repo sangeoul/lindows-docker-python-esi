@@ -1,6 +1,5 @@
 import yaml
 import os
-import requests
 from psycopg2.extras import execute_values
 from iteminfo import get_type_info
 from esi_library import connect_to_db
@@ -28,6 +27,7 @@ def main(yaml_file, modules_group, conn):
     module_info_list = []
     for type_id, details in data.items():
         type_id = int(type_id)  # Ensure type_id is an integer
+        print(f"type_id:{type_id}",flush=True)
         type_info = get_type_info(type_id)
         
         if type_info['group_id'] in modules_group:
