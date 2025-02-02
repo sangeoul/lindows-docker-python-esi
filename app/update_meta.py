@@ -41,7 +41,7 @@ def update_type_info(conn, input_id, meta_level):
             cursor.execute(update_query, (meta_level, input_id))
             conn.commit()
     except Exception as e:
-        print(f"Error updating type_info for input_id {input_id}: {e}")
+        print(f"Error updating type_info for input_id {input_id}: {e}",flush=True)
 
 def delete_from_industry_relation(conn, input_id):
     try:
@@ -53,7 +53,7 @@ def delete_from_industry_relation(conn, input_id):
             cursor.execute(delete_query, (input_id,))
             conn.commit()
     except Exception as e:
-        print(f"Error deleting from industry_relation for input_id {input_id}: {e}")
+        print(f"Error deleting from industry_relation for input_id {input_id}: {e}",flush=True)
 
 def process_chunk(conn, chunk):
     for row in chunk:
@@ -64,7 +64,7 @@ def process_chunk(conn, chunk):
             if meta_level is not None and meta_level >= 5:
                 delete_from_industry_relation(conn, input_id)
         except Exception as e:
-            print(f"Error processing input_id {input_id}: {e}")
+            print(f"Error processing input_id {input_id}: {e}",flush=True)
 
 def main():
     conn = connect_to_db()
