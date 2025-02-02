@@ -16,7 +16,7 @@ SELFAPI_URL="http://host.docker.internal:8009/api"
 ESI_TOKEN_ENDPOINT = "https://login.eveonline.com/v2/oauth/token"
 ESI_AUTHORIZATION_ENDPOINT = "https://login.eveonline.com/v2/oauth/authorize"
 
-ADMIN_ID=92371624
+ADMIN_ID=[92371624,92497990]
 
 def connect_to_db():
     """Create a connection to the database."""
@@ -107,6 +107,11 @@ def is_logged_in(_cid=0):
     if 'login_character_id' in session:
         if _cid==0:
             return session['login_character_id']
+        elif isinstance(_cid,list):
+            if int(session['login_character_id']) in _cid:
+                return True
+            else:
+                return False
         else:
             if _cid==session['login_character_id']:
                 return True
