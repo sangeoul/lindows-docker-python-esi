@@ -1,5 +1,6 @@
 import yaml
 import os
+import datetime
 from psycopg2.extras import execute_values
 from iteminfo import get_type_info
 from esi_library import connect_to_db
@@ -24,8 +25,8 @@ def save_to_db(data, conn, cursor):
         ON CONFLICT (output_id, input_id, industry_type) 
         DO UPDATE SET output_amount = excluded.output_amount
         """
-        
-        print(f"Inserting chunk of size: {len(data)}", flush=True)  # Debugging: Print chunk size
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(f"[{timestamp}]Inserting chunk of size: {len(data)}", flush=True)  # Debugging: Print chunk size
         execute_values(cursor, query, data)
         affected_rows = cursor.rowcount  # Check affected rows
         print(f"{affected_rows} rows affected in this chunk.", flush=True)  # Debugging: Print affected rows for this chunk
