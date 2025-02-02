@@ -28,7 +28,7 @@ def main(yaml_file, modules_group, conn):
     for type_id, details in data.items():
         type_id = int(type_id)  # Ensure type_id is an integer
         print(f"type_id:{type_id}",flush=True)
-        type_info = get_type_info(type_id)
+        type_info = get_type_info(type_id,str(type_id))
         
         if type_info['group_id'] in modules_group:
             for material in details['materials']:
