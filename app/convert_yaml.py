@@ -45,7 +45,7 @@ def main(yaml_file, modules_group, conn):
                 module_info_list.append(
                     (output_id, output_amount, type_id, 1, 1, type_id)
                 )
-            print(f"{type_info['name_en']} has been loaded")
+            print(f"{type_info['name_en']} has been loaded",flush=True)
 
     with conn.cursor() as cursor:
         save_to_db(module_info_list, conn, cursor)
