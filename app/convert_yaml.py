@@ -9,16 +9,7 @@ from esi_library import connect_to_db
 def read_yaml(file_path):
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
-
-# Function to get module information
-def get_type_info(type_id):
-    url = f'https://esi.evetech.net/latest/universe/groups/{type_id}/?datasource=tranquility&language=en'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Failed to get data for type_id {type_id}, status code: {response.status_code}")
-
+    
 # Function to save data to database
 def save_to_db(data, conn, cursor):
     query = """
