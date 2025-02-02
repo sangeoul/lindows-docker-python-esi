@@ -70,9 +70,8 @@ def fetch_type_id_by_name(item_name):
 def get_type_info(type_id=0,item_name=None):
     # Get the type_id and itemname from the query parameters
 
-    if type_id == None or type_id==0 :
+    if (type_id == None or type_id==0) and  (item_name == None or item_name==""):
         type_id = request.args.get('type_id', type=int)
-    if item_name == None or item_name=="":
         item_name = request.args.get('itemname', type=str)
     if type_id is None and item_name is None:
         return Response(

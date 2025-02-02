@@ -28,7 +28,8 @@ def get_typeid_by_itemname(item_name, language='en'):
     # If not found in the database, query the external API
 
     try :
-        api_data=get_type_info(0,item_name)
+        api_data_response=get_type_info(0,item_name)
+        api_data = api_data_response.get_json()
         return api_data.get('type_id') 
     
     except:
@@ -78,7 +79,8 @@ def get_itemname_by_typeid(type_id, language='en'):
         return type_info[0]
 
     try :
-        api_data=get_type_info(type_id,"")
+        api_data_response=get_type_info(type_id,str(type_id))
+        api_data = api_data_response.get_json()
         if language=='ko':
             return api_data.get('name_ko') 
         else :
@@ -102,7 +104,8 @@ def get_groupid_by_typeid(type_id):
 
 
     try :
-        api_data=get_type_info(type_id,"")
+        api_data_response=get_type_info(type_id,str(type_id))
+        api_data = api_data_response.get_json()
         return api_data.get('group_id') 
     
     except:
