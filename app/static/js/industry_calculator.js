@@ -522,6 +522,8 @@ async function addAllEventListener(){
         calcStructureBonus("manufacturing");
         calcStructureBonus("component");
         calcStructureBonus("fuel");
+        saveValueToCookie(componentSelect)
+        saveValueToCookie(fuelSelect)
     });
     componentSelect.addEventListener("input",function(){
         calcStructureBonus("component");
@@ -594,6 +596,14 @@ async function addAllEventListener(){
         inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
     }
 
+    // Save values to cookies whenever they change
+    document.addEventListener("input", function(event) {
+        const target = event.target;
+        if (target.matches("input:not(#blueprint-input, #me-input), select")) {
+            saveValueToCookie(target);
+        }
+    });
+
 }
 
 async function setTaxInputLink(){
@@ -638,15 +648,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 });
 
-
-
-// Save values to cookies whenever they change
-document.addEventListener("input", function(event) {
-    const target = event.target;
-    if (target.matches("input:not(#blueprint-input, #me-input), select")) {
-        saveValueToCookie(target);
-    }
-});
 
 
 function showNotification(message, position = 'right-bottom') {
