@@ -30,16 +30,16 @@ def main(yaml_file, modules_group, conn):
         print(f"type_id:{type_id}",flush=True)
         type_info = get_type_info(type_id,str(type_id))
         
-        if type_info['group_id'] in modules_group:
+        if type_info.get('group_id') in modules_group:
             for material in details['materials']:
                 output_id = material['materialTypeID']
                 output_amount = material['quantity']
                 module_info_list.append(
                     (output_id, output_amount, type_id, 1, 1, type_id)
                 )
-            print(f"{type_info['name_en']} has been loaded",flush=True)
+            print(f"{type_info.get('name_en')} has been loaded",flush=True)
         else:
-            print(f"{type_info['name_en']} is not module",flush=True)
+            print(f"{type_info.get('name_en')} is not module",flush=True)
 
     with conn.cursor() as cursor:
         save_to_db(module_info_list, conn, cursor)
