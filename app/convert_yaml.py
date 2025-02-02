@@ -8,11 +8,20 @@ from esi_library import connect_to_db
 def read_yaml(file_path):
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
-    
+
+# Function to split data into chunks
+def chunk_list(data, chunk_size):
+    """Split data into chunks of specified size."""
+    for i in range(0, len(data), chunk_size):
+        yield data[i:i + chunk_size]
+
 # Function to save data to database
 def save_to_db(data, conn, cursor):
-    print(data,flush=True)
     try:
+        if not data:
+            print("No data to insert.")
+            return
+
         query = """
         INSERT INTO industry_relation (output_id, output_amount, input_id, input_amount, industry_type, recipe_id)
         VALUES %s
@@ -20,12 +29,16 @@ def save_to_db(data, conn, cursor):
         DO UPDATE SET output_amount = excluded.output_amount
         """
         
-        execute_values(cursor, query, data)
+        for chunk in chunk_list(data, 1000):  # Adjust chunk size as needed
+            print("Data chunk to be inserted:", chunk)  # Debugging: Print chunk data
+            execute_values(cursor, query, chunk)
+            affected_rows = cursor.rowcount  # Check affected rows
+            print(f"{affected_rows} rows affected in this chunk.")  # Debugging: Print affected rows for this chunk
+
         conn.commit()
     except Exception as e:
-        print(f"An error occurred: {e}",flush=True)
+        print(f"An error occurred: {e}", flush=True)
         conn.rollback()  # Rollback the transaction in case of error
-
 
 # Main function
 def main(yaml_file, modules_group, conn):
@@ -34,8 +47,8 @@ def main(yaml_file, modules_group, conn):
     module_info_list = []
     for type_id, details in data.items():
         type_id = int(type_id)  # Ensure type_id is an integer
-        print(f"type_id:{type_id}",flush=True)
-        type_info_response = get_type_info(type_id,str(type_id))
+        print(f"type_id:{type_id}", flush=True)
+        type_info_response = get_type_info(type_id, str(type_id))
         type_info = type_info_response.get_json()
         
         if type_info.get('group_id') in modules_group:
@@ -45,11 +58,11 @@ def main(yaml_file, modules_group, conn):
                 module_info_list.append(
                     (output_id, output_amount, type_id, 1, 1, type_id)
                 )
-            print(f"{type_info.get('name_en')} has been loaded",flush=True)
+            print(f"{type_info.get('name_en')} has been loaded", flush=True)
         else:
-            print(f"{type_info.get('name_en')} is not module",flush=True)
+            print(f"{type_info.get('name_en')} is not module", flush=True)
 
-    print(f"Save :",module_info_list,flush=True)
+    print(f"Save: {module_info_list}", flush=True)  # Debugging: Print data to be saved
     with conn.cursor() as cursor:
         save_to_db(module_info_list, conn, cursor)
 
