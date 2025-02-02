@@ -1,4 +1,5 @@
 import requests
+import datetime
 from psycopg2.extras import DictCursor
 from esi_library import connect_to_db
 
@@ -16,6 +17,15 @@ def fetch_meta_level(input_id):
                 if attribute['attribute_id'] == 633:
                     meta_level = attribute['value']
                     break
+
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if meta_level==None:
+            print(f'[{timestamp}]{json_data['name']} has no meta level')
+        else:
+            print(f'[{timestamp}]{json_data['name']} has meta level {meta_level}')
+        
+
+
         return meta_level
     else:
         raise Exception(f"Failed to fetch data for input_id {input_id}, status code: {response.status_code}")
