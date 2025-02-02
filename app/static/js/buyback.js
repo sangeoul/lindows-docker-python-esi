@@ -108,7 +108,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
                                     </td>
                                     <td class="amount">${Math.floor(output.output_amount).toLocaleString()}</td>
                                     <td class="price">${parseFloat(output.output_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    <td class="buyback-rate">${parseFloat((output.output_price * 100 / (output.output_buyprice * output.output_amount)).toFixed(2)).toLocaleString()}%</td>
+                                    <td class="buyback-rate">${parseFloat((output.output_price * 100 / (output.output_buyprice * Math.floor(output.output_amount))).toFixed(2)).toLocaleString()}%</td>
                                 </tr>
                             `).join('')}
                         <tr>

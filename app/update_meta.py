@@ -23,9 +23,6 @@ def fetch_meta_level(input_id):
             print(f"[{timestamp}]{json_data['name']} has no meta level",flush=True)
         else:
             print(f"[{timestamp}]{json_data['name']} has meta level {meta_level}",flush=True)
-        
-
-
         return meta_level
     else:
         raise Exception(f"Failed to fetch data for input_id {input_id}, status code: {response.status_code}")
@@ -63,6 +60,8 @@ def process_chunk(conn, chunk):
             update_type_info(conn, input_id, meta_level)
             if meta_level is not None and meta_level >= 5:
                 delete_from_industry_relation(conn, input_id)
+
+            print(f"Chunk processed")
         except Exception as e:
             print(f"Error processing input_id {input_id}: {e}",flush=True)
 
