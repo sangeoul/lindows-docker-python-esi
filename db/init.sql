@@ -37,7 +37,8 @@ CREATE TABLE IF NOT EXISTS type_info (
     icon_type TEXT,
     group_id INT,
     published BOOLEAN,
-    market_group_id INT
+    market_group_id INT,
+    meta_level INT
 );
 -- Adding indexes on name columns
 CREATE INDEX idx_name_en ON type_info (name_en);

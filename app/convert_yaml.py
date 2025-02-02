@@ -4,18 +4,12 @@ from psycopg2.extras import execute_values
 from iteminfo import get_type_info
 from esi_library import connect_to_db
 
-CHUNK_SIZE=400
+CHUNK_SIZE = 400
 
 # Function to read YAML file
 def read_yaml(file_path):
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
-
-# Function to split data into chunks
-def chunk_list(data, chunk_size):
-    """Split data into chunks of specified size."""
-    for i in range(0, len(data), chunk_size):
-        yield data[i:i + chunk_size]
 
 # Function to save data to database
 def save_to_db(data, conn, cursor):
@@ -31,11 +25,10 @@ def save_to_db(data, conn, cursor):
         DO UPDATE SET output_amount = excluded.output_amount
         """
         
-        for chunk in chunk_list(data, CHUNK_SIZE):  # Adjust chunk size as needed
-            print("Data chunk to be inserted:", chunk)  # Debugging: Print chunk data
-            execute_values(cursor, query, chunk)
-            affected_rows = cursor.rowcount  # Check affected rows
-            print(f"{affected_rows} rows affected in this chunk.")  # Debugging: Print affected rows for this chunk
+        print(f"Inserting chunk of size: {len(data)}", flush=True)  # Debugging: Print chunk size
+        execute_values(cursor, query, data)
+        affected_rows = cursor.rowcount  # Check affected rows
+        print(f"{affected_rows} rows affected in this chunk.", flush=True)  # Debugging: Print affected rows for this chunk
 
         conn.commit()
     except Exception as e:
@@ -47,9 +40,11 @@ def main(yaml_file, modules_group, conn):
     data = read_yaml(yaml_file)
     
     module_info_list = []
+    total_items = 0  # Keep track of total items processed
+
     for type_id, details in data.items():
         type_id = int(type_id)  # Ensure type_id is an integer
-        print(f"type_id:{type_id}", flush=True)
+        print(f"type_id: {type_id}", flush=True)
         type_info_response = get_type_info(type_id, str(type_id))
         type_info = type_info_response.get_json()
         
@@ -60,13 +55,22 @@ def main(yaml_file, modules_group, conn):
                 module_info_list.append(
                     (output_id, output_amount, type_id, 1, 1, type_id)
                 )
+                if len(module_info_list) >= CHUNK_SIZE:
+                    with conn.cursor() as cursor:
+                        save_to_db(module_info_list, conn, cursor)
+                    module_info_list.clear()  # Clear the list after saving to DB
+
             print(f"{type_info.get('name_en')} has been loaded", flush=True)
         else:
             print(f"{type_info.get('name_en')} is not module", flush=True)
-
-    print(f"Save: {module_info_list}", flush=True)  # Debugging: Print data to be saved
-    with conn.cursor() as cursor:
-        save_to_db(module_info_list, conn, cursor)
+    
+    # Save any remaining items in the list
+    if module_info_list:
+        with conn.cursor() as cursor:
+            save_to_db(module_info_list, conn, cursor)
+    
+    total_items += len(module_info_list)  # Update total items processed
+    print(f"Total items processed: {total_items}", flush=True)  # Debugging: Print total count of items processed
 
 if __name__ == "__main__":
     # YAML file path
