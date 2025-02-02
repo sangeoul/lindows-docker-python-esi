@@ -4,6 +4,8 @@ from psycopg2.extras import execute_values
 from iteminfo import get_type_info
 from esi_library import connect_to_db
 
+CHUNK_SIZE=400
+
 # Function to read YAML file
 def read_yaml(file_path):
     with open(file_path, 'r') as file:
@@ -29,7 +31,7 @@ def save_to_db(data, conn, cursor):
         DO UPDATE SET output_amount = excluded.output_amount
         """
         
-        for chunk in chunk_list(data, 1000):  # Adjust chunk size as needed
+        for chunk in chunk_list(data, CHUNK_SIZE):  # Adjust chunk size as needed
             print("Data chunk to be inserted:", chunk)  # Debugging: Print chunk data
             execute_values(cursor, query, chunk)
             affected_rows = cursor.rowcount  # Check affected rows
