@@ -84,8 +84,8 @@ const manufacturingStructureRigOptions = [
     { structure_bonus: 0, rig_bonus: 0, cost_bonus:0 ,text: 'Station' }
 ];
 const reactionStructureRigOptions = [
-    { structure_bonus: 0, rig_bonus: 2, text: 'Refinery I' },
-    { structure_bonus: 0, rig_bonus: 2.4, text: 'Refinery II' }
+    { structure_bonus: 0, rig_bonus: 2, cost_bonus:0 ,text: 'Refinery I' },
+    { structure_bonus: 0, rig_bonus: 2.4, cost_bonus:0 ,text: 'Refinery II' }
 ];
 
 
@@ -321,7 +321,7 @@ function setManufacturingStructureAndRigData() {
 
         
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
+        optionElement.value = (option.structure_bonus*100)+(option.cost_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         manufacturingSelect.appendChild(optionElement);
     });
@@ -330,7 +330,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
+        optionElement.value = (option.structure_bonus*100)+(option.cost_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         componentSelect.appendChild(optionElement);
     });
@@ -348,7 +348,7 @@ function setManufacturingStructureAndRigData() {
     manufacturingStructureRigOptions.forEach(option => {
 
         const optionElement = document.createElement("option");
-        optionElement.value = (option.structure_bonus*10)+option.rig_bonus;
+        optionElement.value = (option.structure_bonus*100)+(option.cost_bonus*10)+option.rig_bonus;
         optionElement.textContent = option.text;
         fuelSelect.appendChild(optionElement);
     });
