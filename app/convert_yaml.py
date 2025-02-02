@@ -1,8 +1,8 @@
 import yaml
 import os
 from psycopg2.extras import execute_values
-from iteminfo import get_type_info
 from esi_library import connect_to_db
+from industry_library import get_groupid_by_typeid, get_itemname_by_typeid
 
 # Function to read YAML file
 def read_yaml(file_path):
@@ -28,18 +28,19 @@ def main(yaml_file, modules_group, conn):
     for type_id, details in data.items():
         type_id = int(type_id)  # Ensure type_id is an integer
         print(f"type_id:{type_id}",flush=True)
-        type_info = get_type_info(type_id,str(type_id))
+        group_id = get_groupid_by_typeid(type_id)
+        itemname=get_itemname_by_typeid(type_id)
         
-        if type_info.get('group_id') in modules_group:
+        if group_id in modules_group:
             for material in details['materials']:
                 output_id = material['materialTypeID']
                 output_amount = material['quantity']
                 module_info_list.append(
                     (output_id, output_amount, type_id, 1, 1, type_id)
                 )
-            print(f"{type_info.get('name_en')} has been loaded",flush=True)
+            print(f"{itemname} has been loaded",flush=True)
         else:
-            print(f"{type_info.get('name_en')} is not module",flush=True)
+            print(f"{itemname} is not module",flush=True)
 
     with conn.cursor() as cursor:
         save_to_db(module_info_list, conn, cursor)
