@@ -3,7 +3,6 @@ import os
 import psycopg2
 import math
 import json
-import requests
 from flask import Flask,jsonify, render_template,render_template_string,redirect, request
 from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
 from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_affordable_price,get_itemname_by_typeid,get_groupid_by_typeid

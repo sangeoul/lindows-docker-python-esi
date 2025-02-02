@@ -1,9 +1,7 @@
-import os
 import requests
 import base64
 import json 
 from flask import redirect,render_template, session, request 
-import psycopg2
 from urllib.parse import quote
 from esi_library import get_character_from_access_token,connect_to_db,update_user_info,login,logip,ESI_TOKEN_ENDPOINT,ESI_AUTHORIZATION_ENDPOINT
 

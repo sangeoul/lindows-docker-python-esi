@@ -1,5 +1,6 @@
 import yaml
 import os
+import requests
 from psycopg2.extras import execute_values
 from iteminfo import get_type_info
 from esi_library import connect_to_db
