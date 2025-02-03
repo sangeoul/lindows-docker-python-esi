@@ -635,7 +635,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         ]);
 
         // After all async functions are done, load values from cookies
-        const inputs = document.querySelectorAll("input:not(#blueprint-input, #me-input), select");
+        const inputs = document.querySelectorAll("input:not(#blueprint-input), select");
         inputs.forEach(input => loadValueFromCookie(input));
 
         loadPanelVisibility();
