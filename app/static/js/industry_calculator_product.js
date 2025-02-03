@@ -745,7 +745,9 @@ class Product {
         //await this.sortMaterials();
         await this.updatePanel();
         if(calcCost){
+            tracking_item_list.clear();
             displayTotalMaterials();
+            
         }
         
         
@@ -1710,7 +1712,7 @@ async function showBreakdownPopup() {
         });
     });
 
-    div_anounceText.innerHTML="Excute this after <b>open whole tree</b> to work properly."
+    div_anounceText.innerHTML="Excute this after <b>open whole tree</b> to work properly. <a href='https://youtu.be/kPimx7_jrJE?si=QOJks3quQQXA0rOS'>How to use this?(Korean)</a>"
     div_anounceText.classList.add('popup-announce');
 
     let maxheight=0;
