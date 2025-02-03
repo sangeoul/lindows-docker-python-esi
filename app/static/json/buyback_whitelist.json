@@ -54,6 +54,8 @@
         {"id": 333, "name": "Datacores"},
         {"id": 1136, "name": "Fuel Block"},
         {"id": 4086, "name": "Quantum Cores"},
+        {"id": 314, "name": "Miscellaneous", "buyback_rate":[0.75,0.85,0.9]},
+        {"id": 280, "name": "General", "buyback_rate":[0.70,0.70,0.9]},
         {"id": 38, "name": "Shield Extender","reprocessing": true,"refining_rate": 0.55},
         {"id": 39,"name": "Shield Recharger","reprocessing": true,"refining_rate": 0.55},
         {"id": 40,"name": "Shield Booster","reprocessing": true,"refining_rate": 0.55},
