@@ -599,7 +599,7 @@ async function addAllEventListener(){
     // Save values to cookies whenever they change
     document.addEventListener("input", function(event) {
         const target = event.target;
-        if (target.matches("input:not(#blueprint-input, #me-input), select")) {
+        if (target.matches("input:not(#blueprint-input), select")) {
             saveValueToCookie(target);
         }
     });
