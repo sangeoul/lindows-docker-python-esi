@@ -54,6 +54,7 @@
         {"id": 333, "name": "Datacores"},
         {"id": 1136, "name": "Fuel Block"},
         {"id": 4086, "name": "Quantum Cores"},
+        {"id": 880, "name": "Sleeper Components", "buyback_rate":[0.85,0.85,0.85]},
         {"id": 314, "name": "Miscellaneous", "buyback_rate":[0.75,0.85,0.9]},
         {"id": 280, "name": "General", "buyback_rate":[0.70,0.70,0.9]},
         {"id": 38, "name": "Shield Extender","reprocessing": true,"refining_rate": 0.55},
