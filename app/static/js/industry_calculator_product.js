@@ -211,7 +211,13 @@ class Product {
                     }
                     
                     let material_quantity=(rel.q*this.quantity / data.q) * getBonusModifier(this.typeid);
+                    if(material_quantity<Math.ceil(this.quantity / data.q)){
+                        material_quantity=Math.ceil(this.quantity / data.q);
+                    }
                     let material_minumun_unit=Math.ceil((rel.q*this.minimum_unit_quantity / data.q) * getBonusModifier(this.typeid));
+                    if(material_minumun_unit<Math.ceil(this.minimum_unit_quantity / data.q)){
+                        material_minumun_unit=Math.ceil(this.minimum_unit_quantity / data.q);
+                    }
 
                     const material = new Product(
                         rel.n,
@@ -1248,6 +1254,9 @@ async function calcTotalMaterials(saveGlobal=true) {
                         });
                         let neededQuantity=getNeededQuantity(product_id);
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
+                        if(sumOfQuantity<Math.ceil(neededQuantity/bpData.q)){
+                            sumOfQuantity=Math.ceil(neededQuantity/bpData.q);
+                        }
 
                         materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
     
@@ -1521,7 +1530,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                         });
                         let neededQuantity=getNeededQuantity(product_id);
                         sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
-
+                        if(sumOfQuantity<Math.ceil(neededQuantity/bpData.q)){
+                            sumOfQuantity=Math.ceil(neededQuantity/bpData.q)
+                        }
                         materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
                     }
                 }
