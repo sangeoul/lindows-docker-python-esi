@@ -35,7 +35,7 @@ button{
     border-radius:3px;
 }
 button:hover{
-    border:1px solid rgb(177, 177, 177);
+    border:1px solid rgb(168, 168, 168);
     border-radius:3px;
 }
 table.control-panel td,table.control-panel th, table.control-panel tr{
