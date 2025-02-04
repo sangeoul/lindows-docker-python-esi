@@ -13,6 +13,8 @@ def industry_calculator():
     update_param = request.args.get('update')
     if update_param and (update_param == '1' or update_param.lower()) == 'true':
         asyncio.run(fetch_and_save_json("https://esi.evetech.net/latest/markets/prices/?datasource=tranquility", "market_eiv_prices"))
+
+    print(f'[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') }]User accessed. IP:{request.remote_addr}')
     return render_template("industry_calculator.html")
 
 async def fetch_and_save_json(api_url, filename):
