@@ -9,8 +9,6 @@ from industry_tools import register_industry, input_item_to_DB, stock_update
 from ore_price_calculator import ore_price_calculate
 from industry_calculator import industry_calculator
 
-from show_token import show_manufacturing_token  # Import the function
-
 app = Flask(__name__)
 
 # Define your CSP policy
@@ -69,7 +67,6 @@ app.add_url_rule('/register_industry', 'register_industry', register_industry, m
 app.add_url_rule('/input_items', 'input_item_to_DB', input_item_to_DB, methods=["GET", "POST"])
 app.add_url_rule('/stock_update', 'stock_update', stock_update, methods=["GET", "POST"])
 
-app.add_url_rule('/manufacturing_token', 'manufacturing_token', show_manufacturing_token, methods=["GET"])
 
 
 if __name__ == '__main__':
