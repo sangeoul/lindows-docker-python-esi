@@ -276,6 +276,8 @@ def get_refining_rate_for_item(input_id,group_id,whitelist):
 def calculate_simple_buyback_rate(current_stock_amount,median_amount,max_amount, buyprice, sellprice,min_br=MINIMUM_BUYBACK_RATE,default_br=DEFAULT_BUYBACK_RATE,max_br=MAX_BUYBACK_RATE):
 
     modified_max_buyback_rate = (max_br * sellprice) / buyprice
+    if modified_max_buyback_rate<default_br:
+        modified_max_buyback_rate=default_br
     #print(f"!!DEBUG : simple rate : modified max buyback rate = {max_br} * ({sellprice}/{buyprice}) = {modified_max_buyback_rate}",flush=True)
 
     if current_stock_amount>=max_amount:
@@ -315,7 +317,9 @@ def calculate_weighted_buyback_rate(output_amount, current_stock_amount, median_
         return min_br
 
     # Calculate modified max buyback rate for the first segment.
-    modified_max_buyback_rate = (max_br * sellprice) / buyprice
+    # modified_max_buyback_rate = (max_br * sellprice) / buyprice
+    # if modified_max_buyback_rate< default_br:
+    #   modified_max_buyback_rate=default_br
     
 
     if current_stock_amount+output_amount <= median_amount:
