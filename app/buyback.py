@@ -731,6 +731,9 @@ def buyback_history():
     
     if contract_number:
         data = get_buyback_history(contract_number)
+        
+        if data=={}:
+            data = {"contract_id": 0 ,"character_id": 0, "character_name" : "", "is_completed": False ,"admin": False,"input_results": [], "output_results": []}
     else:
         data = {"contract_id": 0 ,"character_id": 0, "character_name" : "", "is_completed": False ,"admin": False,"input_results": [], "output_results": []}
     
@@ -748,7 +751,11 @@ def get_buyback_history(contract_number):
     WHERE contract_id = %s
     ORDER BY registered_timestamp;
     """
-    
+    is_admin=False
+
+    if is_logged_in(ADMIN_ID):
+        is_admin=True
+
     cursor.execute(query, (contract_number,))
     result = cursor.fetchall()
     
@@ -771,16 +778,14 @@ def get_buyback_history(contract_number):
             input_data.append(data)
         else:
             output_data.append(data)
+
+        return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"admin": is_admin,"input_results": input_data, "output_results": output_data}
     
     cursor.close()
     conn.close()
 
-    is_admin=False
-
-    if is_logged_in(ADMIN_ID):
-        is_admin=True
-
-    return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"admin": is_admin,"input_results": input_data, "output_results": output_data}
+    return {}
+    
 
 
 
