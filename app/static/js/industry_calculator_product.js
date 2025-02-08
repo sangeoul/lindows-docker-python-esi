@@ -1360,19 +1360,21 @@ async function displayTotalMaterials(){
     
         span_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
         td_totalQuantity.appendChild(span_totalQuantity);
+
+
+        const _price=getMaterialPrice(m.id);
+        console.log("!!DEBUG : "+_price);
+        div_totalQuantityPopup.innerHTML = 
+        Math.ceil(m.quantity).toLocaleString() + " x " + 
+        _price.toLocaleString() + ' ISK' + 
+        '<br>\n' +
+        parseFloat(
+            (
+                Math.ceil(m.quantity) * _price
+            ).toFixed(2)
+        ).toLocaleString() + ' ISK';
         
         span_totalQuantity.addEventListener('mouseover', (e) => {
-            const _price=getMaterialPrice(m.id);
-            console.log("!!DEBUG : "+_price);
-            div_totalQuantityPopup.innerHTML = 
-            Math.ceil(m.quantity).toLocaleString() + " x " + 
-            _price.toLocaleString() + ' ISK' + 
-            '<br>\n' +
-            parseFloat(
-                (
-                    Math.ceil(m.quantity) * _price
-                ).toFixed(2)
-            ).toLocaleString() + ' ISK';
             
             div_totalQuantityPopup.style.left = e.pageX + 'px';
             div_totalQuantityPopup.style.top = e.pageY + 9 + 'px';
