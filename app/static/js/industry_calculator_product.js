@@ -1380,15 +1380,15 @@ async function displayTotalMaterials(){
             ).toFixed(2)
         ).toLocaleString() + ' ISK';
         
-        span_totalQuantity.addEventListener('mouseover', (e) => {
+        td_totalQuantity.addEventListener('mouseover', (e) => {
 
             
             div_totalQuantityPopup.style.left = e.pageX + 'px';
-            div_totalQuantityPopup.style.top = e.pageY + 9 + 'px';
+            div_totalQuantityPopup.style.top = e.pageY + 13 + 'px';
             div_totalQuantityPopup.classList.remove('hidden-data');
         });
         
-        span_totalQuantity.addEventListener('mouseout', (e) => {
+        td_totalQuantity.addEventListener('mouseout', (e) => {
             div_totalQuantityPopup.classList.add('hidden-data');
         });
     
