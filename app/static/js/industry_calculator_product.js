@@ -343,16 +343,16 @@ class Product {
     }
     getPrice(){
         if(this.pricetype===PRICETYPE_BUY){
-            return this.buyprice;
+            return parseFloat(this.buyprice);
         }
         else if(this.pricetype===PRICETYPE_SELL){
-            return this.sellprice;
+            return parseFloat(this.sellprice);
         }
         else if(this.pricetype===PRICETYPE_COST){
-            return this.costprice ;
+            return parseFloat(this.costprice);
         }
         else if(this.pricetype===PRICETYPE_CUSTOM){
-            return this.customprice;
+            return parseFloat(this.customprice);
         }
     }
     getPriceSum(){
@@ -1366,12 +1366,12 @@ async function displayTotalMaterials(){
         span_totalQuantity.addEventListener('mouseover', (e) => {
             div_totalQuantityPopup.innerHTML = 
             Math.ceil(m.quantity).toLocaleString() + " x " + 
-            (market_price_cache[m.id] ? market_price_cache[m.id] : '0') + 
+            (m.price ? m.price : '0') + 
             '<br>\n' +
             parseFloat(
                 (
                     Math.ceil(m.quantity) * 
-                    (market_price_cache[m.id] ? parseFloat(market_price_cache[m.id]) : 0)
+                    (m.price ? m.price : 0)
                 ).toFixed(2)
             ).toLocaleString();
             console.log("!!DEBUG : quantity mouseover");
