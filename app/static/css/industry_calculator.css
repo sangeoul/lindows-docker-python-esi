@@ -350,6 +350,23 @@ div.popup-closing-overlay {
     z-index: 998;
 }
 
+/* End of notification message ============================================*/
+
+/* Price popup ============================================================*/
+
+div.price-popup{
+    position: absolute;
+    transform: translate(-50%,0%);
+    overflow:hidden;
+    text-align:left;
+    background-color: rgb(240, 238, 207);
+    border: 1px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 997;
+}
+
+/* End of  price popup ===================================================*/
+
 /*Checkbox to Switch==================================================================*/
 
 /* The switch container */

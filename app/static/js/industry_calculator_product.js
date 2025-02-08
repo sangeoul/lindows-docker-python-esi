@@ -866,6 +866,9 @@ async function loadMarketDataWithCache(typeId) {
         } finally {
             // Remove the request from the request cache once completed
             delete market_price_request_cache[int_typeId];
+            if(market_price_request_cache.length==0){
+                calcTotalMaterials();
+            }
         }
     })();
 
@@ -1332,8 +1335,30 @@ async function displayTotalMaterials(){
         td_totalItemname.textContent = m.name;
 
         const td_totalQuantity = document.createElement('td');
+        const span_totalQuantity=document.createElement('span');
+        const div_totalQuantityPopup=document.createElement('div');
+
         td_totalQuantity.classList.add('total-item-quantity');
-        td_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
+        span_totalQuantity.classList.add('total-item-quantity');
+        div_totalQuantityPopup.classList.add('price-popup hidden-data');
+
+        div_totalQuantityPopup.textContent= Math.ceil(m.quantity).toLocaleString(); + " x " (market_price_cache[int_typeId]?market_price_cache[int_typeId]:'0') + '<br>\n'+
+        parseFloat((Math.ceil(m.quantity)*(market_price_cache[int_typeId]?parseFloat(market_price_cache[int_typeId]):0)).toFixed(2)).toLocaleString();
+
+        
+        span_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
+        td_totalQuantity.appendChild(span_totalQuantity);
+
+        span_totalQuantity.addEventListener('mouseover',(e)=>{
+            div_totalQuantityPopup.style.left=e.pageX;
+            div_totalQuantityPopup.style.top=e.pageY+5;
+            div_totalQuantityPopup.classList.remove('hidden-data');
+        });
+        
+        span_totalQuantity.addEventListener('mouseout',(e)=>{
+            div_totalQuantityPopup.classList.add('hidden-data');
+        });
+
 
         td_totalIcon.appendChild(img_totalIcon);
 
