@@ -358,8 +358,8 @@ div.price-popup{
     position: absolute;
     transform: translate(-50%,0%);
 
-    padding-left:3px;
-    padding-right:3px;
+    padding-left:5px;
+    padding-right:5px;
     font-size:12px;
     overflow:hidden;
     text-align:right;
@@ -369,7 +369,7 @@ div.price-popup{
     z-index: 997;
 
     display:inline-block;
-    transform: scaleX(0.7);
+    transform: scaleX(0.85);
     transform-origin: center;
 }
 
