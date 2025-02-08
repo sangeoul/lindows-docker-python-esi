@@ -1375,7 +1375,7 @@ async function displayTotalMaterials(){
             ).toLocaleString();
             
             div_totalQuantityPopup.style.left = e.pageX + 'px';
-            div_totalQuantityPopup.style.top = e.pageY + 5 + 'px';
+            div_totalQuantityPopup.style.top = e.pageY + 9 + 'px';
             div_totalQuantityPopup.classList.remove('hidden-data');
         });
         
@@ -1746,18 +1746,21 @@ function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
     return (1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100));
 }
 
-function getMaterialPrice(type_id){
-    type_id=parseInt(type_id);
+function getMaterialPrice(type_id) {
+    type_id = parseInt(type_id);
     console.log(product_array);
-    product_array.forEach(p=>{
-        if(p.typeid==type_id){
+    
+    for (let p of product_array) {
+        if (p.typeid == type_id) {
             console.log(`!!DEBUG : type_id=${type_id}'s price : ${p.getPrice()}`);
             return p.getPrice();
         }
-    });
+    }
+    
     console.log(`!!DEBUG : cannot find type_id=${type_id}`);
     return 0;
 }
+
 
 // Function to create and show the popup
 async function showBreakdownPopup() {
