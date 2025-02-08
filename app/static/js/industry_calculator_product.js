@@ -1342,22 +1342,30 @@ async function displayTotalMaterials(){
         span_totalQuantity.classList.add('total-item-quantity');
         div_totalQuantityPopup.classList.add('price-popup','hidden-data');
 
-        div_totalQuantityPopup.textContent= Math.ceil(m.quantity).toLocaleString(); + " x " +(market_price_cache[m.id]?market_price_cache[m.id]:'0') + '<br>\n'+
-        parseFloat((Math.ceil(m.quantity)*(market_price_cache[m.id]?parseFloat(market_price_cache[m.id]):0)).toFixed(2)).toLocaleString();
-
-        
+        div_totalQuantityPopup.textContent = 
+        Math.ceil(m.quantity).toLocaleString() + " x " + 
+        (market_price_cache[m.id] ? market_price_cache[m.id] : '0') + 
+        '<br>\n' +
+        parseFloat(
+            (
+                Math.ceil(m.quantity) * 
+                (market_price_cache[m.id] ? parseFloat(market_price_cache[m.id]) : 0)
+            ).toFixed(2)
+        ).toLocaleString();
+    
         span_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
         td_totalQuantity.appendChild(span_totalQuantity);
-
-        span_totalQuantity.addEventListener('mouseover',(e)=>{
-            div_totalQuantityPopup.style.left=e.pageX;
-            div_totalQuantityPopup.style.top=e.pageY+5;
+        
+        span_totalQuantity.addEventListener('mouseover', (e) => {
+            div_totalQuantityPopup.style.left = e.pageX + 'px';
+            div_totalQuantityPopup.style.top = e.pageY + 5 + 'px';
             div_totalQuantityPopup.classList.remove('hidden-data');
         });
         
-        span_totalQuantity.addEventListener('mouseout',(e)=>{
+        span_totalQuantity.addEventListener('mouseout', (e) => {
             div_totalQuantityPopup.classList.add('hidden-data');
         });
+    
 
 
         td_totalIcon.appendChild(img_totalIcon);
