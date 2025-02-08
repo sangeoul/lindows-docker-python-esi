@@ -1341,22 +1341,21 @@ async function displayTotalMaterials(){
         td_totalQuantity.classList.add('total-item-quantity');
         span_totalQuantity.classList.add('total-item-quantity');
         div_totalQuantityPopup.classList.add('price-popup','hidden-data');
-
-        div_totalQuantityPopup.innerHTML = 
-        Math.ceil(m.quantity).toLocaleString() + " x " + 
-        (market_price_cache[m.id] ? market_price_cache[m.id] : '0') + 
-        '<br>\n' +
-        parseFloat(
-            (
-                Math.ceil(m.quantity) * 
-                (market_price_cache[m.id] ? parseFloat(market_price_cache[m.id]) : 0)
-            ).toFixed(2)
-        ).toLocaleString();
     
         span_totalQuantity.textContent = Math.ceil(m.quantity).toLocaleString();
         td_totalQuantity.appendChild(span_totalQuantity);
         
         span_totalQuantity.addEventListener('mouseover', (e) => {
+            div_totalQuantityPopup.innerHTML = 
+            Math.ceil(m.quantity).toLocaleString() + " x " + 
+            (market_price_cache[m.id] ? market_price_cache[m.id] : '0') + 
+            '<br>\n' +
+            parseFloat(
+                (
+                    Math.ceil(m.quantity) * 
+                    (market_price_cache[m.id] ? parseFloat(market_price_cache[m.id]) : 0)
+                ).toFixed(2)
+            ).toLocaleString();
             console.log("!!DEBUG : quantity mouseover");
             div_totalQuantityPopup.style.left = e.pageX + 'px';
             div_totalQuantityPopup.style.top = e.pageY + 5 + 'px';
