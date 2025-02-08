@@ -1748,6 +1748,7 @@ function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
 
 function getMaterialPrice(type_id){
     type_id=parseInt(type_id);
+    console.log(product_array);
     product_array.forEach(p=>{
         if(p.typeid==type_id){
             console.log(`!!DEBUG : type_id=${type_id}'s price : ${p.getPrice()}`);
