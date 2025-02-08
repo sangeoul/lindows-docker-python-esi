@@ -881,6 +881,7 @@ async function loadMarketDataWithCache(typeId) {
             // Remove the request from the request cache once completed
             delete market_price_request_cache[int_typeId];
             if(market_price_request_cache.length==0){
+                loadAndCalcCost();
                 calcTotalMaterials();
             }
         }
