@@ -338,6 +338,7 @@ class Product {
             this.updatePanel;
         }
         origin_product.calcCost();
+        displayTotalMaterials();
         
 
     }
@@ -1072,9 +1073,11 @@ async function openFollowingTree(product){
         
     }
     origin_product.calcCost();
+    displayTotalMaterials();
 }
 
 async function changeAllPriceType(typeId,pricetype,customPrice=0){
+    displayTotalMaterials();
     await changeFollowingPriceType(typeId,pricetype,origin_product,customPrice);
 }
 async function changeFollowingPriceType(typeId,pricetype,productNode,customPrice=0){
@@ -1375,6 +1378,7 @@ async function displayTotalMaterials(){
         ).toLocaleString() + ' ISK';
         
         span_totalQuantity.addEventListener('mouseover', (e) => {
+
             
             div_totalQuantityPopup.style.left = e.pageX + 'px';
             div_totalQuantityPopup.style.top = e.pageY + 9 + 'px';
