@@ -1342,7 +1342,7 @@ async function displayTotalMaterials(){
         span_totalQuantity.classList.add('total-item-quantity');
         div_totalQuantityPopup.classList.add('price-popup','hidden-data');
 
-        div_totalQuantityPopup.textContent = 
+        div_totalQuantityPopup.innerHTML = 
         Math.ceil(m.quantity).toLocaleString() + " x " + 
         (market_price_cache[m.id] ? market_price_cache[m.id] : '0') + 
         '<br>\n' +
