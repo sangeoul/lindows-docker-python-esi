@@ -1127,8 +1127,7 @@ async function calcTotalMaterials(saveGlobal=true) {
                         id: node.typeid,
                         name: node.itemname,
                         icon: node.iconurl,
-                        quantity: node.getQuantity(),
-                        price:node.getPrice()
+                        quantity: node.getQuantity()
                     });
                 }
             } else {
@@ -1254,8 +1253,7 @@ async function calcTotalMaterials(saveGlobal=true) {
                     rawMaterials.push({
                         id:p.typeid,
                         name:p.itemname,
-                        icon:p.iconurl,
-                        price:p.getPrice()
+                        icon:p.iconurl
                     });
                 }
             }
@@ -1312,8 +1310,7 @@ async function calcTotalMaterials(saveGlobal=true) {
                                 id: material_id,
                                 name: rawMaterials[rmidx].name,
                                 icon: rawMaterials[rmidx].icon,
-                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0],
-                                price:rawMaterials[rmidx].price
+                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0]
                             });
                         }
 
@@ -1365,15 +1362,15 @@ async function displayTotalMaterials(){
         td_totalQuantity.appendChild(span_totalQuantity);
         
         span_totalQuantity.addEventListener('mouseover', (e) => {
-            console.log("!!DEBUG : "+m.price);
+            const _price=getMaterialPrice(m.id);
+            console.log("!!DEBUG : "+_price);
             div_totalQuantityPopup.innerHTML = 
             Math.ceil(m.quantity).toLocaleString() + " x " + 
-            (m.price ? m.price : '0') + 
+            _price + 
             '<br>\n' +
             parseFloat(
                 (
-                    Math.ceil(m.quantity) * 
-                    (m.price ? m.price : 0)
+                    Math.ceil(m.quantity) * _price
                 ).toFixed(2)
             ).toLocaleString();
             
@@ -1749,7 +1746,14 @@ function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
     return (1-(me/100)) * (1-(bonus1/100)) * (1-(bonus2/100)) * (1-(bonus3/100));
 }
 
-
+function getMaterialPrice(type_id){
+    product_array.forEach(p=>{
+        if(p.typeid==type_id){
+            return p.getPrice();
+        }
+    });
+    return 0;
+}
 
 // Function to create and show the popup
 async function showBreakdownPopup() {
