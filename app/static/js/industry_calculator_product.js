@@ -883,7 +883,7 @@ async function loadMarketDataWithCache(typeId) {
             delete market_price_request_cache[int_typeId];
             if(Object.keys(market_price_request_cache).length === 0){
                 console.log(`!!DEBUG:Market data loading finished`);
-                loadAndCalcCost();
+                origin_product.loadAndCalcCost();
                 calcTotalMaterials();
             }
             else{
