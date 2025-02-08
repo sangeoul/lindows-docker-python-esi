@@ -1366,7 +1366,7 @@ async function displayTotalMaterials(){
             console.log("!!DEBUG : "+_price);
             div_totalQuantityPopup.innerHTML = 
             Math.ceil(m.quantity).toLocaleString() + " x " + 
-            _price + 
+            _price.toLocaleString() + 
             '<br>\n' +
             parseFloat(
                 (
@@ -1748,16 +1748,15 @@ function calcBonusMultiplier(me=10,bonus1=0,bonus2=0,bonus3=0){
 
 function getMaterialPrice(type_id) {
     type_id = parseInt(type_id);
-    console.log(product_array);
     
     for (let p of product_array) {
         if (p.typeid == type_id) {
-            console.log(`!!DEBUG : type_id=${type_id}'s price : ${p.getPrice()}`);
+
             return p.getPrice();
         }
     }
     
-    console.log(`!!DEBUG : cannot find type_id=${type_id}`);
+
     return 0;
 }
 
