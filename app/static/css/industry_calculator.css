@@ -356,7 +356,6 @@ div.popup-closing-overlay {
 
 div.price-popup{
     position: absolute;
-    transform: translate(-50%,0%);
 
     padding-left:5px;
     padding-right:5px;
@@ -368,9 +367,10 @@ div.price-popup{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 997;
 
-    display:inline-block;
-    transform: scaleX(0.85);
+    /* display:inline-block;
+    transform: scaleX(0.9);
     transform-origin: center;
+    */
 }
 
 /* End of  price popup ===================================================*/
