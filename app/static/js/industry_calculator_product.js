@@ -882,8 +882,12 @@ async function loadMarketDataWithCache(typeId) {
             // Remove the request from the request cache once completed
             delete market_price_request_cache[int_typeId];
             if(Object.keys(market_price_request_cache).length === 0){
+                console.log(`!!DEBUG:Market data loading finished`);
                 loadAndCalcCost();
                 calcTotalMaterials();
+            }
+            else{
+                console.log(`!!DEBUG:Left market data queue : ${Object.keys(market_price_request_cache).length}`);
             }
         }
     })();
@@ -1366,7 +1370,6 @@ async function displayTotalMaterials(){
 
 
         const _price=getMaterialPrice(m.id);
-        console.log("!!DEBUG : "+_price);
         div_totalQuantityPopup.innerHTML = 
         Math.ceil(m.quantity).toLocaleString() + " x " + 
         _price.toLocaleString() + ' ISK' + 
