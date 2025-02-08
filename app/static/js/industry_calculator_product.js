@@ -1365,6 +1365,7 @@ async function displayTotalMaterials(){
         td_totalQuantity.appendChild(span_totalQuantity);
         
         span_totalQuantity.addEventListener('mouseover', (e) => {
+            console.log("!!DEBUG : "+m.price);
             div_totalQuantityPopup.innerHTML = 
             Math.ceil(m.quantity).toLocaleString() + " x " + 
             (m.price ? m.price : '0') + 
@@ -1375,14 +1376,13 @@ async function displayTotalMaterials(){
                     (m.price ? m.price : 0)
                 ).toFixed(2)
             ).toLocaleString();
-            console.log("!!DEBUG : quantity mouseover");
+            
             div_totalQuantityPopup.style.left = e.pageX + 'px';
             div_totalQuantityPopup.style.top = e.pageY + 5 + 'px';
             div_totalQuantityPopup.classList.remove('hidden-data');
         });
         
         span_totalQuantity.addEventListener('mouseout', (e) => {
-            console.log("!!DEBUG : quantity mouseout");
             div_totalQuantityPopup.classList.add('hidden-data');
         });
     

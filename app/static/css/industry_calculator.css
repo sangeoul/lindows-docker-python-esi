@@ -357,6 +357,9 @@ div.popup-closing-overlay {
 div.price-popup{
     position: absolute;
     transform: translate(-50%,0%);
+    padding-left:3px;
+    padding-right:3px;
+    font-size:12px;
     overflow:hidden;
     text-align:left;
     background-color: rgb(240, 238, 207);
