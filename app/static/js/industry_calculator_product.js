@@ -1384,7 +1384,7 @@ async function displayTotalMaterials(){
 
             
             div_totalQuantityPopup.style.left = e.pageX + 'px';
-            div_totalQuantityPopup.style.bottom = e.pageY - 11 + 'px';
+            div_totalQuantityPopup.style.bottom = (e.pageY - 11) + 'px';
             div_totalQuantityPopup.classList.remove('hidden-data');
         });
         
