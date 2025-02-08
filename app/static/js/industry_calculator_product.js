@@ -1340,7 +1340,7 @@ async function displayTotalMaterials(){
 
         td_totalQuantity.classList.add('total-item-quantity');
         span_totalQuantity.classList.add('total-item-quantity');
-        div_totalQuantityPopup.classList.add('price-popup hidden-data');
+        div_totalQuantityPopup.classList.add('price-popup','hidden-data');
 
         div_totalQuantityPopup.textContent= Math.ceil(m.quantity).toLocaleString(); + " x " (market_price_cache[int_typeId]?market_price_cache[int_typeId]:'0') + '<br>\n'+
         parseFloat((Math.ceil(m.quantity)*(market_price_cache[int_typeId]?parseFloat(market_price_cache[int_typeId]):0)).toFixed(2)).toLocaleString();
