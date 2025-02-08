@@ -341,6 +341,20 @@ class Product {
         
 
     }
+    getPrice(){
+        if(this.pricetype===PRICETYPE_BUY){
+            return this.buyprice;
+        }
+        else if(this.pricetype===PRICETYPE_SELL){
+            return this.sellprice;
+        }
+        else if(this.pricetype===PRICETYPE_COST){
+            return this.costprice ;
+        }
+        else if(this.pricetype===PRICETYPE_CUSTOM){
+            return this.customprice;
+        }
+    }
     getPriceSum(){
         if(this.pricetype===PRICETYPE_BUY){
             return this.buyprice * this.getQuantity();
@@ -1107,11 +1121,13 @@ async function calcTotalMaterials(saveGlobal=true) {
                 if (idx !== -1) {
                     materialList[idx].quantity += node.getQuantity();
                 } else {
+                    
                     materialList.push({
                         id: node.typeid,
                         name: node.itemname,
                         icon: node.iconurl,
-                        quantity: node.getQuantity()
+                        quantity: node.getQuantity(),
+                        price:node.getPrice()
                     });
                 }
             } else {
@@ -1237,7 +1253,8 @@ async function calcTotalMaterials(saveGlobal=true) {
                     rawMaterials.push({
                         id:p.typeid,
                         name:p.itemname,
-                        icon:p.iconurl
+                        icon:p.iconurl,
+                        price:p.getPrice()
                     });
                 }
             }
@@ -1294,7 +1311,8 @@ async function calcTotalMaterials(saveGlobal=true) {
                                 id: material_id,
                                 name: rawMaterials[rmidx].name,
                                 icon: rawMaterials[rmidx].icon,
-                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0]
+                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0],
+                                price:rawMaterials[rmidx].price
                             });
                         }
 
