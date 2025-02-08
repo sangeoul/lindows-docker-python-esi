@@ -783,12 +783,10 @@ def get_buyback_history(contract_number):
         else:
             output_data.append(data)
 
-        return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"admin": is_admin,"input_results": input_data, "output_results": output_data}
-    
     cursor.close()
     conn.close()
-
-    return {}
+    return {"contract_id": contract_id ,"character_id": character_id, "character_name" : character_name, "is_completed": is_completed ,"admin": is_admin,"input_results": input_data, "output_results": output_data}
+    
     
 
 
