@@ -197,23 +197,23 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         output_price=output_price  # Example pricing logic with floor and buyback rate
                     ))
 
-                    # The rest of not reprocessed input as the output
-                    rest_material_amount=input_amount % required_input_amount
-                    stock_data=get_stock_info(input_id)
+                # The rest of not reprocessed input as the output
+                rest_material_amount=input_amount % required_input_amount
+                stock_data=get_stock_info(input_id)
 
-                    dynamic_buyback_rate = calculate_weighted_buyback_rate(rest_material_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
-                    output_price = math.floor(rest_material_amount) * input_price_data["buy"] * dynamic_buyback_rate
+                dynamic_buyback_rate = calculate_weighted_buyback_rate(rest_material_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
+                output_price = math.floor(rest_material_amount) * input_price_data["buy"] * dynamic_buyback_rate
 
-                    # Add the output item which is the same as the rest of input item
-                    item.outputs.append(Output_Item(
-                        output_id=input_id,
-                        output_name=input_name,
-                        output_amount=rest_material_amount,
-                        output_icon=input_icon,
-                        output_buyprice=input_price_data["buy"],
-                        output_sellprice=input_price_data["sell"],
-                        output_price=output_price  # Same dynamic buyback logic for the output
-                    ))
+                # Add the output item which is the same as the rest of input item
+                item.outputs.append(Output_Item(
+                    output_id=input_id,
+                    output_name=input_name,
+                    output_amount=rest_material_amount,
+                    output_icon=input_icon,
+                    output_buyprice=input_price_data["buy"],
+                    output_sellprice=input_price_data["sell"],
+                    output_price=output_price  # Same dynamic buyback logic for the output
+                ))
 
             cursor.close()
             conn.close()
