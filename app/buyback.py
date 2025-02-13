@@ -725,7 +725,7 @@ def buyback_submit():
         <body>
             <h1>Error: Price mismatch detected.</h1>
             <p>There was an issue with the prices. Please check the buyback values and try again.</p>
-            <a href="/buyback">Go back to Buyback page</a>
+            <a href="/industry/buyback">Go back to Buyback page</a>
         </body>
         </html>
         """
