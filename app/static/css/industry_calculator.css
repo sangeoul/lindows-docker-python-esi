@@ -123,7 +123,10 @@ table.reaction-kind{
 table.reaction-kind,table.reaction-kind tr,table.reaction-kind td{
     border:0px solid rgba(0, 0, 0, 0);
     vertical-align:top;
-    text-align:right;
+    text-align:left;
+}
+span.checkbox-lable-text{
+    width:108px;
 }
 
 input.index-input{
