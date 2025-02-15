@@ -442,7 +442,7 @@ div.price-popup{
 }
 
 .switch input#reaction-checkbox1:checked + .slider ,  .switch input#reaction-checkbox2:checked + .slider,.switch input#reaction-checkbox3:checked + .slider,.switch input#reaction-checkbox4:checked + .slider{
-    background-color: rgb(37, 63, 206);
+    background-color: rgb(92, 116, 255);
 }
 
 /* Move the slider handle when the checkbox is checked */
