@@ -127,6 +127,7 @@ table.reaction-kind,table.reaction-kind tr,table.reaction-kind td{
 }
 span.checkbox-lable-text{
     width:108px;
+    display:inline-block;
 }
 
 input.index-input{
@@ -438,6 +439,10 @@ div.price-popup{
 /* When the checkbox is checked, change the background color */
 .switch input:checked + .slider {
     background-color: rgb(35,165,90);
+}
+
+.switch input#reaction-checkbox1:checked + .slider ,  .switch input#reaction-checkbox2:checked + .slider,.switch input#reaction-checkbox3:checked + .slider,.switch input#reaction-checkbox4:checked + .slider{
+    background-color: rgb(37, 63, 206);
 }
 
 /* Move the slider handle when the checkbox is checked */
