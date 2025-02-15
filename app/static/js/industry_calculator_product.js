@@ -749,8 +749,9 @@ class Product {
             if(calcCost){
                 this.loadAndCalcCost();
             }
-            this.isEndNode=(this.materials.length==0);
+            
         }
+        this.isEndNode=(this.materials.length==0);
         if(!this.isEndNode){
             this.pricetype=PRICETYPE_COST;
         }
