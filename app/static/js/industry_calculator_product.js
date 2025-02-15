@@ -424,7 +424,7 @@ class Product {
         settingIcon.alt = 'Settings';
         settingIcon.classList.add('setting-icon');
         //settingIconCell.appendChild(settingIcon);
-        settingIconCell.textContent=" [B]"
+        settingIconCell.textContent=""
 
         row1.appendChild(itemIconCell);
         row1.appendChild(itemNameCell);
@@ -751,7 +751,9 @@ class Product {
             }
             
         }
+
         this.isEndNode=(this.materials.length==0);
+
         if(!this.isEndNode){
             this.pricetype=PRICETYPE_COST;
         }
