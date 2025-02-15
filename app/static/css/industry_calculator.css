@@ -121,7 +121,7 @@ table.reaction-kind{
     display:inline-table;
 }
 table.reaction-kind,table.reaction-kind tr,table.reaction-kind td{
-    border:0px solid white;
+    border:0px solid rgba(0, 0, 0, 0);
 }
 
 input.index-input{
