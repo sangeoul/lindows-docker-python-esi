@@ -122,6 +122,7 @@ table.reaction-kind{
 }
 table.reaction-kind,table.reaction-kind tr,table.reaction-kind td{
     border:0px solid rgba(0, 0, 0, 0);
+    vertical-align:top;
 }
 
 input.index-input{
