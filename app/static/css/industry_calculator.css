@@ -105,11 +105,16 @@ button.detail-button{
 
 td.opentree-detail , td.bonus-detail{
     width:34px;
+    vertical-align:top;
 }
 
 button.open-tree{
     width:80px;
     padding:3px;
+}
+
+table.reaction-kind{
+    display:inline-table;
 }
 
 input.index-input{
