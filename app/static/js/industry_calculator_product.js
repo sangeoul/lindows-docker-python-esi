@@ -21,7 +21,7 @@ const CONSTRUCTION_COMPONENTS = [11530,11531,11532,11533,11534,11535,11536,11537
 const CAPITAL_CONSTRUCTION_COMPONENTS = [21009,21011,21013,21017,21019,21021,21023,21025,21027,21029,21035,21037,21039,21041,24545,24547,24556,24558,24560,53035,53036,53037,57487,57488,57489];
 const COMPOSITE = [16670,16671,16672,16673,16678,16679,16680,16681,16682,16683,17317,33359,33360,33361,33362,57456,57457];
 const INTERMEDIATE_MATERIALS = [16654,16655,16656,16657,16658,16659,16660,16661,16662,16663,16664,16665,16666,16667,16668,16669,17769,17959,17960,20431,29659,29660,29661,29662,29663,29664,32821,32822,32823,32824,32825,32826,32827,32828,32829,33336,33337,33338,33339,57453,57454,57455];
-const BIOCHEMICAL_MATERIAL = [25237,25241,25242,25252,25283,25330,25331,25332,25333,25334,25335,25336,25337,25338,25339,25340,25341,25342,25343,25344,25345,25346,25347,25348,28686,28687,28688,28689,28690,28691,28692,28693];
+const BIOCHEMICAL_MATERIALSS = [25237,25241,25242,25252,25283,25330,25331,25332,25333,25334,25335,25336,25337,25338,25339,25340,25341,25342,25343,25344,25345,25346,25347,25348,28686,28687,28688,28689,28690,28691,28692,28693];
 const MOLECULAR_FORGED_MATERIALS = [57458,57459,57460,57461,57462,57463,57464,57465,57466,57467,57468,57469];
 const QUANTITY_OPTION_PRICE=1;
 const QUANTITY_OPTION_MATERIAL=2;
@@ -1024,6 +1024,10 @@ async function openFollowingTree(product){
     checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
     checkboxes["component"]=document.querySelector("#component-checkbox:checked");
     checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
+    checkboxes["composite"]=document.querySelector("#reaction-checkbox1:checked");
+    checkboxes["intermediate"]=document.querySelector("#reaction-checkbox2:checked");
+    checkboxes["biochemical"]=document.querySelector("#reaction-checkbox3:checked");
+    checkboxes["molecular_forged"]=document.querySelector("#reaction-checkbox4:checked");
     checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
     checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
@@ -1040,8 +1044,41 @@ async function openFollowingTree(product){
                 continue;
             }
                 
-        }else if(COMPOSITE.includes(node.typeid) || INTERMEDIATE_MATERIALS.includes(node.typeid) || BIOCHEMICAL_MATERIAL.includes(node.typeid) || MOLECULAR_FORGED_MATERIALS.includes(node.typeid)){
-            if(checkboxes["reaction"]){
+        }else if(COMPOSITE.includes(node.typeid)){
+            if(checkboxes["composite"]){
+                await node.openNextTree(false);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
+                await openFollowingTree(node);
+            }else {
+                node.closeTree(true);
+                continue;
+            }
+        }else if(INTERMEDIATE_MATERIALS.includes(node.typeid)){
+            if(checkboxes["intermediate"]){
+                await node.openNextTree(false);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
+                await openFollowingTree(node);
+            }else {
+                node.closeTree(true);
+                continue;
+            }
+        }else if(BIOCHEMICAL_MATERIALS.includes(node.typeid)){
+            if(checkboxes["biochemical"]){
+                await node.openNextTree(false);
+                if(node.manufacturing_level%2){
+                    await delay(1);
+                }
+                await openFollowingTree(node);
+            }else {
+                node.closeTree(true);
+                continue;
+            }
+        }else if(MOLECULAR_FORGED_MATERIALS.includes(node.typeid)){
+            if(checkboxes["molecular_forged"]){
                 await node.openNextTree(false);
                 if(node.manufacturing_level%2){
                     await delay(1);
@@ -1734,7 +1771,7 @@ function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
         const structureAndRigBonus=document.querySelector("#component-structure-efficiency-bonus").value;
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
-    if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id) || BIOCHEMICAL_MATERIAL.includes(type_id) || MOLECULAR_FORGED_MATERIALS.includes(type_id)){
+    if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id) || BIOCHEMICAL_MATERIALS.includes(type_id) || MOLECULAR_FORGED_MATERIALS.includes(type_id)){
         
         const structureAndRigBonus=document.querySelector("#reaction-structure-efficiency-bonus").value;
         return calcBonusMultiplier(0,structureAndRigBonus)

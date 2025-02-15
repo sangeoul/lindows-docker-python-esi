@@ -585,16 +585,37 @@ async function addAllEventListener(){
     const inputs_openTreeCheckboxes=[
         [document.querySelector('#basement-lable'),document.querySelector('#basement-checkbox')],
         [document.querySelector('#component-lable'),document.querySelector('#component-checkbox')],
-        [document.querySelector('#reaction-lable'),document.querySelector('#reaction-checkbox')],
-        [document.querySelector('#fuel-lable'),document.querySelector('#fuel-checkbox')]
+        //[document.querySelector('#reaction-lable'),document.querySelector('#reaction-checkbox')],
+        [document.querySelector('#fuel-lable'),document.querySelector('#fuel-checkbox')],
+        [document.querySelector('#reaction-lable1'),document.querySelector('#reaction-checkbox1')],
+        [document.querySelector('#reaction-lable2'),document.querySelector('#reaction-checkbox2')],
+        [document.querySelector('#reaction-lable3'),document.querySelector('#reaction-checkbox3')],
+        [document.querySelector('#reaction-lable4'),document.querySelector('#reaction-checkbox4')]
     ];
 
-    for(let i=0;i<4;i++){
+    for(let i=0;i<inputs_openTreeCheckboxes.length;i++){
         inputs_openTreeCheckboxes[i][1].addEventListener('click',()=>{
             inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
         });
         inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
     }
+
+
+
+    //Connect Reaction checkbox to sub checkboxes below and add eventListener
+    const reaction_lable=document.querySelector('#reaction-lable');
+    const reaction_checkbox=document.querySelector('#reaction-checkbox');
+    reaction_checkbox.addEventListener('click',()=>{
+        reaction_lable.classList.toggle('active-lable',reaction_checkbox.checked);
+
+        for(let i=3;i<7;i++){
+            inputs_openTreeCheckboxes[i][1].checked=reaction_checkbox.checked;
+            inputs_openTreeCheckboxes[i][0].classList.toggle('active-lable',inputs_openTreeCheckboxes[i][1].checked);
+            saveValueToCookie(inputs_openTreeCheckboxes[i][1]);
+        }      
+        
+    });
+    reaction_lable.classList.toggle('active-lable',reaction_checkbox.checked);
 
     // Save values to cookies whenever they change
     document.addEventListener("input", function(event) {
