@@ -105,7 +105,11 @@ button.detail-button{
 
 td.opentree-detail , td.bonus-detail{
     width:34px;
+    
+}
+td.opentree-detail , td.opentree-list , td.bonus-detail{
     vertical-align:top;
+    
 }
 
 button.open-tree{
