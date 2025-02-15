@@ -119,7 +119,9 @@ button.open-tree{
 
 table.reaction-kind{
     display:inline-table;
-    margin-top:10px;
+}
+table.reaction-kind tr td{
+    border:0px solid white;
 }
 
 input.index-input{
