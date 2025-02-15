@@ -168,52 +168,54 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                 for row in rows:
                     output_id, output_amount, required_input_amount = row
                     possible_conversions = input_amount // required_input_amount
-
-                    # Calculate the resulting output amount by considering refining rate
-                    total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist)
-
-                    # Get output icon using type_id
-                    output_icon = get_icon_by_typeid(output_id)
-
-                    # Fetch output prices using get_affordable_price function
-                    output_pricedata=get_affordable_price([output_id])
-                    output_sellprice, output_buyprice = output_pricedata[output_id]["sell"], output_pricedata[output_id]["buy"]
-
-                    stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
-
-                    dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
                     
-                    # Calculate output price
-                    output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
+                    if possible_conversions:
+                        # Calculate the resulting output amount by considering refining rate
+                        total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist)
 
-                    # Add the output to the item's output list
-                    item.outputs.append(Output_Item(
-                        output_id=output_id,
-                        output_name=get_itemname_by_typeid(output_id),  # You can fetch this if needed
-                        output_amount=total_output_amount,
-                        output_icon=output_icon,
-                        output_buyprice=output_buyprice,
-                        output_sellprice=output_sellprice,
-                        output_price=output_price  # Example pricing logic with floor and buyback rate
-                    ))
+                        # Get output icon using type_id
+                        output_icon = get_icon_by_typeid(output_id)
+
+                        # Fetch output prices using get_affordable_price function
+                        output_pricedata=get_affordable_price([output_id])
+                        output_sellprice, output_buyprice = output_pricedata[output_id]["sell"], output_pricedata[output_id]["buy"]
+
+                        stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
+
+                        dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
+                        
+                        # Calculate output price
+                        output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
+
+                        # Add the output to the item's output list
+                        item.outputs.append(Output_Item(
+                            output_id=output_id,
+                            output_name=get_itemname_by_typeid(output_id),  # You can fetch this if needed
+                            output_amount=total_output_amount,
+                            output_icon=output_icon,
+                            output_buyprice=output_buyprice,
+                            output_sellprice=output_sellprice,
+                            output_price=output_price  # Example pricing logic with floor and buyback rate
+                        ))
 
                 # The rest of not reprocessed input as the output
                 rest_material_amount=input_amount % required_input_amount
-                stock_data=get_stock_info(input_id)
+                if rest_material_amount:
+                    stock_data=get_stock_info(input_id)
 
-                dynamic_buyback_rate = calculate_weighted_buyback_rate(rest_material_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
-                output_price = math.floor(rest_material_amount) * input_price_data["buy"] * dynamic_buyback_rate
+                    dynamic_buyback_rate = calculate_weighted_buyback_rate(rest_material_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
+                    output_price = math.floor(rest_material_amount) * input_price_data["buy"] * dynamic_buyback_rate
 
-                # Add the output item which is the same as the rest of input item
-                item.outputs.append(Output_Item(
-                    output_id=input_id,
-                    output_name=input_name,
-                    output_amount=rest_material_amount,
-                    output_icon=input_icon,
-                    output_buyprice=input_price_data["buy"],
-                    output_sellprice=input_price_data["sell"],
-                    output_price=output_price  # Same dynamic buyback logic for the output
-                ))
+                    # Add the output item which is the same as the rest of input item
+                    item.outputs.append(Output_Item(
+                        output_id=input_id,
+                        output_name=input_name,
+                        output_amount=rest_material_amount,
+                        output_icon=input_icon,
+                        output_buyprice=input_price_data["buy"],
+                        output_sellprice=input_price_data["sell"],
+                        output_price=output_price  # Same dynamic buyback logic for the output
+                    ))
 
             cursor.close()
             conn.close()
