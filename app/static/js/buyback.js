@@ -214,3 +214,22 @@ function open_notice_popup(){
     window.open('/buyback_notice?language=ko', 'popupWindow', 'width=600,height=400,scrollbars=yes');
 
 }
+
+document.addEventListener('DOMContentLoaded',()=>{
+
+    const hover_introduction=document.querySelector('#hover_introduction');
+    const question_mark=document.querySelector('#questionmark');
+    
+    question_mark.addEventListener('mouseover',()=>{
+        const rect=question_mark.getBoundingClientRect();
+        
+        hover_introduction.style.left=(rect.left-5)+'px';
+        hover_introduction.style.top=(rect.top-5)+'px';
+    
+        hover_introduction.classList.remove('hidden-data');
+    });
+
+    hover_introduction.addEventListener('mouseout',()=>{
+        hover_introduction.classList.add('hidden-data');
+    });
+});

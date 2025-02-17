@@ -232,3 +232,21 @@ td.amount, td.price, td.buyback-rate
 { 
     text-align: right;
 }
+
+div.hover-introduction{
+    width:40%;
+    border:2px solid black;
+    position:absolute;
+    z-index:900;
+
+}
+
+img#questionmark{
+    display:inline-block;
+    width:16px;
+    height:16px;
+}
+
+.hidden-data{
+    display:none !important;
+}

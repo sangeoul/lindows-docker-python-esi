@@ -21,9 +21,7 @@
             {% else %}
                 <p>Character : {{ character_name }} <a href="{{url_for('logout')}}">Logout</a></p>
             {% endif %}
-            <p><a href="{{ url_for('buyback_notice') }}" target="_blank">Detailed Information</a>-<a href="{{ url_for('buyback_notice') }}?language=ko" target="_blank">상세 설명(한글)</a></p>
-            </p>
-            <p>Buyback contract to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a>, at between <font class="eve-link">FR46-E</font> ~ <font class="eve-link">O3-4MN</font></p>
+            
 
             <!--
             <label for="language">Input language:</label>
@@ -33,7 +31,7 @@
             </select>
             -->
 
-            <label for="input_items">Enter Items:</label>
+            <label for="input_items">Enter Items <img src="{{ url_for('static', filename='img/question.png') }}" id="questionmark">:</label>
             <textarea id="input_items" name="input_items" rows="10" cols="50"></textarea>
 
             <button type="button" id="calculateButton" class="btn">Calculate</button>
@@ -48,7 +46,18 @@
         <div id="submitSection" class="submit-section"> 
             <button type="button" id="submitButton" class="btn">Submit</button>
         </div>
+
     </div>
     <script src="{{ url_for('static', filename='js/buyback.js') }}" defer></script>  
 </body>
+<div id="hover_introduction" class="hover-intoruction hidden-data">
+    <p>Copy and paste your item list and click 'Calculate' button.<br>
+    After check result, click 'Submit' button to submit. <br>
+    Then create contract in game with the calculated price. </p>
+    <p>Buyback contract to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a>, at between <font class="eve-link">FR46-E</font> ~ <font class="eve-link">O3-4MN</font></p>   
+    <p><a href="{{ url_for('buyback_notice') }}" target="_blank">Detailed Introduction</a></p>
+    <p><a href="{{ url_for('buyback_notice') }}?language=ko" target="_blank">상세 설명(한글)</a></p>
+</p>
+</div>
 </html>
+
