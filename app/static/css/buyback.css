@@ -241,7 +241,7 @@ div.hover-introduction{
     z-index:900;
 
 }
-div#fullscreenDiv {
+div#coverscreen {
     position: fixed;
     top: 0;
     left: 0;
