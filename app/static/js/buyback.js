@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         hover_introduction.style.top=(rect.top-5)+'px';
     
         hover_introduction.classList.remove('hidden-data');
-        coverscreen.classList.remomve('hidden-data');
+        coverscreen.classList.remove('hidden-data');
     });
 
     coverscreen.addEventListener('click',()=>{
