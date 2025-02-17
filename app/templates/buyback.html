@@ -34,7 +34,7 @@
             <label for="input_items">Enter Items <img src="{{ url_for('static', filename='img/question.png') }}" id="questionmark">:</label>
             <textarea id="input_items" name="input_items" rows="10" cols="50"></textarea>
 
-            <button type="button" id="calculateButton" class="btn">Calculate</button>
+            <button type="button" id="calculateButton" class="btn calculateButton">Calculate</button>
         </form>
 
         <!-- Results Section -->
@@ -44,15 +44,15 @@
 
         <!-- Submit Button (Initially hidden) -->
         <div id="submitSection" class="submit-section"> 
-            <button type="button" id="submitButton" class="btn">Submit</button>
+            <button type="button" id="submitButton" class="btn submitButton">Submit</button>
         </div>
 
     </div>
     <script src="{{ url_for('static', filename='js/buyback.js') }}" defer></script>  
 </body>
 <div id="hover_introduction" class="hidden-data hover-introduction">
-    <p>Copy and paste your item list and click 'Calculate' button.<br>
-    After check result, click 'Submit' button to submit. <br>
+    <p>Copy and paste your item list and click <button class="btn calculateButton">Calculate</button><br>
+    After check result, click '<button class="btn submitButton">Submit</button><br>
     Then create contract in game with the calculated price. </p>
     <p>Buyback contract to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a>, at between <font class="eve-link">FR46-E</font> ~ <font class="eve-link">O3-4MN</font></p>   
     <p><a href="{{ url_for('buyback_notice') }}" target="_blank">Detailed Introduction</a></p>

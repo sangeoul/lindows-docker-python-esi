@@ -71,7 +71,7 @@ select, button {
     border: 1px solid #ccc;
 }
 
-button#calculateButton {
+button.calculateButton {
     padding: 2px 5px;       /* Adjust the button padding */
     font-size: 14px;         /* Reduce the font size */
     height:28px;
@@ -83,7 +83,7 @@ button#calculateButton {
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
-button#calculateButton:hover {
+button.calculateButton:hover {
     background-color: #0056b3; /* Darker blue when hovered */
 }
 
@@ -105,7 +105,7 @@ button#calculateButton:hover {
     display: none;
 }
 /* Submit Button Styling */
-button#submitButton {
+button.submitButton {
     padding: 2px 5px;       /* Adjust the button padding */
     font-size: 14px;         /* Reduce the font size */
     height:28px;
@@ -118,7 +118,7 @@ button#submitButton {
 }
 
 /* Submit Button Hover Effect */
-button#submitButton:hover {
+button.submitButton:hover {
     background-color: #0056b3; /* Darker blue background when hovered */
     border-color: #00812b; /* Keep the green border to match the initial state */
 }
