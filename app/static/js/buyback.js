@@ -219,8 +219,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     const hover_introduction=document.querySelector('#hover_introduction');
     const question_mark=document.querySelector('#questionmark');
+    const coverscreen=document.querySelector('#coverscreen');
     
-    question_mark.addEventListener('mouseover',()=>{
+    question_mark.addEventListener('click',()=>{
         const rect=question_mark.getBoundingClientRect();
         
         hover_introduction.style.left=(rect.left-5)+'px';
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         hover_introduction.classList.remove('hidden-data');
     });
 
-    hover_introduction.addEventListener('mouseout',()=>{
+    coverscreen.addEventListener('click',()=>{
         hover_introduction.classList.add('hidden-data');
     });
 });
