@@ -236,6 +236,7 @@ td.amount, td.price, td.buyback-rate
 div.hover-introduction{
     width:40%;
     border:2px solid black;
+    background-color: white;
     position:absolute;
     z-index:900;
 
