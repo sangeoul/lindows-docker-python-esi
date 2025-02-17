@@ -256,6 +256,7 @@ img#questionmark{
     display:inline-block;
     width:16px;
     height:16px;
+    cursor:pointer;
 }
 
 .hidden-data{
