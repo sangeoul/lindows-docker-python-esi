@@ -195,7 +195,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
         const div_tab2=document.createElement('div');
         div_tab2.setAttribute('id','tab2');
-        div_tab2.classList.add("tab","active");
+        div_tab2.classList.add("tab");
         
         data.output_results = sortedOutputResults;
 
