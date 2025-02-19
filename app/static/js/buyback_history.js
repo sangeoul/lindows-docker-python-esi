@@ -17,7 +17,7 @@ document.querySelectorAll(".tab-link").forEach(button => {
 document.addEventListener("DOMContentLoaded", async function() {
 
     
-    document.querySelector('#copy_ubuntu').addEventListener(()=>{
+    document.querySelector('#copy_ubuntu').addEventListener('click',()=>{
         navigator.clipboard.writeText("Ubuntu Hakurei").then(function() { 
             console.log("'Ubuntu Hakurei' is copied to clipboard.");
             showNotification("'Ubuntu Hakurei' is copied to clipboard.",'left-bottom');
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const span_price=document.querySelector('#copy_price');
 
-    span_price.ddEventListener(()=>{
+    span_price.addEventListener('click',()=>{
         navigator.clipboard.writeText(span_price.getAttribute('data-value')).then(function() { 
             console.log("The price is copied to clipboard.");
             showNotification("The price is copied to clipboard.",'left-bottom');
