@@ -260,8 +260,8 @@ img#questionmark{
 }
 
 
-tr.total-price{
-    font-size:20px;
+tr.total-price td{
+    font-size:25px;
     font-weight:bold;
 }
 .hidden-data{
