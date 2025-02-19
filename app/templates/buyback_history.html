@@ -14,7 +14,7 @@
         <form method="GET" action="{{ url_for('buyback_history') }}">
             <label for="contract_number">Enter Contract Number:</label>
             <input type="text" id="contract_number" name="contract_number" value="{{ contract_number or '' }}" required>
-            <button type="submit" class="btn">Submit</button>
+            <button type="submit" class="submitButton">Submit</button>
         </form>
 
         <!-- Results Section -->
@@ -60,7 +60,7 @@
                         <!-- Sum of total prices for output items -->
                         <tr>
                             <td colspan="2"><strong>Total (Output Items)</strong></td>
-                            <td class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
+                            <td colspan="2" class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -94,7 +94,7 @@
                         <!-- Sum of total prices for output items -->
                         <tr>
                             <td colspan="2"><strong>Total (Output Items)</strong></td>
-                            <td class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
+                            <td colspan="2" class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
                             <td></td>
                         </tr>
                     </tbody>
