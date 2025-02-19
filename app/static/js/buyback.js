@@ -97,7 +97,8 @@ document.getElementById("calculateButton").addEventListener("click", function() 
             const td_amount=document.createElement('td');
             const td_price=document.createElement('td');
             const td_rate=document.createElement('td');
-
+            
+            tr_itemline.classList.add('valid-'+input.valid);
             td_name.classList.add('item-name');
             td_amount.classList.add('amount');
             td_price.classList.add('price');
