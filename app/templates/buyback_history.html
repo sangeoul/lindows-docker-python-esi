@@ -24,8 +24,8 @@
                 <p>Contract from {{data.character_name}}</p>
             {% endif %}
             {% if contract_number %}
-            <p>Contract to <span id="copy_ubuntu" class="eve-link">Ubuntu Hakurei</span></p>
-            <p>Contract price : <span id="copy_price" class="eve-link" data-value="{{ data.output_results | sum(attribute='total_price') }}">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</span></p>
+            <p>Contract to <span id="copy_ubuntu" class="eve-link">Ubuntu Hakurei 📋</span></p>
+            <p>Contract price : <span id="copy_price" class="total-price" data-value="{{ data.output_results | sum(attribute='total_price') }}">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }} 📋</span></p>
                 {% if data.is_completed %}
                     <p class="accepted-message">Accepted.</p>
                 {% else %}
