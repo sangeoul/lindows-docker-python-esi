@@ -579,7 +579,7 @@ def buyback_submit():
         <body>
             <h1>Error: Invalid data. Input or Output items missing.</h1>
             <p>Please check your input or output data and try again.</p>
-            <a href="/buyback">Go back to Buyback page</a>
+            <a href="industry/buyback">Go back to Buyback page</a>
         </body>
         </html>
         """
@@ -714,7 +714,7 @@ def buyback_submit():
             <body>
                 <h1>Error: A database error occurred while processing your buyback contract.</h1>
                 <p>There was an issue saving your contract details. Please try again later.</p>
-                <a href="/buyback">Go back to Buyback page</a>
+                <a href="industry/buyback">Go back to Buyback page</a>
             </body>
             </html>
             """
@@ -733,7 +733,7 @@ def buyback_submit():
             <body>
                 <h1>Error: An unexpected error occurred.</h1>
                 <p>Something went wrong while processing your request. Please try again later.</p>
-                <a href="/buyback">Go back to Buyback page</a>
+                <a href="/industry/buyback">Go back to Buyback page</a>
             </body>
             </html>
             """
