@@ -57,12 +57,10 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         const sortedResults = Object.fromEntries(
             Object.entries(data.results).sort((a, b) => b[1].input_price - a[1].input_price)
         );
-        
         data.results = sortedResults;
 
-        const sortedOutputResults = Object.fromEntries(
-            Object.entries(data.output_results).sort((a, b) => b[1].output_price - a[1].output_price)
-        );
+        const sortedOutputResults = data.output_results.sort((a, b) => b.output_price - a.output_price);
+        data.output_results=sortedOutputResults;
 
 
         const div_tab1=document.createElement('div');
@@ -277,7 +275,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
         // Tab 2 content (Output Items)
 
-        /*
+        
         const tab2Content = `
             <div id="tab2" class="tab">
                 <h2>Output Items</h2>
