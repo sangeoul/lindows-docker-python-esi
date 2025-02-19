@@ -109,11 +109,11 @@ button.btn:hover {
 }
 
 /* Style for icon */
-.item-icon {
-    width: 30px;   /* Set the width of the icon */
-    height: 30px;  /* Set the height of the icon */
-    margin-right: 1px;  /* Optional: space between icon and text */
-    vertical-align: middle;  /* Vertically align the icon */
+
+img {
+    margin-right: 10px;
+    width: 30px; /* Larger icons */
+    vertical-align: middle;
 }
 
 /* Make the 'Input Items' and 'Output Items' headers smaller */
