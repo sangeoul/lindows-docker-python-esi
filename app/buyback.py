@@ -480,6 +480,7 @@ def buyback_calculate(parsed_items, language='en'):
         input_amount = item_data['input_amount']
         
         # Find the input_id based on input_name
+        item=None
         try:
             input_id = type_id_list[input_name]
 
