@@ -673,7 +673,7 @@ def buyback_submit():
             conn.close()
 
             # Step 5: Render success page inline
-            return redirect(url_for('example',contract_number=new_contract_id))
+            return redirect(url_for('buyback_history',contract_number=new_contract_id))
         
             return f"""
             <!DOCTYPE html>
