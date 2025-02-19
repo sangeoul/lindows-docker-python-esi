@@ -494,9 +494,14 @@ def buyback_calculate(parsed_items, language='en'):
             print(f"Unexpected error: {e}")
 
         
-        if not item:
+        if item == None:
             # Mark the item as invalid in the results
-            results[input_name] = {'valid': False}
+            results[input_name] = {'valid': False,
+                                   'input_id':0,
+                                   'input_price':0,
+                                   'input_amount':input_amount,
+                                   'input_buyprice':0
+                                   }
             continue
         
         # Calculate total price from all outputs
