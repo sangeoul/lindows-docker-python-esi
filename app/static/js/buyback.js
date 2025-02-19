@@ -107,7 +107,6 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
             img_icon.setAttribute('src',data.icons[item]);
             img_icon.setAttribute('alt',item);
-            img_icon.setAttribute('width','30');
             span_name.innerHTML=item;
             td_name.appendChild(img_icon);
             td_name.appendChild(span_name);
@@ -187,7 +186,6 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
             img_icon.setAttribute('src',output.output_icon);
             img_icon.setAttribute('alt',output.output_name);
-            img_icon.setAttribute('width','30');
             span_name.innerHTML=output.output_name;
             td_name.appendChild(img_icon);
             td_name.appendChild(span_name);

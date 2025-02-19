@@ -197,19 +197,7 @@ tr.valid-false{
 }
 
 /* Result List Styling */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul li {
-    padding: 3px 0; /* Reduced line height */
-    font-size: 13px; /* Reduced font size */
-    display: flex;
-    align-items: center;
-}
-
-ul li img {
+img {
     margin-right: 10px;
     width: 30px; /* Larger icons */
     vertical-align: middle;
