@@ -482,20 +482,18 @@ def buyback_calculate(parsed_items, language='en'):
         # Find the input_id based on input_name
         try:
             input_id = type_id_list[input_name]
+
+            # Create the buyback item using the helper function
+            item = create_buyback_item(input_id, input_name, input_amount,input_price_data[input_id], language, whitelist)
+
         
             
         except Exception as e:
             # Catch any other exceptions and display a generic error message
             print(f"Unexpected error: {e}")
 
-
         
-        
-        # Create the buyback item using the helper function
-        item = create_buyback_item(input_id, input_name, input_amount,input_price_data[input_id], language, whitelist)
-
-        
-        if item is None:
+        if not item:
             # Mark the item as invalid in the results
             results[input_name] = {'valid': False}
             continue
