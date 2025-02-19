@@ -34,16 +34,125 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         resultSection.innerHTML = ''; // Clear old results
 
         // Tab links
-        const tabLinks = `
-            <div class="tab-links">
-                <button class="tab-link active" data-tab="1">Input</button>
-                <button class="tab-link" data-tab="2">Output</button>
-            </div>
-        `;
-        resultSection.insertAdjacentHTML("beforeend", tabLinks);
 
+        const div_tablinks=document.createElement('div');
+        const button_tab1=document.createElement('button');
+        const button_tab2=document.createElement('button');
+
+        div_tablinks.classList.add('tab-links');
+        button_tab1.classList.add('tab-link','active');
+        button_tab1.setAttribute('data-tab',"1");
+        button_tab1.innerHTML="Input";
+        button_tab2.classList.add('tab-link');
+        button_tab2.setAttribute('data-tab',"2");
+        button_tab2.innerHTML="Output";
+
+        div_tablinks.appendChild(button_tab1);
+        div_tablinks.appendChild(button_tab2);
+
+        resultSection.appendChild(div_tablinks);
+
+
+        // Sort 
+        const sortedResults = Object.fromEntries(
+            Object.entries(data.results).sort((a, b) => b[1].input_price - a[1].input_price)
+        );
+        
+        data.results = sortedResults;
+
+        const sortedOutputResults = Object.fromEntries(
+            Object.entries(data.output_results).sort((a, b) => b[1].output_price - a[1].output_price)
+        );
+
+
+        const div_tab1=document.createElement('div');
+        div_tab1.setAttribute('id','tab1');
+        div_tab1.classList.add("tab","active");
+
+        
+        data.output_results = sortedOutputResults;
+
+        const table_inputItems=document.createElement('table')
+        
+        const tr_inputHead=document.createElement('tr');
+        const th_inputHeadItem=document.createElement('th');
+        const th_inputHeadAmount=document.createElement('th');
+        const th_inputHeadPrice=document.createElement('th');
+        const th_inputHeadRate=document.createElement('th');
+
+        th_inputHeadItem.innerHTML='Item';
+        th_inputHeadAmount.innerHTML='Amount';
+        th_inputHeadPrice.innerHTML='Price (ISK)';
+        th_inputHeadRate.innerHTML='Buyback Rate';
+        tr_inputHead.appendChild(th_inputHeadItem);
+        tr_inputHead.appendChild(th_inputHeadAmount);
+        tr_inputHead.appendChild(th_inputHeadPrice);
+        tr_inputHead.appendChild(th_inputHeadRate);
+
+        
+        Object.entries(data.results).map(([item,input])=>{
+
+            const tr_itemline=document.createElement('tr');
+            const td_name=document.createElement('td');
+            const img_icon=document.createElement('img');
+            const span_name=document.createElement('span');
+            const td_amount=document.createElement('td');
+            const td_price=document.createElement('td');
+            const td_rate=document.createElement('td');
+
+            td_name.classList.add('item-name');
+            td_amount.classList.add('amount');
+            td_price.classList.add('price');
+            td_rate.classList.add('buyback-rate');
+
+
+            img_icon.setAttribute('src',data.icons[item]);
+            img_icon.setAttribute('alt',item);
+            img_icon.setAttribute('width','30');
+            span_name.innerHTML=item;
+            td_name.appendChild(img_icon);
+            td_name.appendChild(span_name);
+
+            td_amount.innerHTML=input.input_amount.toLocaleString();
+            td_price.innerHTML=parseFloat(input.input_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            td_rate.innerHTML=(input.input_buyprice > 0 ?
+                parseFloat((input.input_price * 100 / (input.input_buyprice * input.input_amount)).toFixed(2)).toLocaleString() + "%" :
+                "No Jita buy");
+
+            tr_itemline.appendChild(td_name);
+            tr_itemline.appendChild(td_amount);
+            tr_itemline.appendChild(td_price);
+            tr_itemline.appendChild(td_rate);
+
+            table_inputItems.appendChild(tr_itemline);
+        });
+
+        const tr_inputTotalPrice=document.createElement('tr');
+        const td_inputTotalPriceHead=document.createElement('td');
+        const td_inputTotalPrice=document.createElement('td');
+
+        tr_inputTotalPrice.classList.add('total-price');
+
+        td_inputTotalPriceHead.setAttribute('colspan','2');
+        td_inputTotalPriceHead.innerHTML='Total Price';
+
+        td_inputTotalPrice.innerHTML=Object.values(data.results).reduce((sum, input) => sum + input.input_price, 0).toLocaleString();
+
+        tr_inputTotalPrice.appendChild(td_inputTotalPriceHead);
+        tr_inputTotalPrice.appendChild(td_inputTotalPrice);
+
+        table_inputItems.appendChild(tr_inputTotalPrice);
+
+        div_tab1.appendChild(table_inputItems);
+
+
+
+
+        
         // Tab 1 content (Input Items)
-        const tab1Content = `
+        /*const tab1Content =
+        
+        `
             <div id="tab1" class="tab active">
                 <h2>Input Items</h2>
                 <table>
@@ -51,7 +160,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
                         <tr>
                             <th>Item</th>
                             <th>Amount</th>
-                            <th>Total Price (ISK)</th>
+                            <th>Price (ISK)</th>
                             <th>Buyback Rate</th>
                         </tr>
                     </thead>
@@ -74,9 +183,9 @@ document.getElementById("calculateButton").addEventListener("click", function() 
                         <tr>
                             <td colspan="2"><strong>Total Price</strong></td>
                             <td colspan="2">
-                                <strong>
+                                <span class="total-price">
                                     ${Object.values(data.results).reduce((sum, input) => sum + input.input_price, 0).toLocaleString()}
-                                </strong>
+                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -84,7 +193,91 @@ document.getElementById("calculateButton").addEventListener("click", function() 
             </div>
         `;
 
+        */
+
+        const div_tab2=document.createElement('div');
+        div_tab2.setAttribute('id','tab2');
+        div_tab2.classList.add("tab","active");
+        
+        data.output_results = sortedOutputResults;
+
+        const table_outputItems=document.createElement('table')
+        
+        const tr_outputHead=document.createElement('tr');
+        const th_outputHeadItem=document.createElement('th');
+        const th_outputHeadAmount=document.createElement('th');
+        const th_outputHeadPrice=document.createElement('th');
+        const th_outputHeadRate=document.createElement('th');
+
+        th_outputHeadItem.innerHTML='Item';
+        th_outputHeadAmount.innerHTML='Amount';
+        th_outputHeadPrice.innerHTML='Price (ISK)';
+        th_outputHeadRate.innerHTML='Buyback Rate';
+        tr_outputHead.appendChild(th_outputHeadItem);
+        tr_outputHead.appendChild(th_outputHeadAmount);
+        tr_outputHead.appendChild(th_outputHeadPrice);
+        tr_outputHead.appendChild(th_outputHeadRate);
+
+        
+        data.output_results.map(output=>{
+
+            const tr_itemline=document.createElement('tr');
+            const td_name=document.createElement('td');
+            const img_icon=document.createElement('img');
+            const span_name=document.createElement('span');
+            const td_amount=document.createElement('td');
+            const td_price=document.createElement('td');
+            const td_rate=document.createElement('td');
+
+            td_name.classList.add('item-name');
+            td_amount.classList.add('amount');
+            td_price.classList.add('price');
+            td_rate.classList.add('buyback-rate');
+
+
+            img_icon.setAttribute('src',output.output_icon);
+            img_icon.setAttribute('alt',output.output_name);
+            img_icon.setAttribute('width','30');
+            span_name.innerHTML=output.output_name;
+            td_name.appendChild(img_icon);
+            td_name.appendChild(span_name);
+
+            td_amount.innerHTML=Math.floor(output.output_amount).toLocaleString();
+            td_price.innerHTML=parseFloat(output.output_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            td_rate.innerHTML=(output.output_buyprice > 0 ?
+                parseFloat((output.output_price * 100 / (output.output_buyprice * output.output_amount)).toFixed(2)).toLocaleString() + "%" :
+                "No Jita buy");
+
+            tr_itemline.appendChild(td_name);
+            tr_itemline.appendChild(td_amount);
+            tr_itemline.appendChild(td_price);
+            tr_itemline.appendChild(td_rate);
+
+            table_outputItems.appendChild(tr_itemline);
+        });
+
+        const tr_outputTotalPrice=document.createElement('tr');
+        const td_outputTotalPriceHead=document.createElement('td');
+        const td_outputTotalPrice=document.createElement('td');
+
+        tr_outputTotalPrice.classList.add('total-price');
+
+        td_outputTotalPriceHead.setAttribute('colspan','2');
+        td_outputTotalPriceHead.innerHTML='Total Price';
+
+        td_outputTotalPrice.innerHTML=data.output_results.reduce((sum, output) => sum + output.output_price, 0).toLocaleString();
+        
+        tr_outputTotalPrice.appendChild(td_outputTotalPriceHead);
+        tr_outputTotalPrice.appendChild(td_outputTotalPrice);
+
+        table_outputItems.appendChild(tr_outputTotalPrice);
+
+        div_tab2.appendChild(table_outputItems);
+
+
         // Tab 2 content (Output Items)
+
+        /*
         const tab2Content = `
             <div id="tab2" class="tab">
                 <h2>Output Items</h2>
@@ -123,9 +316,11 @@ document.getElementById("calculateButton").addEventListener("click", function() 
                 </table>
             </div>
         `;
-
-        resultSection.insertAdjacentHTML("beforeend", tab1Content);
-        resultSection.insertAdjacentHTML("beforeend", tab2Content);
+        */
+        resultSection.appendChild(div_tab1);
+        //resultSection.insertAdjacentHTML("beforeend", tab1Content);
+        resultSection.appendChild(div_tab2);
+        //resultSection.insertAdjacentHTML("beforeend", tab2Content);
 
         // Show the Submit Button if there are valid input results
         if (data.valid) {
@@ -236,3 +431,36 @@ document.addEventListener('DOMContentLoaded',()=>{
         coverscreen.classList.add('hidden-data');
     });
 });
+
+function showNotification(message, position = 'right-bottom') {
+
+    const allowedPosition=['right-bottom','top-right','bottom-left','top-left','center'];
+    if(!allowedPosition.includes(position)){
+        position='right-bottom';
+    }
+
+
+    const notification = document.createElement('div');
+    notification.setAttribute('id', 'notification');
+    notification.classList.add('notification');
+    
+    // Set the position class
+    position=position.toLowerCase();
+    const positionClass = `notification-${position}`;
+    notification.classList.add(positionClass);
+
+
+    notification.innerText = message;
+    notification.style.display = 'block';
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.opacity = 1;
+    }, 10); // slight delay to ensure transition
+
+    setTimeout(() => {
+        notification.style.opacity = 0;
+        setTimeout(() => {
+            notification.remove(); // Remove element after animation
+        }, 500); // match this duration to CSS transition
+    }, 2000); // duration for which the notification stays visible
+}

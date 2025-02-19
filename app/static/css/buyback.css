@@ -262,3 +262,52 @@ img#questionmark{
 .hidden-data{
     display:none !important;
 }
+
+
+/* Notification Message==============================================*/
+
+.notification {
+    display: none;
+    position: fixed;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1000;
+}
+
+/* Default position: right-bottom */
+.notification-right-bottom {
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Center position */
+.notification-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Top-right position */
+.notification-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+/* Bottom-left position */
+.notification-bottom-left {
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Top-left position */
+.notification-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+/* End of Notification Message==============================================*/
