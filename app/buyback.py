@@ -242,7 +242,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
         #    item.valid = False
     
     except psycopg2.Error as e:
-        print(f"Database error: {e}")
+        print(f"Database error: {e}",flush=True)
         return None
 
     return item
@@ -417,7 +417,7 @@ def buyback():
                     parsed_items[item_name] = item_amount  # Add new item to dictionary
 
             except (IndexError, ValueError) as e:
-                print(f"Error parsing line: {line} - {e}")
+                print(f"Error parsing line: {line} - {e}",flush=True)
                 continue
         
         # Convert the parsed_items dictionary to a list of dictionaries
@@ -491,7 +491,7 @@ def buyback_calculate(parsed_items, language='en'):
             
         except Exception as e:
             # Catch any other exceptions and display a generic error message
-            print(f"Unexpected error: {e}")
+            print(f"Unexpected error: {e}",flush=True)
 
         
         if item == None:
@@ -700,7 +700,7 @@ def buyback_submit():
                 conn.rollback()
             
             # Log the error (optional)
-            print(f"Database error occurred: {e}")
+            print(f"Database error occurred: {e}",flush=True)
             
             # Render the error page
             return """
@@ -721,7 +721,7 @@ def buyback_submit():
         
         except Exception as e:
             # Catch any other exceptions and display a generic error message
-            print(f"Unexpected error: {e}")
+            print(f"Unexpected error: {e}",flush=True)
             return """
             <!DOCTYPE html>
             <html lang="en">
