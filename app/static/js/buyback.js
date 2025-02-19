@@ -275,7 +275,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
         // Tab 2 content (Output Items)
 
-        
+        /*
         const tab2Content = `
             <div id="tab2" class="tab">
                 <h2>Output Items</h2>
