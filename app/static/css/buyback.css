@@ -304,3 +304,7 @@ tr.total-price td{
 }
 
 /* End of Notification Message==============================================*/
+
+body div.container form{
+    text-align:center;
+}
