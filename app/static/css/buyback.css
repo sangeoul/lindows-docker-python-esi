@@ -259,6 +259,11 @@ img#questionmark{
     cursor:help;
 }
 
+
+tr.total-price{
+    font-size:20px;
+    font-weight:bold;
+}
 .hidden-data{
     display:none !important;
 }
