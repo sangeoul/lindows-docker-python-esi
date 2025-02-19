@@ -10,15 +10,16 @@
     <div class="container">
         <h1>Buyback History</h1>
 
-        <!-- Input Form (GET request) -->
-        <form method="GET" action="{{ url_for('buyback_history') }}">
-            <label for="contract_number">Enter Contract Number:</label>
-            <input type="text" id="contract_number" name="contract_number" value="{{ contract_number or '' }}" required>
-            <button type="submit" class="submitButton">Submit</button>
-        </form>
+
 
         <!-- Results Section -->
         <div id="resultSection" class="result-section">
+            <!-- Input Form (GET request) -->
+            <form method="GET" action="{{ url_for('buyback_history') }}">
+                <label for="contract_number">Enter Contract Number:</label>
+                <input type="text" id="contract_number" name="contract_number" value="{{ contract_number or '' }}" required>
+                <button type="submit" class="submitButton">Submit</button>
+            </form>
             {% if data.character_id>0 %}
                 <p>Contract from {{data.character_name}}</p>
             {% endif %}
