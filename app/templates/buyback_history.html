@@ -58,7 +58,7 @@
                         </tr>
                         {% endfor %}
                         <!-- Sum of total prices for output items -->
-                        <tr>
+                        <tr class="total-price">
                             <td colspan="2"><strong>Total (Output Items)</strong></td>
                             <td colspan="2" class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
                             <td></td>
@@ -92,7 +92,7 @@
                         </tr>
                         {% endfor %}
                         <!-- Sum of total prices for output items -->
-                        <tr>
+                        <tr class="total-price">
                             <td colspan="2"><strong>Total (Output Items)</strong></td>
                             <td colspan="2" class="total_price">{{ "{:,.2f}".format(data.output_results | sum(attribute='total_price')) }}</td>
                             <td></td>
