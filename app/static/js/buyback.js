@@ -97,7 +97,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
             const td_amount=document.createElement('td');
             const td_price=document.createElement('td');
             const td_rate=document.createElement('td');
-            
+
             tr_itemline.classList.add('valid-'+input.valid);
             td_name.classList.add('item-name');
             td_amount.classList.add('amount');
@@ -135,6 +135,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         td_inputTotalPriceHead.setAttribute('colspan','2');
         td_inputTotalPriceHead.innerHTML='Total Price';
 
+        td_inputTotalPrice.setAttribute('colspan','2');
         td_inputTotalPrice.innerHTML=Object.values(data.results).reduce((sum, input) => sum + input.input_price, 0).toLocaleString();
 
         tr_inputTotalPrice.appendChild(td_inputTotalPriceHead);
@@ -143,56 +144,6 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         table_inputItems.appendChild(tr_inputTotalPrice);
 
         div_tab1.appendChild(table_inputItems);
-
-
-
-
-        
-        // Tab 1 content (Input Items)
-        /*const tab1Content =
-        
-        `
-            <div id="tab1" class="tab active">
-                <h2>Input Items</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Amount</th>
-                            <th>Price (ISK)</th>
-                            <th>Buyback Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${Object.entries(data.results)
-                            .sort((a, b) => b[1].input_price - a[1].input_price) // Sorting by Total Price DESC
-                            .map(([item, input]) => `
-                                <tr class="valid-${input.valid}">
-                                    <td class="item-name">
-                                        <img src="${data.icons[item]}" alt="${item}" width="30">
-                                        ${item}
-                                    </td>
-                                    <td class="amount">${input.input_amount.toLocaleString()}</td>
-                                    <td class="price">${parseFloat(input.input_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    <td class="buyback-rate">${input.input_buyprice > 0 
-                                        ? parseFloat((input.input_price * 100 / (input.input_buyprice * input.input_amount)).toFixed(2)).toLocaleString() + "%" 
-                                        : "No Jita buy"}</td>
-                                </tr>
-                            `).join('')}
-                        <tr>
-                            <td colspan="2"><strong>Total Price</strong></td>
-                            <td colspan="2">
-                                <span class="total-price">
-                                    ${Object.values(data.results).reduce((sum, input) => sum + input.input_price, 0).toLocaleString()}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        `;
-
-        */
 
         const div_tab2=document.createElement('div');
         div_tab2.setAttribute('id','tab2');
@@ -264,6 +215,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         td_outputTotalPriceHead.setAttribute('colspan','2');
         td_outputTotalPriceHead.innerHTML='Total Price';
 
+        td_outputTotalPrice.setAttribute('colspan','2');
         td_outputTotalPrice.innerHTML=data.output_results.reduce((sum, output) => sum + output.output_price, 0).toLocaleString();
         
         tr_outputTotalPrice.appendChild(td_outputTotalPriceHead);
@@ -274,52 +226,9 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         div_tab2.appendChild(table_outputItems);
 
 
-        // Tab 2 content (Output Items)
-
-        /*
-        const tab2Content = `
-            <div id="tab2" class="tab">
-                <h2>Output Items</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th> <!-- Added Item column here -->
-                            <th>Amount</th>
-                            <th>Total Price (ISK)</th>
-                            <th>Buyback Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${data.output_results
-                            .sort((a, b) => b.output_price - a.output_price) // Sorting by Total Price DESC
-                            .map(output => `
-                                <tr>
-                                    <td class="item-name">
-                                        <img src="${output.output_icon}" alt="${output.output_name}" width="30">
-                                        ${output.output_name}
-                                    </td>
-                                    <td class="amount">${Math.floor(output.output_amount).toLocaleString()}</td>
-                                    <td class="price">${parseFloat(output.output_price.toFixed(2)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                    <td class="buyback-rate">${parseFloat((output.output_price * 100 / (output.output_buyprice * Math.floor(output.output_amount))).toFixed(2)).toLocaleString()}%</td>
-                                </tr>
-                            `).join('')}
-                        <tr>
-                            <td colspan="2"><strong>Total Price</strong></td>
-                            <td colspan="2">
-                                <strong>
-                                    ${data.output_results.reduce((sum, output) => sum + output.output_price, 0).toLocaleString()}
-                                </strong>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        `;
-        */
         resultSection.appendChild(div_tab1);
-        //resultSection.insertAdjacentHTML("beforeend", tab1Content);
         resultSection.appendChild(div_tab2);
-        //resultSection.insertAdjacentHTML("beforeend", tab2Content);
+
 
         // Show the Submit Button if there are valid input results
         if (data.valid) {
