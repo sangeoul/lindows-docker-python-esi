@@ -3,7 +3,7 @@ import os
 import psycopg2
 import math
 import json
-from flask import Flask,jsonify, render_template,render_template_string,redirect, request
+from flask import Flask,jsonify, render_template,render_template_string,redirect, request, url_for
 from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
 from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_affordable_price,get_itemname_by_typeid,get_groupid_by_typeid
 
@@ -673,6 +673,8 @@ def buyback_submit():
             conn.close()
 
             # Step 5: Render success page inline
+            return redirect(url_for('example',contract_number=new_contract_id))
+        
             return f"""
             <!DOCTYPE html>
             <html lang="en">
