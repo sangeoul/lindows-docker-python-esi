@@ -305,6 +305,20 @@ tr.total-price td{
 
 /* End of Notification Message==============================================*/
 
+
+/* CSS for buyback_history=====================================================*/
+p.accepted-message{
+    font-weight: bold;
+    color: green;
+}
+
+p.pending-message{
+    font-weight: bold;
+    color: orange;
+}
+
 body div.container form{
     text-align:center;
 }
+
+/* End of CSS for buyback_history =====================================================*/
