@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.querySelector('#copy_ubuntu').addEventListener('click',()=>{
         navigator.clipboard.writeText("Ubuntu Hakurei").then(function() { 
             console.log("'Ubuntu Hakurei' is copied to clipboard.");
-            showNotification("'Ubuntu Hakurei' is copied to clipboard.",'left-bottom');
+            showNotification("'Ubuntu Hakurei' is copied to clipboard.",'center');
         }).catch(function(e){
             console.error(`Failed to copy : ${e}`);
             showNotification("Error: Failed to copy.");
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     span_price.addEventListener('click',()=>{
         navigator.clipboard.writeText(span_price.getAttribute('data-value')).then(function() { 
             console.log("The price is copied to clipboard.");
-            showNotification("The price is copied to clipboard.",'left-bottom');
+            showNotification("The price is copied to clipboard.",'center');
         }).catch(function(e){
             console.error(`Failed to copy : ${e}`);
             showNotification("Error: Failed to copy.");

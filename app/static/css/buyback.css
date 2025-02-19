@@ -317,8 +317,10 @@ p.pending-message{
     color: orange;
 }
 
-span#copy_ubuntu, span#copy_price{
+div#resultSection.result-section p span#copy_ubuntu, div#resultSection.result-section p span#copy_price{
+    font-weight:bold;
     cursor: pointer;
+    font-size:20px;
 }
 
 /* End of CSS for buyback_history =====================================================*/
