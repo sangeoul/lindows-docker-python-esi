@@ -62,7 +62,7 @@ class Output_Item:
 
 MINIMUM_BUYBACK_RATE = 0.8
 DEFAULT_BUYBACK_RATE = 0.9
-MAX_BUYBACK_RATE = 0.97
+MAX_BUYBACK_RATE = 1.02
 
 COMPARE_TOLERANCE=0.01
 
@@ -819,7 +819,7 @@ def get_buyback_history(contract_number):
 
 def compare_results(input_items, output_items, results, output_results, tolerance=COMPARE_TOLERANCE):
     """
-    Compare the original input and output items with the results from buyback_calculate and output results.
+    Compare the oinal input and output items with the results from buyback_calculate and output results.
     If any item has a discrepancy greater than the allowed tolerance, return False. Otherwise, return True.
     """
     # Function to check if the price difference is within the tolerance (0.5%)

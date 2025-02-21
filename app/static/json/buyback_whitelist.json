@@ -34,15 +34,15 @@
         {"id": 1923, "name": "Exceptional Moon Asteroids", "reprocessing": true ,"refining_rate":0.843},
         {"id": 1884, "name": "Ubiquitous Moon Asteroids", "reprocessing": true ,"refining_rate":0.843},
         {"id": 465, "name": "Ice", "reprocessing": true ,"refining_rate":0.876},
-        {"id": 427, "name": "Moon Materials", "buyback_rate":[0.85,0.95,1.0]},
+        {"id": 427, "name": "Moon Materials", "buyback_rate":[0.9,0.98,1.03]},
         {"id": 966, "name": "Ancient Radar Decorrelator"},
         {"id": 754, "name": "Armor Plates"},
         {"id": 355, "name": "Condensed Alloy"},
         {"id": 4568, "name": "Admixti Mutanite"},
         {"id": 1996, "name": "Zero-Point Condensate"},
-        {"id": 1042, "name": "Basic Commodities - Tier 1", "buyback_rate":[0.65,0.7,0.97]},
-        {"id": 1034, "name": "Refined Commodities - Tier 2", "buyback_rate":[0.75,0.8,0.97]},
-        {"id": 1040, "name": "Specialized Commodities - Tier 3", "buyback_rate":[0.85,0.9,0.97]},
+        {"id": 1042, "name": "Basic Commodities - Tier 1", "buyback_rate":[0.6,0.7,0.97]},
+        {"id": 1034, "name": "Refined Commodities - Tier 2", "buyback_rate":[0.7,0.8,0.97]},
+        {"id": 1040, "name": "Specialized Commodities - Tier 3", "buyback_rate":[0.8,0.9,0.97]},
         {"id": 1041, "name": "Advanced Commodities - Tier 4" , "buyback_rate": [0.9,0.9,0.97]},
         {"id": 18, "name": "Tritanium"},
         {"id": 4821, "name": "Atavum"},
@@ -310,6 +310,6 @@
         {"id": 11399, "name": "Morphite","buyback_rate":[0.95,1.01,1.03]},
         {"id": 15331, "name": "Metal Scraps","reprocessing": true ,"refining_rate":0.55},
         {"id": 30497, "name": "Reinforced Metal Scraps","reprocessing": true ,"refining_rate":0.55},
-        {"id": 3828, "name": "Construction Blocks","buyback_rate":[0.85,0.9,1.0]}
+        {"id": 3828, "name": "Construction Blocks","buyback_rate":[0.9,0.95,1.0]}
     ]
 }
