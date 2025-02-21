@@ -61,7 +61,7 @@ class Output_Item:
 # Assume buyback rate as 0.9 temporarily for all outputs
 
 MINIMUM_BUYBACK_RATE = 0.8
-DEFAULT_BUYBACK_RATE = 0.9
+DEFAULT_BUYBACK_RATE = 0.92
 MAX_BUYBACK_RATE = 1.02
 
 COMPARE_TOLERANCE=0.01
