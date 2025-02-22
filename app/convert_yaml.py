@@ -57,23 +57,26 @@ def main(yaml_material, json_bp, searching_group, conn):
         type_info = type_info_response.get_json()
 
         if type_info.get('group_id') in searching_group:
-            for material in details['materials']:
-                output_id = material['materialTypeID']
-                output_amount = material['quantity']
-                manufacturing_quantity = bpdata[str(type_id)]['q']  # Get data from JSON
+            manufacturing_quantity = bpdata.get(str(type_id), {}).get('q', 0)
+            if manufacturing_quantity:
 
-                module_info_list.append(
-                    (output_id, output_amount, type_id, manufacturing_quantity, 1, type_id)  # = (output_id, output_amount, input_id, input_amount, industry_type, recipe_id)
-                )
+                for material in details['materials']:
+                    output_id = material['materialTypeID']
+                    output_amount = material['quantity']
+                    # Get data from JSON
+                    module_info_list.append(
+                            (output_id, output_amount, type_id, manufacturing_quantity, 1, type_id)  # = (output_id, output_amount, input_id, input_amount, industry_type, recipe_id)
+                        )
 
-                if len(module_info_list) >= CHUNK_SIZE:
-                    with conn.cursor() as cursor:
-                        save_to_db(module_info_list, conn, cursor)
-                    module_info_list.clear()  # Clear the list after saving to DB
-
-            print(f"{type_info.get('name_en')} has been loaded", flush=True)
+                    if len(module_info_list) >= CHUNK_SIZE:
+                        with conn.cursor() as cursor:
+                            save_to_db(module_info_list, conn, cursor)
+                        module_info_list.clear()  # Clear the list after saving to DB
+                print(f"{type_info.get('name_en')} has been loaded", flush=True)
+            else:
+                print(f"{type_info.get('name_en')} has no manufacturing data", flush=True)
         else:
-            print(f"{type_info.get('name_en')} is not module", flush=True)
+            print(f"{type_info.get('name_en')} is not charge", flush=True)
 
     # Save any remaining items in the list
     if module_info_list:
