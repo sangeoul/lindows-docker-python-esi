@@ -296,7 +296,14 @@
         {"id": 1158,"name": "Heavy Defender Missile","reprocessing": true,"refining_rate": 0.55},
         {"id": 1987,"name": "Exotic Plasma Charge","reprocessing": true,"refining_rate": 0.55},
         {"id": 4062,"name": "Condenser Pack","reprocessing": true,"refining_rate": 0.55},
-        {"id": 4808,"name": "SCARAB Breacher Pods","reprocessing": true,"refining_rate": 0.55}
+        {"id": 4808,"name": "SCARAB Breacher Pods","reprocessing": true,"refining_rate": 0.55},
+        {"id": 100,"name": "Combat Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 101,"name": "Mining Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 544,"name": "Energy Neutralizer Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 639,"name": "Electronic Warfare Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 640,"name": "Logistic Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 641,"name": "Stasis Webifying Drone","reprocessing": true,"refining_rate": 0.55},
+        {"id": 1159,"name": "Salvage Drone","reprocessing": true,"refining_rate": 0.55}
         
     ],
     "type_id": [
