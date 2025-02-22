@@ -620,7 +620,7 @@ def buyback_submit():
                 amount = input['amount']
                 buyprice = input['buyprice']
                 price_rate = (total_price / amount) / buyprice if amount and buyprice else 0
-                if price_rate>9999:
+                if price_rate>9999 or price_rate<9999:
                     price_rate=9999.0
                 
                 # Insert the record into the database
@@ -649,7 +649,7 @@ def buyback_submit():
                 amount = output['amount']
                 buyprice = output['buyprice']
                 price_rate = (total_price / amount) / buyprice if amount and buyprice else 0
-                if price_rate>9999:
+                if price_rate>9999 or price_rate<9999:
                     price_rate=9999.0
                 
                 # Insert the record into the database
@@ -717,7 +717,7 @@ def buyback_submit():
             </head>
             <body>
                 <h1>Error: A database error occurred while processing your buyback contract.</h1>
-                <p>There was an issue saving your contract details. Please try again later.</p>
+                <p>There was an issue saving your contract details. Please report to Lindows or try again later.</p>
                 <a href="./buyback">Go back to Buyback page</a>
             </body>
             </html>
@@ -736,7 +736,7 @@ def buyback_submit():
             </head>
             <body>
                 <h1>Error: An unexpected error occurred.</h1>
-                <p>Something went wrong while processing your request. Please try again later.</p>
+                <p>Something went wrong while processing your request. Please report to Lindows or try again later.</p>
                 <a href="./buyback">Go back to Buyback page</a>
             </body>
             </html>
