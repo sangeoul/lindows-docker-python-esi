@@ -171,7 +171,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                     
                     if possible_conversions:
                         # Calculate the resulting output amount by considering refining rate
-                        total_output_amount = possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist)
+                        total_output_amount = math.floor(possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist))
 
                         # Get output icon using type_id
                         output_icon = get_icon_by_typeid(output_id)
@@ -185,7 +185,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
                         
                         # Calculate output price
-                        output_price = math.floor(total_output_amount) * output_buyprice * dynamic_buyback_rate
+                        output_price = total_output_amount * output_buyprice * dynamic_buyback_rate
 
                         # Add the output to the item's output list
                         item.outputs.append(Output_Item(
