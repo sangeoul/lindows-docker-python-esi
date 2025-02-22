@@ -620,7 +620,7 @@ def buyback_submit():
                 amount = input['amount']
                 buyprice = input['buyprice']
                 price_rate = (total_price / amount) / buyprice if amount and buyprice else 0
-                if price_rate>9999 or price_rate<9999:
+                if price_rate>9999 or price_rate<-9999:
                     price_rate=9999.0
                 
                 # Insert the record into the database
@@ -649,7 +649,7 @@ def buyback_submit():
                 amount = output['amount']
                 buyprice = output['buyprice']
                 price_rate = (total_price / amount) / buyprice if amount and buyprice else 0
-                if price_rate>9999 or price_rate<9999:
+                if price_rate>9999 or price_rate<-9999:
                     price_rate=9999.0
                 
                 # Insert the record into the database
