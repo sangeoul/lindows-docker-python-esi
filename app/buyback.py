@@ -579,7 +579,7 @@ def buyback_submit():
         <body>
             <h1>Error: Invalid data. Input or Output items missing.</h1>
             <p>Please check your input or output data and try again.</p>
-            <a href="industry/buyback">Go back to Buyback page</a>
+            <a href="./buyback">Go back to Buyback page</a>
         </body>
         </html>
         """
@@ -689,7 +689,7 @@ def buyback_submit():
                 <p>Your buyback number is <h2>{new_contract_id}</h2></p>
                 <p>The contract should be offered to <a class="eve-link" href="https://evewho.com/character/92497990">Ubuntu Hakurei</a></p>
                 <p>The contract should be offered at between <font class="eve-link">FR46-E</font> ~ <font>O3-4MN</font></p>
-                <a href="/industry/buyback_history?contract_number={new_contract_id}">Go to Check Buyback</a>
+                <a href="./buyback_history?contract_number={new_contract_id}">Go to Check Buyback</a>
             </body>
             </html>
             """
@@ -714,7 +714,7 @@ def buyback_submit():
             <body>
                 <h1>Error: A database error occurred while processing your buyback contract.</h1>
                 <p>There was an issue saving your contract details. Please try again later.</p>
-                <a href="industry/buyback">Go back to Buyback page</a>
+                <a href="./buyback">Go back to Buyback page</a>
             </body>
             </html>
             """
@@ -733,7 +733,7 @@ def buyback_submit():
             <body>
                 <h1>Error: An unexpected error occurred.</h1>
                 <p>Something went wrong while processing your request. Please try again later.</p>
-                <a href="/industry/buyback">Go back to Buyback page</a>
+                <a href="./buyback">Go back to Buyback page</a>
             </body>
             </html>
             """
@@ -751,7 +751,7 @@ def buyback_submit():
         <body>
             <h1>Error: Price mismatch detected.</h1>
             <p>There was an issue with the prices. Please check the buyback values and try again.</p>
-            <a href="/industry/buyback">Go back to Buyback page</a>
+            <a href="./buyback">Go back to Buyback page</a>
         </body>
         </html>
         """
