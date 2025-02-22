@@ -87,7 +87,7 @@ if __name__ == "__main__":
     # YAML file path
     base_dir = os.path.dirname(os.path.abspath(__file__))
     yaml_material = os.path.join(base_dir, 'static', 'typeMaterials.yaml')
-    json_bp = os.path.join(base_dir, 'static', 'manufacturings.json')
+    json_bp = os.path.join(base_dir, 'static', 'json/manufacturings.json')
 
     # Define the modules_group as a list
     ammo_group = [
