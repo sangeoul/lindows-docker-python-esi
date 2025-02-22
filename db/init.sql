@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS buyback_contract_log (
     amount BIGINT NOT NULL,
     buyprice DECIMAL(18,2) NOT NULL,
     total_price DECIMAL(18,2) NOT NULL,
-    price_rate DECIMAL(10,8) NOT NULL,
+    price_rate DECIMAL(13,8) NOT NULL,
     is_input BOOLEAN NOT NULL DEFAULT TRUE,
     registered_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,
