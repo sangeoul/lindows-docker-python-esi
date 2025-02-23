@@ -93,15 +93,27 @@ if __name__ == "__main__":
     json_bp = os.path.join(base_dir, 'static', 'json/manufacturings.json')
 
     # Define the modules_group as a list
-    ammo_group = [
-    83,85,86,87,88,89,90,92,372,373,374,375,376,377,384,385,386,387,394,395,396,425,476,479,482,492,497,498,500,548,648,653,654,655,656,657,663,772,863,864,892,907,908,909,910,911,916,972,1010,1019,1153,1158,1400,1546,1547,1548,1549,1550,1551,1559,1569,1677,1678,1701,1702,1769,1771,1772,1773,1774,1976,1987,1989,4061,4062,4088,4186,4808
+    drone_group = [
+    97,
+    100,
+    101,
+    299,
+    470,
+    544,
+    545,
+    549,
+    639,
+    640,
+    641,
+    1023,
+    1159
   ]
 
     # Database connection
     conn = connect_to_db()
 
     # Run the main function
-    main(yaml_material, json_bp, ammo_group, conn)
+    main(yaml_material, json_bp, drone_group, conn)
 
     # Close the database connection
     conn.close()
