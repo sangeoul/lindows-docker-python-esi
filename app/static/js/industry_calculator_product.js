@@ -900,20 +900,16 @@ async function loadMarketDataWithCache(typeId) {
 }
 
 
-function getEIV(type_id){
-    data=getIndustryRelation(type_id);
-    let eiv=0;
-    if(data.industry_type!=INDUSTRY_TYPE_NO_DATA){
-        data.m.map( (material)=>{
-            if(material.q*eivData[material.i].adjusted_price){
-                eiv+=material.q*eivData[material.i].adjusted_price;
-            } 
+function getEIV(type_id) {
+    data = getIndustryRelation(type_id);
+    let eiv = 0;
+    if (data.industry_type != INDUSTRY_TYPE_NO_DATA) {
+        data.m.map((material) => {
+            const adjustedPrice = eivData[material.i] ? eivData[material.i].adjusted_price : 0;
+            eiv += material.q * adjustedPrice;
         });
     }
-    if(!eiv){
-        eiv=0;
-    }
-    return eiv;
+    return eiv || 0;
 }
 
 
