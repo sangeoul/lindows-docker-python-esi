@@ -905,7 +905,9 @@ function getEIV(type_id){
     let eiv=0;
     if(data.industry_type!=INDUSTRY_TYPE_NO_DATA){
         data.m.map( (material)=>{
-            eiv+=material.q*eivData[material.i].adjusted_price;
+            if(material.q*eivData[material.i].adjusted_price){
+                eiv+=material.q*eivData[material.i].adjusted_price;
+            } 
         });
     }
     if(!eiv){
