@@ -669,6 +669,11 @@ def buyback_submit():
                     False  # Output item
                 ))
 
+                cursor.execute("""
+                    UPDATE industry_stock SET amount = amount + %s WHERE type_id = %s
+                """, (amount, type_id))
+
+
             
             
             # Step 4.5: Commit the transaction and close the connection
