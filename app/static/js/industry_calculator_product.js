@@ -464,6 +464,7 @@ class Product {
             this.pricetype=parseInt(selectedRadio.value);
             await changeAllPriceType(this.typeid,PRICETYPE_BUY);
             origin_product.calcCost();
+            displayTotalMaterials();
         });
 
         buyRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_BUY && this.manufacturing_level));
@@ -511,6 +512,7 @@ class Product {
             this.pricetype=parseInt(selectedRadio.value);
             await changeAllPriceType(this.typeid,PRICETYPE_SELL);
             origin_product.calcCost();
+            displayTotalMaterials();
         });
 
         sellRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_SELL && this.manufacturing_level));
@@ -558,6 +560,7 @@ class Product {
             this.pricetype=parseInt(selectedRadio.value);
             await changeAllPriceType(this.typeid,PRICETYPE_COST);
             origin_product.calcCost();
+            displayTotalMaterials();
         });
 
         costRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_COST && this.manufacturing_level));
@@ -587,6 +590,7 @@ class Product {
             this.customprice=parseFloat(customPriceInput.value);
             await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,parseInt(customPriceInput.value));
             origin_product.calcCost();
+            displayTotalMaterials();
         });
 
         customPriceInputCell.colSpan = 2;
@@ -603,6 +607,7 @@ class Product {
             this.pricetype=parseInt(selectedRadio.value);
             await changeAllPriceType(this.typeid,PRICETYPE_CUSTOM,this.customprice);
             origin_product.calcCost();
+            displayTotalMaterials();
         });
 
         customRow.classList.toggle("hidden-data",(this.pricetype!=PRICETYPE_CUSTOM || !this.manufacturing_level));
