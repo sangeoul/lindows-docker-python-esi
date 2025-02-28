@@ -483,7 +483,6 @@ class Product {
             buttonBuyMaterials.addEventListener('click',()=>{
                 this.changeEndMaterialsPricetype(PRICETYPE_BUY);
             });
-
             buttonBuyMaterialsCell.appendChild(buttonBuyMaterials);
             buyRow.appendChild(buttonBuyMaterials);
         }
@@ -825,6 +824,7 @@ class Product {
             }
         }
         this.calcCost();
+        displayTotalMaterials();
     }
 
     async selectPanel(){
