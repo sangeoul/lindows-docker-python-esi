@@ -2,16 +2,28 @@
 const HOST_ADDRESS='https://lindows.kr:8001/';
 
 
+document.addEventListener('DOMContentLoaded', function() {
+
+});
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    var link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Metrophobic&display=swap';
-    link.rel = 'stylesheet';
+    let fontlink = document.createElement('link');
+    fontlink.href = 'https://fonts.googleapis.com/css2?family=Metrophobic&display=swap';
+    fontlink.rel = 'stylesheet';
     
-    document.head.appendChild(link);
+    document.head.appendChild(fontlink);
+
+
+    let csslink = document.createElement('link');
+    csslink.href = 'styles.css';  // Replace 'styles.css' with the path to your CSS file
+    csslink.rel = 'stylesheet';
+    csslink.type = 'text/css';
     
+    document.head.appendChild(csslink);
+
 
     const NUMBER_OF_LINKS=3;
 
