@@ -1,6 +1,17 @@
 
-const HOST_ADDRESS='https://lindows.kr:8001/'
+const HOST_ADDRESS='https://lindows.kr:8001/';
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
+
+    var link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Metrophobic&display=swap';
+    link.rel = 'stylesheet';
+    
+    document.head.appendChild(link);
+    
 
     const NUMBER_OF_LINKS=3;
 
