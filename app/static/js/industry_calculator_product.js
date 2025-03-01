@@ -1269,7 +1269,7 @@ async function calcTotalMaterials(saveGlobal=true) {
 
             
 
-            if(node.isEndNode&&!endNode_list.includes(parseInt(node.product_index))){
+            if(!endNode_list.includes(parseInt(node.product_index))){
 
                 endNode_list.push(parseInt(node.product_index));
                 
