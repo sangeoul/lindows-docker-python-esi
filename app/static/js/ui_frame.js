@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     let csslink = document.createElement('link');
-    csslink.href = 'styles.css';  // Replace 'styles.css' with the path to your CSS file
+    csslink.href = '/static/css/ui_frame.css';  // Replace 'styles.css' with the path to your CSS file
     csslink.rel = 'stylesheet';
     csslink.type = 'text/css';
     
