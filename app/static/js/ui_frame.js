@@ -32,5 +32,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     table_linktable.appendChild(tr_linktable);
     
-    div_banner.innerHTML = "Welcome to My Website! Enjoy your stay.";
 });
