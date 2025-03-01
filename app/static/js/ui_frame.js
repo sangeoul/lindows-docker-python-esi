@@ -31,5 +31,5 @@ document.addEventListener('DOMContentLoaded', function() {
     a_links[2].setAttribute('target','_blank');
 
     table_linktable.appendChild(tr_linktable);
-    
+    div_banner.appendChild(table_linktable);
 });
