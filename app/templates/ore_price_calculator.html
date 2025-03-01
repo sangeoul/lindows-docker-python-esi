@@ -6,6 +6,8 @@
     <title>Ore Price Calculator</title>
 </head>
 <body>
+    <div id="lindows-top-banner"></div>
+    <script src="{{ url_for('static', filename='js/ui_frame.js') }}" defer></script> 
     <h1>Ore Price Calculator</h1>
     <form action="{{ url_for('ore_price_calculator') }}" method="get">
         <label><input type="checkbox" name="items" value="34" {% if '34' in selected_items %}checked{% endif %}> Tritanium</label>
