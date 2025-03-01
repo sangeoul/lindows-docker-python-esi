@@ -1,0 +1,9 @@
+div#lindows-top-banner{
+    border:0px solid;
+    border-bottom:1px solid rgb(177, 255, 170);
+}
+
+div#lindows-top-banner table{
+    border-collapse:collapse;
+    border:0px solid;
+}
