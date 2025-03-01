@@ -8,6 +8,9 @@ div#lindows-top-banner table{
     border:0px solid;
     background-color:rgba(255, 255, 255, 0);
 }
+div#lindows-top-banner table:hover{
+    background-color:rgba(255, 255, 255, 0);
+}
 
 div#lindows-top-banner a{
     
