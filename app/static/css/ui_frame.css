@@ -6,4 +6,13 @@ div#lindows-top-banner{
 div#lindows-top-banner table{
     border-collapse:collapse;
     border:0px solid;
+    background-color:white;
+}
+
+div#lindows-top-banner a{
+    
+    font-size:17px;
+    font-family: "Metrophobic", serif;
+    font-weight: bold;
+    color:rgba(217, 141, 0, 1);
 }
