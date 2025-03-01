@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const div_banner = document.getElementById('lindows-top-banner');
 
     const table_linktable=document.createElement('table');
+    table_linktable.style.height='25px';
     const tr_linktable=document.createElement('tr');
     let td_linktable=[];
     let a_links=[];
