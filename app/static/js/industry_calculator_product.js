@@ -1718,8 +1718,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
 
     //reset the variables that were used in new code (Just in case)=================================
- /*   //endNode_list.length=0;
-    //maxDepth=0;
+ /*   
+    endNode_list.length=0;
+    maxDepth=0;
 
     //New code End=======================================================
 
