@@ -1598,7 +1598,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     });
     
 
-    for(let counti=1;couti<=maxDepth;counti++){
+    for(let counti=1;counti<=maxDepth;counti++){
 
 
 
