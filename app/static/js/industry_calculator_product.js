@@ -1718,11 +1718,11 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
 
 
     //reset the variables that were used in new code (Just in case)=================================
-    //endNode_list.length=0;
+ /*   //endNode_list.length=0;
     //maxDepth=0;
 
     //New code End=======================================================
-/*
+
     product_array.forEach(p=>{
         if( (p.materials.length==0 || p.isEndNode || (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid)))
             && !endNode_list.includes(parseInt(p.product_index))
