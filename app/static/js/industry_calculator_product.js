@@ -1495,8 +1495,11 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
     const materialBreakdownList=[];
     const materialList=[];
     const endNode_list=[];
+    const exception_list=[];
     const materialList_for_unit_calculating=[];
     const rawMaterials=[];
+
+    const highest_manufacturing_level=[];
     
     let maxDepth=0;
 
@@ -1566,13 +1569,168 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
             addToEndNode(m);
         });
     }
+    function addToException(node){
+        if(!exception_list.includes(parseInt(node.product_index))){
+            exception_list.push(parseInt(node.product_index));
+        }
+        node.materials.forEach(m=>{
+            addToException(m);
+        });
+    }
+
+    //New Code========================================
 
     product_array.forEach(p=>{
-        if( p.materials.length==0 || (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid))){
+        if( p.isEndNode  
+            && !endNode_list.includes(parseInt(p.product_index)))
+        {
+            if(!highest_manufacturing_level[parseInt(p.typeid)]){
+                highest_manufacturing_level[parseInt(p.typeid)]=p.manufacturing_level;
+            }
+            else if(highest_manufacturing_level[parseInt(p.typeid)]<p.manufacturing_level){
+                highest_manufacturing_level[parseInt(p.typeid)]=p.manufacturing_level;
+            }
+            if(p.manufacturing_level>=maxDepth){// Record the depth
+                maxDepth=p.manufacturing_level; 
+            }
             addToEndNode(p);
         }
-        else if(p.manufacturing_level>=maxDepth){// Record the depth
-            maxDepth=p.manufacturing_level+1; 
+    });
+    
+
+    for(let counti=1;couti<=maxDepth;counti++){
+
+
+
+        //initialise
+        endNode_list.length=0;
+        exception_list.length=0;
+        materialList.length=0;
+        materialList_for_unit_calculating.length=0;
+        rawMaterials.length=0;
+
+        product_array.forEach(p=>{
+            if((p.isEndNode && highest_manufacturing_level[parseInt(p.typeid)]<counti )
+                && !exception_list.includes(parseInt(p.product_index)))
+            {
+                addToException(p);
+            }
+
+            else if(( p.materials.length==0 || p.isEndNode || p.manufacturing_level==counti|| (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid))) 
+                && !exception_list.includes(parseInt(p.product_index)) 
+                && !endNode_list.includes(parseInt(p.product_index)))
+            {
+                addToEndNode(p);
+            }
+        });
+
+        materialList_for_unit_calculating.push({
+            [origin_product.typeid]:{
+                "0":[origin_product.quantity,origin_product]
+            }
+        });
+        for(let i=1;i<MAX_TREE_DEPTH;i++){
+            materialList_for_unit_calculating.push({});
+        }
+
+        //Main process
+        product_array.forEach(p=>{
+
+            if(!exception_list.includes(parseInt(p.product_index))){
+                if(!endNode_list.includes(parseInt(p.product_index))){
+
+                    p.materials.forEach(m=>{
+                        queueMaterial(p,m);
+                    })
+                }
+                else{
+
+                    let notIncluded=true;
+                    rawMaterials.forEach(m=>{
+                        if(m.id==p.typeid){
+                            notIncluded=false;
+                        }
+                    });
+                    if(notIncluded){
+                        rawMaterials.push({
+                            id:p.typeid,
+                            name:p.itemname,
+                            icon:p.iconurl
+                        });
+                    }
+                }
+            }
+        });
+
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for(const material_id in materialList_for_unit_calculating[i]){
+                for(const product_id in materialList_for_unit_calculating[i][material_id]){
+                    if(product_id>0){
+                        let sumOfQuantity=0;
+                        const bpData= getIndustryRelation(product_id);
+                        let materialQuantity;
+                        bpData.m.forEach(info=>{
+                            if(info.i==material_id){
+                                materialQuantity=info.q;
+                            }
+                        });
+                        let neededQuantity=getNeededQuantity(product_id);
+                        sumOfQuantity=Math.ceil(Math.ceil(neededQuantity/bpData.q)*materialQuantity * getBonusModifier(product_id));
+                        if(sumOfQuantity<Math.ceil(neededQuantity/bpData.q)){
+                            sumOfQuantity=Math.ceil(neededQuantity/bpData.q)
+                        }
+                        materialList_for_unit_calculating[i][material_id][product_id][0]=sumOfQuantity;
+                    }
+                }
+            }
+        }
+        for(let i=0;i<MAX_TREE_DEPTH;i++){
+            for( const material_id in materialList_for_unit_calculating[i]){
+                let rmidx=-1;
+                for(let j=0;j<rawMaterials.length;j++){
+                    if(rawMaterials[j].id==parseInt(material_id)){
+                        rmidx=j;
+                        break;
+                    }
+                }
+                if(rmidx!=-1){
+                    for( const product_id in materialList_for_unit_calculating[i][material_id]){
+                        let idx = materialList.findIndex(item => item.id === material_id);
+                        if (idx !== -1) {
+                            materialList[idx].quantity += materialList_for_unit_calculating[i][material_id][product_id][0];
+                        } else {
+                            materialList.push({
+                                id: material_id,
+                                name: rawMaterials[rmidx].name,
+                                icon: rawMaterials[rmidx].icon,
+                                quantity: materialList_for_unit_calculating[i][material_id][product_id][0]
+                            });
+                        }
+
+                    }
+                }
+
+            }
+        }
+        materialList.sort((a, b) => b.quantity - a.quantity); // Sort by quantity DESC
+        materialBreakdownList[counti-1]=(JSON.parse(JSON.stringify(materialList)));// copy not refer.
+    }
+
+
+    //reset the variables that were used in new code (Just in case)=================================
+    //endNode_list.length=0;
+    //maxDepth=0;
+
+    //New code End=======================================================
+/*
+    product_array.forEach(p=>{
+        if( (p.materials.length==0 || p.isEndNode || (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid)))
+            && !endNode_list.includes(parseInt(p.product_index))
+        ){
+            if(p.manufacturing_level>=maxDepth){// Record the depth
+                maxDepth=p.manufacturing_level; 
+            }
+            addToEndNode(p);
         }
     });
 
@@ -1687,8 +1845,9 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
         });
         endNode_list.push(...nextEndNode_list);
 
-        materialBreakdownList[counti-1]=(JSON.parse(JSON.stringify(materialList)));
+        materialBreakdownList[counti-1]=(JSON.parse(JSON.stringify(materialList)));// copy not refer.
     }
+        */
     return materialBreakdownList;
 }
 
