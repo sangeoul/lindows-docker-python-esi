@@ -304,7 +304,6 @@
         {"id": 640,"name": "Logistic Drone","reprocessing": true,"refining_rate": 0.55},
         {"id": 641,"name": "Stasis Webifying Drone","reprocessing": true,"refining_rate": 0.55},
         {"id": 1159,"name": "Salvage Drone","reprocessing": true,"refining_rate": 0.55},
-
         {"id": 1248,"name": "Bounty Encrypted Bonds","buyback_rate":[0.98,0.98,0.98]}
         
     ],

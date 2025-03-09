@@ -69,27 +69,34 @@ COMPARE_TOLERANCE=0.01
 # Assume default refining rate as 0.55
 DEFAULT_REFINING_RATE=0.55
 
+stock_data=None
+
 
 def get_stock_info(type_id):
-    conn = connect_to_db()
-    cursor = conn.cursor()
+
+    if not stock_data :
+        
+        conn = connect_to_db()
+        cursor = conn.cursor()
+        
+        query = """
+        SELECT amount, median_amount, max_amount
+        FROM industry_stock
+        WHERE type_id = %s
+        """
+        cursor.execute(query, (type_id,))
+        result = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        if result:
+            return result  # Return current_stock_amount, median_amount, and max_amount
+        else:
+            # Return default values if no data is found
+            return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0        
     
-    query = """
-    SELECT amount, median_amount, max_amount
-    FROM industry_stock
-    WHERE type_id = %s
-    """
-    cursor.execute(query, (type_id,))
-    result = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
-
-    if result:
-        return result  # Return current_stock_amount, median_amount, and max_amount
-    else:
-        # Return default values if no data is found
-        return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0
 
 def create_buyback_item(input_id,input_name, input_amount,input_price_data, language,whitelist=None):
 
@@ -149,7 +156,9 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
 
             if not rows:  # If no records are found, create the output with the same details as input
                 # Calculate the output price based on input amount and dynamic buyback rate
+        
                 stock_data = get_stock_info(input_id)
+                min_br,default_br,max_br=get_buyback_rate(input_id, group_id,whitelist)
                 dynamic_buyback_rate = calculate_weighted_buyback_rate(input_amount, stock_data[0], stock_data[1], stock_data[2], input_price_data["buy"], input_price_data["sell"],min_br,default_br,max_br)
                 output_price = math.floor(input_amount) * input_price_data["buy"] * dynamic_buyback_rate
 
@@ -170,6 +179,12 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                     possible_conversions = input_amount // required_input_amount
                     
                     if possible_conversions:
+
+                        try:
+                            output_group_id = get_groupid_by_typeid(output_id)
+                        except:
+                            output_group_id = 0
+                
                         # Calculate the resulting output amount by considering refining rate
                         total_output_amount = math.floor(possible_conversions * output_amount * get_refining_rate_for_item(input_id,group_id,whitelist))
 
@@ -181,7 +196,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         output_sellprice, output_buyprice = output_pricedata[output_id]["sell"], output_pricedata[output_id]["buy"]
 
                         stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
-
+                        min_br,default_br,max_br=get_buyback_rate(output_id, output_group_id,whitelist)
                         dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
                         
                         # Calculate output price
