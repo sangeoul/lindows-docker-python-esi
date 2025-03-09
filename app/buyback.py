@@ -71,30 +71,29 @@ DEFAULT_REFINING_RATE=0.55
 
 stock_data=None
 
-
 def get_stock_info(type_id):
 
+    global stock_data
     if not stock_data :
-        
         conn = connect_to_db()
         cursor = conn.cursor()
         
         query = """
-        SELECT amount, median_amount, max_amount
+        SELECT amount, median_amount, max_amount,type_id
         FROM industry_stock
-        WHERE type_id = %s
         """
-        cursor.execute(query, (type_id,))
-        result = cursor.fetchone()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        stock_data={}
+        for row in result:
+            current_amount, median_amount, max_amount,typeid = row
+            stock_data[typeid]=(current_amount, median_amount, max_amount)
 
-        cursor.close()
-        conn.close()
-
-        if result:
-            return result  # Return current_stock_amount, median_amount, and max_amount
-        else:
-            # Return default values if no data is found
-            return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0        
+    if type_id in stock_data:
+        return stock_data[type_id]  # Return current_stock_amount, median_amount, and max_amount
+    else:
+        # Return default values if no data is found
+        return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0        
     
 
 
