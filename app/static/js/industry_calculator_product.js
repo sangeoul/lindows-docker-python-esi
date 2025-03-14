@@ -1042,7 +1042,7 @@ async function openFollowingTree(product){
     checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
     checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
-    console.log("!!"+product.itemname+"____!____");
+    console.log(currentDate.getMilliseconds()+"!!"+product.itemname+"____!____"+);
 
     for( const node of product.materials){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
@@ -1114,14 +1114,14 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                console.log("!!"+node.itemname);
+                console.log(currentDate.getMilliseconds()+"!!"+node.itemname);
                 await node.openNextTree(false);
-                console.log("!!"+node.itemname+"!!!!");
+                console.log(currentDate.getMilliseconds()+"!!"+node.itemname+"!!!!");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
                 await openFollowingTree(node);
-                console.log("!!"+node.itemname+"!!!!!!!!");
+                console.log(currentDate.getMilliseconds()+"!!"+node.itemname+"!!!!!!!!");
             }else {
                 await node.closeTree(true);
                 continue;
@@ -1129,12 +1129,13 @@ async function openFollowingTree(product){
         }
         
     }
-    console.log("!!"+product.itemname+"____!!____");
+    console.log(currentDate.getMilliseconds()+"!!"+product.itemname+"____!!____");
     if(product.product_index==0){
+        console.log("!!"+product.itemname+"____Working____");
         origin_product.calcCost();
         displayTotalMaterials();
     }
-    console.log("!!"+product.itemname+"____!!!____");
+    console.log(currentDate.getMilliseconds()+"!!"+product.itemname+"____!!!____");
 
 }
 
