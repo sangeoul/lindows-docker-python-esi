@@ -895,12 +895,12 @@ async function loadMarketDataWithCache(typeId) {
             // Remove the request from the request cache once completed
             delete market_price_request_cache[int_typeId];
             if(Object.keys(market_price_request_cache).length === 0){
-                console.log(`!!DEBUG:Market data loading finished`);
+                console.log(`Market data loading finished`);
                 origin_product.loadAndCalcCost();
                 calcTotalMaterials();
             }
             else{
-                console.log(`!!DEBUG:Left market data queue : ${Object.keys(market_price_request_cache).length}`);
+                console.log(`Left market data queue : ${Object.keys(market_price_request_cache).length}`);
             }
         }
     })();
@@ -1112,11 +1112,15 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
+                console.log("!!DEBUG0");
                 await node.openNextTree(false);
+                console.log("!!DEBUG1");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
+                console.log("!!DEBUG2");
                 await openFollowingTree(node);
+                console.log("!!DEBUG3");
             }else {
                 await node.closeTree(true);
                 continue;
