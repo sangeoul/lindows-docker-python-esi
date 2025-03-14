@@ -27,7 +27,7 @@ const NO_BLUEPRINT = [34,35,36,37,38,39,40,11399, //Mineral
     16633,16634,16635,16636,16637,16638,16639,16640,16641,16642,16643,16644,16646,16647,16648,16649,16650,16651,16652,16653, // Moon Materials
     16272,16273,16274,16275,17887,17888,17889, //Ice Products
     25268,25273,25274,25275,25276,25277,25278,25279,28629,28630,28694,28695,28696,28697,28698,28699,28700,28701,30370,30371,30372,30373,30374,30375,30376,30377,30378,49787,50175,52193,52194,52204 //Harvestable Cloud (Gas)
-]
+];
 const QUANTITY_OPTION_PRICE=1;
 const QUANTITY_OPTION_MATERIAL=2;
 
@@ -1902,7 +1902,7 @@ function getIndustryRelation(typeId){
         nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
         return nodata;
     }
-    if(blueprintData[typeId]){
+    else if(blueprintData[typeId]){
         blueprintData[typeId].industry_type=INDUSTRY_TYPE_MANUFACTURING;
         return blueprintData[typeId];
     }
