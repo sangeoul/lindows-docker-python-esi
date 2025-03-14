@@ -1052,7 +1052,9 @@ async function runCalculate(){
 async function openFollowingTree(product){
 
     for( const node of product.materials){
-        if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
+        if(NO_BLUEPRINT.has(node.typeid)){
+            continue;
+        }else if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
                 await node.openNextTree(false);
                 if(node.manufacturing_level%2){
@@ -1133,12 +1135,10 @@ async function openFollowingTree(product){
         }
         
     }
-    console.log(new Date().getMilliseconds()+ product.itemname);
-    await delay(200);
     
     if(product.product_index==0){
         origin_product.calcCost();
-        //displayTotalMaterials();
+        displayTotalMaterials();
     }
 }
 
