@@ -741,7 +741,7 @@ class Product {
     async openNextTree(calcCost=true){
 
         if(this.manufacturing_level){
-            await this.product_node.materials.forEach(material=>{
+            this.product_node.materials.forEach(material=>{
                 material.closeTree();
             });
         }        
@@ -794,7 +794,7 @@ class Product {
 
     }
 
-    async closeTree(closingMaterial=false,isCalledByCloseAllMaterialTree=false){
+    async closeTree(closingMaterial=false,isCalledByCloseAllMaterialTree=false,updateDisplay=true){
         this.opened=false;
         
 
@@ -818,7 +818,10 @@ class Product {
                 closeAllMaterialTree(this.typeid);
             }
             this.isEndNode=true;
-            displayTotalMaterials();
+            if(updateDisplay){
+                displayTotalMaterials();
+            }
+            
         }
         this.updatePanel();
     }
@@ -1057,7 +1060,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
                 
@@ -1069,7 +1072,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(INTERMEDIATE_MATERIALS.includes(node.typeid)){
@@ -1080,7 +1083,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(BIOCHEMICAL_MATERIALS.includes(node.typeid)){
@@ -1091,7 +1094,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(MOLECULAR_FORGED_MATERIALS.includes(node.typeid)){
@@ -1102,7 +1105,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
@@ -1113,7 +1116,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                node.closeTree(true);
+                node.closeTree(true,false,false);
                 continue;
             }
         } else{
@@ -1124,7 +1127,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                await node.closeTree(true);
+                await node.closeTree(true,false,false);
                 continue;
             }   
         }
