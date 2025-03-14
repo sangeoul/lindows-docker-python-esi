@@ -1133,7 +1133,7 @@ async function openFollowingTree(product){
         }
         
     }
-    console.log(new Date().getMilliseconds+ product.itemname);
+    console.log(new Date().getMilliseconds()+ product.itemname);
     delay(200);
     
     if(product.product_index==0){
