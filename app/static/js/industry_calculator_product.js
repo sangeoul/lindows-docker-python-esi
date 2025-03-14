@@ -769,8 +769,8 @@ class Product {
             this.pricetype=PRICETYPE_COST;
         }
         if(this.materials.length>0 ){
-            const openTreeButton=this.table_panel.getElementById(`#button-open-tree-${this.product_index}`);
-            const closeTreeButton=this.table_panel.getElementById(`#button-close-tree-${this.product_index}`);
+            const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
+            const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
             if(openTreeButton){
                 openTreeButton.classList.add("hidden-data");
             }
