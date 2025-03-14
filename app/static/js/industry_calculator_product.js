@@ -1112,11 +1112,14 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
+                console.log("!!DEBUG!!");
                 await node.openNextTree(false);
+                console.log("!!DEBUG!!!!!");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
                 await openFollowingTree(node);
+                console.log("!!DEBUG!!!!!!!!");
             }else {
                 await node.closeTree(true);
                 continue;
