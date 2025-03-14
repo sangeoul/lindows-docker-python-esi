@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import psycopg2
 import os   
 from esi_library import connect_to_db
-from industry_library import REGION_THE_FORGE,STATION_JITA
+from industry_library import REGION_THE_FORGE, STATION_JITA
 
 app = Flask(__name__)
 
@@ -59,13 +59,17 @@ def get_prices():
                         else:
                             lowest_sell = price
 
-                    return jsonify({
+                    response = jsonify({
                         "type_id": type_id,
                         "buy": highest_buy,
                         "sell": lowest_sell,
                     })
+                    response.headers['Cache-Control'] = 'public, max-age=1800'  # 30 minutes
+                    return response
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            response = jsonify({"error": str(e)})
+            response.headers['Cache-Control'] = 'no-cache'
+            return response, 500
     
     elif is_post == 1: 
         # Handle multiple items.
@@ -96,7 +100,9 @@ def get_prices():
                     rows = cursor.fetchall()
                     
                     if not rows:
-                        return jsonify({"error": f"No data found for the given type_ids"}), 404
+                        response = jsonify({"error": f"No data found for the given type_ids"})
+                        response.headers['Cache-Control'] = 'no-cache'
+                        return response, 404
                     
                     prices={}
 
@@ -104,7 +110,7 @@ def get_prices():
                     for row in rows:
                         type_id, is_buy_order, price = row
                         if type_id not in prices:
-                            prices[type_id]={"highest_buy":None, "lowest_sell":None}
+                            prices[type_id] = {"highest_buy": None, "lowest_sell": None}
                         if is_buy_order:
                             if prices[type_id]["highest_buy"] is None:
                                 prices[type_id]["highest_buy"] = price
@@ -112,7 +118,7 @@ def get_prices():
                             if prices[type_id]["lowest_sell"] is None:
                                 prices[type_id]["highest_buy"] = price
 
-                    return jsonify({
+                    response = jsonify({
                         "prices": [
                             {
                                 "type_id": type_id,
@@ -122,11 +128,17 @@ def get_prices():
                             for type_id in prices
                         ]
                     })
+                    response.headers['Cache-Control'] = 'public, max-age=1800'  # 30 minutes
+                    return response
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            response = jsonify({"error": str(e)})
+            response.headers['Cache-Control'] = 'no-cache'
+            return response, 500
 
     else:
-        return jsonify({"error": "Unknown is_post parameter."}), 404
+        response = jsonify({"error": "Unknown is_post parameter."})
+        response.headers['Cache-Control'] = 'no-cache'
+        return response, 404
 
 #if __name__ == "__main__":
 #    app.run(host='0.0.0.0', port=8000)
