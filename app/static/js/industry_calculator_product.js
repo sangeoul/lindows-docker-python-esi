@@ -23,11 +23,11 @@ const COMPOSITE = [16670,16671,16672,16673,16678,16679,16680,16681,16682,16683,1
 const INTERMEDIATE_MATERIALS = [16654,16655,16656,16657,16658,16659,16660,16661,16662,16663,16664,16665,16666,16667,16668,16669,17769,17959,17960,20431,29659,29660,29661,29662,29663,29664,32821,32822,32823,32824,32825,32826,32827,32828,32829,33336,33337,33338,33339,57453,57454,57455];
 const BIOCHEMICAL_MATERIALS = [25237,25241,25242,25252,25283,25330,25331,25332,25333,25334,25335,25336,25337,25338,25339,25340,25341,25342,25343,25344,25345,25346,25347,25348,28686,28687,28688,28689,28690,28691,28692,28693];
 const MOLECULAR_FORGED_MATERIALS = [57458,57459,57460,57461,57462,57463,57464,57465,57466,57467,57468,57469];
-const NO_BLUEPRINT = [34,35,36,37,38,39,40,11399, //Mineral
+const NO_BLUEPRINT = new Set([34,35,36,37,38,39,40,11399, //Mineral
     16633,16634,16635,16636,16637,16638,16639,16640,16641,16642,16643,16644,16646,16647,16648,16649,16650,16651,16652,16653, // Moon Materials
     16272,16273,16274,16275,17887,17888,17889, //Ice Products
     25268,25273,25274,25275,25276,25277,25278,25279,28629,28630,28694,28695,28696,28697,28698,28699,28700,28701,30370,30371,30372,30373,30374,30375,30376,30377,30378,49787,50175,52193,52194,52204 //Harvestable Cloud (Gas)
-];
+]);
 const QUANTITY_OPTION_PRICE=1;
 const QUANTITY_OPTION_MATERIAL=2;
 
@@ -753,7 +753,7 @@ class Product {
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
         }
-        if(this.materials.length==0){
+        if(this.materials.length==0 && !NO_BLUEPRINT.has(this.typeid)){
             await this.setMaterials();
 
 
@@ -767,28 +767,29 @@ class Product {
 
         if(!this.isEndNode){
             this.pricetype=PRICETYPE_COST;
-        }
-        const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
-        const closeTreeButton=this.table_panel.querySelector(`#button-close-tree-${this.product_index}`);
-        if(openTreeButton){
-            openTreeButton.classList.add("hidden-data");
-        }
-        if(closeTreeButton){
-            closeTreeButton.classList.remove("hidden-data");
+            const openTreeButton=this.table_panel.getElementById(`#button-open-tree-${this.product_index}`);
+            const closeTreeButton=this.table_panel.getElementById(`#button-close-tree-${this.product_index}`);
+            if(openTreeButton){
+                openTreeButton.classList.add("hidden-data");
+            }
+            if(closeTreeButton){
+                closeTreeButton.classList.remove("hidden-data");
+            }
+    
+            //await this.sortMaterials();
+            await this.updatePanel();
+            if(calcCost){
+                tracking_item_list.clear();
+                displayTotalMaterials();
+                
+            }
+            
+            
+            this.materials.forEach(material=>{
+                material.showPanel(true);
+            });
         }
 
-        //await this.sortMaterials();
-        await this.updatePanel();
-        if(calcCost){
-            tracking_item_list.clear();
-            displayTotalMaterials();
-            
-        }
-        
-        
-        this.materials.forEach(material=>{
-            material.showPanel(true);
-        });
     }
 
     async closeTree(closingMaterial=false,isCalledByCloseAllMaterialTree=false){
@@ -1902,7 +1903,7 @@ function copyMaterialsToClipboard(copyType='materials'){
 
 
 function getIndustryRelation(typeId){
-    if(NO_BLUEPRINT.includes(parseInt(typeId))){
+    if(NO_BLUEPRINT.has(parseInt(typeId))){
         let nodata={"industry_type":INDUSTRY_TYPE_NO_DATA};
         nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
         return nodata;
