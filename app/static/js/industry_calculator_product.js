@@ -1045,8 +1045,6 @@ async function runCalculate(){
 
 async function openFollowingTree(product){
 
-    console.log(new Date().getMilliseconds()+"!!"+product.itemname+"____!____");
-
     for( const node of product.materials){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
             if(checkboxes["component"]){
@@ -1117,14 +1115,11 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                console.log(new Date().getMilliseconds()+"!!"+node.itemname);
                 await node.openNextTree(false);
-                console.log(new Date().getMilliseconds()+"!!"+node.itemname+"!!!!");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
                 await openFollowingTree(node);
-                console.log(new Date().getMilliseconds()+"!!"+node.itemname+"!!!!!!!!");
             }else {
                 await node.closeTree(true);
                 continue;
@@ -1132,13 +1127,10 @@ async function openFollowingTree(product){
         }
         
     }
-    console.log(new Date().getMilliseconds()+"!!"+product.itemname+"____!!____");
     if(product.product_index==0){
-        console.log("!!"+product.itemname+"____Working____");
         origin_product.calcCost();
         displayTotalMaterials();
     }
-    console.log(new Date().getMilliseconds()+"!!"+product.itemname+"____!!!____");
 }
 
 async function changeAllPriceType(typeId,pricetype,customPrice=0){
