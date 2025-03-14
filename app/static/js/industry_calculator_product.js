@@ -1135,10 +1135,12 @@ async function openFollowingTree(product){
         }
         
     }
+    console.log(new Date().getMilliseconds()+ product.itemname);
+    await delay(200);
     
     if(product.product_index==0){
         origin_product.calcCost();
-        displayTotalMaterials();
+        //displayTotalMaterials();
     }
 }
 
