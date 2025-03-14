@@ -1042,7 +1042,7 @@ async function openFollowingTree(product){
     checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
     checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
-    console.log(currentDate.getMilliseconds()+"!!"+product.itemname+"____!____"+);
+    console.log(currentDate.getMilliseconds()+"!!"+product.itemname+"____!____");
 
     for( const node of product.materials){
         if(CONSTRUCTION_COMPONENTS.includes(node.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(node.typeid)){
