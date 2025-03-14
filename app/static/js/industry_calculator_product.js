@@ -1129,10 +1129,12 @@ async function openFollowingTree(product){
         }
         
     }
+    console.log("!!"+product.itemname+"____!!____");
     if(product.product_index==0){
         origin_product.calcCost();
         displayTotalMaterials();
     }
+    console.log("!!"+product.itemname+"____!!!____");
 
 }
 
