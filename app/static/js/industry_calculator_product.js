@@ -308,21 +308,21 @@ class Product {
             }
             else{
                 if(this.industry_type==INDUSTRY_TYPE_REACTION){
-                    index = document.getElemetById("reaction-system-index").value;
+                    index = document.getElementById("reaction-system-index").value;
                     structureBonus = 0;
-                    tax = document.getElemetById("reaction-tax").value;
+                    tax = document.getElementById("reaction-tax").value;
                 }else if(CONSTRUCTION_COMPONENTS.includes(this.typeid) || CAPITAL_CONSTRUCTION_COMPONENTS.includes(this.typeid)){
-                    index = document.getElemetById("component-system-index").value;
-                    structureBonus = document.getElemetById("component-structure-cost-bonus").value;
-                    tax = document.getElemetById("component-tax").value;
+                    index = document.getElementById("component-system-index").value;
+                    structureBonus = document.getElementById("component-structure-cost-bonus").value;
+                    tax = document.getElementById("component-tax").value;
                 }else if(FUEL_BLOCKS.includes(this.typeid)){
-                    index = document.getElemetById("fuel-system-index").value;
-                    structureBonus = document.getElemetById("fuel-structure-cost-bonus").value;
-                    tax = document.getElemetById("fuel-tax").value;
+                    index = document.getElementById("fuel-system-index").value;
+                    structureBonus = document.getElementById("fuel-structure-cost-bonus").value;
+                    tax = document.getElementById("fuel-tax").value;
                 }else{
-                    index = document.getElemetById("manufacturing-system-index").value;
-                    structureBonus = document.getElemetById("manufacturing-structure-cost-bonus").value;
-                    tax = document.getElemetById("manufacturing-tax").value;
+                    index = document.getElementById("manufacturing-system-index").value;
+                    structureBonus = document.getElementById("manufacturing-structure-cost-bonus").value;
+                    tax = document.getElementById("manufacturing-tax").value;
                 }                
             }
             const blueprintdata=getIndustryRelation(this.typeid);
@@ -666,7 +666,7 @@ class Product {
         this.table_panel.appendChild(row1);
         this.table_panel.appendChild(row2);
 
-        const manufacturing_board=document.getElemetById("product-panel-lv"+this.manufacturing_level);
+        const manufacturing_board=document.getElementById("product-panel-lv"+this.manufacturing_level);
         
         manufacturing_board.appendChild(this.table_panel);
         this.showPanel();
@@ -935,19 +935,19 @@ async function runCalculate(){
     product_index = 0;
     product_array=[];
     
-    document.getElemetById("product-panel-lv0").innerHTML="";
-    document.getElemetById("total-materials").innerHTML="";
-    document.getElemetById("td-export-button").innerHTML="";
-    document.getElemetById("product-panel-lv1").innerHTML="";
-    document.getElemetById("product-panel-lv2").innerHTML="";
-    document.getElemetById("product-panel-lv3").innerHTML="";
-    document.getElemetById("product-panel-lv4").innerHTML="";
-    document.getElemetById("product-panel-lv5").innerHTML="";
-    document.getElemetById("product-panel-lv6").innerHTML="";
-    document.getElemetById("product-panel-lv7").innerHTML="";
-    document.getElemetById("product-panel-lv8").innerHTML="";
-    document.getElemetById("product-panel-lv9").innerHTML="";
-    document.getElemetById("product-panel-lv10").innerHTML="";
+    document.getElementById("product-panel-lv0").innerHTML="";
+    document.getElementById("total-materials").innerHTML="";
+    document.getElementById("td-export-button").innerHTML="";
+    document.getElementById("product-panel-lv1").innerHTML="";
+    document.getElementById("product-panel-lv2").innerHTML="";
+    document.getElementById("product-panel-lv3").innerHTML="";
+    document.getElementById("product-panel-lv4").innerHTML="";
+    document.getElementById("product-panel-lv5").innerHTML="";
+    document.getElementById("product-panel-lv6").innerHTML="";
+    document.getElementById("product-panel-lv7").innerHTML="";
+    document.getElementById("product-panel-lv8").innerHTML="";
+    document.getElementById("product-panel-lv9").innerHTML="";
+    document.getElementById("product-panel-lv10").innerHTML="";
 
 
 
@@ -992,7 +992,7 @@ async function runCalculate(){
     await origin_product.openNextTree();
     origin_product.openPriceTable();
 
-    const openButton=document.getElemetById("open-button");
+    const openButton=document.getElementById("open-button");
     openButton.addEventListener("click",async ()=>{
 
 
@@ -1003,15 +1003,15 @@ async function runCalculate(){
             fuel:null,
             pi:null
         };
-        checkboxes["basement"]=document.getElemetById("basement-checkbox:checked");
-        checkboxes["component"]=document.getElemetById("component-checkbox:checked");
-        checkboxes["reaction"]=document.getElemetById("reaction-checkbox:checked");
-        checkboxes["composite"]=document.getElemetById("reaction-checkbox1:checked");
-        checkboxes["intermediate"]=document.getElemetById("reaction-checkbox2:checked");
-        checkboxes["biochemical"]=document.getElemetById("reaction-checkbox3:checked");
-        checkboxes["molecular_forged"]=document.getElemetById("reaction-checkbox4:checked");
-        checkboxes["fuel"]=document.getElemetById("fuel-checkbox:checked");
-        checkboxes["pi"]=document.getElemetById("pi-checkbox:checked");
+        checkboxes["basement"]=document.getElementById("basement-checkbox:checked");
+        checkboxes["component"]=document.getElementById("component-checkbox:checked");
+        checkboxes["reaction"]=document.getElementById("reaction-checkbox:checked");
+        checkboxes["composite"]=document.getElementById("reaction-checkbox1:checked");
+        checkboxes["intermediate"]=document.getElementById("reaction-checkbox2:checked");
+        checkboxes["biochemical"]=document.getElementById("reaction-checkbox3:checked");
+        checkboxes["molecular_forged"]=document.getElementById("reaction-checkbox4:checked");
+        checkboxes["fuel"]=document.getElementById("fuel-checkbox:checked");
+        checkboxes["pi"]=document.getElementById("pi-checkbox:checked");
 
         await openFollowingTree(origin_product);
         await origin_product.loadAndCalcCost();
@@ -1033,7 +1033,7 @@ async function runCalculate(){
         showBreakdownPopup();
     });
     
-    const td_buttonArea=document.getElemetById("td-export-button");
+    const td_buttonArea=document.getElementById("td-export-button");
     td_buttonArea.appendChild(button_copyMaterials);
     td_buttonArea.appendChild(button_copyBreakdownMaterials);
 
@@ -1502,7 +1502,7 @@ async function displayTotalMaterials(){
         table_total.appendChild(tr_total);
     });
 
-    const td_totalBoard=document.getElemetById("total-materials");
+    const td_totalBoard=document.getElementById("total-materials");
     td_totalBoard.innerHTML="";
 
     td_totalBoard.appendChild(table_total);
@@ -1947,7 +1947,7 @@ function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     type_id=parseInt(type_id);
 
     if(type_id==origin_product.typeid){
-        efficiency = parseInt(document.getElemetById("me-input").value);
+        efficiency = parseInt(document.getElementById("me-input").value);
     }
 
     const savedBonus=localStorage.getItem(type_id);
@@ -1956,20 +1956,20 @@ function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     }
     if(CONSTRUCTION_COMPONENTS.includes(type_id)||CAPITAL_CONSTRUCTION_COMPONENTS.includes(type_id)){
         
-        const structureAndRigBonus=document.getElemetById("component-structure-efficiency-bonus").value;
+        const structureAndRigBonus=document.getElementById("component-structure-efficiency-bonus").value;
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id) || BIOCHEMICAL_MATERIALS.includes(type_id) || MOLECULAR_FORGED_MATERIALS.includes(type_id)){
         
-        const structureAndRigBonus=document.getElemetById("reaction-structure-efficiency-bonus").value;
+        const structureAndRigBonus=document.getElementById("reaction-structure-efficiency-bonus").value;
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
     if(FUEL_BLOCKS.includes(type_id)){
-        const structureAndRigBonus=document.getElemetById("fuel-structure-efficiency-bonus").value;
+        const structureAndRigBonus=document.getElementById("fuel-structure-efficiency-bonus").value;
        return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
     
-    const structureAndRigBonus=document.getElemetById("manufacturing-structure-efficiency-bonus").value;
+    const structureAndRigBonus=document.getElementById("manufacturing-structure-efficiency-bonus").value;
     return calcBonusMultiplier(efficiency,structureAndRigBonus);
 
 
