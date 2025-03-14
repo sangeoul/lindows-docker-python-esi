@@ -1112,14 +1112,14 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                console.log("!!DEBUG!!");
+                console.log("!!"+node.itemname);
                 await node.openNextTree(false);
-                console.log("!!DEBUG!!!!!");
+                console.log("!!"+node.itemname+"!!!!");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
                 await openFollowingTree(node);
-                console.log("!!DEBUG!!!!!!!!");
+                console.log("!!"+node.itemname+"!!!!!!!!");
             }else {
                 await node.closeTree(true);
                 continue;
