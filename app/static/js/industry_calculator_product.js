@@ -1003,15 +1003,15 @@ async function runCalculate(){
             fuel:null,
             pi:null
         };
-        checkboxes["basement"]=document.getElementById("basement-checkbox:checked");
-        checkboxes["component"]=document.getElementById("component-checkbox:checked");
-        checkboxes["reaction"]=document.getElementById("reaction-checkbox:checked");
-        checkboxes["composite"]=document.getElementById("reaction-checkbox1:checked");
-        checkboxes["intermediate"]=document.getElementById("reaction-checkbox2:checked");
-        checkboxes["biochemical"]=document.getElementById("reaction-checkbox3:checked");
-        checkboxes["molecular_forged"]=document.getElementById("reaction-checkbox4:checked");
-        checkboxes["fuel"]=document.getElementById("fuel-checkbox:checked");
-        checkboxes["pi"]=document.getElementById("pi-checkbox:checked");
+        checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
+        checkboxes["component"]=document.querySelector("#component-checkbox:checked");
+        checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
+        checkboxes["composite"]=document.querySelector("#reaction-checkbox1:checked");
+        checkboxes["intermediate"]=document.querySelector("#reaction-checkbox2:checked");
+        checkboxes["biochemical"]=document.querySelector("#reaction-checkbox3:checked");
+        checkboxes["molecular_forged"]=document.querySelector("#reaction-checkbox4:checked");
+        checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
+        checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
         await openFollowingTree(origin_product);
         await origin_product.loadAndCalcCost();
