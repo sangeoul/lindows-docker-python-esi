@@ -1063,7 +1063,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
                 
@@ -1075,7 +1075,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(INTERMEDIATE_MATERIALS.includes(node.typeid)){
@@ -1086,7 +1086,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(BIOCHEMICAL_MATERIALS.includes(node.typeid)){
@@ -1097,7 +1097,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(MOLECULAR_FORGED_MATERIALS.includes(node.typeid)){
@@ -1108,7 +1108,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
         }else if(FUEL_BLOCKS.includes(node.typeid)){
@@ -1119,7 +1119,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }
         } else{
@@ -1130,7 +1130,7 @@ async function openFollowingTree(product){
                 }
                 await openFollowingTree(node);
             }else {
-                //await node.closeTree(true,false,false);
+                node.closeTree(true,false,false);
                 continue;
             }   
         }
