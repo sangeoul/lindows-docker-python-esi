@@ -141,6 +141,8 @@ const market_price_request_cache = {};
 
 let material_list = [];
 
+let checkboxes={};
+
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -993,6 +995,24 @@ async function runCalculate(){
     const openButton=document.querySelector("#open-button");
     openButton.addEventListener("click",async ()=>{
 
+
+        checkboxes={
+            basement:null,
+            component:null,
+            reaction:null,
+            fuel:null,
+            pi:null
+        };
+        checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
+        checkboxes["component"]=document.querySelector("#component-checkbox:checked");
+        checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
+        checkboxes["composite"]=document.querySelector("#reaction-checkbox1:checked");
+        checkboxes["intermediate"]=document.querySelector("#reaction-checkbox2:checked");
+        checkboxes["biochemical"]=document.querySelector("#reaction-checkbox3:checked");
+        checkboxes["molecular_forged"]=document.querySelector("#reaction-checkbox4:checked");
+        checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
+        checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
+
         await openFollowingTree(origin_product);
         await origin_product.loadAndCalcCost();
         displayTotalMaterials();
@@ -1024,23 +1044,6 @@ async function runCalculate(){
 }
 
 async function openFollowingTree(product){
-
-    let checkboxes={
-        basement:null,
-        component:null,
-        reaction:null,
-        fuel:null,
-        pi:null
-    };
-    checkboxes["basement"]=document.querySelector("#basement-checkbox:checked");
-    checkboxes["component"]=document.querySelector("#component-checkbox:checked");
-    checkboxes["reaction"]=document.querySelector("#reaction-checkbox:checked");
-    checkboxes["composite"]=document.querySelector("#reaction-checkbox1:checked");
-    checkboxes["intermediate"]=document.querySelector("#reaction-checkbox2:checked");
-    checkboxes["biochemical"]=document.querySelector("#reaction-checkbox3:checked");
-    checkboxes["molecular_forged"]=document.querySelector("#reaction-checkbox4:checked");
-    checkboxes["fuel"]=document.querySelector("#fuel-checkbox:checked");
-    checkboxes["pi"]=document.querySelector("#pi-checkbox:checked");
 
     console.log(new Date().getMilliseconds()+"!!"+product.itemname+"____!____");
 
@@ -1136,7 +1139,6 @@ async function openFollowingTree(product){
         displayTotalMaterials();
     }
     console.log(new Date().getMilliseconds()+"!!"+product.itemname+"____!!!____");
-
 }
 
 async function changeAllPriceType(typeId,pricetype,customPrice=0){
