@@ -739,7 +739,7 @@ class Product {
     }
 
     async openNextTree(calcCost=true){
-
+        /*
         if(this.manufacturing_level){
             this.product_node.materials.forEach(material=>{
                 material.closeTree();
@@ -752,7 +752,7 @@ class Product {
         //console.log("Opening "+this.itemname+"...");
         if(!this.industry_type==INDUSTRY_TYPE_NO_DATA){
             return;
-        }
+        }*/
         if(this.materials.length==0 && !NO_BLUEPRINT.has(this.typeid)){
             await this.setMaterials();
 
@@ -764,7 +764,7 @@ class Product {
         }
 
         this.isEndNode=(this.materials.length==0);
-
+        /*
         if(!this.isEndNode){
             this.pricetype=PRICETYPE_COST;
         }
@@ -791,6 +791,7 @@ class Product {
                 material.showPanel(true);
             });
         }
+            */
 
     }
 
