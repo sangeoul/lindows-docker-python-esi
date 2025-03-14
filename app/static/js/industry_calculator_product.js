@@ -767,6 +767,8 @@ class Product {
 
         if(!this.isEndNode){
             this.pricetype=PRICETYPE_COST;
+        }
+        if(this.materials.length>0 ){
             const openTreeButton=this.table_panel.getElementById(`#button-open-tree-${this.product_index}`);
             const closeTreeButton=this.table_panel.getElementById(`#button-close-tree-${this.product_index}`);
             if(openTreeButton){
