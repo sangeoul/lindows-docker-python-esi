@@ -795,14 +795,14 @@ class Product {
 
     }
 
-    async closeTree(closingMaterial=false,isCalledByCloseAllMaterialTree=false,updateDisplay=true){
+    async closeTree(closingMaterial=false,closeAllMaterialTree=true,updateDisplay=true){
         this.opened=false;
         
 
         this.materials.forEach(material=>{
             material.showPanel(false);
             material.opened=false;
-            material.closeTree();
+            material.closeTree(closingMaterial,closeAllMaterialTree,updateDisplay);
         });
 
         const openTreeButton=this.table_panel.querySelector(`#button-open-tree-${this.product_index}`);
@@ -815,7 +815,7 @@ class Product {
         }
 
         if(closingMaterial){
-            if(!isCalledByCloseAllMaterialTree){
+            if(closeAllMaterialTree){
                 closeAllMaterialTree(this.typeid);
             }
             this.isEndNode=true;
@@ -1136,7 +1136,7 @@ async function openFollowingTree(product){
         }
         
     }
-    console.log(new Date().getMilliseconds()+ product.itemname);
+    //console.log(new Date().getMilliseconds()+ product.itemname);
     //await delay(200);
     
     if(product.product_index==0){
@@ -1173,7 +1173,7 @@ async function closeAllMaterialTree(typeId){
 }
 async function closeFollowingMaterialTree(typeId,productNode){
     if(productNode.typeid==typeId){
-        productNode.closeTree(true,true);
+        productNode.closeTree(true,false);
         productNode.updatePanel();
     }
     for (const material of productNode.materials) {
