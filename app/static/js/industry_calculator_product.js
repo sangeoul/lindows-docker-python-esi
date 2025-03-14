@@ -1897,7 +1897,7 @@ function copyMaterialsToClipboard(copyType='materials'){
 
 
 function getIndustryRelation(typeId){
-    if(NO_BLUEPRINT.includes(typeId)){
+    if(NO_BLUEPRINT.includes(parseInt(typeId))){
         let nodata={"industry_type":INDUSTRY_TYPE_NO_DATA};
         nodata.industry_type=INDUSTRY_TYPE_NO_DATA;
         return nodata;
