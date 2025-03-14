@@ -1112,15 +1112,11 @@ async function openFollowingTree(product){
             }
         } else{
             if(checkboxes["basement"]){
-                console.log("!!DEBUG0");
                 await node.openNextTree(false);
-                console.log("!!DEBUG1");
                 if(node.manufacturing_level%2){
                     //await delay(1);
                 }
-                console.log("!!DEBUG2");
                 await openFollowingTree(node);
-                console.log("!!DEBUG3");
             }else {
                 await node.closeTree(true);
                 continue;
@@ -1128,8 +1124,11 @@ async function openFollowingTree(product){
         }
         
     }
-    origin_product.calcCost();
-    displayTotalMaterials();
+    if(product.product_index==0){
+        origin_product.calcCost();
+        displayTotalMaterials();
+    }
+
 }
 
 async function changeAllPriceType(typeId,pricetype,customPrice=0){
