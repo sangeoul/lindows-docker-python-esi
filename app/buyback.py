@@ -3,7 +3,6 @@ import os
 import psycopg2
 import math
 import json
-from collections import defaultdict
 from flask import Flask,jsonify, render_template,render_template_string,redirect, request, url_for
 from esi_library import connect_to_db, get_access_token,is_logged_in,get_charactername_by_characterid,ADMIN_ID
 from industry_library import get_typeid_by_itemname,get_typeid_by_itemnamelist, get_icon_by_typeid, get_affordable_price,get_itemname_by_typeid,get_groupid_by_typeid
@@ -72,8 +71,6 @@ DEFAULT_REFINING_RATE=0.55
 
 stock_data=None
 
-reprocessing_cache=defaultdict(list)
-
 def get_stock_info(type_id):
 
     global stock_data
@@ -98,31 +95,7 @@ def get_stock_info(type_id):
         # Return default values if no data is found
         return (0, 0, 0)  # amount=0, median_amount=0, max_amount=0        
     
-def cache_reprocessing_info(type_ids):
 
-    global reprocessing_cache
-
-    conn = connect_to_db()
-    cursor = conn.cursor()
-    cursor.execute(""" 
-        SELECT output_id, output_amount, input_amount ,input_id
-        FROM industry_relation 
-        WHERE input_id = ANY(%s) AND industry_type = 1 
-    """, (type_ids,))   
-
-    rows = cursor.fetchall()
-
-    for row in rows:
-        output_id, output_amount, input_amount,input_id = row
-        reprocessing_cache[input_id].append((output_id, output_amount, input_amount))
-    return reprocessing_cache
-
-def get_reprocessing_info(type_id):
-    global reprocessing_cache
-    if type_id in reprocessing_cache:
-        return reprocessing_cache[type_id]
-    else :
-        return []
 
 def create_buyback_item(input_id,input_name, input_amount,input_price_data, language,whitelist=None):
 
@@ -134,7 +107,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
             whitelist = json.load(file)
 
     try:
-
+        # Fetch type_id using the library function
         validitem = True
         try:
             group_id = get_groupid_by_typeid(input_id)
@@ -169,7 +142,16 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
 
         if get_reprocessing_or_not(input_id, group_id, whitelist):
 
-            rows = get_reprocessing_info(input_id)
+            
+            # Populate outputs
+            conn = connect_to_db()
+            cursor = conn.cursor()
+            cursor.execute(""" 
+                SELECT output_id, output_amount, input_amount 
+                FROM industry_relation 
+                WHERE input_id = %s AND industry_type = 1 
+            """, (input_id,))
+            rows = cursor.fetchall()
 
             if not rows:  # If no records are found, create the output with the same details as input
                 # Calculate the output price based on input amount and dynamic buyback rate
@@ -248,6 +230,9 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         output_sellprice=input_price_data["sell"],
                         output_price=output_price  # Same dynamic buyback logic for the output
                     ))
+
+            cursor.close()
+            conn.close()
 
         else:
             # Calculate the output price based on input amount and dynamic buyback rate
@@ -502,7 +487,6 @@ def buyback_calculate(parsed_items, language='en'):
         requesting_item.append(item_data)
 
     input_price_data=get_affordable_price(requesting_item)
-    cache_reprocessing_info(requesting_item)
 
 
     for item_data in parsed_items:
