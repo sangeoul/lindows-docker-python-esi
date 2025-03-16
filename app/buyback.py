@@ -505,7 +505,7 @@ def buyback_calculate(parsed_items, language='en'):
         requesting_item.append(item_data)
 
     input_price_data=get_affordable_price(requesting_item)
-    cache_reprocessing_info(type_id_list)
+    cache_reprocessing_info(requesting_item)
 
 
     for item_data in parsed_items:
