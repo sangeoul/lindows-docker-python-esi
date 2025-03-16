@@ -1632,7 +1632,7 @@ async function calcMaterialBreakdown(breakdownFuelblocks=false) {
                 addToException(p);
             }
 
-            else if(( p.materials.length==0 || p.isEndNode || p.manufacturing_level==counti|| (!breakdownFuelblocks && FUEL_BLOCKS.includes(p.typeid))) 
+            else if(( p.materials.length==0 || p.isEndNode || p.manufacturing_level==counti|| (!breakdownFuelblocks && FUEL_BLOCKS.has(p.typeid))) 
                 && !exception_list.has(parseInt(p.product_index)) 
                 && !endNode_list.has(parseInt(p.product_index)))
             {
@@ -1819,17 +1819,17 @@ function getBonusModifier(type_id,bonus1=0,bonus2=0,bonus3=0,bonus4=0) {
     if(savedBonus){
         return calcBonusMultiplier(savedBonus.me,savedBonus.strRigBonus);
     }
-    if(CONSTRUCTION_COMPONENTS.includes(type_id)||CAPITAL_CONSTRUCTION_COMPONENTS.includes(type_id)){
+    if(CONSTRUCTION_COMPONENTS.has(type_id)||CAPITAL_CONSTRUCTION_COMPONENTS.has(type_id)){
         
         const structureAndRigBonus=document.getElementById("component-structure-efficiency-bonus").value;
         return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
-    if(COMPOSITE.includes(type_id) || INTERMEDIATE_MATERIALS.includes(type_id) || BIOCHEMICAL_MATERIALS.includes(type_id) || MOLECULAR_FORGED_MATERIALS.includes(type_id)){
+    if(COMPOSITE.has(type_id) || INTERMEDIATE_MATERIALS.has(type_id) || BIOCHEMICAL_MATERIALS.has(type_id) || MOLECULAR_FORGED_MATERIALS.has(type_id)){
         
         const structureAndRigBonus=document.getElementById("reaction-structure-efficiency-bonus").value;
         return calcBonusMultiplier(0,structureAndRigBonus)
     }
-    if(FUEL_BLOCKS.includes(type_id)){
+    if(FUEL_BLOCKS.has(type_id)){
         const structureAndRigBonus=document.getElementById("fuel-structure-efficiency-bonus").value;
        return calcBonusMultiplier(efficiency,structureAndRigBonus);
     }
