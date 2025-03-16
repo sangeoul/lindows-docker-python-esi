@@ -134,7 +134,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
             whitelist = json.load(file)
 
     try:
-        # Fetch type_id using the library function
+
         validitem = True
         try:
             group_id = get_groupid_by_typeid(input_id)
@@ -248,9 +248,6 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         output_sellprice=input_price_data["sell"],
                         output_price=output_price  # Same dynamic buyback logic for the output
                     ))
-
-            cursor.close()
-            conn.close()
 
         else:
             # Calculate the output price based on input amount and dynamic buyback rate
