@@ -197,7 +197,7 @@ def create_buyback_item(input_id,input_name, input_amount,input_price_data, lang
                         stock_data = get_stock_info(output_id)  # Current stock amount, median_amount, max_amount
                         min_br,default_br,max_br=get_buyback_rate(output_id, output_group_id,whitelist)
                         dynamic_buyback_rate = calculate_weighted_buyback_rate(output_amount, stock_data[0], stock_data[1], stock_data[2], output_buyprice, output_sellprice,min_br,default_br,max_br)
-                        print(f"!!DEBUG : {output_id} : ({min_br}~{default_br}~{max_br}) => {dynamic_buyback_rate}",flush=True)
+                        #print(f"!!DEBUG : {output_id} : ({min_br}~{default_br}~{max_br}) => {dynamic_buyback_rate}",flush=True)
                         # Calculate output price
                         output_price = total_output_amount * output_buyprice * dynamic_buyback_rate
 
