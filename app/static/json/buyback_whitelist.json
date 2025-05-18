@@ -359,7 +359,7 @@
         {"id": 34201, "name": "Accelerant Decryptor"},
         {"id": 11461, "name": "R.Db - Boundless Creations"},
         {"id": 20421, "name": "Datacore - Amarrian Starship Engineering"},
-        {"id": 11399, "name": "Morphite","buyback_rate":[0.9,0.99,1]},
+        {"id": 11399, "name": "Morphite","buyback_rate":[0.9,0.96,1]},
         {"id": 15331, "name": "Metal Scraps","reprocessing": true ,"refining_rate":0.55},
         {"id": 30497, "name": "Reinforced Metal Scraps","reprocessing": true ,"refining_rate":0.55},
         {"id": 3828, "name": "Construction Blocks","buyback_rate":[0.9,0.95,0.97]},
