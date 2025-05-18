@@ -34,7 +34,7 @@
         {"id": 1923, "name": "Exceptional Moon Asteroids", "reprocessing": true ,"refining_rate":0.843},
         {"id": 1884, "name": "Ubiquitous Moon Asteroids", "reprocessing": true ,"refining_rate":0.843},
         {"id": 465, "name": "Ice", "reprocessing": true ,"refining_rate":0.876},
-        {"id": 427, "name": "Moon Materials", "buyback_rate":[0.9,0.98,1]},
+        {"id": 427, "name": "Moon Materials", "buyback_rate":[0.9,0.94,1]},
         {"id": 966, "name": "Ancient Radar Decorrelator"},
         {"id": 754, "name": "Armor Plates"},
         {"id": 355, "name": "Condensed Alloy"},
@@ -304,7 +304,7 @@
         {"id": 640,"name": "Logistic Drone","reprocessing": true,"refining_rate": 0.55},
         {"id": 641,"name": "Stasis Webifying Drone","reprocessing": true,"refining_rate": 0.55},
         {"id": 1159,"name": "Salvage Drone","reprocessing": true,"refining_rate": 0.55},
-        {"id": 1248,"name": "Bounty Encrypted Bonds","buyback_rate":[0.98,0.98,0.98]}
+        {"id": 1248,"name": "Bounty Encrypted Bonds","buyback_rate":[0.97,0.97,0.98]}
         
     ],
     "type_id": [
